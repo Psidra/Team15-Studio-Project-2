@@ -86,6 +86,41 @@ private:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
 
+	bool spawnText; 
+	int spawnTS; // all text size 2
+
+	bool syringeTriggedText; 
+	int	syringeTriggedTS;
+
+	bool boxTriggedText; 
+	int boxTriggedTS;
+	bool boxTriggedText_Two; 
+	int boxTriggedTS_two;
+
+	bool hmTriggeredText; 
+	int hmTriggedTS;
+
+	bool hm_to_alexis; 
+	int hm_to_alexisTS;
+
+	bool alexis_to_hm; 
+	int alexis_to_hmTS;
+
+	bool alexis_beside_hm; 
+	int alexis_beside_hmTS;
+
+	bool postProjectileThrownText; 
+	int postProjectileThrownTS;
+
+	bool fm_triggedText; 
+	int fm_triggedTS;
+
+	bool alexisText;  
+	int alexisTS;
+
+	bool guideText; 
+	int guideTS;
+
 	std::string fps;
 	
 	/*double elapsedTime;
@@ -93,4 +128,4 @@ private:
 	bool buttonpressed;*/
 };
 
-#endif
+#endif 

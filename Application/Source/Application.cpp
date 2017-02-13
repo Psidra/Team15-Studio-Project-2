@@ -11,16 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Scene1.h"
-#include "Scene2.h"
-#include "Scene3.h"
-#include "Scene4.h"
-#include "SceneLight.h"
-#include "Assignment2.h"
-#include "SceneTexture.h"
-#include "SceneSkybox.h"
-#include "SceneText.h"
-#include "Assignment3.h"
+#include "StudioProject2_Scene1.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
@@ -115,27 +106,13 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	//Scene *scene = new Assignment3();
-	Scene *scene1 = new Assignment3();
-	Scene *scene2 = new SceneText();
-	Scene *scene = scene1;
+	Scene *scene = new StudioProject2Scene1();
+	
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
-		if (IsKeyPressed(VK_F1) && (scene != scene1))
-		{
-			scene->Exit();
-			scene = scene1;
-			scene->Init();
-		}
-		else if (IsKeyPressed(VK_F2) && (scene != scene2))
-		{
-			scene->Exit();
-			scene = scene2;
-			scene->Init();
-		}
 
 		scene->Update(m_timer.getElapsedTime());
 		scene->Render();

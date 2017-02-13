@@ -31,7 +31,6 @@ void StudioProject2Scene1::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Load vertex and fragment shaders
 	m_programID = LoadShaders("Shader//Texture.vertexshader", "Shader//Text.fragmentshader");
@@ -81,9 +80,6 @@ void StudioProject2Scene1::Init()
 
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1.f, 1.f, 1.f), 18, 36, 1.f);
 
-	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("quad", Color(0, 1, 0));
-	meshList[GEO_QUAD]->textureID = LoadTGA("Image//front_d.tga");
-
 	/*-----------------------------Skybox Loading----------------------------------*/
 	/*-----------------------------------------------------------------------------*/
 
@@ -98,11 +94,49 @@ void StudioProject2Scene1::Init()
 	
 	/*--------------------------Text Loading---------------------------------------*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TEXT]->textureID = LoadTGA("Image//PoiretOne.tga");
+	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
 
-	/*------------------------Initialising Variables-------------------------------*/
-	MouseControl = true;
+	/*------------------------Initialising Text Variables-------------------------------*/
+	spawnText = true;
+	spawnTS = 2;
+
+	syringeTriggedText = false;
+	syringeTriggedTS = 0;
+
+	boxTriggedText = false;
+	boxTriggedTS = 0;
+	boxTriggedText_Two = false;
+	boxTriggedTS_two = 0;
+
+	hmTriggeredText = false;
+	hmTriggedTS = 0;
+
+	hm_to_alexis = false;
+	hm_to_alexisTS = 0;
+
+	alexis_to_hm = false;
+	alexis_to_hmTS = 0;
+
+	alexis_beside_hm = false;
+	alexis_beside_hmTS = 0;
+
+	postProjectileThrownText = false;
+	postProjectileThrownTS = 0;
+
+	fm_triggedText = false;
+	fm_triggedTS = 0;
+
+	alexisText = false;
+	alexisTS = 0;
+
+	guideText = false;
+	guideTS = 0;
+
+	/*----------------------------------------------------------------------------------*/
+
+	/*---------------------------Initialising Variables---------------------------------*/
+	MouseControl = false;
 
 
 	Mtx44 projection;
@@ -140,11 +174,12 @@ void StudioProject2Scene1::Init()
 
 void StudioProject2Scene1::Update(double dt)
 {
+	int framespersec = 1 / dt;
 	//elapsedTime += dt;
 	camera.Update(dt);
 
 	/*-----------Updates the FPS to be stated on screen---------*/
-	fps = "FPS:" + std::to_string(1 / dt);
+	fps = "FPS:" + std::to_string(framespersec);
 	/*----------------------------------------------------------*/
 
 	if (Application::IsKeyPressed(VK_1))
@@ -197,8 +232,28 @@ void StudioProject2Scene1::Render()
 
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
-	
-	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 5, 10, 11);
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press A or D to move around. Walk over to the syringe", Color(1, 1, 1), spawnTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "This is the power to revolutionise the world!", Color(1, 1, 1), syringeTriggedTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "The wall is too high, I need to use the box to scale it.", Color(1, 1, 1), boxTriggedTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press F to grab box and move it to the wall", Color(1, 1, 1), boxTriggedTS_two, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press W to jump", Color(1, 1, 1), boxTriggedTS_two, 1, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "You see a half mutant.", Color(1, 1, 1), hmTriggedTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Perfect, you get to test your newly created cure.", Color(1, 1, 1), hmTriggedTS, 1, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "You called out to him. He turns and replies,", Color(1, 1, 1), hmTriggedTS, 1, -5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Half Mutant: Get away from me!", Color(1, 1, 1), hm_to_alexisTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "I don't want to cause bloodshed...", Color(1, 1, 1), hm_to_alexisTS, 10, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis: Don't worry, I've created a cure. Trust me.", Color(1, 1, 1), alexis_to_hmTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press F to cure half-mutant.", Color(1, 1, 1), alexis_beside_hmTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press Right Click to dodge-roll projectiles", Color(1, 1, 1), postProjectileThrownTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Hold Left Shift to block", Color(1, 1, 1), postProjectileThrownTS, 1, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Full-mutants cannot be brought back to humanity.", Color(1, 1, 1), fm_triggedTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "They must be killed to advance.", Color(1, 1, 1), fm_triggedTS, 1, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "My apologies.", Color(1, 1, 1), alexisTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press Left Click to swing your sword", Color(1, 1, 1), guideTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "and attack when nearby.", Color(1, 1, 1), guideTS, 1, -4);
+
+	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
 void StudioProject2Scene1::RenderMesh(Mesh *mesh, bool enableLight)
@@ -294,7 +349,7 @@ void StudioProject2Scene1::RenderTextOnScreen(Mesh* mesh, std::string text, Colo
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity(); //Reset modelStack
 	modelStack.Scale(size, size, size);
-	modelStack.Translate(x + 0.5f, y + 0.5f, 0);
+	modelStack.Translate(x, y, 0);
 
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
@@ -306,7 +361,7 @@ void StudioProject2Scene1::RenderTextOnScreen(Mesh* mesh, std::string text, Colo
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 0.7f, 10, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
@@ -314,12 +369,11 @@ void StudioProject2Scene1::RenderTextOnScreen(Mesh* mesh, std::string text, Colo
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
-
+	glEnable(GL_DEPTH_TEST);
 	projectionStack.PopMatrix();
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
 
-	glEnable(GL_DEPTH_TEST);
 }
 
 void StudioProject2Scene1::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)

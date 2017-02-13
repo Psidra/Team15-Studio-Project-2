@@ -2,7 +2,7 @@
 #include "Camera3.h"
 #include "Application.h"
 #include "Mtx44.h"
-#include "Assignment3.h"
+#include "StudioProject2_Scene1.h"
 
 extern GLFWwindow* m_window;
 extern bool MouseControl;
