@@ -159,7 +159,7 @@ void StudioProject2MainMenu::Render()
 
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
-
+	
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Start Game", Color(1, 1, 1), 2, 11, -5);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -6);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);

@@ -107,7 +107,7 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new StudioProject2MainMenu();
+	Scene *scene = new StudioProject2Scene1();
 	
 	scene->Init();
 

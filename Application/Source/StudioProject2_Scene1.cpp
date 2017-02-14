@@ -90,27 +90,27 @@ void StudioProject2Scene1::Init()
 	/*-----------------------------------------------------------------------------*/
 	
 	/*--------------------------Character Loading----------------------------------*/
-	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//facehair.obj");
+	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
 	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
-	meshList[GEO_ALEXIS_BODY] = MeshBuilder::GenerateOBJ("aBody", "OBJ//body.obj");
+	meshList[GEO_ALEXIS_BODY] = MeshBuilder::GenerateOBJ("aBody", "OBJ//Character//body.obj");
 	meshList[GEO_ALEXIS_BODY]->textureID = LoadTGA("Image//bodytext.tga");
-	meshList[GEO_ALEXIS_CROTCH] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//crotch.obj");
+	meshList[GEO_ALEXIS_CROTCH] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//Character//crotch.obj");
 	meshList[GEO_ALEXIS_CROTCH]->textureID = LoadTGA("Image//crotchtext.tga");
-	meshList[GEO_ALEXIS_RIGHTHAND] = MeshBuilder::GenerateOBJ("aRightHand", "OBJ//RightHand.obj");
+	meshList[GEO_ALEXIS_RIGHTHAND] = MeshBuilder::GenerateOBJ("aRightHand", "OBJ//Character//RightHand.obj");
 	meshList[GEO_ALEXIS_RIGHTHAND]->textureID = LoadTGA("Image//righthandtext.tga");
-	meshList[GEO_ALEXIS_LEFTHAND] = MeshBuilder::GenerateOBJ("aLeftHand", "OBJ//LeftHand.obj");
+	meshList[GEO_ALEXIS_LEFTHAND] = MeshBuilder::GenerateOBJ("aLeftHand", "OBJ//Character//LeftHand.obj");
 	meshList[GEO_ALEXIS_LEFTHAND]->textureID = LoadTGA("Image//lefthandtext.tga");
-	meshList[GEO_ALEXIS_RIGHTARM] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//RightArm.obj");
+	meshList[GEO_ALEXIS_RIGHTARM] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//Character//RightArm.obj");
 	meshList[GEO_ALEXIS_RIGHTARM]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_LEFTARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//LeftArm.obj");
+	meshList[GEO_ALEXIS_LEFTARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//Character//LeftArm.obj");
 	meshList[GEO_ALEXIS_LEFTARM]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("aRightThigh", "OBJ//RightThigh.obj");
+	meshList[GEO_ALEXIS_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("aRightThigh", "OBJ//Character//RightThigh.obj");
 	meshList[GEO_ALEXIS_RIGHTTHIGH]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_LEFTTHIGH] = MeshBuilder::GenerateOBJ("aLeftThigh", "OBJ//LeftThigh.obj");
+	meshList[GEO_ALEXIS_LEFTTHIGH] = MeshBuilder::GenerateOBJ("aLeftThigh", "OBJ//Character//LeftThigh.obj");
 	meshList[GEO_ALEXIS_LEFTTHIGH]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_RIGHTLEG] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//RightLeg.obj");
+	meshList[GEO_ALEXIS_RIGHTLEG] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//Character//RightLeg.obj");
 	meshList[GEO_ALEXIS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
-	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//LeftLeg.obj");
+	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Character//LeftLeg.obj");
 	meshList[GEO_ALEXIS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
 	/*-----------------------------------------------------------------------------*/
 	
@@ -372,6 +372,47 @@ void StudioProject2Scene1::Render()
 
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], false);
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_LEFTHAND], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], false);
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTHAND], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], false);
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix(); 
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], false);
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
 
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press A or D to move around. Walk over to the syringe", Color(1, 1, 1), spawnTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "This is the power to revolutionise the world!", Color(1, 1, 1), syringeTriggedTS, 1, -3);
