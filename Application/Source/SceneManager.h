@@ -1,28 +1,37 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
-#include <vector>
 #include "Scene.h"
+#include "Application.h"
 
 class SceneManager
 {
+	friend class Application;
+	static SceneManager* _instance;
+
 public:
-	static SceneManager& getInstance()
+	static SceneManager* getInstance();
+
+	bool hasPendingScene()
 	{
-		static SceneManager instance;
-		return instance;
+		return _hasPendingScene;
 	}
 
-	void AddScene(Scene *scene);
-	void SetNextScene(int sceneID);
-	void Update();
+	void changeScene(Scene* scene);
+
+protected:
+	SceneManager() {};
+	~SceneManager() { delete _instance; };
 
 private:
-	SceneManager() {}
-	std::vector<int> Scenes;
+	Scene* currentScene = 0;
+	Scene* pendingScene = 0;
 
-	int currSceneID = 0;
-	int nextSceneID = 0;
+	bool _hasPendingScene = false;
+
+	StopWatch m_timer;
+
+	void Update();
 };
 
 #endif
