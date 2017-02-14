@@ -7,6 +7,7 @@
 #include "shader.hpp"
 #include "LoadTGA.h"
 #include "Camera.h"
+#include "PlayerClass.h"
 
 #define VK_1 0x31
 #define VK_2 0x32
@@ -94,6 +95,8 @@ void StudioProject2Scene1::Init()
 	/*-----------------------------------------------------------------------------*/
 	
 	/*--------------------------Character Loading----------------------------------*/
+	PlayerClass* Alexis = PlayerClass::get_instance();
+
 	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
 	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
 	meshList[GEO_ALEXIS_BODY] = MeshBuilder::GenerateOBJ("aBody", "OBJ//Character//body.obj");
