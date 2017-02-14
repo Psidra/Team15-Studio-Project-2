@@ -90,8 +90,34 @@ void StudioProject2Scene1::Init()
 	/*-----------------------------------------------------------------------------*/
 	
 	/*--------------------------Character Loading----------------------------------*/
+	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//facehair.obj");
+	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
+	meshList[GEO_ALEXIS_BODY] = MeshBuilder::GenerateOBJ("aBody", "OBJ//body.obj");
+	meshList[GEO_ALEXIS_BODY]->textureID = LoadTGA("Image//bodytext.tga");
+	meshList[GEO_ALEXIS_CROTCH] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//crotch.obj");
+	meshList[GEO_ALEXIS_CROTCH]->textureID = LoadTGA("Image//crotchtext.tga");
+	meshList[GEO_ALEXIS_RIGHTHAND] = MeshBuilder::GenerateOBJ("aRightHand", "OBJ//RightHand.obj");
+	meshList[GEO_ALEXIS_RIGHTHAND]->textureID = LoadTGA("Image//righthandtext.tga");
+	meshList[GEO_ALEXIS_LEFTHAND] = MeshBuilder::GenerateOBJ("aLeftHand", "OBJ//LeftHand.obj");
+	meshList[GEO_ALEXIS_LEFTHAND]->textureID = LoadTGA("Image//lefthandtext.tga");
+	meshList[GEO_ALEXIS_RIGHTARM] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//RightArm.obj");
+	meshList[GEO_ALEXIS_RIGHTARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_LEFTARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//LeftArm.obj");
+	meshList[GEO_ALEXIS_LEFTARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("aRightThigh", "OBJ//RightThigh.obj");
+	meshList[GEO_ALEXIS_RIGHTTHIGH]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_LEFTTHIGH] = MeshBuilder::GenerateOBJ("aLeftThigh", "OBJ//LeftThigh.obj");
+	meshList[GEO_ALEXIS_LEFTTHIGH]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_RIGHTLEG] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//RightLeg.obj");
+	meshList[GEO_ALEXIS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//LeftLeg.obj");
+	meshList[GEO_ALEXIS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
 	/*-----------------------------------------------------------------------------*/
 	
+	/*-----------------------------Character Tools Loading-------------------------*/
+
+	/*-----------------------------------------------------------------------------*/
+
 	/*--------------------------Text Loading---------------------------------------*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
