@@ -1,5 +1,5 @@
-#ifndef StudioProject2Scene1_H
-#define StudioProject2Scene1_H
+#ifndef StudioProject2MainMenu_H
+#define StudioProject2MainMenu_H
 #include <string>
 #include "Scene.h"
 #include "Camera2.h"
@@ -9,11 +9,11 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-class StudioProject2Scene1 : public Scene
+class StudioProject2MainMenu : public Scene
 {
 public:
-	StudioProject2Scene1();
-	~StudioProject2Scene1();
+	StudioProject2MainMenu();
+	~StudioProject2MainMenu();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -24,17 +24,7 @@ public:
 
 	enum GEOMETRY_TYPE
 	{
-		GEO_AXIS,
-		GEO_LIGHTBALL,
-		GEO_QUAD,
-
-		GEO_LEFT,
-		GEO_RIGHT,
-		GEO_TOP,
-		GEO_BOTTOM,
-		GEO_FRONT,
-		GEO_BACK,
-
+		GEO_IMAGE,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
@@ -61,7 +51,7 @@ public:
 		U_LIGHT0_EXPONENT,
 
 		U_LIGHTENABLED,
-		U_NUMLIGHTS, 
+		U_NUMLIGHTS,
 
 		U_COLOR_TEXTURE_ENABLED,
 		U_COLOR_TEXTURE,
@@ -73,9 +63,8 @@ public:
 
 private:
 	Mesh* meshList[NUM_GEOMETRY];
-	//Camera2 camera;
-	Camera3 camera;
 	Light light[1];
+	Camera3 camera;
 	MS modelStack, viewStack, projectionStack;
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
@@ -86,43 +75,8 @@ private:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
 
-	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
-	int spawnTS; // all text size 2
-
-	bool syringeTriggedText; 
-	int	syringeTriggedTS;
-
-	bool boxTriggedText; 
-	int boxTriggedTS;
-	bool boxTriggedText_Two; 
-	int boxTriggedTS_two;
-
-	bool hmTriggeredText; 
-	int hmTriggedTS;
-
-	bool hm_to_alexis; 
-	int hm_to_alexisTS;
-
-	bool alexis_to_hm; 
-	int alexis_to_hmTS;
-
-	bool alexis_beside_hm; 
-	int alexis_beside_hmTS;
-
-	bool postProjectileThrownText; 
-	int postProjectileThrownTS;
-
-	bool fm_triggedText; 
-	int fm_triggedTS;
-
-	bool alexisText;  
-	int alexisTS;
-
-	bool guideText; 
-	int guideTS;
-
 	std::string fps;
-	
+
 	/*double elapsedTime;
 	double bufferTime;
 	bool buttonpressed;*/

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 #include "StudioProject2_Scene1.h"
+#include "StudioProject2_MainMenu.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 60; // FPS of this game
@@ -106,7 +107,7 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new StudioProject2Scene1();
+	Scene *scene = new StudioProject2MainMenu();
 	
 	scene->Init();
 

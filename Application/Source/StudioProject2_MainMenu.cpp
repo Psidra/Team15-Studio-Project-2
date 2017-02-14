@@ -1,4 +1,4 @@
-#include "StudioProject2_Scene1.h"
+#include "StudioProject2_MainMenu.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
@@ -13,17 +13,16 @@
 #define VK_3 0x33
 #define VK_4 0x34
 
-bool MouseControl;
 
-StudioProject2Scene1::StudioProject2Scene1()
+StudioProject2MainMenu::StudioProject2MainMenu()
 {
 }
 
-StudioProject2Scene1::~StudioProject2Scene1()
+StudioProject2MainMenu::~StudioProject2MainMenu()
 {
 }
 
-void StudioProject2Scene1::Init()
+void StudioProject2MainMenu::Init()
 {
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -31,6 +30,7 @@ void StudioProject2Scene1::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Load vertex and fragment shaders
 	m_programID = LoadShaders("Shader//Texture.vertexshader", "Shader//Text.fragmentshader");
@@ -72,70 +72,17 @@ void StudioProject2Scene1::Init()
 		meshList[i] = NULL;
 
 	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
-
-	meshList[GEO_AXIS] = MeshBuilder::GenerateAxis("reference");
-
-
-	// Optional if using default
-
-	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1.f, 1.f, 1.f), 18, 36, 1.f);
-
-	/*-----------------------------Skybox Loading----------------------------------*/
-	/*-----------------------------------------------------------------------------*/
-
-	/*-----------------Environment Objects Loading---------------------------------*/
-	/*-----------------------------------------------------------------------------*/
-
-	/*--------------------------Mutants Loading------------------------------------*/
-	/*-----------------------------------------------------------------------------*/
 	
-	/*--------------------------Character Loading----------------------------------*/
+	/*--------------------------Image Loading--------------------------------------*/
 	/*-----------------------------------------------------------------------------*/
-	
+
 	/*--------------------------Text Loading---------------------------------------*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
-	/*-----------------------------------------------------------------------------*/
-
-	/*------------------------Initialising Text Variables-------------------------------*/
-	spawnTS = 2;
-
-	syringeTriggedText = false;
-	syringeTriggedTS = 0;
-
-	boxTriggedText = false;
-	boxTriggedTS = 0;
-	boxTriggedText_Two = false;
-	boxTriggedTS_two = 0;
-
-	hmTriggeredText = false;
-	hmTriggedTS = 0;
-
-	hm_to_alexis = false;
-	hm_to_alexisTS = 0;
-
-	alexis_to_hm = false;
-	alexis_to_hmTS = 0;
-
-	alexis_beside_hm = false;
-	alexis_beside_hmTS = 0;
-
-	postProjectileThrownText = false;
-	postProjectileThrownTS = 0;
-
-	fm_triggedText = false;
-	fm_triggedTS = 0;
-
-	alexisText = false;
-	alexisTS = 0;
-
-	guideText = false;
-	guideTS = 0;
-
-	/*----------------------------------------------------------------------------------*/
+	/*------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
-	MouseControl = false;
+	//MouseControl = false;
 
 
 	Mtx44 projection;
@@ -143,35 +90,9 @@ void StudioProject2Scene1::Init()
 	projectionStack.LoadMatrix(projection);
 	/*-----------------------------------------------------------------------------*/
 
-	/*----------------------Light Initialisation-----------------------------------*/
-	light[0].type = Light::LIGHT_SPOT;
-	light[0].position.Set(1.f, 105, -56.5f);
-	light[0].color.Set(1, 1, 1);
-	light[0].power = 7;
-	light[0].kC = 1.f;
-	light[0].kL = 0.01f;
-	light[0].kQ = 0.001f;
-	light[0].cosCutoff = cos(Math::DegreeToRadian(45));
-	light[0].cosInner = cos(Math::DegreeToRadian(30));
-	light[0].exponent = 3.f;
-	light[0].spotDirection.Set(0.f, 1.f, 0.f);
-
-	glUniform1i(m_parameters[U_LIGHT0_TYPE], light[0].type);
-	glUniform3fv(m_parameters[U_LIGHT0_COLOR], 1, &light[0].color.r);
-	glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
-	glUniform1f(m_parameters[U_LIGHT0_KC], light[0].kC);
-	glUniform1f(m_parameters[U_LIGHT0_KL], light[0].kL);
-	glUniform1f(m_parameters[U_LIGHT0_KQ], light[0].kQ);
-	glUniform1f(m_parameters[U_LIGHT0_COSCUTOFF], light[0].cosCutoff);
-	glUniform1f(m_parameters[U_LIGHT0_COSINNER], light[0].cosInner);
-	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
-
-	// Make sure you pass uniform parameters after glUseProgram()
-	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
-	/*-------------------------------------------------------------------------------*/
 }
 
-void StudioProject2Scene1::Update(double dt)
+void StudioProject2MainMenu::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	//elapsedTime += dt;
@@ -207,128 +128,20 @@ void StudioProject2Scene1::Update(double dt)
 	//if (Application::IsKeyPressed('P'))
 	//	light[0].position.y += (float)(LSPEED * dt);
 
-	/*-----------------------Text Interaction----------------*/
-	//if () [Movement will remove the spawn text]
-	//{
-	//}
-
-	//if () [When near syringe, then make text appear]
-	//{
-	//}
-
-	//if () [Get coordinates beside box]
-	//{
-	//	  boxTriggedTS = 2;
-	//    boxTriggedText = true;
-	//}
-
-	if (boxTriggedText == true)
+	if (Application::IsKeyPressed(VK_RETURN))
 	{
-		if (Application::IsKeyPressed(VK_RETURN))
-		{
-			boxTriggedText_Two = true;
-			boxTriggedTS = 0;
-			boxTriggedTS_two = 2;
-			boxTriggedText = false;
-		}
+		// go scenemanager, exit mainmenu scene
+		// change and load scene 1
 	}
 
-	//if () [When alexis at wall, he sees the half mutant and text gets triggered]
-	//{ hmTriggeredText = true;
-	//}
-
-	if (hmTriggeredText == true) 
-	{
-		if (Application::IsKeyPressed(VK_RETURN))
-		{
-			hm_to_alexis = true;
-			hmTriggedTS = 0;
-			hm_to_alexisTS = 2;
-			hmTriggeredText = false;
-		}
-	}
-
-	if (hm_to_alexis == true)
-	{
-		if (Application::IsKeyPressed(VK_RETURN))
-		{
-			alexis_to_hm = true;
-			hm_to_alexisTS = 0;
-			alexis_to_hmTS = 2;
-			hm_to_alexis = false;
-		}
-	}
-
-	//if (alexis_to_hm == true && [insert coordinates (right beside half mutant)])
-	//{
-	//      alexis_beside_hm = true;
-	//		alexis_to_hmTS = 0;
-	//		alexis_beside_hmTS = 2;
-	//		alexis_to_hm = false;
-	//}
-
-	//if (alexis_beside_hm == true)
-	//{
-	//   if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		alexis_beside_hmTS = 0;
-	//		alexis_beside_hm = false;
-	//   }
-	//}
-
-	//if () [Right after projectile barely missed]
-	//{  need a boolean to set true 
-	//   when projectile is thrown
-	//	 postProjectileThrownText = true;
-	//	 postProjectileThrownTS = 2;
-	//}
-
-	//if (postProjectileThrownTS == 2)
-	//{
-	//	if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		postProjectileThrownTS = 0;
-	//   }
-	//}
-
-	//if (postProjectileThrownText == true
-	//     && [insert coordinates of character.x or character.z when fm and char distance is less than 10])
-	//{
-	//	 fm_triggedText = true;
-	//   fm_triggedTS = 2;
-	//   postProjectileThrownText = false;
-	//}
-
-	//if (fm_triggedText == true)
-	//{
-	//   if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		alexisText = true;
-	//		fm_triggedTS = 0;
-	//      alexisTS = 2;
-	//		fm_triggedText = false;
-	//   }
-	//}
-
-	//if (alexisText == true)
-	//{
-	//    if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		guideText = true;
-	//		alexisTS = 0;
-	//		guideTS = 2;
-	//		alexisText = false;
-	//   }
-	//}
-	/*-------------------------------------------------------------------*/
 }
 
-void StudioProject2Scene1::text()
+void StudioProject2MainMenu::text()
 {
 	//fill in when necessary
 }
 
-void StudioProject2Scene1::Render()
+void StudioProject2MainMenu::Render()
 {
 	// Render VBO here
 	Mtx44 MVP;
@@ -347,30 +160,12 @@ void StudioProject2Scene1::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press A or D to move around. Walk over to the syringe", Color(1, 1, 1), spawnTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "This is the power to revolutionise the world!", Color(1, 1, 1), syringeTriggedTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "The wall is too high, I need to use the box to scale it.", Color(1, 1, 1), boxTriggedTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press F to grab box and move it to the wall", Color(1, 1, 1), boxTriggedTS_two, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press W to jump", Color(1, 1, 1), boxTriggedTS_two, 1, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "You see a half mutant.", Color(1, 1, 1), hmTriggedTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Perfect, you get to test your newly created cure.", Color(1, 1, 1), hmTriggedTS, 1, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "You called out to him. He turns and replies,", Color(1, 1, 1), hmTriggedTS, 1, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Half Mutant: Get away from me!", Color(1, 1, 1), hm_to_alexisTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "I don't want to cause bloodshed...", Color(1, 1, 1), hm_to_alexisTS, 10, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis: Don't worry, I've created a cure. Trust me.", Color(1, 1, 1), alexis_to_hmTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press F to cure half-mutant.", Color(1, 1, 1), alexis_beside_hmTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press Right Click to dodge-roll projectiles", Color(1, 1, 1), postProjectileThrownTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Hold Left Shift to block", Color(1, 1, 1), postProjectileThrownTS, 1, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Full-mutants cannot be brought back to humanity.", Color(1, 1, 1), fm_triggedTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "They must be killed to advance.", Color(1, 1, 1), fm_triggedTS, 1, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "My apologies.", Color(1, 1, 1), alexisTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press Left Click to swing your sword", Color(1, 1, 1), guideTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "and attack when nearby.", Color(1, 1, 1), guideTS, 1, -4);
-
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Start Game", Color(1, 1, 1), 2, 11, -5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -6);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
-void StudioProject2Scene1::RenderMesh(Mesh *mesh, bool enableLight)
+void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
@@ -415,12 +210,12 @@ void StudioProject2Scene1::RenderMesh(Mesh *mesh, bool enableLight)
 	}
 }
 
-void StudioProject2Scene1::RenderSkybox()
+void StudioProject2MainMenu::RenderSkybox()
 {
 	// Person in charge of implementing skybox, pls type the codes (rotate,transform,scale) here
 }
 
-void StudioProject2Scene1::RenderText(Mesh* mesh, std::string text, Color color)
+void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -447,7 +242,7 @@ void StudioProject2Scene1::RenderText(Mesh* mesh, std::string text, Color color)
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2Scene1::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
+void StudioProject2MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -490,7 +285,7 @@ void StudioProject2Scene1::RenderTextOnScreen(Mesh* mesh, std::string text, Colo
 
 }
 
-void StudioProject2Scene1::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
+void StudioProject2MainMenu::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
 {
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
@@ -514,7 +309,7 @@ void StudioProject2Scene1::RenderMeshOnScreen(Mesh* mesh, int x, int y, int size
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2Scene1::Exit()
+void StudioProject2MainMenu::Exit()
 {
 	// Cleanup VBO here
 	for (int i = 0; i < NUM_GEOMETRY; ++i)
