@@ -89,6 +89,7 @@ private:
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
 
 	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
+	/*--------------------Text Variables--------------------------*/
 	int spawnTS; // all text size 2
 
 	bool syringeTriggedText; 
@@ -122,7 +123,12 @@ private:
 
 	bool guideText; 
 	int guideTS;
+	/*------------------------------------------------------------*/
 
+	/*-------------Character Variables (a means Alexis)-----------*/
+	float a_LookingDirection;
+	bool aLookRight;
+	/*------------------------------------------------------------*/
 	std::string fps;
 	
 	/*double elapsedTime;

@@ -106,7 +106,7 @@ void Application::Init()
 void Application::Run()
 {
 	SceneManager* scene = SceneManager::getInstance();
-	scene->changeScene(new StudioProject2Scene1());
+	scene->changeScene(new StudioProject2MainMenu());
 	scene->Update();
 }
 

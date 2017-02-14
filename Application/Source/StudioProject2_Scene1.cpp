@@ -166,7 +166,10 @@ void StudioProject2Scene1::Init()
 	/*---------------------------Initialising Variables---------------------------------*/
 	MouseControl = false;
 
-
+	/*-----Character--------*/
+	a_LookingDirection = 90.0f;
+	aLookRight = true;
+	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
 	projectionStack.LoadMatrix(projection);
@@ -350,6 +353,22 @@ void StudioProject2Scene1::Update(double dt)
 	//   }
 	//}
 	/*-------------------------------------------------------------------*/
+
+	/*----------Character Movement-------------------*/
+	if (Application::IsKeyPressed('A'))
+	{
+		aLookRight = false;
+	}
+	if (Application::IsKeyPressed('D'))
+	{
+		aLookRight = true;
+	}
+
+	if (aLookRight == true)
+		a_LookingDirection = 90.f;
+	else
+		a_LookingDirection = -90.f;
+	/*-----------------------------------------------*/
 }
 
 void StudioProject2Scene1::text()
@@ -376,37 +395,33 @@ void StudioProject2Scene1::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 
+	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
+	modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
-
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
 	modelStack.PopMatrix();
-
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], false);
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_LEFTHAND], false);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
-
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], false);
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTHAND], false);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
-
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
-
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], false);
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix(); 
-
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], false);
 	modelStack.PushMatrix();
@@ -414,8 +429,8 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
-
 	modelStack.PopMatrix();
+	/*-------------------------------------------------------*/
 
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_WALL], false);

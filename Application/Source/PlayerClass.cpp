@@ -1,5 +1,7 @@
 #include "PlayerClass.h"
 
+PlayerClass* PlayerClass::instance;
+
 void PlayerClass::add_health(int HP)
 {
 	if (_health < 5)

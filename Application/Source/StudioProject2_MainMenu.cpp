@@ -1,4 +1,5 @@
 #include "StudioProject2_MainMenu.h"
+#include "StudioProject2_Scene1.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
@@ -7,6 +8,7 @@
 #include "shader.hpp"
 #include "LoadTGA.h"
 #include "Camera.h"
+#include "SceneManager.h"
 
 #define VK_1 0x31
 #define VK_2 0x32
@@ -130,8 +132,8 @@ void StudioProject2MainMenu::Update(double dt)
 
 	if (Application::IsKeyPressed(VK_RETURN))
 	{
-		// go scenemanager, exit mainmenu scene
-		// change and load scene 1
+		SceneManager* scene = SceneManager::getInstance();
+		scene->changeScene(new StudioProject2Scene1());
 	}
 
 }
