@@ -26,6 +26,11 @@ StudioProject2Scene1::~StudioProject2Scene1()
 
 void StudioProject2Scene1::Init()
 {
+	/*----Camera & Camera Variables----*/
+	a_PosX = 0.f;
+	a_PosY = 0.f;
+	a_PosZ = 0.f;
+	/*---------------------------------*/
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 
@@ -72,7 +77,7 @@ void StudioProject2Scene1::Init()
 	for (int i = 0; i < NUM_GEOMETRY; ++i)
 		meshList[i] = NULL;
 
-	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(a_PosX, a_PosY, a_PosZ + 120), Vector3(a_PosX, a_PosY, a_PosZ), Vector3(0, 1, 0));
 
 	meshList[GEO_AXIS] = MeshBuilder::GenerateAxis("reference");
 
@@ -357,10 +362,12 @@ void StudioProject2Scene1::Update(double dt)
 	/*----------Character Movement-------------------*/
 	if (Application::IsKeyPressed('A'))
 	{
+		a_PosZ -= (float)(30.f * dt);
 		aLookRight = false;
 	}
 	if (Application::IsKeyPressed('D'))
 	{
+		a_PosZ += (float)(30.f * dt);
 		aLookRight = true;
 	}
 
@@ -398,6 +405,7 @@ void StudioProject2Scene1::Render()
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	modelStack.Rotate(a_LookingDirection, 0, 1, 0);
+	modelStack.Translate(a_PosX, a_PosY, a_PosZ);
 	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_HEAD], false);

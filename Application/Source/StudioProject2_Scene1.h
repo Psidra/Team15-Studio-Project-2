@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Camera2.h"
 #include "Camera3.h"
+#include "Camera4_SideScroller.h"
 #include "Mesh.h"
 #include "MeshBuilder.h"
 #include "MatrixStack.h"
@@ -76,7 +77,7 @@ public:
 private:
 	Mesh* meshList[NUM_GEOMETRY];
 	//Camera2 camera;
-	Camera3 camera;
+	Camera4 camera;
 	Light light[1];
 	MS modelStack, viewStack, projectionStack;
 	unsigned m_vertexArrayID;
@@ -128,6 +129,10 @@ private:
 	/*-------------Character Variables (a means Alexis)-----------*/
 	float a_LookingDirection;
 	bool aLookRight;
+
+	float a_PosX;
+	float a_PosY;
+	float a_PosZ;
 	/*------------------------------------------------------------*/
 	std::string fps;
 	
