@@ -132,6 +132,7 @@ private:
 	bool pressedD;
 	bool pressedA;
 	bool inmovement;
+	bool injump;
 
 	float a_PosX;
 	float a_PosY;
@@ -139,9 +140,9 @@ private:
 	/*------------------------------------------------------------*/
 	std::string fps;
 	
-	/*double elapsedTime;
+	// TIME
+	double elapsedTime;
 	double bufferTime;
-	bool buttonpressed;*/
 };
 
 #endif 

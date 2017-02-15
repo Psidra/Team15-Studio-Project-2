@@ -97,6 +97,7 @@ void StudioProject2Scene1::Init()
 	
 	meshList[GEO_HOUSEFLOOR]->MeshBBox.loadBB("OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL]->MeshBBox.loadBB("OBJ//Scene1//House_Left_Wall.obj");
+	meshList[GEO_WALL]->MeshBBox.loadBB("OBJ//Scene1//TEMP_Hill+Wall.obj");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Mutants Loading------------------------------------*/
@@ -185,6 +186,7 @@ void StudioProject2Scene1::Init()
 	pressedA = false;
 	pressedD = false;
 	inmovement = false;
+	injump = false;
 	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -222,7 +224,7 @@ void StudioProject2Scene1::Init()
 void StudioProject2Scene1::Update(double dt)
 {
 	int framespersec = 1 / dt;
-	//elapsedTime += dt;
+	elapsedTime += dt;
 	camera.Update(dt, inmovement);
 
 	if (inmovement == true) // movement always assumed to be false unless actually moving
@@ -403,7 +405,28 @@ void StudioProject2Scene1::Update(double dt)
 			inmovement = true;
 		}
 	}
+	if (Application::IsKeyPressed('W'))
+	{
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) && injump != true)
+		{
+			bufferTime = elapsedTime + 0.3f;
+		}
+	}
 
+	if (bufferTime > elapsedTime)
+		injump = true;
+	else
+		injump = false;
+
+	if (injump == false)
+	{
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_WALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox))
+			a_PosY -= (float)(30.f * dt);
+	}
+	else
+	{
+		a_PosY += (float)(30.f * dt);
+	}
 
 	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.resetBB();
 }
