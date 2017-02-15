@@ -1,6 +1,8 @@
 #ifndef PLAYERCLASS_H
 #define PLAYERCLASS_H
 
+#include "BoundingBox.h"
+
 class PlayerClass
 {
 public:
@@ -21,6 +23,8 @@ public:
 private:
 	PlayerClass() {};
 	static PlayerClass* instance;
+
+	BoundingBox PlayerHitBox;
 
 	unsigned int _health;
 	unsigned int _energy;
