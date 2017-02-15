@@ -95,7 +95,7 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HOUSELEFTWALL] = MeshBuilder::GenerateOBJ("hlwall", "OBJ//Scene1//House_Left_Wall.obj");
 	meshList[GEO_WALL] = MeshBuilder::GenerateOBJ("wall", "OBJ//Scene1//TEMP_Hill+Wall.obj");
 	/*-----------------------------------------------------------------------------*/
-
+	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
 	/*-----------------------------------------------------------------------------*/
 	
@@ -211,6 +211,7 @@ void StudioProject2Scene1::Init()
 
 void StudioProject2Scene1::Update(double dt)
 {
+	static float rotationDirection = 1.0f;
 	int framespersec = 1 / dt;
 	//elapsedTime += dt;
 	camera.Update(dt);
@@ -364,12 +365,16 @@ void StudioProject2Scene1::Update(double dt)
 	if (Application::IsKeyPressed('A'))
 	{
 		a_PosX -= (float)(30.f * dt);
+		a_RotationLeftLeg += (float)(rotationDirection * 5.0f * dt);
+		a_RotationRightLeg -= (float)(rotationDirection * 5.0f * dt);
 		pressedD = false;
 		pressedA = true;
 	}
 	if (Application::IsKeyPressed('D'))
 	{
 		a_PosX += (float)(30.f * dt);
+		a_RotationLeftLeg += (float)(rotationDirection * 15.0f * dt);
+		a_RotationRightLeg -= (float)(rotationDirection * 15.0f * dt);
 		pressedA = false;
 		pressedD = true;
 	}
@@ -378,6 +383,18 @@ void StudioProject2Scene1::Update(double dt)
 		(pressedD == true && a_LookingDirection == -90.f))
 	{
 		a_LookingDirection *= -1;
+	}
+
+	if ((a_RotationRightLeg > 30) || (a_RotationRightLeg < -30))
+	{
+		rotationDirection *= -1;
+	}
+
+	if ((!Application::IsKeyPressed('A') && !Application::IsKeyPressed('D')) || 
+		(Application::IsKeyPressed('A') && Application::IsKeyPressed('D')))
+	{
+		a_RotationLeftLeg = 0.0f;
+		a_RotationRightLeg = 0.0f;
 	}
 	/*-----------------------------------------------*/
 }
@@ -431,12 +448,14 @@ void StudioProject2Scene1::Render()
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], false);
 	modelStack.PushMatrix();
+	modelStack.Rotate(a_RotationLeftLeg, 1, 0, 0);
 	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix(); 
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], false);
 	modelStack.PushMatrix();
+	modelStack.Rotate(a_RotationRightLeg, 1, 0, 0);
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
@@ -460,6 +479,12 @@ void StudioProject2Scene1::Render()
 	RenderMesh(meshList[GEO_HOUSE], false);
 	modelStack.PopMatrix();
 
+
+	/*----Textbox Rendering--------*/
+	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
+	/*-----------------------------*/
+
+	/*---------------Text log Rendering--------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press A or D to move around. Walk over to the syringe", Color(1, 1, 1), spawnTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "This is the power to revolutionise the world!", Color(1, 1, 1), syringeTriggedTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "The wall is too high, I need to use the box to scale it.", Color(1, 1, 1), boxTriggedTS, 1, -3);
@@ -479,6 +504,7 @@ void StudioProject2Scene1::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "My apologies.", Color(1, 1, 1), alexisTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press Left Click to swing your sword", Color(1, 1, 1), guideTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "and attack when nearby.", Color(1, 1, 1), guideTS, 1, -4);
+	/*-----------------------------------------*/
 
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
