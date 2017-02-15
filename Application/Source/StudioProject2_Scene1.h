@@ -27,6 +27,7 @@ public:
 	{
 		GEO_AXIS,
 		GEO_LIGHTBALL,
+		GEO_TEXTBOX,
 		GEO_QUAD,
 		GEO_BBOX,
 
@@ -137,6 +138,9 @@ private:
 	float a_PosX;
 	float a_PosY;
 	float a_PosZ;
+
+	float a_RotationLeftLeg;
+	float a_RotationRightLeg;
 	/*------------------------------------------------------------*/
 	std::string fps;
 	
