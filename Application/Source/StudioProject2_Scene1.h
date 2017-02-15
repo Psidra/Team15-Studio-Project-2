@@ -37,10 +37,10 @@ public:
 		//main character (Alexis)
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM, GEO_ALEXIS_RIGHTHAND, GEO_ALEXIS_LEFTHAND,
 		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTTHIGH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTTHIGH, GEO_ALEXIS_LEFTLEG,
-
 		//Environmental Objects
 		GEO_HOUSEFLOOR, GEO_HOUSE, GEO_HOUSELEFTWALL, GEO_WALL,
 		GEO_TEXT,
+		GEO_HEART, GEO_BLANKHEART,
 		NUM_GEOMETRY,
 	};
 
@@ -141,6 +141,21 @@ private:
 
 	float a_RotationLeftLeg;
 	float a_RotationRightLeg;
+	/*------------------------------------------------------------*/
+
+	/*----------------Health System UI variables (hearts)---------*/
+	float a_heart1;
+	float a_heart2;
+	float a_heart3;
+	float a_heart4;
+	float a_heart5;
+	float a_blankheart1;
+	float a_blankheart2;
+	float a_blankheart3;
+	float a_blankheart4;
+	float a_blankheart5;
+
+	int heartCounter;
 	/*------------------------------------------------------------*/
 	std::string fps;
 	

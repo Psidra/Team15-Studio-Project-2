@@ -31,6 +31,16 @@ void StudioProject2Scene1::Init()
 	a_PosY = 0.f;
 	a_PosZ = 0.f;
 	/*---------------------------------*/
+
+	/*--------Heart Variables----------*/
+	a_heart1 = 2;
+	a_heart2 = 2;
+	a_heart3 = 2;
+	a_heart4 = 2;
+	a_heart5 = 2;
+	heartCounter = 5;
+	/*--------------------------------*/
+
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 
@@ -80,8 +90,7 @@ void StudioProject2Scene1::Init()
 	camera.Init(Vector3(a_PosX, a_PosY, a_PosZ + 120), Vector3(a_PosX, a_PosY, a_PosZ), Vector3(0, 1, 0));
 
 	meshList[GEO_AXIS] = MeshBuilder::GenerateAxis("reference");
-
-
+	
 	// Optional if using default
 
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1.f, 1.f, 1.f), 18, 36, 1.f);
@@ -140,6 +149,11 @@ void StudioProject2Scene1::Init()
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", meshList[GEO_ALEXIS_CROTCH]->MeshBBox.max_, meshList[GEO_ALEXIS_CROTCH]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/ 
+	
+	/*-------------------------Loading Hearts-----------------------------------------*/
+	meshList[GEO_HEART] = MeshBuilder::GenerateQuad("heart", Color(1, 0, 0));
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(0, 0, 0));
+	/*--------------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
 	spawnTS = 2;
@@ -272,6 +286,7 @@ void StudioProject2Scene1::Update(double dt)
 	//	  boxTriggedTS = 2;
 	//    boxTriggedText = true;
 	//}
+
 
 	if (boxTriggedText == true)
 	{
@@ -442,6 +457,69 @@ void StudioProject2Scene1::Update(double dt)
 	}
 
 	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.resetBB();
+	/*--------------------------------------------------------*/
+	
+	/*----------Health System (Hearts)------*/
+	if (Application::IsKeyPressed('V'))
+	{
+		heartCounter--;
+		if (heartCounter == 4)
+		{
+			a_heart5 = 0;
+			a_blankheart5 = 2;
+		}
+		if (heartCounter == 3)
+		{
+			a_heart4 = 0;
+			a_blankheart4 = 2;
+		}
+		if (heartCounter == 2)
+		{
+			a_heart3 = 0;
+			a_blankheart3 = 2;
+		}
+		if (heartCounter == 1)
+		{
+			a_heart2 = 0;
+			a_blankheart2 = 2;
+		}
+		if (heartCounter == 0)
+		{
+			a_heart1 = 0;
+			a_blankheart1 = 2;
+		}
+	}
+	if (Application::IsKeyPressed('C'))
+	{
+		heartCounter++;
+		if (heartCounter == 5)
+		{
+			a_blankheart5 = 0;
+			a_heart5 = 2;
+		}
+		if (heartCounter == 4)
+		{
+			a_blankheart4 = 0;
+			a_heart4 = 2;
+		}
+		if (heartCounter == 3)
+		{
+			a_blankheart3 = 0;
+			a_heart3 = 2;
+		}
+		if (heartCounter == 2)
+		{
+			a_blankheart2 = 0;
+			a_heart2 = 2;
+		}
+		if (heartCounter == 1)
+		{
+			a_blankheart1 = 0;
+			a_heart1 = 2;
+		}
+	}
+	
+	/*--------------------------------------*/
 }
 
 void StudioProject2Scene1::text()
@@ -470,6 +548,7 @@ void StudioProject2Scene1::Render()
 
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
+
 		modelStack.Translate(a_PosX, a_PosY, a_PosZ);
 		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, a_PosY, a_PosZ);
 		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 1.7f, 1.1f);
@@ -550,6 +629,20 @@ void StudioProject2Scene1::Render()
 
 	/*----Textbox Rendering--------*/
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
+	/*-----------------------------*/
+
+	/*----Heart Rendering----------*/
+	RenderMeshOnScreen(meshList[GEO_HEART], 2, 28.5, a_heart1, a_heart1, 0);
+	RenderMeshOnScreen(meshList[GEO_HEART], 4, 28.5, a_heart2, a_heart2, 0);
+	RenderMeshOnScreen(meshList[GEO_HEART], 6, 28.5, a_heart3, a_heart3, 0);
+	RenderMeshOnScreen(meshList[GEO_HEART], 8, 28.5, a_heart4, a_heart4, 0);
+	RenderMeshOnScreen(meshList[GEO_HEART], 10, 28.5, a_heart5, a_heart5, 0);
+
+	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 2, 28.5, a_blankheart1, a_blankheart1, 0);
+	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 4, 28.5, a_blankheart2, a_blankheart2, 0);
+	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 6, 28.5, a_blankheart3, a_blankheart3, 0);
+	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 8, 28.5, a_blankheart4, a_blankheart4, 0);
+	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 10, 28.5, a_blankheart5, a_blankheart5, 0);
 	/*-----------------------------*/
 
 	/*---------------Text log Rendering--------*/
