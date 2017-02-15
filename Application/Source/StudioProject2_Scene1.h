@@ -40,6 +40,7 @@ public:
 		//Environmental Objects
 		GEO_HOUSEFLOOR, GEO_HOUSE, GEO_HOUSELEFTWALL, GEO_WALL,
 		GEO_TEXT,
+		GEO_HEART, GEO_BLANKHEART,
 		NUM_GEOMETRY,
 	};
 
@@ -140,6 +141,21 @@ private:
 
 	float a_RotationLeftLeg;
 	float a_RotationRightLeg;
+	/*------------------------------------------------------------*/
+
+	/*----------------Health System UI variables (hearts)---------*/
+	float a_heart1;
+	float a_heart2;
+	float a_heart3;
+	float a_heart4;
+	float a_heart5;
+	float a_blankheart1;
+	float a_blankheart2;
+	float a_blankheart3;
+	float a_blankheart4;
+	float a_blankheart5;
+
+	int heartCounter;
 	/*------------------------------------------------------------*/
 	std::string fps;
 	
