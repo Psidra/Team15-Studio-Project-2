@@ -173,7 +173,8 @@ void StudioProject2Scene1::Init()
 
 	/*-----Character--------*/
 	a_LookingDirection = 90.0f;
-	aLookRight = true;
+	pressedA = false;
+	pressedD = false;
 	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -362,19 +363,22 @@ void StudioProject2Scene1::Update(double dt)
 	/*----------Character Movement-------------------*/
 	if (Application::IsKeyPressed('A'))
 	{
-		a_PosZ -= (float)(30.f * dt);
-		aLookRight = false;
+		a_PosX -= (float)(30.f * dt);
+		pressedD = false;
+		pressedA = true;
 	}
 	if (Application::IsKeyPressed('D'))
 	{
-		a_PosZ += (float)(30.f * dt);
-		aLookRight = true;
+		a_PosX += (float)(30.f * dt);
+		pressedA = false;
+		pressedD = true;
 	}
 
-	if (aLookRight == true)
-		a_LookingDirection = 90.f;
-	else
-		a_LookingDirection = -90.f;
+	if ((pressedA == true && a_LookingDirection == 90.f) ||
+		(pressedD == true && a_LookingDirection == -90.f))
+	{
+		a_LookingDirection *= -1;
+	}
 	/*-----------------------------------------------*/
 }
 
@@ -404,8 +408,8 @@ void StudioProject2Scene1::Render()
 
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
-	modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 	modelStack.Translate(a_PosX, a_PosY, a_PosZ);
+	modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
