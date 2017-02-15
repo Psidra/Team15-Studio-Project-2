@@ -128,7 +128,8 @@ private:
 
 	/*-------------Character Variables (a means Alexis)-----------*/
 	float a_LookingDirection;
-	bool aLookRight;
+	bool pressedD;
+	bool pressedA;
 
 	float a_PosX;
 	float a_PosY;
