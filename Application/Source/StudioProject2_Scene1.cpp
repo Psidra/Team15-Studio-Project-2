@@ -35,7 +35,7 @@ void StudioProject2Scene1::Init()
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE); // was enabled but disable it for skybox and leg model
 	glEnable(GL_BLEND);
 
 	// Load vertex and fragment shaders
@@ -139,7 +139,7 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", meshList[GEO_ALEXIS_CROTCH]->MeshBBox.max_, meshList[GEO_ALEXIS_CROTCH]->MeshBBox.min_);
-	/*-----------------------------------------------------------------------------*/
+	/*-----------------------------------------------------------------------------*/ 
 
 	/*------------------------Initialising Text Variables-------------------------------*/
 	spawnTS = 2;
@@ -185,8 +185,8 @@ void StudioProject2Scene1::Init()
 	a_LookingDirection = 90.0f;
 	pressedA = false;
 	pressedD = false;
-	inmovement = false;
 	injump = false;
+	infall = true;
 	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -226,10 +226,7 @@ void StudioProject2Scene1::Update(double dt)
 	static float rotationDirection = 1.0f;
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-	camera.Update(dt, inmovement);
-
-	if (inmovement == true) // movement always assumed to be false unless actually moving
-		inmovement = false;
+	camera.Update(dt, a_PosX, a_PosY);
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
@@ -407,7 +404,6 @@ void StudioProject2Scene1::Update(double dt)
 			a_RotationRightLeg -= (float)(rotationDirection * 5.0f * dt);
 			pressedD = false;
 			pressedA = true;
-			inmovement = true;
 		}
 	}
 	if (Application::IsKeyPressed('D'))
@@ -419,18 +415,18 @@ void StudioProject2Scene1::Update(double dt)
 			a_RotationRightLeg -= (float)(rotationDirection * 15.0f * dt);
 			pressedA = false;
 			pressedD = true;
-			inmovement = true;
 		}
 	}
 	if (Application::IsKeyPressed('W'))
 	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) && injump != true)
-		{
-			bufferTime = elapsedTime + 0.3f;
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) && (bufferTime_Jump < elapsedTime))
+		{ 
+			bufferTime_Jump = elapsedTime + 0.6f;
+			bufferTime_JumpUp = elapsedTime + 0.3f;
 		}
 	}
-
-	if (bufferTime > elapsedTime)
+	
+	if (bufferTime_JumpUp > elapsedTime)
 		injump = true;
 	else
 		injump = false;
@@ -474,43 +470,55 @@ void StudioProject2Scene1::Render()
 
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
-	modelStack.Translate(a_PosX, a_PosY, a_PosZ);
-	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, a_PosY, a_PosZ);
-	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 1.7f, 1.1f);
-	modelStack.Rotate(a_LookingDirection, 0, 1, 0);
-	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], false);
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_LEFTHAND], false);
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], false);
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTHAND], false);
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], false);
-	modelStack.PushMatrix();
-	modelStack.Rotate(a_RotationLeftLeg, 1, 0, 0);
-	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
-	modelStack.PopMatrix();
-	modelStack.PopMatrix(); 
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], false);
-	modelStack.PushMatrix();
-	modelStack.Rotate(a_RotationRightLeg, 1, 0, 0);
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
-	modelStack.PopMatrix();
+		modelStack.Translate(a_PosX, a_PosY, a_PosZ);
+		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, a_PosY, a_PosZ);
+		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 1.7f, 1.1f);
+		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_BODY], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_LEFTARM], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_LEFTHAND], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTHAND], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], false);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
+		modelStack.PopMatrix();
+
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();							// render collision box

@@ -67,35 +67,14 @@ To be called every frame. Camera will get user inputs and update its position an
 \param dt - frame time
 */
 /******************************************************************************/
-void Camera4::Update(double dt, bool movement)
+void Camera4::Update(double dt, float posx, float posy)
 {
-	Vector3 view = target - position;
-	view.Normalize();
-	Vector3 right = view.Cross(up);
-	right.Normalize();
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = (view.Cross(up)).Normalized();
 
-
-
-	static const float CAMERA_SPEED = 30.f;
-	if (Application::IsKeyPressed('A') && movement) // Move camera left with the character
-	{
-		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up);
-
-
-		position -= right * (float)(CAMERA_SPEED * dt);
-
-		target = position + view;
-	}
-	if (Application::IsKeyPressed('D') && movement) // Move camera right with the character
-	{
-		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up);
-
-		position += right * (float)(CAMERA_SPEED * dt);
-
-		target = position + view;
-	}
+	position.x = posx;
+	position.y = posy;
+	target = position + view;
 }
 	// rat movement
 

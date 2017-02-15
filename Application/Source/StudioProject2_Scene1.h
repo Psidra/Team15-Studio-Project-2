@@ -132,8 +132,8 @@ private:
 	float a_LookingDirection;
 	bool pressedD;
 	bool pressedA;
-	bool inmovement;
 	bool injump;
+	bool infall;
 
 	float a_PosX;
 	float a_PosY;
@@ -146,7 +146,9 @@ private:
 	
 	// TIME
 	double elapsedTime;
-	double bufferTime;
+	double bufferTime_JumpUp;
+	double bufferTime_Jump;
+	double bufferTime_attack;
 };
 
 #endif 

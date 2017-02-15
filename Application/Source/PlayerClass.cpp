@@ -2,10 +2,19 @@
 
 PlayerClass* PlayerClass::instance;
 
-void PlayerClass::add_health(int HP)
+void PlayerClass::edit_health(int HP)
 {
-	if (_health < 5)
-		_health += HP;
+	if (HP > 0)
+	{
+		if (_health < 5)
+			_health += HP;
+	}
+	else
+	{
+		if (_health < 0)
+			_dead = true;
+		// do some other shit here since he's dead idk have a screen of death
+	}
 }
 
 unsigned int PlayerClass::get_health()

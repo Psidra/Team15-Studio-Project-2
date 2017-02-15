@@ -14,7 +14,7 @@ public:
 			return instance;
 	}
 
-	void add_health(int HP);
+	void edit_health(int HP);
 	unsigned int get_health();
 
 	void add_energy(int EP);
@@ -28,6 +28,8 @@ private:
 
 	unsigned int _health;
 	unsigned int _energy;
+	bool _attack;
+	bool _dead;
 };
 
 #endif //PLAYERCLASS_H
