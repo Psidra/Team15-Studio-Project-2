@@ -63,14 +63,26 @@ void StudioProject2Scene1::Init()
 	m_parameters[U_LIGHT0_KC] = glGetUniformLocation(m_programID, "lights[0].kC");
 	m_parameters[U_LIGHT0_KL] = glGetUniformLocation(m_programID, "lights[0].kL");
 	m_parameters[U_LIGHT0_KQ] = glGetUniformLocation(m_programID, "lights[0].kQ");
-	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
-	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); //in case you missed out practical 7
 	m_parameters[U_LIGHT0_TYPE] = glGetUniformLocation(m_programID, "lights[0].type");
 	m_parameters[U_LIGHT0_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[0].spotDirection");
 	m_parameters[U_LIGHT0_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[0].cosCutoff");
 	m_parameters[U_LIGHT0_COSINNER] = glGetUniformLocation(m_programID, "lights[0].cosInner");
 	m_parameters[U_LIGHT0_EXPONENT] = glGetUniformLocation(m_programID, "lights[0].exponent");
 
+	m_parameters[U_LIGHT1_POSITION] = glGetUniformLocation(m_programID, "lights[1].position_cameraspace");
+	m_parameters[U_LIGHT1_COLOR] = glGetUniformLocation(m_programID, "lights[1].color");
+	m_parameters[U_LIGHT1_POWER] = glGetUniformLocation(m_programID, "lights[1].power");
+	m_parameters[U_LIGHT1_KC] = glGetUniformLocation(m_programID, "lights[1].kC");
+	m_parameters[U_LIGHT1_KL] = glGetUniformLocation(m_programID, "lights[1].kL");
+	m_parameters[U_LIGHT1_KQ] = glGetUniformLocation(m_programID, "lights[1].kQ");
+	m_parameters[U_LIGHT1_TYPE] = glGetUniformLocation(m_programID, "lights[1].type");
+	m_parameters[U_LIGHT1_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[1].spotDirection");
+	m_parameters[U_LIGHT1_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[1].cosCutoff");
+	m_parameters[U_LIGHT1_COSINNER] = glGetUniformLocation(m_programID, "lights[1].cosInner");
+	m_parameters[U_LIGHT1_EXPONENT] = glGetUniformLocation(m_programID, "lights[1].exponent");
+
+	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
+	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); //in case you missed out practical 7
 	// Get a handle for our "colorTexture" uniform
 	m_parameters[U_COLOR_TEXTURE_ENABLED] = glGetUniformLocation(m_programID, "colorTextureEnabled");
 	m_parameters[U_COLOR_TEXTURE] = glGetUniformLocation(m_programID, "colorTexture");
@@ -96,6 +108,8 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1.f, 1.f, 1.f), 18, 36, 1.f);
 
 	/*-----------------------------Skybox Loading----------------------------------*/
+	meshList[GEO_SKYBOX] = MeshBuilder::GenerateQuad("skybox", Color(1, 1, 1));
+	meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//SkyBG.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------Environment Objects Loading---------------------------------*/
@@ -107,7 +121,13 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HOUSEFLOOR]->MeshBBox.loadBB("OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL]->MeshBBox.loadBB("OBJ//Scene1//House_Left_Wall.obj");
 	meshList[GEO_WALL]->MeshBBox.loadBB("OBJ//Scene1//TEMP_Hill+Wall.obj");
+
+	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
+	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
+	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//Scene1//lightbottom.obj");
+	meshList[GEO_LIGHTSTAND]->textureID = LoadTGA("Image//lighttext.tga");
 	/*-----------------------------------------------------------------------------*/
+
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
 	/*-----------------------------------------------------------------------------*/
@@ -208,10 +228,10 @@ void StudioProject2Scene1::Init()
 	/*-----------------------------------------------------------------------------*/
 
 	/*----------------------Light Initialisation-----------------------------------*/
-	light[0].type = Light::LIGHT_SPOT;
-	light[0].position.Set(1.f, 105, -56.5f);
-	light[0].color.Set(1, 1, 1);
-	light[0].power = 7;
+	light[0].type = Light::LIGHT_POINT;
+	light[0].position.Set(45, 20, -20);
+	light[0].color.Set(0.251, 0.878, 0.816);
+	light[0].power = 5;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -230,8 +250,30 @@ void StudioProject2Scene1::Init()
 	glUniform1f(m_parameters[U_LIGHT0_COSINNER], light[0].cosInner);
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 
+	light[1].type = Light::LIGHT_POINT;
+	light[1].position.Set(-20, 10, -5);
+	light[1].color.Set(0.251, 0.878, 0.816);
+	light[1].power = 1;
+	light[1].kC = 1.f;
+	light[1].kL = 0.01f;
+	light[1].kQ = 0.001f;
+	light[1].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[1].cosInner = cos(Math::DegreeToRadian(30));
+	light[1].exponent = 3.f;
+	light[1].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT1_TYPE], light[1].type);
+	glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &light[1].color.r);
+	glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+	glUniform1f(m_parameters[U_LIGHT1_KC], light[1].kC);
+	glUniform1f(m_parameters[U_LIGHT1_KL], light[1].kL);
+	glUniform1f(m_parameters[U_LIGHT1_KQ], light[1].kQ);
+	glUniform1f(m_parameters[U_LIGHT1_COSCUTOFF], light[1].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
+	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
+
 	// Make sure you pass uniform parameters after glUseProgram()
-	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
+	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
 	/*-------------------------------------------------------------------------------*/
 }
 
@@ -258,19 +300,19 @@ void StudioProject2Scene1::Update(double dt)
 	if (Application::IsKeyPressed(VK_4))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	//float LSPEED = 10.f;
-	//if (Application::IsKeyPressed('I'))
-	//	light[0].position.z -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('K'))
-	//	light[0].position.z += (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('J'))
-	//	light[0].position.x -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('L'))
-	//	light[0].position.x += (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('O'))
-	//	light[0].position.y -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('P'))
-	//	light[0].position.y += (float)(LSPEED * dt);
+	float LSPEED = 10.f;
+	if (Application::IsKeyPressed('I'))
+		light[1].position.z -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('K'))
+		light[1].position.z += (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('J'))
+		light[1].position.x -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('L'))
+		light[1].position.x += (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('O'))
+		light[1].position.y -= (float)(LSPEED * dt);
+	if (Application::IsKeyPressed('P'))
+		light[1].position.y += (float)(LSPEED * dt);
 
 	/*-----------------------Text Interaction----------------*/
 	//if () [Movement will remove the spawn text]
@@ -546,56 +588,72 @@ void StudioProject2Scene1::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 
+	Position lightPosition1_cameraspace = viewStack.Top() * light[1].position;
+	glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition1_cameraspace.x);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(light[1].position.x, light[1].position.y, light[1].position.z);
+	RenderMesh(meshList[GEO_LIGHTBALL], false);
+	modelStack.PopMatrix();
+
+	/*-----------------Skybox-------------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(50, 170, -200);
+	modelStack.Scale(1000, 500, 500);
+	RenderMesh(meshList[GEO_SKYBOX], false);
+	modelStack.PopMatrix();
+	/*------------------------------------------*/
+
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
-
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		modelStack.Translate(a_PosX, a_PosY, a_PosZ);
 		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, a_PosY, a_PosZ);
 		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 1.7f, 1.1f);
 		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_BODY], false);
+			RenderMesh(meshList[GEO_ALEXIS_BODY], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
+			RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTARM], false);
+			RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTHAND], false);
+			RenderMesh(meshList[GEO_ALEXIS_LEFTHAND], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], false);
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTHAND], false);
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTHAND], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
+			RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], false);
+			RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
+			RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], false);
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 		modelStack.PopMatrix();
 
 	modelStack.PopMatrix();
@@ -608,26 +666,48 @@ void StudioProject2Scene1::Render()
 	/*-------------------------------------------------------*/
 
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_WALL], false);
+	RenderMesh(meshList[GEO_WALL], true);
 	modelStack.PopMatrix();
 	
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_HOUSELEFTWALL], false);
+	RenderMesh(meshList[GEO_HOUSELEFTWALL], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_HOUSEFLOOR], false);
+	RenderMesh(meshList[GEO_HOUSEFLOOR], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_HOUSE], false);
+	RenderMesh(meshList[GEO_HOUSE], true);
+	modelStack.PopMatrix();
+
+	/*-----------------Environmental Light Rendering------*/
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(50, 0, -20);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+    glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_BBOX], false);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(-20, 0, -5);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
 	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	/*-----------------------------------------------------*/
+
 
 	/*----Textbox Rendering--------*/
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
 	/*-----------------------------*/
 
@@ -646,6 +726,7 @@ void StudioProject2Scene1::Render()
 	/*-----------------------------*/
 
 	/*---------------Text log Rendering--------*/
+	
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press A or D to move around. Walk over to the syringe", Color(1, 1, 1), spawnTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "This is the power to revolutionise the world!", Color(1, 1, 1), syringeTriggedTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "The wall is too high, I need to use the box to scale it.", Color(1, 1, 1), boxTriggedTS, 1, -3);
