@@ -27,6 +27,7 @@ public:
 	static Mesh* GenerateCone(const std::string &meshName, Color color, unsigned int numSlices = 36, float radius = 1.f, int height = 3, bool isCovered = true);
 	static Mesh* GenerateOBJ(const std::string &meshName, const std::string &file_path);
 	static Mesh* GenerateText(const std::string &meshName, unsigned numRow, unsigned numCol);
+	static Mesh* GenerateBB(const std::string &meshName, Vector3 max, Vector3 min);
 };
 
 #endif

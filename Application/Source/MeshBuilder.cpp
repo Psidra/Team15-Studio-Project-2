@@ -637,3 +637,75 @@ Mesh* MeshBuilder::GenerateText(const std::string &meshName, unsigned numRow, un
 
 	return mesh;
 }
+
+Mesh* MeshBuilder::GenerateBB(const std::string &meshName, Vector3 max, Vector3 min)
+{
+	std::vector<Vertex> vertex_buffer_data;
+	std::vector<unsigned> index_buffer_data;
+	Vertex v;
+
+	v.pos.Set(min.x, min.y, min.z); vertex_buffer_data.push_back(v); // --+ 0
+	v.pos.Set(min.x, max.y, min.z); vertex_buffer_data.push_back(v); // -++ 1 
+	v.pos.Set(min.x, min.y, max.z); vertex_buffer_data.push_back(v); // --- 2
+	v.pos.Set(min.x, max.y, max.z); vertex_buffer_data.push_back(v); // -+- 3
+
+	v.pos.Set(max.x, min.y, min.z); vertex_buffer_data.push_back(v); // +-+ 4
+	v.pos.Set(max.x, max.y, min.z); vertex_buffer_data.push_back(v); // +++ 5
+	v.pos.Set(max.x, min.y, max.z); vertex_buffer_data.push_back(v); // +-- 6
+	v.pos.Set(max.x, max.y, max.z); vertex_buffer_data.push_back(v); // ++- 7
+
+
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(1);
+
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(6);
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(5);
+
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(6);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(7);
+	//045051 467475 762237 132201 264402 315357
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(1);
+
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(6);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(2);
+
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(7);
+
+	Mesh *mesh = new Mesh(meshName);
+
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_data.size() * sizeof(unsigned), &index_buffer_data[0], GL_STATIC_DRAW);
+
+	mesh->indexSize = index_buffer_data.size();
+	mesh->mode = Mesh::DRAW_LINES;
+
+	return mesh;
+}

@@ -28,6 +28,7 @@ public:
 		GEO_AXIS,
 		GEO_LIGHTBALL,
 		GEO_QUAD,
+		GEO_BBOX,
 
 		//skybox
 		GEO_LEFT, GEO_RIGHT, GEO_TOP, GEO_BOTTOM, GEO_FRONT, GEO_BACK,
@@ -130,6 +131,7 @@ private:
 	float a_LookingDirection;
 	bool pressedD;
 	bool pressedA;
+	bool inmovement;
 
 	float a_PosX;
 	float a_PosY;
