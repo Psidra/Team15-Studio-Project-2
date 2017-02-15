@@ -94,6 +94,9 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HOUSEFLOOR] = MeshBuilder::GenerateOBJ("hfloor", "OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL] = MeshBuilder::GenerateOBJ("hlwall", "OBJ//Scene1//House_Left_Wall.obj");
 	meshList[GEO_WALL] = MeshBuilder::GenerateOBJ("wall", "OBJ//Scene1//TEMP_Hill+Wall.obj");
+	
+	meshList[GEO_HOUSEFLOOR]->MeshBBox.loadBB("OBJ//Scene1//House_Floor.obj");
+	meshList[GEO_HOUSELEFTWALL]->MeshBBox.loadBB("OBJ//Scene1//House_Left_Wall.obj");
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
@@ -124,11 +127,17 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_ALEXIS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
 	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Character//LeftLeg.obj");
 	meshList[GEO_ALEXIS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.loadBB("OBJ//Character//crotch.obj");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
+	/*-----------------------------------------------------------------------------*/
+
+	/*-----------------------------Checking BBox-----------------------------------*/
+	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", meshList[GEO_ALEXIS_CROTCH]->MeshBBox.max_, meshList[GEO_ALEXIS_CROTCH]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
@@ -175,6 +184,7 @@ void StudioProject2Scene1::Init()
 	a_LookingDirection = 90.0f;
 	pressedA = false;
 	pressedD = false;
+	inmovement = false;
 	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -214,7 +224,10 @@ void StudioProject2Scene1::Update(double dt)
 	static float rotationDirection = 1.0f;
 	int framespersec = 1 / dt;
 	//elapsedTime += dt;
-	camera.Update(dt);
+	camera.Update(dt, inmovement);
+
+	if (inmovement == true) // movement always assumed to be false unless actually moving
+		inmovement = false;
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
@@ -362,22 +375,6 @@ void StudioProject2Scene1::Update(double dt)
 	/*-------------------------------------------------------------------*/
 
 	/*----------Character Movement-------------------*/
-	if (Application::IsKeyPressed('A'))
-	{
-		a_PosX -= (float)(30.f * dt);
-		a_RotationLeftLeg += (float)(rotationDirection * 5.0f * dt);
-		a_RotationRightLeg -= (float)(rotationDirection * 5.0f * dt);
-		pressedD = false;
-		pressedA = true;
-	}
-	if (Application::IsKeyPressed('D'))
-	{
-		a_PosX += (float)(30.f * dt);
-		a_RotationLeftLeg += (float)(rotationDirection * 15.0f * dt);
-		a_RotationRightLeg -= (float)(rotationDirection * 15.0f * dt);
-		pressedA = false;
-		pressedD = true;
-	}
 
 	if ((pressedA == true && a_LookingDirection == 90.f) ||
 		(pressedD == true && a_LookingDirection == -90.f))
@@ -397,6 +394,35 @@ void StudioProject2Scene1::Update(double dt)
 		a_RotationRightLeg = 0.0f;
 	}
 	/*-----------------------------------------------*/
+
+	/*------------------------------Collision Check------------------------------*/
+	if (Application::IsKeyPressed('A'))
+	{
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) || pressedD == true)
+		{
+			a_PosX -= (float)(30.f * dt);
+			a_RotationLeftLeg += (float)(rotationDirection * 5.0f * dt);
+			a_RotationRightLeg -= (float)(rotationDirection * 5.0f * dt);
+			pressedD = false;
+			pressedA = true;
+			inmovement = true;
+		}
+	}
+	if (Application::IsKeyPressed('D'))
+	{
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) || pressedA == true)
+		{
+			a_PosX += (float)(30.f * dt);
+			a_RotationLeftLeg += (float)(rotationDirection * 15.0f * dt);
+			a_RotationRightLeg -= (float)(rotationDirection * 15.0f * dt);
+			pressedA = false;
+			pressedD = true;
+			inmovement = true;
+		}
+	}
+
+
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.resetBB();
 }
 
 void StudioProject2Scene1::text()
@@ -426,6 +452,8 @@ void StudioProject2Scene1::Render()
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(a_PosX, a_PosY, a_PosZ);
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, a_PosY, a_PosZ);
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 1.7f, 1.1f);
 	modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
 	modelStack.PushMatrix();
@@ -461,6 +489,12 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();							// render collision box
+	modelStack.Translate(a_PosX, a_PosY, a_PosZ);		// i need this
+	modelStack.Scale(1.1f, 1.7f, 1.1f);					// if you remove it bad things will happen
+	RenderMesh(meshList[GEO_BBOX], false);				// remove this later when showing actual shit of course
+	modelStack.PopMatrix();								// :ok_hand:
 	/*-------------------------------------------------------*/
 
 	modelStack.PushMatrix();
@@ -479,6 +513,9 @@ void StudioProject2Scene1::Render()
 	RenderMesh(meshList[GEO_HOUSE], false);
 	modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_BBOX], false);
+	modelStack.PopMatrix();
 
 	/*----Textbox Rendering--------*/
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);

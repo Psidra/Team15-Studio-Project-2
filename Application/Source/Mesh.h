@@ -3,6 +3,7 @@
 
 #include "Vertex.h"
 #include "Material.h"
+#include "BoundingBox.h"
 #include <string>
 
 /******************************************************************************/
@@ -33,6 +34,8 @@ public:
 	unsigned indexBuffer;
 	unsigned indexSize;
 	unsigned textureID;
+
+	BoundingBox MeshBBox;
 
     Material material;
 };
