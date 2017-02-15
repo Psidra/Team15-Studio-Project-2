@@ -474,16 +474,16 @@ void StudioProject2Scene1::Render()
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
 	modelStack.PushMatrix();
+	modelStack.Rotate(a_RotationLeftLeg, 1, 0, 0);
 	RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], false);
 	modelStack.PushMatrix();
-	modelStack.Rotate(a_RotationLeftLeg, 1, 0, 0);
 	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix(); 
 	modelStack.PushMatrix();
+	modelStack.Rotate(a_RotationRightLeg, 1, 0, 0);
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], false);
 	modelStack.PushMatrix();
-	modelStack.Rotate(a_RotationRightLeg, 1, 0, 0);
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
