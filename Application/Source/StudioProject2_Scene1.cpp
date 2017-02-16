@@ -164,7 +164,7 @@ void StudioProject2Scene1::Init()
 	/*-----------------------------Trigger Check-----------------------------------*/
 	meshList[GEO_TRIGGER_SLOPE] = MeshBuilder::GenerateOBJ("Trigger_Slope", "OBJ//TriggerBox.obj");
 	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.loadBB("OBJ//TriggerBox.obj");
-	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.translate(-0.1f, 0, 0);
+	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.translate(-12.f, 10.f, 0);
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------------------Checking BBox-----------------------------------*/
@@ -493,19 +493,23 @@ void StudioProject2Scene1::Update(double dt)
 		et = 0;
 	}
 
-	if (injump == false)
+	if (!trigger)
 	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
-			!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox))
-			a_PosY -= (float)(30.f * dt);
-	}
-	else
-	{
-		a_PosY += (float)(30.f * dt);
+		if (injump == false)
+		{
+			if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox))
+				a_PosY -= (float)(30.f * dt);
+		}
+		else
+		{
+			a_PosY += (float)(30.f * dt);
+		}
 	}
 
 	if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRIGGER_SLOPE]->MeshBBox))
 	{
+		bufferTime_trigger_slope = elapsedTime + 11.f;
 		trigger = true;
 	}
 
@@ -572,6 +576,24 @@ void StudioProject2Scene1::Update(double dt)
 		}
 	}
 	
+	/*--------------------------------------*/
+
+	/*---------Triggers------*/
+	if (bufferTime_trigger_slope > elapsedTime && trigger == true)
+	{
+		a_PosX += (float)(30.f * dt);
+		a_PosY -= (float)(3.25f * dt);
+		if (elapsedTime > (bufferTime_trigger_slope - 10.8f))
+		{
+			a_PosY -= (float)(10.f * dt);
+		}
+		if (elapsedTime > (bufferTime_trigger_slope - 8.f))
+		{
+			a_PosY -= (float)(12.5f * dt);
+		}
+	}
+	else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
+		trigger = false;
 	/*--------------------------------------*/
 }
 

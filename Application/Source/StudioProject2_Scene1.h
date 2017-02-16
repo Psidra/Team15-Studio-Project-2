@@ -186,6 +186,7 @@ private:
 	double bufferTime_Jump;
 	double bufferTime_attack;
 	double bufferTime_text;
+	double bufferTime_trigger_slope;
 };
 
 #endif 
