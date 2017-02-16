@@ -153,6 +153,9 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
 	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//Scene1//lightbottom.obj");
 	meshList[GEO_LIGHTSTAND]->textureID = LoadTGA("Image//lighttext.tga");
+
+	meshList[GEO_TREE] = MeshBuilder::GenerateOBJ("tree", "OBJ//tree.obj");
+	meshList[GEO_TREE]->textureID = LoadTGA("Image//tree.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -911,6 +914,14 @@ void StudioProject2Scene1::Render()
 	RenderMesh(meshList[GEO_HOUSE], true);
 	modelStack.PopMatrix();
 
+	/*--------------------trees rendering-----------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(-70, 0, 10);
+	RenderMesh(meshList[GEO_TREE], true);
+	modelStack.PopMatrix();
+	/*----------------------------------------------------*/
+
+
 	/*-----------------Environmental Light Rendering------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -957,6 +968,7 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 	/*-----------------------------------------------------*/
 
+	
 
 	/*----Textbox Rendering--------*/
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
