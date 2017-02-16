@@ -106,6 +106,54 @@ void StudioProject2Scene1::Init()
 	m_parameters[U_LIGHT3_COSINNER] = glGetUniformLocation(m_programID, "lights[3].cosInner");
 	m_parameters[U_LIGHT3_EXPONENT] = glGetUniformLocation(m_programID, "lights[3].exponent");
 
+	m_parameters[U_LIGHT4_POSITION] = glGetUniformLocation(m_programID, "lights[4].position_cameraspace");
+	m_parameters[U_LIGHT4_COLOR] = glGetUniformLocation(m_programID, "lights[4].color");
+	m_parameters[U_LIGHT4_POWER] = glGetUniformLocation(m_programID, "lights[4].power");
+	m_parameters[U_LIGHT4_KC] = glGetUniformLocation(m_programID, "lights[4].kC");
+	m_parameters[U_LIGHT4_KL] = glGetUniformLocation(m_programID, "lights[4].kL");
+	m_parameters[U_LIGHT4_KQ] = glGetUniformLocation(m_programID, "lights[4].kQ");
+	m_parameters[U_LIGHT4_TYPE] = glGetUniformLocation(m_programID, "lights[4].type");
+	m_parameters[U_LIGHT4_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[4].spotDirection");
+	m_parameters[U_LIGHT4_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[4].cosCutoff");
+	m_parameters[U_LIGHT4_COSINNER] = glGetUniformLocation(m_programID, "lights[4].cosInner");
+	m_parameters[U_LIGHT4_EXPONENT] = glGetUniformLocation(m_programID, "lights[4].exponent");
+
+	m_parameters[U_LIGHT5_POSITION] = glGetUniformLocation(m_programID, "lights[5].position_cameraspace");
+	m_parameters[U_LIGHT5_COLOR] = glGetUniformLocation(m_programID, "lights[5].color");
+	m_parameters[U_LIGHT5_POWER] = glGetUniformLocation(m_programID, "lights[5].power");
+	m_parameters[U_LIGHT5_KC] = glGetUniformLocation(m_programID, "lights[5].kC");
+	m_parameters[U_LIGHT5_KL] = glGetUniformLocation(m_programID, "lights[5].kL");
+	m_parameters[U_LIGHT5_KQ] = glGetUniformLocation(m_programID, "lights[5].kQ");
+	m_parameters[U_LIGHT5_TYPE] = glGetUniformLocation(m_programID, "lights[5].type");
+	m_parameters[U_LIGHT5_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[5].spotDirection");
+	m_parameters[U_LIGHT5_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[5].cosCutoff");
+	m_parameters[U_LIGHT5_COSINNER] = glGetUniformLocation(m_programID, "lights[5].cosInner");
+	m_parameters[U_LIGHT5_EXPONENT] = glGetUniformLocation(m_programID, "lights[5].exponent");
+
+	m_parameters[U_LIGHT6_POSITION] = glGetUniformLocation(m_programID, "lights[6].position_cameraspace");
+	m_parameters[U_LIGHT6_COLOR] = glGetUniformLocation(m_programID, "lights[6].color");
+	m_parameters[U_LIGHT6_POWER] = glGetUniformLocation(m_programID, "lights[6].power");
+	m_parameters[U_LIGHT6_KC] = glGetUniformLocation(m_programID, "lights[6].kC");
+	m_parameters[U_LIGHT6_KL] = glGetUniformLocation(m_programID, "lights[6].kL");
+	m_parameters[U_LIGHT6_KQ] = glGetUniformLocation(m_programID, "lights[6].kQ");
+	m_parameters[U_LIGHT6_TYPE] = glGetUniformLocation(m_programID, "lights[6].type");
+	m_parameters[U_LIGHT6_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[6].spotDirection");
+	m_parameters[U_LIGHT6_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[6].cosCutoff");
+	m_parameters[U_LIGHT6_COSINNER] = glGetUniformLocation(m_programID, "lights[6].cosInner");
+	m_parameters[U_LIGHT6_EXPONENT] = glGetUniformLocation(m_programID, "lights[6].exponent");
+
+	m_parameters[U_LIGHT7_POSITION] = glGetUniformLocation(m_programID, "lights[7].position_cameraspace");
+	m_parameters[U_LIGHT7_COLOR] = glGetUniformLocation(m_programID, "lights[7].color");
+	m_parameters[U_LIGHT7_POWER] = glGetUniformLocation(m_programID, "lights[7].power");
+	m_parameters[U_LIGHT7_KC] = glGetUniformLocation(m_programID, "lights[7].kC");
+	m_parameters[U_LIGHT7_KL] = glGetUniformLocation(m_programID, "lights[7].kL");
+	m_parameters[U_LIGHT7_KQ] = glGetUniformLocation(m_programID, "lights[7].kQ");
+	m_parameters[U_LIGHT7_TYPE] = glGetUniformLocation(m_programID, "lights[7].type");
+	m_parameters[U_LIGHT7_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[7].spotDirection");
+	m_parameters[U_LIGHT7_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[7].cosCutoff");
+	m_parameters[U_LIGHT7_COSINNER] = glGetUniformLocation(m_programID, "lights[7].cosInner");
+	m_parameters[U_LIGHT7_EXPONENT] = glGetUniformLocation(m_programID, "lights[7].exponent");
+
 	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
 	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); //in case you missed out practical 7
 	// Get a handle for our "colorTexture" uniform
@@ -158,21 +206,21 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_BOX_SHORT]->MeshBBox.scale(1, 1.5f, 1);
 	meshList[GEO_BOX_SHORT]->MeshBBox.translate(490, -250.f, 0);
 	meshList[GEO_BOX_SHORTTEST]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
-	meshList[GEO_BOX_SHORTTEST]->MeshBBox.scale(1, 1.6f, 1);
+	meshList[GEO_BOX_SHORTTEST]->MeshBBox.scale(1, 1.7f, 1);
 	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(490, -250.f, 0);
 	meshList[GEO_BOX_TALL]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
-	meshList[GEO_BOX_TALL]->MeshBBox.scale(1, 1.5f, 1);
+	meshList[GEO_BOX_TALL]->MeshBBox.scale(1, 1.6f, 1);
 	meshList[GEO_BOX_TALL]->MeshBBox.translate(500, -250.f, 0);
 	meshList[GEO_BOX_TALLTEST]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
-	meshList[GEO_BOX_TALLTEST]->MeshBBox.scale(1, 1.6f, 1);
+	meshList[GEO_BOX_TALLTEST]->MeshBBox.scale(1, 1.8f, 1);
 	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(500, -250.f, 0);
 	meshList[GEO_FLOOR]->MeshBBox.loadBB("OBJ//Scene1//Floor.obj");
-	meshList[GEO_FLOOR]->MeshBBox.translate(50, -253.75f, 0);
+	meshList[GEO_FLOOR]->MeshBBox.translate(50, -253.5f, 0);
 	meshList[GEO_TRUMP]->MeshBBox.loadBB("OBJ//Scene1//Trump.obj");
 	meshList[GEO_TRUMP]->MeshBBox.scale(1, 1.5f, 1);
 	meshList[GEO_TRUMP]->MeshBBox.translate(550, -250.f, 0);
 	meshList[GEO_TRUMPTEST]->MeshBBox.loadBB("OBJ//Scene1//Trump.obj");
-	meshList[GEO_TRUMPTEST]->MeshBBox.scale(1, 1.6f, 1);
+	meshList[GEO_TRUMPTEST]->MeshBBox.scale(1, 1.7f, 1);
 	meshList[GEO_TRUMPTEST]->MeshBBox.translate(550, -250.f, 0);
 
 	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
@@ -378,8 +426,96 @@ void StudioProject2Scene1::Init()
 	glUniform1f(m_parameters[U_LIGHT3_COSINNER], light[3].cosInner);
 	glUniform1f(m_parameters[U_LIGHT3_EXPONENT], light[3].exponent);
 
+	light[4].type = Light::LIGHT_POINT;
+	light[4].position.Set(235, -75, -10);
+	light[4].color.Set(0.251, 0.878, 0.816);
+	light[4].power = 5;
+	light[4].kC = 1.f;
+	light[4].kL = 0.01f;
+	light[4].kQ = 0.001f;
+	light[4].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[4].cosInner = cos(Math::DegreeToRadian(30));
+	light[4].exponent = 3.f;
+	light[4].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT4_TYPE], light[4].type);
+	glUniform3fv(m_parameters[U_LIGHT4_COLOR], 1, &light[4].color.r);
+	glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
+	glUniform1f(m_parameters[U_LIGHT4_KC], light[4].kC);
+	glUniform1f(m_parameters[U_LIGHT4_KL], light[4].kL);
+	glUniform1f(m_parameters[U_LIGHT4_KQ], light[4].kQ);
+	glUniform1f(m_parameters[U_LIGHT4_COSCUTOFF], light[4].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT4_COSINNER], light[4].cosInner);
+	glUniform1f(m_parameters[U_LIGHT4_EXPONENT], light[4].exponent);
+
+	light[5].type = Light::LIGHT_POINT;
+	light[5].position.Set(330, -155, -10);
+	light[5].color.Set(0.251, 0.878, 0.816);
+	light[5].power = 5;
+	light[5].kC = 1.f;
+	light[5].kL = 0.01f;
+	light[5].kQ = 0.001f;
+	light[5].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[5].cosInner = cos(Math::DegreeToRadian(30));
+	light[5].exponent = 3.f;
+	light[5].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT5_TYPE], light[5].type);
+	glUniform3fv(m_parameters[U_LIGHT5_COLOR], 1, &light[5].color.r);
+	glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
+	glUniform1f(m_parameters[U_LIGHT5_KC], light[5].kC);
+	glUniform1f(m_parameters[U_LIGHT5_KL], light[5].kL);
+	glUniform1f(m_parameters[U_LIGHT5_KQ], light[5].kQ);
+	glUniform1f(m_parameters[U_LIGHT5_COSCUTOFF], light[5].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT5_COSINNER], light[5].cosInner);
+	glUniform1f(m_parameters[U_LIGHT5_EXPONENT], light[5].exponent);
+
+	light[6].type = Light::LIGHT_POINT;
+	light[6].position.Set(440, -243, -10);
+	light[6].color.Set(0.251, 0.878, 0.816);
+	light[6].power = 5;
+	light[6].kC = 1.f;
+	light[6].kL = 0.01f;
+	light[6].kQ = 0.001f;
+	light[6].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[6].cosInner = cos(Math::DegreeToRadian(30));
+	light[6].exponent = 3.f;
+	light[6].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT6_TYPE], light[6].type);
+	glUniform3fv(m_parameters[U_LIGHT6_COLOR], 1, &light[6].color.r);
+	glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
+	glUniform1f(m_parameters[U_LIGHT6_KC], light[6].kC);
+	glUniform1f(m_parameters[U_LIGHT6_KL], light[6].kL);
+	glUniform1f(m_parameters[U_LIGHT6_KQ], light[6].kQ);
+	glUniform1f(m_parameters[U_LIGHT6_COSCUTOFF], light[6].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT6_COSINNER], light[6].cosInner);
+	glUniform1f(m_parameters[U_LIGHT6_EXPONENT], light[6].exponent);
+
+	light[7].type = Light::LIGHT_POINT;
+	light[7].position.Set(540, -243, -10);
+	light[7].color.Set(0.251, 0.878, 0.816);
+	light[7].power = 5;
+	light[7].kC = 1.f;
+	light[7].kL = 0.01f;
+	light[7].kQ = 0.001f;
+	light[7].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[7].cosInner = cos(Math::DegreeToRadian(30));
+	light[7].exponent = 3.f;
+	light[7].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT7_TYPE], light[7].type);
+	glUniform3fv(m_parameters[U_LIGHT7_COLOR], 1, &light[7].color.r);
+	glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
+	glUniform1f(m_parameters[U_LIGHT7_KC], light[7].kC);
+	glUniform1f(m_parameters[U_LIGHT7_KL], light[7].kL);
+	glUniform1f(m_parameters[U_LIGHT7_KQ], light[7].kQ);
+	glUniform1f(m_parameters[U_LIGHT7_COSCUTOFF], light[7].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT7_COSINNER], light[7].cosInner);
+	glUniform1f(m_parameters[U_LIGHT7_EXPONENT], light[7].exponent);
+
 	// Make sure you pass uniform parameters after glUseProgram()
-	glUniform1i(m_parameters[U_NUMLIGHTS], 4);
+	glUniform1i(m_parameters[U_NUMLIGHTS], 8);
 	/*-------------------------------------------------------------------------------*/
 }
 double et = 0.0;
@@ -699,10 +835,11 @@ void StudioProject2Scene1::Update(double dt)
 					(meshList[GEO_ALEXIS_CROTCH]->MeshBBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
 					meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
 				{
-					
+					// do jack shit
 				}
 				else
 				{
+					bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
 					a_PosY -= (float)(30.f * dt);
 				}
 			}
@@ -838,6 +975,18 @@ void StudioProject2Scene1::Render()
 	Position lightPosition3_cameraspace = viewStack.Top() * light[3].position;
 	glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightPosition3_cameraspace.x);
 
+	Position lightPosition4_cameraspace = viewStack.Top() * light[4].position;
+	glUniform3fv(m_parameters[U_LIGHT4_POSITION], 1, &lightPosition4_cameraspace.x);
+
+	Position lightPosition5_cameraspace = viewStack.Top() * light[5].position;
+	glUniform3fv(m_parameters[U_LIGHT5_POSITION], 1, &lightPosition5_cameraspace.x);
+
+	Position lightPosition6_cameraspace = viewStack.Top() * light[6].position;
+	glUniform3fv(m_parameters[U_LIGHT6_POSITION], 1, &lightPosition6_cameraspace.x);
+
+	Position lightPosition7_cameraspace = viewStack.Top() * light[7].position;
+	glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightPosition7_cameraspace.x);
+
 	modelStack.PushMatrix();
 	modelStack.Translate(light[3].position.x, light[3].position.y, light[3].position.z);
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
@@ -954,8 +1103,23 @@ void StudioProject2Scene1::Render()
 
 	/*--------------------trees rendering-----------------*/
 	modelStack.PushMatrix();
-	modelStack.Translate(-70, 0, 10);
-	RenderMesh(meshList[GEO_TREE], true);
+	modelStack.Translate(0, -12, -60);
+	modelStack.Scale(5, 5, 5);
+	for (unsigned i = 0; i < 3; ++i)
+	{
+		RenderMesh(meshList[GEO_TREE], true);
+		modelStack.Translate(-10, 0, 0);
+	}
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-1, -24, -120);
+	modelStack.Scale(5, 5, 5);
+	for (unsigned i = 0; i < 3; ++i)
+	{
+		RenderMesh(meshList[GEO_TREE], true);
+		modelStack.Translate(-10, 0, 0);
+	}
 	modelStack.PopMatrix();
 	/*----------------------------------------------------*/
 
@@ -1022,7 +1186,51 @@ void StudioProject2Scene1::Render()
 
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	modelStack.Translate(135, -16, -10);
+	modelStack.Translate(135, -18, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(240, -86, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(340, -165, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(450, -253, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(550, -253, -10);
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_LIGHTSTAND], true);
 	modelStack.PushMatrix();
