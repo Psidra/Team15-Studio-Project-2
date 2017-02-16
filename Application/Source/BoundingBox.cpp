@@ -4,8 +4,8 @@ void BoundingBox::loadBB(const std::string &file_path)
 {
 	std::ifstream fileStream(file_path, std::ios::binary);
 
-	Vector3 vLowerLeftFront = (-999999.0f, -999999.0f, 999999.0f);
-	Vector3 vUpperRightBack = (999999.0f, 999999.0f, -999999.0f);
+	Vector3 vLowerLeftFront = (-9999999999.0f, -9999999999.0f, 9999999999.0f);
+	Vector3 vUpperRightBack = (9999999999.0f, 9999999999.0f, -9999999999.0f);
 
 	while (!fileStream.eof())
 	{

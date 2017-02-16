@@ -141,13 +141,21 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HOUSE] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene1//House_AllElse.obj");
 	meshList[GEO_HOUSEFLOOR] = MeshBuilder::GenerateOBJ("hfloor", "OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL] = MeshBuilder::GenerateOBJ("hlwall", "OBJ//Scene1//House_Left_Wall.obj");
-	meshList[GEO_WALL] = MeshBuilder::GenerateOBJ("wall", "OBJ//Scene1//TEMP_Hill+Wall.obj");
 	meshList[GEO_HOUSEFRONT] = MeshBuilder::GenerateOBJ("HouseFront", "OBJ//Scene1//House_Front.obj");
-	
+	meshList[GEO_BOX_SHORT] = MeshBuilder::GenerateOBJ("Box_Short", "OBJ//Scene1//Box_Short.obj");
+	meshList[GEO_BOX_TALL] = MeshBuilder::GenerateOBJ("Box_Tall", "OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_HILL] = MeshBuilder::GenerateOBJ("Hill", "OBJ//Scene1//Hill.obj");
+	meshList[GEO_FLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//Scene1//Floor.obj");
+	meshList[GEO_TRUMP] = MeshBuilder::GenerateOBJ("Trump", "OBJ//Scene1//Trump.obj");
+
 	meshList[GEO_HOUSEFLOOR]->MeshBBox.loadBB("OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL]->MeshBBox.loadBB("OBJ//Scene1//House_Left_Wall.obj");
-	//meshList[GEO_WALL]->MeshBBox.loadBB("OBJ//Scene1//TEMP_Hill+Wall.obj");
 	meshList[GEO_HOUSEFRONT]->MeshBBox.loadBB("OBJ//Scene1//House_Front.obj");
+	meshList[GEO_BOX_SHORT]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
+	meshList[GEO_BOX_TALL]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_FLOOR]->MeshBBox.loadBB("OBJ//Scene1//Floor.obj");
+	meshList[GEO_FLOOR]->MeshBBox.translate(50, -252.25f, 0);
+	meshList[GEO_TRUMP]->MeshBBox.loadBB("OBJ//Scene1//Trump.obj");
 
 	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
@@ -193,7 +201,7 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", meshList[GEO_ALEXIS_CROTCH]->MeshBBox.max_, meshList[GEO_ALEXIS_CROTCH]->MeshBBox.min_);
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_TRIGGER_SLOPE]->MeshBBox.max_, meshList[GEO_TRIGGER_SLOPE]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_FLOOR]->MeshBBox.max_, meshList[GEO_FLOOR]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/ 
 	
 	/*-------------------------Loading Hearts-----------------------------------------*/
@@ -605,7 +613,9 @@ void StudioProject2Scene1::Update(double dt)
 	/*------------------------------Collision Check------------------------------*/
 	if (Application::IsKeyPressed('A') && !trigger)
 	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) || pressedD == true)
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+			pressedD == true)
 		{
 			a_PosX -= (float)(30.f * dt);
 			a_RotationLeftLeg += (float)(rotationDirection * 5.0f * dt);
@@ -616,7 +626,9 @@ void StudioProject2Scene1::Update(double dt)
 	}
 	if (Application::IsKeyPressed('D') && !trigger)
 	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) || pressedA == true)
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+			pressedA == true)
 		{
 			a_PosX += (float)(30.f * dt);
 			a_RotationLeftLeg += (float)(rotationDirection * 15.0f * dt);
@@ -625,13 +637,10 @@ void StudioProject2Scene1::Update(double dt)
 			pressedD = true;
 		}
 	}
-	if (Application::IsKeyPressed('W') && !trigger)
+	if (Application::IsKeyPressed('W') && (bufferTime_Jump < elapsedTime) && !trigger)
 	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) && (bufferTime_Jump < elapsedTime))
-		{ 
-			bufferTime_Jump = elapsedTime + 0.6f;
-			bufferTime_JumpUp = elapsedTime + 0.3f;
-		}
+		bufferTime_Jump = elapsedTime + 0.6f;
+		bufferTime_JumpUp = elapsedTime + 0.3f;
 	}
 	if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
 	{
@@ -658,8 +667,13 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		if (injump == false)
 		{
-			if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
-				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox))
+			if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_FLOOR]->MeshBBox) && 
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && 
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && 
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 				a_PosY -= (float)(30.f * dt);
 		}
 		else
@@ -742,6 +756,8 @@ void StudioProject2Scene1::Update(double dt)
 	/*---------Triggers------*/
 	if (bufferTime_trigger_slope > elapsedTime && trigger == true)
 	{
+		if (elapsedTime < (bufferTime_trigger_slope - 10.99f))
+			a_PosY = -3.f;
 		a_PosX += (float)(30.f * dt);
 		a_PosY -= (float)(3.25f * dt);
 		if (elapsedTime > (bufferTime_trigger_slope - 10.8f))
@@ -889,15 +905,9 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
 	modelStack.PushMatrix();
-	modelStack.Translate(-0.1f, 0, 0);
-	modelStack.Scale(1.f, 4.3f, 1.f);					// if you remove it bad things will happen
 	RenderMesh(meshList[GEO_TESTBBOX], false);			// remove this later when showing actual shit of course
 	modelStack.PopMatrix();
 	/*-------------------------------------------------------*/
-
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_WALL], true);
-	modelStack.PopMatrix();
 	
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_HOUSELEFTWALL], true);
@@ -909,6 +919,27 @@ void StudioProject2Scene1::Render()
 
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_HOUSE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_HILL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_BOX_SHORT], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_BOX_TALL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(50.f, -255.f, 0);
+	RenderMesh(meshList[GEO_FLOOR], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_TRUMP], true);
 	modelStack.PopMatrix();
 
 	/*-----------------Environmental Light Rendering------*/
