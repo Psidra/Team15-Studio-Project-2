@@ -8,6 +8,7 @@
 #include "LoadTGA.h"
 #include "Camera.h"
 #include "PlayerClass.h"
+#include "LoadATOM.h"
 
 #define VK_1 0x31
 #define VK_2 0x32
@@ -141,10 +142,12 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HOUSEFLOOR] = MeshBuilder::GenerateOBJ("hfloor", "OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL] = MeshBuilder::GenerateOBJ("hlwall", "OBJ//Scene1//House_Left_Wall.obj");
 	meshList[GEO_WALL] = MeshBuilder::GenerateOBJ("wall", "OBJ//Scene1//TEMP_Hill+Wall.obj");
+	meshList[GEO_HOUSEFRONT] = MeshBuilder::GenerateOBJ("HouseFront", "OBJ//Scene1//House_Front.obj");
 	
 	meshList[GEO_HOUSEFLOOR]->MeshBBox.loadBB("OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL]->MeshBBox.loadBB("OBJ//Scene1//House_Left_Wall.obj");
-	meshList[GEO_WALL]->MeshBBox.loadBB("OBJ//Scene1//TEMP_Hill+Wall.obj");
+	//meshList[GEO_WALL]->MeshBBox.loadBB("OBJ//Scene1//TEMP_Hill+Wall.obj");
+	meshList[GEO_HOUSEFRONT]->MeshBBox.loadBB("OBJ//Scene1//House_Front.obj");
 
 	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
@@ -165,21 +168,13 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_ALEXIS_BODY]->textureID = LoadTGA("Image//bodytext.tga");
 	meshList[GEO_ALEXIS_CROTCH] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//Character//crotch.obj");
 	meshList[GEO_ALEXIS_CROTCH]->textureID = LoadTGA("Image//crotchtext.tga");
-	meshList[GEO_ALEXIS_RIGHTHAND] = MeshBuilder::GenerateOBJ("aRightHand", "OBJ//Character//RightHand.obj");
-	meshList[GEO_ALEXIS_RIGHTHAND]->textureID = LoadTGA("Image//righthandtext.tga");
-	meshList[GEO_ALEXIS_LEFTHAND] = MeshBuilder::GenerateOBJ("aLeftHand", "OBJ//Character//LeftHand.obj");
-	meshList[GEO_ALEXIS_LEFTHAND]->textureID = LoadTGA("Image//lefthandtext.tga");
-	meshList[GEO_ALEXIS_RIGHTARM] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//Character//RightArm.obj");
+	meshList[GEO_ALEXIS_RIGHTARM] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//Character//rightarm.obj");
 	meshList[GEO_ALEXIS_RIGHTARM]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_LEFTARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//Character//LeftArm.obj");
+	meshList[GEO_ALEXIS_LEFTARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//Character//leftarm.obj");
 	meshList[GEO_ALEXIS_LEFTARM]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("aRightThigh", "OBJ//Character//RightThigh.obj");
-	meshList[GEO_ALEXIS_RIGHTTHIGH]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_LEFTTHIGH] = MeshBuilder::GenerateOBJ("aLeftThigh", "OBJ//Character//LeftThigh.obj");
-	meshList[GEO_ALEXIS_LEFTTHIGH]->textureID = LoadTGA("Image//armtext.tga");
-	meshList[GEO_ALEXIS_RIGHTLEG] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//Character//RightLeg.obj");
+	meshList[GEO_ALEXIS_RIGHTLEG] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//Character//rightleg.obj");
 	meshList[GEO_ALEXIS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
-	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Character//LeftLeg.obj");
+	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Character//leftleg.obj");
 	meshList[GEO_ALEXIS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
 
 	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.loadBB("OBJ//Character//crotch.obj");
@@ -190,8 +185,15 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
 
+	/*-----------------------------Trigger Check-----------------------------------*/
+	meshList[GEO_TRIGGER_SLOPE] = MeshBuilder::GenerateOBJ("Trigger_Slope", "OBJ//TriggerBox.obj");
+	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.loadBB("OBJ//TriggerBox.obj");
+	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.translate(-0.1f, 0, 0);
+	/*-----------------------------------------------------------------------------*/
+
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", meshList[GEO_ALEXIS_CROTCH]->MeshBBox.max_, meshList[GEO_ALEXIS_CROTCH]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_TRIGGER_SLOPE]->MeshBBox.max_, meshList[GEO_TRIGGER_SLOPE]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/ 
 	
 	/*-------------------------Loading Hearts-----------------------------------------*/
@@ -250,6 +252,8 @@ void StudioProject2Scene1::Init()
 	pressedD = false;
 	injump = false;
 	infall = true;
+	attack = false;
+	trigger = false;
 	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -349,7 +353,7 @@ void StudioProject2Scene1::Init()
 	glUniform1i(m_parameters[U_NUMLIGHTS], 4);
 	/*-------------------------------------------------------------------------------*/
 }
-
+double et = 0.0;
 void StudioProject2Scene1::Update(double dt)
 {
 	static float rotationDirection = 1.0f;
@@ -599,7 +603,7 @@ void StudioProject2Scene1::Update(double dt)
 	/*-----------------------------------------------*/
 
 	/*------------------------------Collision Check------------------------------*/
-	if (Application::IsKeyPressed('A'))
+	if (Application::IsKeyPressed('A') && !trigger)
 	{
 		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) || pressedD == true)
 		{
@@ -610,7 +614,7 @@ void StudioProject2Scene1::Update(double dt)
 			pressedA = true;
 		}
 	}
-	if (Application::IsKeyPressed('D'))
+	if (Application::IsKeyPressed('D') && !trigger)
 	{
 		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) || pressedA == true)
 		{
@@ -621,7 +625,7 @@ void StudioProject2Scene1::Update(double dt)
 			pressedD = true;
 		}
 	}
-	if (Application::IsKeyPressed('W'))
+	if (Application::IsKeyPressed('W') && !trigger)
 	{
 		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) && (bufferTime_Jump < elapsedTime))
 		{ 
@@ -629,15 +633,31 @@ void StudioProject2Scene1::Update(double dt)
 			bufferTime_JumpUp = elapsedTime + 0.3f;
 		}
 	}
-	
+	if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
+	{
+		bufferTime_attack = elapsedTime + 1;
+	}
+
 	if (bufferTime_JumpUp > elapsedTime)
 		injump = true;
 	else
 		injump = false;
 
+	if (bufferTime_attack > elapsedTime)
+	{
+		attack = true;
+		et += dt;
+	}
+	else
+	{
+		attack = false;
+		et = 0;
+	}
+
 	if (injump == false)
 	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_WALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox))
+		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
+			!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox))
 			a_PosY -= (float)(30.f * dt);
 	}
 	else
@@ -645,7 +665,12 @@ void StudioProject2Scene1::Update(double dt)
 		a_PosY += (float)(30.f * dt);
 	}
 
-	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.resetBB();
+	if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRIGGER_SLOPE]->MeshBBox))
+	{
+		trigger = true;
+	}
+
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.loadBB("OBJ//Character//crotch.obj");
 	/*--------------------------------------------------------*/
 	
 	/*----------Health System (Hearts)------*/
@@ -760,62 +785,92 @@ void StudioProject2Scene1::Render()
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 4.3f, 1.f);
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);
 		modelStack.Translate(a_PosX, a_PosY, a_PosZ);
-		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, a_PosY, a_PosZ);
-		meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 1.7f, 1.1f);
 		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 
+
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_BODY], true);
+		if (attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface9");//HEAD
+		else if (!attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface9");//HEAD
+
+		RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
+		if (attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere17");//ARM WITH SWORD
+		else if (!attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere17");//ARM WITH SWORD
+
+		RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
+		if (attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface32");//BODY
+		else if (!attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface32");//BODY
+
+		RenderMesh(meshList[GEO_ALEXIS_BODY], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTHAND], true);
+		if (attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere14");//LEFTARM
+		else if (!attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere14");//LEFTARM
+
+		RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
+		if (attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pCylinder15");//crotch
+		else if (!attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pCylinder15");//crotch
+
+		RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTHAND], true);
+		if (attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere9");//RIGHT LEG
+		else if (!attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere9");//RIGHT LEG
+
+		RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
-		modelStack.PopMatrix();
+		if (attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere10");//LEFTLEG
+		else if (!attack)
+			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere10");//LEFTLEG
 
-		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTTHIGH], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTTHIGH], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
+		RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 		modelStack.PopMatrix();
 
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();							// render collision box
-	modelStack.Translate(a_PosX, a_PosY, a_PosZ);		// i need this
-	modelStack.Scale(1.1f, 1.7f, 1.1f);					// if you remove it bad things will happen
+	modelStack.Translate(a_PosX, (a_PosY + 8), a_PosZ);	// i need this
+	modelStack.Scale(1.1f, 4.3f, 1.f);					// if you remove it bad things will happen
 	RenderMesh(meshList[GEO_BBOX], false);				// remove this later when showing actual shit of course
 	modelStack.PopMatrix();								// :ok_hand:
+														// for some reason I needed to flip translate and scale here to fit with the actual hitbox
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMESHIT]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
+	modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-0.1f, 0, 0);
+	modelStack.Scale(1.f, 4.3f, 1.f);					// if you remove it bad things will happen
+	RenderMesh(meshList[GEO_TESTBBOX], false);			// remove this later when showing actual shit of course
+	modelStack.PopMatrix();
 	/*-------------------------------------------------------*/
 
 	modelStack.PushMatrix();

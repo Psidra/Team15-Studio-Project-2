@@ -28,7 +28,6 @@ private:
 
 	unsigned int _health;
 	unsigned int _energy;
-	bool _attack;
 	bool _dead;
 };
 

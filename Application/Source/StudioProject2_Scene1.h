@@ -29,6 +29,7 @@ public:
 		GEO_LIGHTBALL,
 		GEO_QUAD,
 		GEO_BBOX,
+		GEO_TESTBBOX,
 
 		//skybox
 		GEO_SKYBOX,
@@ -38,11 +39,14 @@ public:
 		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTTHIGH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTTHIGH, GEO_ALEXIS_LEFTLEG,
 		//Environmental Objects
 		GEO_HOUSEFLOOR, GEO_HOUSE, GEO_HOUSELEFTWALL, GEO_WALL,
-		GEO_TEXT, GEO_LIGHTBULB, GEO_LIGHTSTAND,
+		GEO_TEXT, GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_HOUSEFRONT,
 
 		//UI Objects
 		GEO_HEART, GEO_BLANKHEART,
 		GEO_TEXTBOX,
+
+		//Triggers
+		GEO_TRIGGER_SLOPE,
 
 		NUM_GEOMETRY,
 	};
@@ -180,6 +184,8 @@ private:
 	bool pressedA;
 	bool injump;
 	bool infall;
+	bool attack;
+	bool trigger;
 
 	float a_PosX;
 	float a_PosY;
