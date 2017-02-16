@@ -339,7 +339,7 @@ void StudioProject2Scene1::Init()
 
 	/*----------------------Light Initialisation-----------------------------------*/
 	light[0].type = Light::LIGHT_POINT;
-	light[0].position.Set(45, 20, -20);
+	light[0].position.Set(40, 10, -20);
 	light[0].color.Set(0.251, 0.878, 0.816);
 	light[0].power = 5;
 	light[0].kC = 1.f;
@@ -383,7 +383,7 @@ void StudioProject2Scene1::Init()
 	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
 
 	light[2].type = Light::LIGHT_POINT;
-	light[2].position.Set(-70, 10, -10);
+	light[2].position.Set(-80, 10, -10);
 	light[2].color.Set(0.251, 0.878, 0.816);
 	light[2].power = 5;
 	light[2].kC = 1.f;
@@ -556,195 +556,6 @@ void StudioProject2Scene1::Update(double dt)
 	if (Application::IsKeyPressed('P'))
 		light[3].position.y += (float)(LSPEED * dt);
 
-	/*-----------------------Text Interaction----------------*/
-	// Whenever press Enter is needed to continue [message or interaction]
-	if (pEnter == true)
-		pressEnterTS = 2;
-	else
-		pressEnterTS = 0;
-
-	/*-------------------Spawn Text--------*/
-	if (a_PosX < -17.f || a_PosX > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
-	{
-		spawnTS = 0;
-	}
-	/*-------------------------------------*/
-
-	/*-----------Syringe Text-------------*/
-	if (a_PosX > 10.f && a_PosX < 20.f && textOccured == textOccurStorage)
-	{	// Make syringe text appear once only when near syringe
-		syringeTriggedText = true;	
-		pEnter = true;
-	}
-
-	if (syringeTriggedText == true)
-		syringeTriggedTS = 2;
-	else
-		syringeTriggedTS = 0;
-	
-	if (syringeTriggedText == true && nexttext == true)
-	{
-		textOccured = textOccurStorage + 1; // tO > tOS
-		syringeTriggedText = false;
-		pEnter = false;
-		nexttext = false;
-	}
-	/*--------------------------------------*/
-
-	/*------------Box Text--------------------*/
-	if (a_PosX > 50.f && a_PosX < 70.f && textOccured > textOccurStorage) //When near box, text appears
-	{
-	    pEnter = true;
-	    boxTriggedText = true;
-		textOccurStorage = textOccured + 1; // tO < tOS
-	}
-
-
-	if (boxTriggedText == true)
-		boxTriggedTS = 2;
-	else
-		boxTriggedTS = 0;
-
-	if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_text < elapsedTime))
-	{
-		bufferTime_text = elapsedTime + 0.1f;
-		nexttext = true;
-	}
-
-	if (boxTriggedText == true && nexttext == true)
-	{
-		boxTriggedText = false;
-		boxTriggedText_Two = true;
-		nexttext = false;
-	}
-	
-	if (boxTriggedText_Two == true)
-		boxTriggedTS_two = 2;
-	else
-		boxTriggedTS_two = 0;
-
-	if (boxTriggedText_Two == true && nexttext == true)
-	{
-		pEnter = false;
-		boxTriggedText_Two = false;
-		nexttext = false;
-	}
-	/*----------------------------------------------*/
-
-	/*------Half Mutant conversation with Alexis-----*/
-	if (a_PosX < 170 && a_PosX > 160 && textOccured < textOccurStorage) 
-	{	//When alexis at wall, he sees the half mutant and text gets triggered
-		textOccured = textOccurStorage; // tO == tOS
-		hmTriggeredText = true;
-		pEnter = true;
-	}
-
-	if (hmTriggeredText == true) 
-		hmTriggedTS = 2;
-	else
-		hmTriggedTS = 0;
-	
-	if (hmTriggeredText == true && nexttext == true)
-	{
-		hmTriggeredText = false;
-		hm_to_alexis = true;
-		nexttext = false;
-	}
-
-	if (hm_to_alexis == true)
-		hm_to_alexisTS = 2;
-	else
-		hm_to_alexisTS = 0;
-
-
-	if (hm_to_alexis == true && nexttext == true)
-	{
-		hm_to_alexis = false;
-		alexis_to_hm = true;
-		nexttext = false;
-	}
-
-	if (alexis_to_hm == true)
-		alexis_to_hmTS = 2;
-	else
-		alexis_to_hmTS = 0;
-
-	if (alexis_to_hm == true && nexttext == true)
-	{
-		alexis_to_hm = false;
-		pEnter = false;
-		nexttext = false;
-		//Since cannot get back to the other side of the wall, 
-		//the syringe text wont be reachable , so reuse the tO == tOS condition for next text
-	}
-	/*----------------------------------------------------*/
-
-	if (alexis_beside_hm == true)
-		alexis_beside_hmTS = 2;
-	else
-		alexis_beside_hmTS = 0;
-
-
-	if (a_PosX < 200 && a_PosX > 190 && textOccured == textOccurStorage)
-	{
-	    alexis_beside_hm = true;
-		pEnter = true;
-	}
-
-	if (alexis_beside_hm == true && nexttext == true)
-	{
-		pEnter = false;
-		alexis_beside_hm = false;
-		nexttext = false;
-		textOccured = textOccurStorage + 1; // tO > tOS
-	}
-	
-
-	//if () [Right after projectile barely missed]
-	//{  need a boolean to set true 
-	//   when projectile is thrown
-	//	 postProjectileThrownText = true;
-	//	 postProjectileThrownTS = 2;
-	//}
-
-	//if (postProjectileThrownTS == 2)
-	//{
-	//	if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		postProjectileThrownTS = 0;
-	//   }
-	//}
-
-	//if (postProjectileThrownText == true
-	//     && [insert coordinates of character.x or character.z when fm and char distance is less than 10])
-	//{
-	//	 fm_triggedText = true;
-	//   fm_triggedTS = 2;
-	//   postProjectileThrownText = false;
-	//}
-
-	//if (fm_triggedText == true)
-	//{
-	//   if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		alexisText = true;
-	//		fm_triggedTS = 0;
-	//      alexisTS = 2;
-	//		fm_triggedText = false;
-	//   }
-	//}
-
-	//if (alexisText == true)
-	//{
-	//    if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		guideText = true;
-	//		alexisTS = 0;
-	//		guideTS = 2;
-	//		alexisText = false;
-	//   }
-	//}
-	/*-------------------------------------------------------------------*/
 
 	/*----------Character Movement-------------------*/
 
@@ -940,11 +751,8 @@ void StudioProject2Scene1::Update(double dt)
 	else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
 		trigger = false;
 	/*--------------------------------------*/
-}
-
-void StudioProject2Scene1::text()
-{
-	//fill in when necessary
+	TextSystem();
+	LightSystem();
 }
 
 void StudioProject2Scene1::Render()
@@ -991,14 +799,6 @@ void StudioProject2Scene1::Render()
 	modelStack.Translate(light[3].position.x, light[3].position.y, light[3].position.z);
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
-
-	/*-----------------Skybox-------------------*/
-	modelStack.PushMatrix();
-	modelStack.Translate(50, 170, -200);
-	modelStack.Scale(1000, 500, 500);
-	RenderMesh(meshList[GEO_SKYBOX], false);
-	modelStack.PopMatrix();
-	/*------------------------------------------*/
 
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
@@ -1103,7 +903,7 @@ void StudioProject2Scene1::Render()
 
 	/*--------------------trees rendering-----------------*/
 	modelStack.PushMatrix();
-	modelStack.Translate(0, -12, -60);
+	modelStack.Translate(0, -20, -60);
 	modelStack.Scale(5, 5, 5);
 	for (unsigned i = 0; i < 3; ++i)
 	{
@@ -1113,7 +913,7 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(-1, -24, -120);
+	modelStack.Translate(-1, -30, -120);
 	modelStack.Scale(5, 5, 5);
 	for (unsigned i = 0; i < 3; ++i)
 	{
@@ -1149,6 +949,14 @@ void StudioProject2Scene1::Render()
 	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_TRUMP], true);
 	modelStack.PopMatrix();
+
+	/*-----------------Skybox-------------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(50, 170, -200);
+	modelStack.Scale(1000, 500, 500);
+	RenderMesh(meshList[GEO_SKYBOX], false);
+	modelStack.PopMatrix();
+	/*------------------------------------------*/
 
 	/*-----------------Environmental Light Rendering------*/
 	modelStack.PushMatrix();
@@ -1239,8 +1047,6 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	/*-----------------------------------------------------*/
-
-	
 
 	/*----Textbox Rendering--------*/
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1431,6 +1237,291 @@ void StudioProject2Scene1::RenderMeshOnScreen(Mesh* mesh, int x, int y, int size
 	modelStack.PopMatrix();
 
 	glEnable(GL_DEPTH_TEST);
+}
+
+void StudioProject2Scene1::LightSystem()
+{
+	if (a_PosX < 10)
+	{
+		light[2].power = 5;
+		glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+	}
+	else
+	{
+		light[2].power = 0;
+		glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+	}
+
+	if (a_PosX < 25)
+	{
+		light[1].power = 2;
+		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+	}
+	else
+	{
+		light[1].power = 0;
+		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+	}
+
+	if (a_PosX > 25 && a_PosX < 90)
+	{
+		light[0].power = 5;
+		glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+	}
+	else
+	{
+		light[0].power = 0;
+		glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+	}
+
+	if (a_PosX > 90 && a_PosX < 190)
+	{
+		light[3].power = 5;
+		glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+	}
+	else
+	{
+		light[3].power = 0;
+		glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+	}
+
+	if (a_PosX > 210 && a_PosX < 290)
+	{
+		light[4].power = 5;
+		glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
+	}
+	else
+	{
+		light[4].power = 0;
+		glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
+	}
+
+	if (a_PosX > 300 && a_PosX < 380)
+	{
+		light[5].power = 5;
+		glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
+	}
+	else
+	{
+		light[5].power = 0;
+		glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
+	}
+
+	if (a_PosX > 400 && a_PosX < 490)
+	{
+		light[6].power = 5;
+		glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
+	}
+	else
+	{
+		light[6].power = 0;
+		glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
+	}
+
+	if (a_PosX > 480 && a_PosX < 590)
+	{
+		light[7].power = 5;
+		glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
+	}
+	else
+	{
+		light[7].power = 0;
+		glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
+	}
+}
+
+void StudioProject2Scene1::TextSystem()
+{
+	/*-----------------------Text Interaction----------------*/
+	// Whenever press Enter is needed to continue [message or interaction]
+	if (pEnter == true)
+		pressEnterTS = 2;
+	else
+		pressEnterTS = 0;
+
+	/*-------------------Spawn Text--------*/
+	if (a_PosX < -17.f || a_PosX > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
+	{
+		spawnTS = 0;
+	}
+	/*-------------------------------------*/
+
+	/*-----------Syringe Text-------------*/
+	if (a_PosX > 10.f && a_PosX < 20.f && textOccured == textOccurStorage)
+	{	// Make syringe text appear once only when near syringe
+		syringeTriggedText = true;
+		pEnter = true;
+	}
+
+	if (syringeTriggedText == true)
+		syringeTriggedTS = 2;
+	else
+		syringeTriggedTS = 0;
+
+	if (syringeTriggedText == true && nexttext == true)
+	{
+		textOccured = textOccurStorage + 1; // tO > tOS
+		syringeTriggedText = false;
+		pEnter = false;
+		nexttext = false;
+	}
+	/*--------------------------------------*/
+
+	/*------------Box Text--------------------*/
+	if (a_PosX > 50.f && a_PosX < 70.f && textOccured > textOccurStorage) //When near box, text appears
+	{
+		pEnter = true;
+		boxTriggedText = true;
+		textOccurStorage = textOccured + 1; // tO < tOS
+	}
+
+
+	if (boxTriggedText == true)
+		boxTriggedTS = 2;
+	else
+		boxTriggedTS = 0;
+
+	if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_text < elapsedTime))
+	{
+		bufferTime_text = elapsedTime + 0.1f;
+		nexttext = true;
+	}
+
+	if (boxTriggedText == true && nexttext == true)
+	{
+		boxTriggedText = false;
+		boxTriggedText_Two = true;
+		nexttext = false;
+	}
+
+	if (boxTriggedText_Two == true)
+		boxTriggedTS_two = 2;
+	else
+		boxTriggedTS_two = 0;
+
+	if (boxTriggedText_Two == true && nexttext == true)
+	{
+		pEnter = false;
+		boxTriggedText_Two = false;
+		nexttext = false;
+	}
+	/*----------------------------------------------*/
+
+	/*------Half Mutant conversation with Alexis-----*/
+	if (a_PosX < 170 && a_PosX > 160 && textOccured < textOccurStorage)
+	{	//When alexis at wall, he sees the half mutant and text gets triggered
+		textOccured = textOccurStorage; // tO == tOS
+		hmTriggeredText = true;
+		pEnter = true;
+	}
+
+	if (hmTriggeredText == true)
+		hmTriggedTS = 2;
+	else
+		hmTriggedTS = 0;
+
+	if (hmTriggeredText == true && nexttext == true)
+	{
+		hmTriggeredText = false;
+		hm_to_alexis = true;
+		nexttext = false;
+	}
+
+	if (hm_to_alexis == true)
+		hm_to_alexisTS = 2;
+	else
+		hm_to_alexisTS = 0;
+
+
+	if (hm_to_alexis == true && nexttext == true)
+	{
+		hm_to_alexis = false;
+		alexis_to_hm = true;
+		nexttext = false;
+	}
+
+	if (alexis_to_hm == true)
+		alexis_to_hmTS = 2;
+	else
+		alexis_to_hmTS = 0;
+
+	if (alexis_to_hm == true && nexttext == true)
+	{
+		alexis_to_hm = false;
+		pEnter = false;
+		nexttext = false;
+		//Since cannot get back to the other side of the wall, 
+		//the syringe text wont be reachable , so reuse the tO == tOS condition for next text
+	}
+	/*----------------------------------------------------*/
+
+	if (alexis_beside_hm == true)
+		alexis_beside_hmTS = 2;
+	else
+		alexis_beside_hmTS = 0;
+
+
+	if (a_PosX < 200 && a_PosX > 190 && textOccured == textOccurStorage)
+	{
+		alexis_beside_hm = true;
+		pEnter = true;
+	}
+
+	if (alexis_beside_hm == true && nexttext == true)
+	{
+		pEnter = false;
+		alexis_beside_hm = false;
+		nexttext = false;
+		textOccured = textOccurStorage + 1; // tO > tOS
+	}
+
+
+	//if () [Right after projectile barely missed]
+	//{  need a boolean to set true 
+	//   when projectile is thrown
+	//	 postProjectileThrownText = true;
+	//	 postProjectileThrownTS = 2;
+	//}
+
+	//if (postProjectileThrownTS == 2)
+	//{
+	//	if (Application::IsKeyPressed((VK_RETURN))
+	//   {
+	//		postProjectileThrownTS = 0;
+	//   }
+	//}
+
+	//if (postProjectileThrownText == true
+	//     && [insert coordinates of character.x or character.z when fm and char distance is less than 10])
+	//{
+	//	 fm_triggedText = true;
+	//   fm_triggedTS = 2;
+	//   postProjectileThrownText = false;
+	//}
+
+	//if (fm_triggedText == true)
+	//{
+	//   if (Application::IsKeyPressed((VK_RETURN))
+	//   {
+	//		alexisText = true;
+	//		fm_triggedTS = 0;
+	//      alexisTS = 2;
+	//		fm_triggedText = false;
+	//   }
+	//}
+
+	//if (alexisText == true)
+	//{
+	//    if (Application::IsKeyPressed((VK_RETURN))
+	//   {
+	//		guideText = true;
+	//		alexisTS = 0;
+	//		guideTS = 2;
+	//		alexisText = false;
+	//   }
+	//}
+	/*-------------------------------------------------------------------*/
+
 }
 
 void StudioProject2Scene1::Exit()
