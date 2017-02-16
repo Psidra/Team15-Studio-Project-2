@@ -27,7 +27,7 @@ StudioProject2Scene1::~StudioProject2Scene1()
 void StudioProject2Scene1::Init()
 {
 	/*----Camera & Camera Variables----*/
-	a_PosX = 0.f;
+	a_PosX = -15.f;
 	a_PosY = 0.f;
 	a_PosZ = 0.f;
 	/*---------------------------------*/
@@ -80,6 +80,30 @@ void StudioProject2Scene1::Init()
 	m_parameters[U_LIGHT1_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[1].cosCutoff");
 	m_parameters[U_LIGHT1_COSINNER] = glGetUniformLocation(m_programID, "lights[1].cosInner");
 	m_parameters[U_LIGHT1_EXPONENT] = glGetUniformLocation(m_programID, "lights[1].exponent");
+
+	m_parameters[U_LIGHT2_POSITION] = glGetUniformLocation(m_programID, "lights[2].position_cameraspace");
+	m_parameters[U_LIGHT2_COLOR] = glGetUniformLocation(m_programID, "lights[2].color");
+	m_parameters[U_LIGHT2_POWER] = glGetUniformLocation(m_programID, "lights[2].power");
+	m_parameters[U_LIGHT2_KC] = glGetUniformLocation(m_programID, "lights[2].kC");
+	m_parameters[U_LIGHT2_KL] = glGetUniformLocation(m_programID, "lights[2].kL");
+	m_parameters[U_LIGHT2_KQ] = glGetUniformLocation(m_programID, "lights[2].kQ");
+	m_parameters[U_LIGHT2_TYPE] = glGetUniformLocation(m_programID, "lights[2].type");
+	m_parameters[U_LIGHT2_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[2].spotDirection");
+	m_parameters[U_LIGHT2_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[2].cosCutoff");
+	m_parameters[U_LIGHT2_COSINNER] = glGetUniformLocation(m_programID, "lights[2].cosInner");
+	m_parameters[U_LIGHT2_EXPONENT] = glGetUniformLocation(m_programID, "lights[2].exponent");
+
+	m_parameters[U_LIGHT3_POSITION] = glGetUniformLocation(m_programID, "lights[3].position_cameraspace");
+	m_parameters[U_LIGHT3_COLOR] = glGetUniformLocation(m_programID, "lights[3].color");
+	m_parameters[U_LIGHT3_POWER] = glGetUniformLocation(m_programID, "lights[3].power");
+	m_parameters[U_LIGHT3_KC] = glGetUniformLocation(m_programID, "lights[3].kC");
+	m_parameters[U_LIGHT3_KL] = glGetUniformLocation(m_programID, "lights[3].kL");
+	m_parameters[U_LIGHT3_KQ] = glGetUniformLocation(m_programID, "lights[3].kQ");
+	m_parameters[U_LIGHT3_TYPE] = glGetUniformLocation(m_programID, "lights[3].type");
+	m_parameters[U_LIGHT3_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[3].spotDirection");
+	m_parameters[U_LIGHT3_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[3].cosCutoff");
+	m_parameters[U_LIGHT3_COSINNER] = glGetUniformLocation(m_programID, "lights[3].cosInner");
+	m_parameters[U_LIGHT3_EXPONENT] = glGetUniformLocation(m_programID, "lights[3].exponent");
 
 	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
 	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); //in case you missed out practical 7
@@ -177,6 +201,7 @@ void StudioProject2Scene1::Init()
 
 	/*------------------------Initialising Text Variables-------------------------------*/
 	spawnTS = 2;
+	pressEnterTS = 0;
 
 	syringeTriggedText = false;
 	syringeTriggedTS = 0;
@@ -210,6 +235,10 @@ void StudioProject2Scene1::Init()
 	guideText = false;
 	guideTS = 0;
 
+	pEnter = false;
+	textOccurStorage = 0;
+	textOccured = 0;
+	nexttext = false;
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
@@ -272,8 +301,52 @@ void StudioProject2Scene1::Init()
 	glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
 	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
 
+	light[2].type = Light::LIGHT_POINT;
+	light[2].position.Set(-70, 10, -10);
+	light[2].color.Set(0.251, 0.878, 0.816);
+	light[2].power = 5;
+	light[2].kC = 1.f;
+	light[2].kL = 0.01f;
+	light[2].kQ = 0.001f;
+	light[2].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[2].cosInner = cos(Math::DegreeToRadian(30));
+	light[2].exponent = 3.f;
+	light[2].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT2_TYPE], light[2].type);
+	glUniform3fv(m_parameters[U_LIGHT2_COLOR], 1, &light[2].color.r);
+	glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+	glUniform1f(m_parameters[U_LIGHT2_KC], light[2].kC);
+	glUniform1f(m_parameters[U_LIGHT2_KL], light[2].kL);
+	glUniform1f(m_parameters[U_LIGHT2_KQ], light[2].kQ);
+	glUniform1f(m_parameters[U_LIGHT2_COSCUTOFF], light[2].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT2_COSINNER], light[2].cosInner);
+	glUniform1f(m_parameters[U_LIGHT2_EXPONENT], light[2].exponent);
+
+	light[3].type = Light::LIGHT_POINT;
+	light[3].position.Set(130, 0, -10);
+	light[3].color.Set(0.251, 0.878, 0.816);
+	light[3].power = 5;
+	light[3].kC = 1.f;
+	light[3].kL = 0.01f;
+	light[3].kQ = 0.001f;
+	light[3].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[3].cosInner = cos(Math::DegreeToRadian(30));
+	light[3].exponent = 3.f;
+	light[3].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT3_TYPE], light[3].type);
+	glUniform3fv(m_parameters[U_LIGHT3_COLOR], 1, &light[3].color.r);
+	glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+	glUniform1f(m_parameters[U_LIGHT3_KC], light[3].kC);
+	glUniform1f(m_parameters[U_LIGHT3_KL], light[3].kL);
+	glUniform1f(m_parameters[U_LIGHT3_KQ], light[3].kQ);
+	glUniform1f(m_parameters[U_LIGHT3_COSCUTOFF], light[3].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT3_COSINNER], light[3].cosInner);
+	glUniform1f(m_parameters[U_LIGHT3_EXPONENT], light[3].exponent);
+
 	// Make sure you pass uniform parameters after glUseProgram()
-	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
+	glUniform1i(m_parameters[U_NUMLIGHTS], 4);
 	/*-------------------------------------------------------------------------------*/
 }
 
@@ -302,87 +375,161 @@ void StudioProject2Scene1::Update(double dt)
 
 	float LSPEED = 10.f;
 	if (Application::IsKeyPressed('I'))
-		light[1].position.z -= (float)(LSPEED * dt);
+		light[3].position.z -= (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('K'))
-		light[1].position.z += (float)(LSPEED * dt);
+		light[3].position.z += (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('J'))
-		light[1].position.x -= (float)(LSPEED * dt);
+		light[3].position.x -= (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('L'))
-		light[1].position.x += (float)(LSPEED * dt);
+		light[3].position.x += (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('O'))
-		light[1].position.y -= (float)(LSPEED * dt);
+		light[3].position.y -= (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('P'))
-		light[1].position.y += (float)(LSPEED * dt);
+		light[3].position.y += (float)(LSPEED * dt);
 
 	/*-----------------------Text Interaction----------------*/
-	//if () [Movement will remove the spawn text]
-	//{
-	//}
+	// Whenever press Enter is needed to continue [message or interaction]
+	if (pEnter == true)
+		pressEnterTS = 2;
+	else
+		pressEnterTS = 0;
 
-	//if () [When near syringe, then make text appear]
-	//{
-	//}
+	/*-------------------Spawn Text--------*/
+	if (a_PosX < -17.f || a_PosX > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
+	{
+		spawnTS = 0;
+	}
+	/*-------------------------------------*/
 
-	//if () [Get coordinates beside box]
-	//{
-	//	  boxTriggedTS = 2;
-	//    boxTriggedText = true;
-	//}
+	/*-----------Syringe Text-------------*/
+	if (a_PosX > 10.f && a_PosX < 20.f && textOccured == textOccurStorage)
+	{	// Make syringe text appear once only when near syringe
+		syringeTriggedText = true;	
+		pEnter = true;
+	}
+
+	if (syringeTriggedText == true)
+		syringeTriggedTS = 2;
+	else
+		syringeTriggedTS = 0;
+	
+	if (syringeTriggedText == true && nexttext == true)
+	{
+		textOccured = textOccurStorage + 1; // tO > tOS
+		syringeTriggedText = false;
+		pEnter = false;
+		nexttext = false;
+	}
+	/*--------------------------------------*/
+
+	/*------------Box Text--------------------*/
+	if (a_PosX > 50.f && a_PosX < 70.f && textOccured > textOccurStorage) //When near box, text appears
+	{
+	    pEnter = true;
+	    boxTriggedText = true;
+		textOccurStorage = textOccured + 1; // tO < tOS
+	}
 
 
 	if (boxTriggedText == true)
+		boxTriggedTS = 2;
+	else
+		boxTriggedTS = 0;
+
+	if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_text < elapsedTime))
 	{
-		if (Application::IsKeyPressed(VK_RETURN))
-		{
-			boxTriggedText_Two = true;
-			boxTriggedTS = 0;
-			boxTriggedTS_two = 2;
-			boxTriggedText = false;
-		}
+		bufferTime_text = elapsedTime + 0.1f;
+		nexttext = true;
 	}
 
-	//if () [When alexis at wall, he sees the half mutant and text gets triggered]
-	//{ hmTriggeredText = true;
-	//}
+	if (boxTriggedText == true && nexttext == true)
+	{
+		boxTriggedText = false;
+		boxTriggedText_Two = true;
+		nexttext = false;
+	}
+	
+	if (boxTriggedText_Two == true)
+		boxTriggedTS_two = 2;
+	else
+		boxTriggedTS_two = 0;
+
+	if (boxTriggedText_Two == true && nexttext == true)
+	{
+		pEnter = false;
+		boxTriggedText_Two = false;
+		nexttext = false;
+	}
+	/*----------------------------------------------*/
+
+	/*------Half Mutant conversation with Alexis-----*/
+	if (a_PosX < 170 && a_PosX > 160 && textOccured < textOccurStorage) 
+	{	//When alexis at wall, he sees the half mutant and text gets triggered
+		textOccured = textOccurStorage; // tO == tOS
+		hmTriggeredText = true;
+		pEnter = true;
+	}
 
 	if (hmTriggeredText == true) 
+		hmTriggedTS = 2;
+	else
+		hmTriggedTS = 0;
+	
+	if (hmTriggeredText == true && nexttext == true)
 	{
-		if (Application::IsKeyPressed(VK_RETURN))
-		{
-			hm_to_alexis = true;
-			hmTriggedTS = 0;
-			hm_to_alexisTS = 2;
-			hmTriggeredText = false;
-		}
+		hmTriggeredText = false;
+		hm_to_alexis = true;
+		nexttext = false;
 	}
 
 	if (hm_to_alexis == true)
+		hm_to_alexisTS = 2;
+	else
+		hm_to_alexisTS = 0;
+
+
+	if (hm_to_alexis == true && nexttext == true)
 	{
-		if (Application::IsKeyPressed(VK_RETURN))
-		{
-			alexis_to_hm = true;
-			hm_to_alexisTS = 0;
-			alexis_to_hmTS = 2;
-			hm_to_alexis = false;
-		}
+		hm_to_alexis = false;
+		alexis_to_hm = true;
+		nexttext = false;
 	}
 
-	//if (alexis_to_hm == true && [insert coordinates (right beside half mutant)])
-	//{
-	//      alexis_beside_hm = true;
-	//		alexis_to_hmTS = 0;
-	//		alexis_beside_hmTS = 2;
-	//		alexis_to_hm = false;
-	//}
+	if (alexis_to_hm == true)
+		alexis_to_hmTS = 2;
+	else
+		alexis_to_hmTS = 0;
 
-	//if (alexis_beside_hm == true)
-	//{
-	//   if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		alexis_beside_hmTS = 0;
-	//		alexis_beside_hm = false;
-	//   }
-	//}
+	if (alexis_to_hm == true && nexttext == true)
+	{
+		alexis_to_hm = false;
+		pEnter = false;
+		nexttext = false;
+		//Since cannot get back to the other side of the wall, 
+		//the syringe text wont be reachable , so reuse the tO == tOS condition for next text
+	}
+	/*----------------------------------------------------*/
+
+	if (alexis_beside_hm == true)
+		alexis_beside_hmTS = 2;
+	else
+		alexis_beside_hmTS = 0;
+
+
+	if (a_PosX < 200 && a_PosX > 190 && textOccured == textOccurStorage)
+	{
+	    alexis_beside_hm = true;
+		pEnter = true;
+	}
+
+	if (alexis_beside_hm == true && nexttext == true)
+	{
+		pEnter = false;
+		alexis_beside_hm = false;
+		nexttext = false;
+		textOccured = textOccurStorage + 1; // tO > tOS
+	}
+	
 
 	//if () [Right after projectile barely missed]
 	//{  need a boolean to set true 
@@ -591,8 +738,14 @@ void StudioProject2Scene1::Render()
 	Position lightPosition1_cameraspace = viewStack.Top() * light[1].position;
 	glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition1_cameraspace.x);
 
+	Position lightPosition2_cameraspace = viewStack.Top() * light[2].position;
+	glUniform3fv(m_parameters[U_LIGHT2_POSITION], 1, &lightPosition2_cameraspace.x);
+
+	Position lightPosition3_cameraspace = viewStack.Top() * light[3].position;
+	glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightPosition3_cameraspace.x);
+
 	modelStack.PushMatrix();
-	modelStack.Translate(light[1].position.x, light[1].position.y, light[1].position.z);
+	modelStack.Translate(light[3].position.x, light[3].position.y, light[3].position.z);
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();
 
@@ -703,6 +856,28 @@ void StudioProject2Scene1::Render()
 	RenderMesh(meshList[GEO_LIGHTBULB], true);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(-60, -10, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(135, -16, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
 	/*-----------------------------------------------------*/
 
 
@@ -746,6 +921,8 @@ void StudioProject2Scene1::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "My apologies.", Color(1, 1, 1), alexisTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press Left Click to swing your sword", Color(1, 1, 1), guideTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "and attack when nearby.", Color(1, 1, 1), guideTS, 1, -4);
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to continue", Color(1, 1, 1), pressEnterTS, 1, -6);
 	/*-----------------------------------------*/
 
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
