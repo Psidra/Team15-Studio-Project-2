@@ -25,7 +25,7 @@ public:
 	void translate(float x, float y, float z);
 	void scale(float x, float y, float z);
 	bool collide(BoundingBox &b);
-	void setto(float x, float y, float z);
+	bool higherthan(BoundingBox &b);
 };
 
 #endif // !BOUNDINGBOX_H

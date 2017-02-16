@@ -147,15 +147,33 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HILL] = MeshBuilder::GenerateOBJ("Hill", "OBJ//Scene1//Hill.obj");
 	meshList[GEO_FLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//Scene1//Floor.obj");
 	meshList[GEO_TRUMP] = MeshBuilder::GenerateOBJ("Trump", "OBJ//Scene1//Trump.obj");
+	meshList[GEO_BOX_SHORTTEST] = MeshBuilder::GenerateOBJ("Box_Short", "OBJ//Scene1//Box_Short.obj"); // THE TEST NAME AT THE END
+	meshList[GEO_BOX_TALLTEST] = MeshBuilder::GenerateOBJ("Box_Tall", "OBJ//Scene1//Box_Tall.obj");	   // INDICATES I NEED IT TO TEST FOR
+	meshList[GEO_TRUMPTEST] = MeshBuilder::GenerateOBJ("Trump", "OBJ//Scene1//Trump.obj");			   // COLLISION SO YOU CAN STAND ON IT
 
 	meshList[GEO_HOUSEFLOOR]->MeshBBox.loadBB("OBJ//Scene1//House_Floor.obj");
 	meshList[GEO_HOUSELEFTWALL]->MeshBBox.loadBB("OBJ//Scene1//House_Left_Wall.obj");
 	meshList[GEO_HOUSEFRONT]->MeshBBox.loadBB("OBJ//Scene1//House_Front.obj");
 	meshList[GEO_BOX_SHORT]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
+	meshList[GEO_BOX_SHORT]->MeshBBox.scale(1, 1.5f, 1);
+	meshList[GEO_BOX_SHORT]->MeshBBox.translate(490, -250.f, 0);
+	meshList[GEO_BOX_SHORTTEST]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
+	meshList[GEO_BOX_SHORTTEST]->MeshBBox.scale(1, 1.6f, 1);
+	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(490, -250.f, 0);
 	meshList[GEO_BOX_TALL]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_BOX_TALL]->MeshBBox.scale(1, 1.5f, 1);
+	meshList[GEO_BOX_TALL]->MeshBBox.translate(500, -250.f, 0);
+	meshList[GEO_BOX_TALLTEST]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_BOX_TALLTEST]->MeshBBox.scale(1, 1.6f, 1);
+	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(500, -250.f, 0);
 	meshList[GEO_FLOOR]->MeshBBox.loadBB("OBJ//Scene1//Floor.obj");
-	meshList[GEO_FLOOR]->MeshBBox.translate(50, -252.25f, 0);
+	meshList[GEO_FLOOR]->MeshBBox.translate(50, -253.75f, 0);
 	meshList[GEO_TRUMP]->MeshBBox.loadBB("OBJ//Scene1//Trump.obj");
+	meshList[GEO_TRUMP]->MeshBBox.scale(1, 1.5f, 1);
+	meshList[GEO_TRUMP]->MeshBBox.translate(550, -250.f, 0);
+	meshList[GEO_TRUMPTEST]->MeshBBox.loadBB("OBJ//Scene1//Trump.obj");
+	meshList[GEO_TRUMPTEST]->MeshBBox.scale(1, 1.6f, 1);
+	meshList[GEO_TRUMPTEST]->MeshBBox.translate(550, -250.f, 0);
 
 	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
@@ -670,18 +688,28 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		if (injump == false)
 		{
-			if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			if (/*!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&*/
 				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
 				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox) &&
-				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_FLOOR]->MeshBBox) && 
-				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && 
-				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && 
-				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-				a_PosY -= (float)(30.f * dt);
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_FLOOR]->MeshBBox)/*&&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
+			{
+				if ((meshList[GEO_ALEXIS_CROTCH]->MeshBBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) &&
+					meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
+					(meshList[GEO_ALEXIS_CROTCH]->MeshBBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
+					meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
+				{
+					
+				}
+				else
+				{
+					a_PosY -= (float)(30.f * dt);
+				}
+			}
 		}
 		else
 		{
-			a_PosY += (float)(30.f * dt);
+				a_PosY += (float)(30.f * dt);
 		}
 	}
 
@@ -936,10 +964,14 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
+	modelStack.Translate(490.f, -250.f, 0);
+	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_BOX_SHORT], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
+	modelStack.Translate(500.f, -250.f, 0);
+	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_BOX_TALL], true);
 	modelStack.PopMatrix();
 
@@ -949,6 +981,8 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
+	modelStack.Translate(550.f, -250.f, 0);
+	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_TRUMP], true);
 	modelStack.PopMatrix();
 

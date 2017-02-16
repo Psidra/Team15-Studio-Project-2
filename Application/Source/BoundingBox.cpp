@@ -69,13 +69,7 @@ void BoundingBox::resetBB()
 	min_ = dmin_;
 }
 
-void BoundingBox::setto(float x, float y, float z)
+bool BoundingBox::higherthan(BoundingBox &b)
 {
-	this->max_.x = x;
-	this->max_.y = y;
-	this->max_.z = z;
-
-	this->min_.x = x;
-	this->min_.y = (y - 8);
-	this->min_.z = z;
+	return (b.max_.y <= BoundingBox::min_.y);
 }
