@@ -84,6 +84,30 @@ public:
 		U_LIGHT1_COSINNER,
 		U_LIGHT1_EXPONENT,
 
+		U_LIGHT2_POSITION,
+		U_LIGHT2_COLOR,
+		U_LIGHT2_POWER,
+		U_LIGHT2_KC,
+		U_LIGHT2_KL,
+		U_LIGHT2_KQ,
+		U_LIGHT2_TYPE,
+		U_LIGHT2_SPOTDIRECTION,
+		U_LIGHT2_COSCUTOFF,
+		U_LIGHT2_COSINNER,
+		U_LIGHT2_EXPONENT,
+
+		U_LIGHT3_POSITION,
+		U_LIGHT3_COLOR,
+		U_LIGHT3_POWER,
+		U_LIGHT3_KC,
+		U_LIGHT3_KL,
+		U_LIGHT3_KQ,
+		U_LIGHT3_TYPE,
+		U_LIGHT3_SPOTDIRECTION,
+		U_LIGHT3_COSCUTOFF,
+		U_LIGHT3_COSINNER,
+		U_LIGHT3_EXPONENT,
+
 		U_LIGHTENABLED,
 		U_NUMLIGHTS, 
 
@@ -99,7 +123,7 @@ private:
 	Mesh* meshList[NUM_GEOMETRY];
 	//Camera2 camera;
 	Camera4 camera;
-	Light light[2];
+	Light light[4];
 	MS modelStack, viewStack, projectionStack;
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
@@ -113,6 +137,7 @@ private:
 	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
 	/*--------------------Text Variables--------------------------*/
 	int spawnTS; // all text size 2
+	int pressEnterTS;
 
 	bool syringeTriggedText; 
 	int	syringeTriggedTS;
@@ -145,6 +170,12 @@ private:
 
 	bool guideText; 
 	int guideTS;
+
+	bool pEnter;
+	int textOccurStorage;
+	int textOccured;
+	bool nexttext;
+
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/
