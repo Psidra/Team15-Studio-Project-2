@@ -9,7 +9,7 @@ public:
 	static PlayerClass* get_instance()
 	{
 		if (!instance)
-			instance = new PlayerClass;
+			instance = new PlayerClass();
 		else
 			return instance;
 	}
@@ -19,6 +19,15 @@ public:
 
 	void add_energy(int EP);
 	unsigned int get_energy();
+
+	struct Coordinates
+	{
+		float posX;
+		float posY;
+		float posZ;
+	};
+
+	Coordinates Coord;
 
 private:
 	PlayerClass() {};

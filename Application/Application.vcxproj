@@ -97,6 +97,8 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\PlayerClass.cpp" />
+    <ClCompile Include="Source\Scene1Interactions.cpp" />
+    <ClCompile Include="Source\Scene1Functions.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\StudioProject2_MainMenu.cpp" />

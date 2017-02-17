@@ -1,6 +1,7 @@
 #ifndef StudioProject2Scene1_H
 #define StudioProject2Scene1_H
 #include <string>
+#include <vector>
 #include "Scene.h"
 #include "Camera2.h"
 #include "Camera3.h"
@@ -9,6 +10,7 @@
 #include "MeshBuilder.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include "EnemyClass.h"
 
 class StudioProject2Scene1 : public Scene
 {
@@ -21,6 +23,7 @@ public:
 	virtual void Render();
 	virtual void RenderMesh(Mesh *mesh, bool enableLight);
 	virtual void Exit();
+	std::vector<EnemyClass> enemy;
 	virtual bool otheranims();
 
 	enum GEOMETRY_TYPE
@@ -178,12 +181,19 @@ private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 
-	void RenderSkybox();
+	void LoadLight();
+	void LoadCharacter();
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
-	void LightSystem(); // Light Interactions
-	void TextSystem(); // Text Interactions
+	void LightInteraction();
+	void TextInteraction(); 
+	void HeadDirection();
+
+	/*--------Render Mutants Function-----------*/
+	void RenderHalfMutant();
+	void RenderFullMutant();
+	/*------------------------------------------*/
 
 	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
 	/*--------------------Text Variables--------------------------*/
@@ -274,6 +284,7 @@ private:
 	double bufferTime_text;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
+
 };
 
 #endif 
