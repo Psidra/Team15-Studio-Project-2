@@ -21,6 +21,7 @@ public:
 	virtual void Render();
 	virtual void RenderMesh(Mesh *mesh, bool enableLight);
 	virtual void Exit();
+	virtual bool otheranims();
 
 	enum GEOMETRY_TYPE
 	{
@@ -228,7 +229,7 @@ private:
 
 	/*------------------------------------------------------------*/
 
-	/*-------------Character Variables (a means Alexis)-----------*/
+	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
 	float a_LookingDirection;
 	bool pressedD;
 	bool pressedA;
@@ -245,6 +246,9 @@ private:
 	float a_RotationLeftLeg;
 	float a_RotationRightLeg;
 	/*------------------------------------------------------------*/
+
+	float ShortBox_PosX;
+	float TallBox_PosX;
 
 	/*----------------Health System UI variables (hearts)---------*/
 	float a_heart1;
@@ -268,7 +272,8 @@ private:
 	double bufferTime_Jump;
 	double bufferTime_attack;
 	double bufferTime_text;
-	double bufferTime_trigger_slope;
+	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
+	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
 };
 
 #endif 

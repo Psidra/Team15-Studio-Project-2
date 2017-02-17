@@ -16,7 +16,7 @@
 #define VK_4 0x34
 
 bool MouseControl;
-double et = 0.0;
+PlayerClass* Alexis = PlayerClass::get_instance();
 
 StudioProject2Scene1::StudioProject2Scene1()
 {
@@ -238,7 +238,6 @@ void StudioProject2Scene1::Init()
 	/*-----------------------------------------------------------------------------*/
 	
 	/*--------------------------Character Loading----------------------------------*/
-	PlayerClass* Alexis = PlayerClass::get_instance();
 
 	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
 	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
@@ -323,6 +322,14 @@ void StudioProject2Scene1::Init()
 
 	/*---------------------------Initialising Variables---------------------------------*/
 	MouseControl = false;
+	ShortBox_PosX = 0.f;
+	TallBox_PosX = 0.f;
+	bufferTime_JumpUp = -1.f;
+	bufferTime_Jump = -1.f;
+	bufferTime_attack = -1.f;
+	bufferTime_text = -1.f;
+	bufferTime_trigger_slope = -1.f;
+	bufferTime_grab = -1.f;
 
 	/*-----Character--------*/
 	a_LookingDirection = 90.0f;
@@ -332,6 +339,7 @@ void StudioProject2Scene1::Init()
 	infall = true;
 	attack = false;
 	trigger = false;
+	grab = false;
 	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -520,6 +528,7 @@ void StudioProject2Scene1::Init()
 	/*-------------------------------------------------------------------------------*/
 }
 
+double et = 0.0;
 void StudioProject2Scene1::Update(double dt)
 {
 	static float rotationDirection = 1.0f;
@@ -580,6 +589,11 @@ void StudioProject2Scene1::Update(double dt)
 	/*-----------------------------------------------*/
 
 	/*------------------------------Collision Check------------------------------*/
+	if (!otheranims())
+	{
+		et = 0;
+	}
+
 	if (Application::IsKeyPressed('A') && !trigger)
 	{
 		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
@@ -591,6 +605,22 @@ void StudioProject2Scene1::Update(double dt)
 			a_RotationRightLeg -= (float)(rotationDirection * 5.0f * dt);
 			pressedD = false;
 			pressedA = true;
+
+			if (grab)
+			{
+				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				{
+					ShortBox_PosX -= (float)(30.f * dt);
+					meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+				}
+				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				{
+					TallBox_PosX -= (float)(30.f * dt);
+					meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+				}
+			}
 		}
 	}
 	if (Application::IsKeyPressed('D') && !trigger)
@@ -604,6 +634,22 @@ void StudioProject2Scene1::Update(double dt)
 			a_RotationRightLeg -= (float)(rotationDirection * 15.0f * dt);
 			pressedA = false;
 			pressedD = true;
+
+			if (grab)
+			{
+				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				{
+					ShortBox_PosX += (float)(30.f * dt);
+					meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+				}
+				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				{
+					TallBox_PosX += (float)(30.f * dt);
+					meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+				}
+			}
 		}
 	}
 	if (Application::IsKeyPressed('W') && (bufferTime_Jump < elapsedTime) && !trigger)
@@ -614,6 +660,10 @@ void StudioProject2Scene1::Update(double dt)
 	if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
 	{
 		bufferTime_attack = elapsedTime + 1;
+	}
+	if (Application::IsKeyPressed('F'))
+	{
+		bufferTime_grab = elapsedTime + 0.3f;
 	}
 
 	if (bufferTime_JumpUp > elapsedTime)
@@ -629,7 +679,16 @@ void StudioProject2Scene1::Update(double dt)
 	else
 	{
 		attack = false;
-		et = 0;
+	}
+
+	if (bufferTime_grab > elapsedTime)
+	{
+		grab = true;
+		et += dt;
+	}
+	else
+	{
+		grab = false;
 	}
 
 	if (!trigger)
@@ -810,6 +869,8 @@ void StudioProject2Scene1::Render()
 		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 
 
+		// add in grab animation later
+
 		modelStack.PushMatrix();
 		AttackAnim(attack, &modelStack, &et, "polySurface9"); // HEAD
 
@@ -908,13 +969,13 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(490.f, -250.f, 0);
+	modelStack.Translate((490 + ShortBox_PosX), -250.f, 0);
 	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_BOX_SHORT], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(500.f, -250.f, 0);
+	modelStack.Translate((500 + TallBox_PosX), -250.f, 0);
 	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_BOX_TALL], true);
 	modelStack.PopMatrix();
@@ -1502,6 +1563,11 @@ void StudioProject2Scene1::TextSystem()
 	//}
 	/*-------------------------------------------------------------------*/
 
+}
+
+bool StudioProject2Scene1::otheranims()
+{
+	return (injump || infall || attack || trigger || grab);
 }
 
 void StudioProject2Scene1::Exit()
