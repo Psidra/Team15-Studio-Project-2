@@ -8,7 +8,10 @@ void AttackAnim(bool attack, MS* modelStack, double* timeElapsed, const std::str
 	if (attack)
 		LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);//HEAD
 	else if (!attack)
-		LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);//HEAD
+	{
+		double zero = 0;
+		LoadAtom("ATOM//attack.atom", modelStack, &zero, dagNode);//HEAD
+	}
 }
 
 void WalkAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode)

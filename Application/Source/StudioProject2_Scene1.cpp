@@ -16,7 +16,7 @@
 #define VK_4 0x34
 
 bool MouseControl;
-double et = 0.0;
+PlayerClass* Alexis = PlayerClass::get_instance();
 
 StudioProject2Scene1::StudioProject2Scene1()
 {
@@ -254,6 +254,22 @@ void StudioProject2Scene1::Init()
 	
 	/*--------------------------Character Loading----------------------------------*/
 	LoadCharacter();
+	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
+	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
+	meshList[GEO_ALEXIS_BODY] = MeshBuilder::GenerateOBJ("aBody", "OBJ//Character//body.obj");
+	meshList[GEO_ALEXIS_BODY]->textureID = LoadTGA("Image//bodytext.tga");
+	meshList[GEO_ALEXIS_CROTCH] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//Character//crotch.obj");
+	meshList[GEO_ALEXIS_CROTCH]->textureID = LoadTGA("Image//crotchtext.tga");
+	meshList[GEO_ALEXIS_RIGHTARM] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//Character//rightarm.obj");
+	meshList[GEO_ALEXIS_RIGHTARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_LEFTARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//Character//leftarm.obj");
+	meshList[GEO_ALEXIS_LEFTARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_RIGHTLEG] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//Character//rightleg.obj");
+	meshList[GEO_ALEXIS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Character//leftleg.obj");
+	meshList[GEO_ALEXIS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.loadBB("OBJ//Character//crotch.obj");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -321,6 +337,14 @@ void StudioProject2Scene1::Init()
 
 	/*---------------------------Initialising Variables---------------------------------*/
 	MouseControl = false;
+	ShortBox_PosX = 0.f;
+	TallBox_PosX = 0.f;
+	bufferTime_JumpUp = -1.f;
+	bufferTime_Jump = -1.f;
+	bufferTime_attack = -1.f;
+	bufferTime_text = -1.f;
+	bufferTime_trigger_slope = -1.f;
+	bufferTime_grab = -1.f;
 
 	/*-----Character--------*/
 	a_LookingDirection = 90.0f;
@@ -330,6 +354,7 @@ void StudioProject2Scene1::Init()
 	infall = true;
 	attack = false;
 	trigger = false;
+	grab = false;
 	/*----------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -343,6 +368,7 @@ void StudioProject2Scene1::Init()
 	/*-------------------------------------------------------------------------------*/
 }
 
+double et = 0.0;
 void StudioProject2Scene1::Update(double dt)
 {
 	int framespersec = 1 / dt;
@@ -367,6 +393,11 @@ void StudioProject2Scene1::Update(double dt)
 
 	HeadDirection();
 	/*------------------------------Collision Check------------------------------*/
+	if (!otheranims())
+	{
+		et = 0;
+	}
+
 	if (Application::IsKeyPressed('A') && !trigger)
 	{
 		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
@@ -376,6 +407,22 @@ void StudioProject2Scene1::Update(double dt)
 			a_PosX -= (float)(30.f * dt);
 			pressedD = false;
 			pressedA = true;
+
+			if (grab)
+			{
+				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				{
+					ShortBox_PosX -= (float)(30.f * dt);
+					meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+				}
+				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				{
+					TallBox_PosX -= (float)(30.f * dt);
+					meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+				}
+			}
 		}
 	}
 	if (Application::IsKeyPressed('D') && !trigger)
@@ -387,6 +434,22 @@ void StudioProject2Scene1::Update(double dt)
 			a_PosX += (float)(30.f * dt);
 			pressedA = false;
 			pressedD = true;
+
+			if (grab)
+			{
+				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				{
+					ShortBox_PosX += (float)(30.f * dt);
+					meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+				}
+				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				{
+					TallBox_PosX += (float)(30.f * dt);
+					meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+				}
+			}
 		}
 	}
 	if (Application::IsKeyPressed('W') && (bufferTime_Jump < elapsedTime) && !trigger)
@@ -397,6 +460,10 @@ void StudioProject2Scene1::Update(double dt)
 	if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
 	{
 		bufferTime_attack = elapsedTime + 1;
+	}
+	if (Application::IsKeyPressed('F'))
+	{
+		bufferTime_grab = elapsedTime + 0.3f;
 	}
 
 	if (bufferTime_JumpUp > elapsedTime)
@@ -412,7 +479,16 @@ void StudioProject2Scene1::Update(double dt)
 	else
 	{
 		attack = false;
-		et = 0;
+	}
+
+	if (bufferTime_grab > elapsedTime)
+	{
+		grab = true;
+		et += dt;
+	}
+	else
+	{
+		grab = false;
 	}
 
 	if (!trigger)
@@ -593,6 +669,8 @@ void StudioProject2Scene1::Render()
 		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 
 
+		// add in grab animation later
+
 		modelStack.PushMatrix();
 		AttackAnim(attack, &modelStack, &et, "polySurface9"); // HEAD
 
@@ -691,13 +769,13 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(490.f, -250.f, 0);
+	modelStack.Translate((490 + ShortBox_PosX), -250.f, 0);
 	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_BOX_SHORT], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(500.f, -250.f, 0);
+	modelStack.Translate((500 + TallBox_PosX), -250.f, 0);
 	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_BOX_TALL], true);
 	modelStack.PopMatrix();
@@ -856,6 +934,150 @@ void StudioProject2Scene1::Render()
 	/*-----------------------------------------*/
 
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
+}
+
+void StudioProject2Scene1::RenderMesh(Mesh *mesh, bool enableLight)
+{
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+
+	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	modelView = viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
+	if (enableLight)
+	{
+		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
+		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
+		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView_inverse_transpose.a[0]);
+
+		//load material
+		glUniform3fv(m_parameters[U_MATERIAL_AMBIENT], 1, &mesh->material.kAmbient.r);
+		glUniform3fv(m_parameters[U_MATERIAL_DIFFUSE], 1, &mesh->material.kDiffuse.r);
+		glUniform3fv(m_parameters[U_MATERIAL_SPECULAR], 1, &mesh->material.kSpecular.r);
+		glUniform1f(m_parameters[U_MATERIAL_SHININESS], mesh->material.kShininess);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	}
+
+	if (mesh->textureID > 0)
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	}
+	else
+	{
+		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
+	}
+
+	mesh->Render();
+
+	if (mesh->textureID > 0)
+	{
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+}
+
+void StudioProject2Scene1::RenderText(Mesh* mesh, std::string text, Color color)
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	for (unsigned i = 0; i < text.length(); ++i)
+	{
+		Mtx44 characterSpacing;
+		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
+		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+		mesh->Render((unsigned)text[i] * 6, 6);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	glEnable(GL_DEPTH_TEST);
+}
+
+void StudioProject2Scene1::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Scale(size, size, size);
+	modelStack.Translate(x, y, 0);
+
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	for (unsigned i = 0; i < text.length(); ++i)
+	{
+		Mtx44 characterSpacing;
+		characterSpacing.SetToTranslation(i * 0.7f, 10, 0); //1.0f is the spacing of each character, you may change this value
+		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
+		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+		mesh->Render((unsigned)text[i] * 6, 6);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	glEnable(GL_DEPTH_TEST);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+
+}
+
+void StudioProject2Scene1::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
+{
+	glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+
+	//to do: scale and translate accordingly
+	modelStack.Scale(sizex, sizey, position);
+	modelStack.Translate(x + 0.5f, y + 0.5f, 0);
+
+	RenderMesh(mesh, false); //UI should not have light
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	glEnable(GL_DEPTH_TEST);
+}
+
+bool StudioProject2Scene1::otheranims()
+{
+	return (injump || infall || attack || trigger || grab);
 }
 
 void StudioProject2Scene1::Exit()
