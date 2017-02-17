@@ -236,6 +236,7 @@ private:
 	bool infall;
 	bool attack;
 	bool trigger;
+	bool grab;
 
 	float a_PosX;
 	float a_PosY;

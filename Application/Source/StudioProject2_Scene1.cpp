@@ -8,7 +8,7 @@
 #include "LoadTGA.h"
 #include "Camera.h"
 #include "PlayerClass.h"
-#include "LoadATOM.h"
+#include "Animations.h"
 
 #define VK_1 0x31
 #define VK_2 0x32
@@ -16,6 +16,7 @@
 #define VK_4 0x34
 
 bool MouseControl;
+double et = 0.0;
 
 StudioProject2Scene1::StudioProject2Scene1()
 {
@@ -518,7 +519,7 @@ void StudioProject2Scene1::Init()
 	glUniform1i(m_parameters[U_NUMLIGHTS], 8);
 	/*-------------------------------------------------------------------------------*/
 }
-double et = 0.0;
+
 void StudioProject2Scene1::Update(double dt)
 {
 	static float rotationDirection = 1.0f;
@@ -810,64 +811,43 @@ void StudioProject2Scene1::Render()
 
 
 		modelStack.PushMatrix();
-		if (attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface9");//HEAD
-		else if (!attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface9");//HEAD
+		AttackAnim(attack, &modelStack, &et, "polySurface9"); // HEAD
 
 		RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		if (attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere17");//ARM WITH SWORD
-		else if (!attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere17");//ARM WITH SWORD
+		AttackAnim(attack, &modelStack, &et, "pSphere17");//ARM WITH SWORD
 
 		RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		if (attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface32");//BODY
-		else if (!attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "polySurface32");//BODY
+		AttackAnim(attack, &modelStack, &et, "polySurface32");//BODY
 
 		RenderMesh(meshList[GEO_ALEXIS_BODY], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		if (attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere14");//LEFTARM
-		else if (!attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere14");//LEFTARM
+		AttackAnim(attack, &modelStack, &et, "pSphere14");//LEFTARM
 
 		RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		if (attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pCylinder15");//crotch
-		else if (!attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pCylinder15");//crotch
+		AttackAnim(attack, &modelStack, &et, "pCylinder15");//crotch
 
 		RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		if (attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere9");//RIGHT LEG
-		else if (!attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere9");//RIGHT LEG
+		AttackAnim(attack, &modelStack, &et, "pSphere9");//RIGHT LEG
 
 		RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		if (attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere10");//LEFTLEG
-		else if (!attack)
-			LoadAtom("ATOM//attack.atom", &modelStack, &et, "pSphere10");//LEFTLEG
+		AttackAnim(attack, &modelStack, &et, "pSphere10");//LEFTLEG
 
 		RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 		modelStack.PopMatrix();

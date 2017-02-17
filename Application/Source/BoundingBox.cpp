@@ -73,3 +73,14 @@ bool BoundingBox::higherthan(BoundingBox &b)
 {
 	return (b.max_.y <= BoundingBox::min_.y);
 }
+
+//void setto(float x, float y, float z) // ain't workin
+//{
+//	this->max_.x = x;
+//	this->max_.y = y;
+//	this->max_.z = z;
+//
+//	this->min_.x = x;
+//	this->min_.y = y;
+//	this->min_.z = z;
+//}
