@@ -236,8 +236,8 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_TRUMP]->MeshBBox.scale(1, 1.5f, 1);
 	meshList[GEO_TRUMP]->MeshBBox.translate(550, -250.f, 0);
 	meshList[GEO_TRUMPTEST]->MeshBBox.loadBB("OBJ//Scene1//Trump.obj");
-	meshList[GEO_TRUMPTEST]->MeshBBox.scale(1, 1.7f, 1);
-	meshList[GEO_TRUMPTEST]->MeshBBox.translate(550, -250.f, 0);
+	meshList[GEO_TRUMPTEST]->MeshBBox.scale(0.75f, 1.7f, 1);
+	meshList[GEO_TRUMPTEST]->MeshBBox.translate(550.1f, -250.f, 0);
 
 	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
@@ -285,7 +285,9 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", meshList[GEO_ALEXIS_CROTCH]->MeshBBox.max_, meshList[GEO_ALEXIS_CROTCH]->MeshBBox.min_);
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_FLOOR]->MeshBBox.max_, meshList[GEO_FLOOR]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_TRUMPTEST]->MeshBBox.max_, meshList[GEO_TRUMPTEST]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX]->MeshBBox.scale(1, 1.7f, 1);
+	meshList[GEO_TESTBBOX]->MeshBBox.translate(550, -250.f, 0);
 	/*-----------------------------------------------------------------------------*/ 
 	
 	/*-------------------------Loading Hearts-----------------------------------------*/
@@ -410,13 +412,13 @@ void StudioProject2Scene1::Update(double dt)
 
 			if (grab)
 			{
-				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
 				{
 					ShortBox_PosX -= (float)(30.f * dt);
 					meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
 					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
 				}
-				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
 				{
 					TallBox_PosX -= (float)(30.f * dt);
 					meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
@@ -437,13 +439,13 @@ void StudioProject2Scene1::Update(double dt)
 
 			if (grab)
 			{
-				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
 				{
 					ShortBox_PosX += (float)(30.f * dt);
 					meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
 					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
 				}
-				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
 				{
 					TallBox_PosX += (float)(30.f * dt);
 					meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
@@ -463,7 +465,7 @@ void StudioProject2Scene1::Update(double dt)
 	}
 	if (Application::IsKeyPressed('F'))
 	{
-		bufferTime_grab = elapsedTime + 0.3f;
+		bufferTime_grab = elapsedTime + 0.15f;
 	}
 
 	if (bufferTime_JumpUp > elapsedTime)
@@ -498,7 +500,8 @@ void StudioProject2Scene1::Update(double dt)
 			if (/*!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&*/
 				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
 				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox) &&
-				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_FLOOR]->MeshBBox)/*&&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_FLOOR]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) /*&&
 				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
 			{
 				if ((meshList[GEO_ALEXIS_CROTCH]->MeshBBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) &&
@@ -525,6 +528,11 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		bufferTime_trigger_slope = elapsedTime + 11.f;
 		trigger = true;
+	}
+
+	if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox))
+	{
+		a_PosX += (float)(30.f * dt);
 	}
 
 	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.loadBB("OBJ//Character//crotch.obj");
