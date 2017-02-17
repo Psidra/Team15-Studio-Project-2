@@ -141,9 +141,11 @@ void StudioProject2Scene1::TextInteraction()
 	/*------------Box Text--------------------*/
 	if (a_PosX > 450.f && a_PosX < 500.f && textOccured > textOccurStorage) //When near box, text appears
 	{
+		textOccurStorage = textOccured + 1; // tOS > tO
+		nexttext = false;
 		pEnter = true;
 		boxTriggedText = true;
-		textOccurStorage = textOccured + 1; // tO < tOS
+
 	}
 
 
@@ -178,12 +180,11 @@ void StudioProject2Scene1::TextInteraction()
 	}
 	/*----------------------------------------------*/
 
-	/*------Half Mutant conversation with Alexis-----*/
-	if (a_PosX < 540 && a_PosX > 570 && textOccured < textOccurStorage)
-	{	//When alexis at wall, he sees the half mutant and text gets triggered
-		textOccured = textOccurStorage; // tO == tOS
+	if (a_PosX > 550 && a_PosX < 600 && textOccurStorage > textOccured)
+	{
 		hmTriggeredText = true;
 		pEnter = true;
+		textOccured = textOccurStorage;
 	}
 
 	if (hmTriggeredText == true)
@@ -231,11 +232,11 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		alexis_beside_hmTS = 0;
 
-
-	if (a_PosX < 620 && a_PosX > 650 && textOccured == textOccurStorage)
+	if (a_PosX > 620 && a_PosX < 650 && textOccured == textOccurStorage)
 	{
 		alexis_beside_hm = true;
 		pEnter = true;
+		textOccured = textOccurStorage + 1;  //tO > tOS
 	}
 
 	if (alexis_beside_hm == true && nexttext == true)
@@ -243,7 +244,6 @@ void StudioProject2Scene1::TextInteraction()
 		pEnter = false;
 		alexis_beside_hm = false;
 		nexttext = false;
-		textOccured = textOccurStorage + 1; // tO > tOS
 	}
 
 
