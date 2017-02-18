@@ -130,13 +130,18 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------Environment Objects Loading---------------------------------*/
 	meshList[GEO_HOUSE] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene1//House_AllElse.obj");
+	meshList[GEO_HOUSE]->textureID = LoadTGA("Image//housetexture.tga");
 	meshList[GEO_HOUSEFLOOR] = MeshBuilder::GenerateOBJ("hfloor", "OBJ//Scene1//House_Floor.obj");
+	meshList[GEO_HOUSEFLOOR]->textureID = LoadTGA("Image//housetexture.tga");
 	meshList[GEO_HOUSELEFTWALL] = MeshBuilder::GenerateOBJ("hlwall", "OBJ//Scene1//House_Left_Wall.obj");
-	meshList[GEO_HOUSEFRONT] = MeshBuilder::GenerateOBJ("HouseFront", "OBJ//Scene1//House_Front.obj");
+	meshList[GEO_HOUSELEFTWALL]->textureID = LoadTGA("Image//housetexture.tga");
+	meshList[GEO_HOUSEFRONT] = MeshBuilder::GenerateOBJ("HouseFront", "OBJ//Scene1//House_Front.obj"); // No texture for this its hidden beneath ground
 	meshList[GEO_BOX_SHORT] = MeshBuilder::GenerateOBJ("Box_Short", "OBJ//Scene1//Box_Short.obj");
 	meshList[GEO_BOX_TALL] = MeshBuilder::GenerateOBJ("Box_Tall", "OBJ//Scene1//Box_Tall.obj");
 	meshList[GEO_HILL] = MeshBuilder::GenerateOBJ("Hill", "OBJ//Scene1//Hill.obj");
+	meshList[GEO_HILL]->textureID = LoadTGA("Image//hills.tga");
 	meshList[GEO_FLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//Scene1//Floor.obj");
+	meshList[GEO_FLOOR]->textureID = LoadTGA("Image//ground.tga");
 	meshList[GEO_TRUMP] = MeshBuilder::GenerateOBJ("Trump", "OBJ//Scene1//Trump.obj");
 	meshList[GEO_BOX_SHORTTEST] = MeshBuilder::GenerateOBJ("Box_Short", "OBJ//Scene1//Box_Short.obj"); // THE TEST NAME AT THE END
 	meshList[GEO_BOX_TALLTEST] = MeshBuilder::GenerateOBJ("Box_Tall", "OBJ//Scene1//Box_Tall.obj");	   // INDICATES I NEED IT TO TEST FOR
@@ -155,10 +160,11 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_BOX_TALL]->MeshBBox.scale(1, 1.6f, 1);
 	meshList[GEO_BOX_TALL]->MeshBBox.translate(500, -250.f, 0);
 	meshList[GEO_BOX_TALLTEST]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
-	meshList[GEO_BOX_TALLTEST]->MeshBBox.scale(1, 1.8f, 1);
+	meshList[GEO_BOX_TALLTEST]->MeshBBox.scale(1, 1.7f, 1);
 	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(500, -250.f, 0);
 	meshList[GEO_FLOOR]->MeshBBox.loadBB("OBJ//Scene1//Floor.obj");
-	meshList[GEO_FLOOR]->MeshBBox.translate(50, -253.5f, 0);
+	meshList[GEO_FLOOR]->MeshBBox.scale(1.5f, 1, 1);
+	meshList[GEO_FLOOR]->MeshBBox.translate(100, -253.5f, 0);
 	meshList[GEO_TRUMP]->MeshBBox.loadBB("OBJ//Scene1//Trump.obj");
 	meshList[GEO_TRUMP]->MeshBBox.scale(1, 1.5f, 1);
 	meshList[GEO_TRUMP]->MeshBBox.translate(550, -250.f, 0);
@@ -177,6 +183,33 @@ void StudioProject2Scene1::Init()
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
+	meshList[GEO_MUTANT_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Mutant_UpdatedOBJ//Mutant_Head.obj");
+	meshList[GEO_MUTANT_HEAD]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_LEFTARM] = MeshBuilder::GenerateOBJ("aBody", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftArm.obj");
+	meshList[GEO_MUTANT_LEFTARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_LEFTFEET] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftFeet.obj");
+	meshList[GEO_MUTANT_LEFTFEET]->textureID = LoadTGA("Image//Mutant_Texture.tga");;
+	meshList[GEO_MUTANT_LEFTTHIGH] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftThigh.obj");
+	meshList[GEO_MUTANT_LEFTTHIGH]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_LEFTUPPERARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftUpperarm.obj");
+	meshList[GEO_MUTANT_LEFTUPPERARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_NECK] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Neck.obj");
+	meshList[GEO_MUTANT_NECK]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTARM] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightArm.obj");
+	meshList[GEO_MUTANT_RIGHTARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTFEET] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightFeet.obj");
+	meshList[GEO_MUTANT_RIGHTFEET]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightThigh.obj");
+	meshList[GEO_MUTANT_RIGHTTHIGH]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTUPPERARM] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightUpperarm.obj");
+	meshList[GEO_MUTANT_RIGHTUPPERARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_TORSO] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+
+	meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	meshList[GEO_MUTANT_TORSO]->MeshBBox.scale(1.f, 2.1f, 1.f);
+	meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(600.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
+
 	/*-----------------------------------------------------------------------------*/
 	
 	/*--------------------------Character Loading----------------------------------*/
@@ -212,9 +245,9 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", meshList[GEO_ALEXIS_CROTCH]->MeshBBox.max_, meshList[GEO_ALEXIS_CROTCH]->MeshBBox.min_);
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_TRUMPTEST]->MeshBBox.max_, meshList[GEO_TRUMPTEST]->MeshBBox.min_);
-	meshList[GEO_TESTBBOX]->MeshBBox.scale(1, 1.7f, 1);
-	meshList[GEO_TESTBBOX]->MeshBBox.translate(550, -250.f, 0);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_MUTANT_TORSO]->MeshBBox.max_, meshList[GEO_MUTANT_TORSO]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX]->MeshBBox.scale(1.f, 2.1f, 1.f);
+	meshList[GEO_TESTBBOX]->MeshBBox.translate(600.f, -248.8f, 0);
 	/*-----------------------------------------------------------------------------*/ 
 	
 	/*-------------------------Loading Hearts-----------------------------------------*/
@@ -268,12 +301,12 @@ void StudioProject2Scene1::Init()
 	MouseControl = false;
 	ShortBox_PosX = 0.f;
 	TallBox_PosX = 0.f;
-	bufferTime_JumpUp = -1.f;
-	bufferTime_Jump = -1.f;
-	bufferTime_attack = -1.f;
-	bufferTime_text = -1.f;
-	bufferTime_trigger_slope = -1.f;
-	bufferTime_grab = -1.f;
+	bufferTime_JumpUp = elapsedTime - 1.f;
+	bufferTime_Jump = elapsedTime - 1.f;
+	bufferTime_attack = elapsedTime - 1.f;
+	bufferTime_text = elapsedTime - 1.f;
+	bufferTime_trigger_slope = elapsedTime - 1.f;
+	bufferTime_grab = elapsedTime - 1.f;
 
 	/*-----Character--------*/
 	a_LookingDirection = 90.0f;
@@ -285,6 +318,7 @@ void StudioProject2Scene1::Init()
 	trigger = false;
 	grab = false;
 	/*----------------------*/
+
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
 	projectionStack.LoadMatrix(projection);
@@ -297,7 +331,16 @@ void StudioProject2Scene1::Init()
 	/*-------------------------------------------------------------------------------*/
 }
 
-double et = 0.0;
+double et[30];
+/*  Alexis:
+	0 = attack
+	1 = idle
+
+	Half-Mutant:
+
+	Mutant:
+	20 = idle
+*/
 void StudioProject2Scene1::Update(double dt)
 {
 	int framespersec = 1 / dt;
@@ -324,75 +367,82 @@ void StudioProject2Scene1::Update(double dt)
 	/*------------------------------Collision Check------------------------------*/
 	if (!otheranims())
 	{
-		et = 0;
+		for (unsigned i = 0; i < 9; i++)
+			et[i] = 0;
 	}
 
-	if (Application::IsKeyPressed('A') && !trigger)
-	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-			!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
-			pressedD == true)
-		{
-			a_PosX -= (float)(30.f * dt);
-			pressedD = false;
-			pressedA = true;
+	if (elapsedTime > 1.1f) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+	{						// *I hope.
 
-			if (grab)
+		if (Application::IsKeyPressed('A') && !trigger)
+		{
+			if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_MUTANT_TORSO]->MeshBBox) ||
+				pressedD == true)
 			{
-				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				a_PosX -= (float)(30.f * dt);
+				pressedD = false;
+				pressedA = true;
+
+				if (grab)
 				{
-					ShortBox_PosX -= (float)(30.f * dt);
-					meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-				}
-				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-				{
-					TallBox_PosX -= (float)(30.f * dt);
-					meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+					if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+					{
+						ShortBox_PosX -= (float)(30.f * dt);
+						meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+					}
+					else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+					{
+						TallBox_PosX -= (float)(30.f * dt);
+						meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+					}
 				}
 			}
 		}
-	}
-	if (Application::IsKeyPressed('D') && !trigger)
-	{
-		if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-			!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
-			pressedA == true)
+		if (Application::IsKeyPressed('D') && !trigger)
 		{
-			a_PosX += (float)(30.f * dt);
-			pressedA = false;
-			pressedD = true;
-
-			if (grab)
+			if (!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox) &&
+				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_MUTANT_TORSO]->MeshBBox) ||
+				pressedA == true)
 			{
-				if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				a_PosX += (float)(30.f * dt);
+				pressedA = false;
+				pressedD = true;
+
+				if (grab)
 				{
-					ShortBox_PosX += (float)(30.f * dt);
-					meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-				}
-				else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
-				{
-					TallBox_PosX += (float)(30.f * dt);
-					meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+					if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+					{
+						ShortBox_PosX += (float)(30.f * dt);
+						meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+					}
+					else if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+					{
+						TallBox_PosX += (float)(30.f * dt);
+						meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+					}
 				}
 			}
 		}
-	}
-	if (Application::IsKeyPressed('W') && (bufferTime_Jump < elapsedTime) && !trigger)
-	{
-		bufferTime_Jump = elapsedTime + 0.6f;
-		bufferTime_JumpUp = elapsedTime + 0.3f;
-	}
-	if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
-	{
-		bufferTime_attack = elapsedTime + 1;
-	}
-	if (Application::IsKeyPressed('F'))
-	{
-		bufferTime_grab = elapsedTime + 0.15f;
+		if (Application::IsKeyPressed('W') && (bufferTime_Jump < elapsedTime) && !trigger)
+		{
+			bufferTime_Jump = elapsedTime + 0.6f;
+			bufferTime_JumpUp = elapsedTime + 0.3f;
+		}
+		if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
+		{
+			bufferTime_attack = elapsedTime + 1;
+		}
+		if (Application::IsKeyPressed('F'))
+		{
+			bufferTime_grab = elapsedTime + 0.15f;
+		}
 	}
 
 	if (bufferTime_JumpUp > elapsedTime)
@@ -403,7 +453,7 @@ void StudioProject2Scene1::Update(double dt)
 	if (bufferTime_attack > elapsedTime)
 	{
 		attack = true;
-		et += dt;
+		et[0] += dt;
 	}
 	else
 	{
@@ -413,12 +463,14 @@ void StudioProject2Scene1::Update(double dt)
 	if (bufferTime_grab > elapsedTime)
 	{
 		grab = true;
-		et += dt;
+		et[1] += dt;
 	}
 	else
 	{
 		grab = false;
 	}
+
+	et[20] += dt;		// This is for me to see if the idleanim is running at all
 
 	if (!trigger)
 	{
@@ -463,6 +515,7 @@ void StudioProject2Scene1::Update(double dt)
 	}
 	
 	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.loadBB("OBJ//Character//crotch.obj");
+	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG
 	/*--------------------------------------------------------*/
 	
 	/*----------Health System (Hearts)------*/
@@ -580,52 +633,51 @@ void StudioProject2Scene1::Render()
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 4.3f, 1.f);
-	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);
-		modelStack.Translate(a_PosX, a_PosY, a_PosZ);
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 4.5f, 1.f);					// This was a mistake tbh
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, (a_PosY + 7.9f), a_PosZ);	// I should have put the scale in init
+		modelStack.Translate(a_PosX, a_PosY, a_PosZ);								// too late for that now
 		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
-
 
 		// add in grab animation later
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et, "polySurface9"); // HEAD
+		AttackAnim(attack, &modelStack, &et[0], "polySurface9"); // HEAD
 
 		RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et, "pSphere17");//ARM WITH SWORD
+		AttackAnim(attack, &modelStack, &et[0], "pSphere17");//ARM WITH SWORD
 
 		RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et, "polySurface32");//BODY
+		AttackAnim(attack, &modelStack, &et[0], "polySurface32");//BODY
 
 		RenderMesh(meshList[GEO_ALEXIS_BODY], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et, "pSphere14");//LEFTARM
+		AttackAnim(attack, &modelStack, &et[0], "pSphere14");//LEFTARM
 
 		RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et, "pCylinder15");//crotch
+		AttackAnim(attack, &modelStack, &et[0], "pCylinder15");//crotch
 
 		RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et, "pSphere9");//RIGHT LEG
+		AttackAnim(attack, &modelStack, &et[0], "pSphere9");//RIGHT LEG
 
 		RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et, "pSphere10");//LEFTLEG
+		AttackAnim(attack, &modelStack, &et[0], "pSphere10");//LEFTLEG
 
 		RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 		modelStack.PopMatrix();
@@ -633,8 +685,8 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();							// render collision box
-	modelStack.Translate(a_PosX, (a_PosY + 8), a_PosZ);	// i need this
-	modelStack.Scale(1.1f, 4.3f, 1.f);					// if you remove it bad things will happen
+	modelStack.Translate(a_PosX, (a_PosY + 7.9f), a_PosZ);	// i need this
+	modelStack.Scale(1.1f, 4.5f, 1.f);					// if you remove it bad things will happen
 	RenderMesh(meshList[GEO_BBOX], false);				// remove this later when showing actual shit of course
 	modelStack.PopMatrix();								// :ok_hand:
 														// for some reason I needed to flip translate and scale here to fit with the actual hitbox
@@ -645,6 +697,80 @@ void StudioProject2Scene1::Render()
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_TESTBBOX], false);			// remove this later when showing actual shit of course
 	modelStack.PopMatrix();
+
+	/*-----------------Mutants (Fuglymon)---------------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(600.f, -252.2f, 0);
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
+
+	RenderMesh(meshList[GEO_MUTANT_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftArm");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftFeet");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftThigh");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftUpperarm");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_Neck");
+
+	RenderMesh(meshList[GEO_MUTANT_NECK], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightArm");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightFeet");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightThigh");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightUpperarm");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_Torso");
+
+	RenderMesh(meshList[GEO_MUTANT_TORSO], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+	/*-------------------------------------------------------*/
+
 	/*-------------------------------------------------------*/
 	
 	modelStack.PushMatrix();
@@ -698,7 +824,8 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(50.f, -255.f, 0);
+	modelStack.Translate(100.f, -255.f, 0);
+	modelStack.Scale(1.5f, 1.f, 1.f);
 	RenderMesh(meshList[GEO_FLOOR], true);
 	modelStack.PopMatrix();
 

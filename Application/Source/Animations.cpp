@@ -5,13 +5,11 @@
 
 void AttackAnim(bool attack, MS* modelStack, double* timeElapsed, const std::string& dagNode)
 {
+	double zero = 0;
 	if (attack)
-		LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);//HEAD
+		LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);
 	else if (!attack)
-	{
-		double zero = 0;
-		LoadAtom("ATOM//attack.atom", modelStack, &zero, dagNode);//HEAD
-	}
+		LoadAtom("ATOM//attack.atom", modelStack, &zero, dagNode);
 }
 
 void WalkAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode)
@@ -62,6 +60,11 @@ void Transform(bool inject, MS* modelStack, double* timeElapsed, const std::stri
 }
 
 // Mutant
+
+void IdleAnim_M(MS* modelStack, double* timeElapsed, const std::string& dagNode)
+{
+	LoadAtom("ATOM//FullMutant_IdleMovement.atom", modelStack, timeElapsed, dagNode);
+}
 
 void AttackAnim_M(bool attack_M, MS* modelStack, double* timeElapsed, const std::string& dagNode)
 {
