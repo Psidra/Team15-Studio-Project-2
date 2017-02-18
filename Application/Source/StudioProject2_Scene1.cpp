@@ -34,6 +34,7 @@ void StudioProject2Scene1::Init()
 	fullMutant.EnemyPos.posY = -252.2f;
 	fullMutant.EnemyPos.posZ = 0.f;
 	enemy.push_back(fullMutant);
+	enemy[0].update();
 	
 	PlayerClass::get_instance()->Coord.posX = -15.f;
 	PlayerClass::get_instance()->Coord.posY = 0.f;
@@ -205,9 +206,9 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_MUTANT_TORSO] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
 
-	meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
-	meshList[GEO_MUTANT_TORSO]->MeshBBox.scale(1.f, 2.1f, 1.f);
-	meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(750.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
+	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	//meshList[GEO_MUTANT_TORSO]->MeshBBox.scale(1.f, 2.1f, 1.f);
+	//meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(750.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
 
 	/*-----------------------------------------------------------------------------*/
 	

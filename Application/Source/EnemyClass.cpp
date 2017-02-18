@@ -8,8 +8,6 @@ EnemyClass::EnemyClass()
 	meleeAtkRange = false;
 	moveRange = false;
 	projectileThrowRange = false;
-	positionStorageX1 = EnemyPos.posX + 30;
-	positionStorageX2 = EnemyPos.posX - 30;
 }
 
 EnemyClass::~EnemyClass()
@@ -59,7 +57,7 @@ void EnemyClass::movement(double dt)
 		{
 			static float movementDirection = 1.f;
 			EnemyPos.posX += (float)(20.f * dt * movementDirection);
-			if (EnemyPos.posX < positionStorageX1 || EnemyPos.posX > positionStorageX2)
+			if ((EnemyPos.posX > positionStorageX1 && movementDirection != -1.f)|| (EnemyPos.posX < positionStorageX2 && movementDirection != 1.f))
 			{
 					movementDirection *= -1;
 			}
@@ -107,4 +105,10 @@ void EnemyClass::detection()
 			meleeAtkRange = false;
 		}
 	}
+}
+
+void EnemyClass::update()
+{
+	positionStorageX1 = EnemyPos.posX + 30;
+	positionStorageX2 = EnemyPos.posX - 30;
 }

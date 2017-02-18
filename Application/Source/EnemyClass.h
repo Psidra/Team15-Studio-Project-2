@@ -11,6 +11,7 @@ public:
 	void battle();
 	void detection();
 	void movement(double dt);
+	void update();
 
 	unsigned int get_currHealth();
 
