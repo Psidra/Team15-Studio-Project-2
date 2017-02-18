@@ -10,7 +10,7 @@ public:
 	~EnemyClass();
 	void battle();
 	void detection();
-	void movement();
+	void movement(double dt);
 
 	unsigned int get_currHealth();
 
@@ -24,11 +24,13 @@ public:
 	Coordinates EnemyPos;
 
 private:
+	float positionStorageX1;
+	float positionStorageX2;
 	unsigned int _health;
 	bool isDead();
-	bool detectRange;
-	bool atkRange;
-
+	bool moveRange;
+	bool meleeAtkRange;
+	bool projectileThrowRange;
 };
 
 #endif //EnemyClass_H

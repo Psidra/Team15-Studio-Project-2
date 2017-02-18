@@ -187,7 +187,7 @@ private:
 	float a_RotationLeftLeg;
 	float a_RotationRightLeg;
 	/*------------------------------------------------------------*/
-
+	EnemyClass fullMutant;
 
 	float ShortBox_PosX;
 	float TallBox_PosX;

@@ -1,12 +1,15 @@
 #include "EnemyClass.h"
 #include "PlayerClass.h"
-
+#include "StudioProject2_Scene1.h"
 
 EnemyClass::EnemyClass()
 {
 	_health = 100;
-	atkRange = false;
-	detectRange = false;
+	meleeAtkRange = false;
+	moveRange = false;
+	projectileThrowRange = false;
+	positionStorageX1 = EnemyPos.posX + 30;
+	positionStorageX2 = EnemyPos.posX - 30;
 }
 
 EnemyClass::~EnemyClass()
@@ -24,24 +27,43 @@ bool EnemyClass::isDead()
 
 void EnemyClass::battle()
 {
-	if (!isDead())
+	if (meleeAtkRange == true)
 	{
-		if (atkRange == true)
-		{
 
-		}
-		else
-		{
-
-		}
+	}
+	else
+	{
+		
 	}
 }
 
-void EnemyClass::movement()
+void EnemyClass::movement(double dt)
 {
-	if (!isDead())
+	if (moveRange == true)
 	{
-		
+		if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) > 10)
+		{
+			EnemyPos.posX -= (float)(30.f * dt);
+		}
+		else if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) < -10)
+		{
+			EnemyPos.posX += (float)(30.f * dt);
+		}
+	}
+	else // idle movement
+	{
+		if (projectileThrowRange == true) // when throwing projectile, shouldnt move
+		{
+		}
+		else // when not throwing projectile then move
+		{
+			static float movementDirection = 1.f;
+			EnemyPos.posX += (float)(20.f * dt * movementDirection);
+			if (EnemyPos.posX < positionStorageX1 || EnemyPos.posX > positionStorageX2)
+			{
+					movementDirection *= -1;
+			}
+		}
 	}
 }
 
@@ -52,10 +74,37 @@ unsigned int EnemyClass::get_currHealth()
 
 void EnemyClass::detection()
 {
-	//int distBetweenThem =  
-
-	/*if (!isDead())
+	if (!isDead())
 	{
+		int distBetweenThem = EnemyPos.posX - PlayerClass::get_instance()->Coord.posX;
 
-	}*/
+		if ((distBetweenThem < 61 && distBetweenThem > 29) || // Detect the player but stand at its spot  (60 to 30) 
+			(distBetweenThem < -29 && distBetweenThem > -61)) // and changes it to throwing projectile state (-30 to -60)
+		{
+			projectileThrowRange = true;
+		}
+		else
+		{
+			projectileThrowRange = false;
+		}
+
+		if ((distBetweenThem < 30 && distBetweenThem > 9) || // Change state to move towards player (29 to 10) (-10 to -29)
+			(distBetweenThem < -9 && distBetweenThem > -30))
+		{
+			moveRange = true;
+		}
+		else
+		{
+			moveRange = false;
+		}
+
+		if (distBetweenThem < 10 && distBetweenThem > -10) // Change state to melee attack (9 to -9)
+		{
+			meleeAtkRange = true;
+		}
+		else
+		{
+			meleeAtkRange = false;
+		}
+	}
 }
