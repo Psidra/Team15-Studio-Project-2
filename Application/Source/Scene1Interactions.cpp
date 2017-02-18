@@ -12,92 +12,37 @@
 
 void StudioProject2Scene1::LightInteraction()
 {
-	if (a_PosX < 10)
-	{
-		light[2].power = 5;
-		glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
-	}
-	else
-	{
-		light[2].power = 0;
-		glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
-	}
-
 	if (a_PosX < 25)
 	{
-		light[1].power = 2;
+		light[0].position.Set(-80, 10, -10);
+		light[1].power = 1;
 		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
 	}
-	else
+	else if (a_PosX > 25 && a_PosX < 90)
 	{
+		light[0].position.Set(40, 10, -20);
 		light[1].power = 0;
 		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
 	}
-
-	if (a_PosX > 25 && a_PosX < 90)
+	else if (a_PosX > 90 && a_PosX < 200)
 	{
-		light[0].power = 5;
-		glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+		light[0].position.Set(130, 0, -10);
 	}
-	else
+	else if (a_PosX > 200 && a_PosX < 300)
 	{
-		light[0].power = 0;
-		glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+		light[0].position.Set(235, -75, -10);
 	}
-
-	if (a_PosX > 90 && a_PosX < 190)
+	else if (a_PosX > 300 && a_PosX < 400)
 	{
-		light[3].power = 5;
-		glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+		light[0].position.Set(330, -155, 10);
 	}
-	else
+	else if (a_PosX > 400 && a_PosX < 550)
 	{
-		light[3].power = 0;
-		glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+		light[0].position.Set(440, -243, -10);
 	}
-
-	if (a_PosX > 210 && a_PosX < 290)
+	else if (a_PosX > 550 && a_PosX < 650)
 	{
-		light[4].power = 5;
-		glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
-	}
-	else
-	{
-		light[4].power = 0;
-		glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
-	}
-
-	if (a_PosX > 300 && a_PosX < 380)
-	{
-		light[5].power = 5;
-		glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
-	}
-	else
-	{
-		light[5].power = 0;
-		glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
-	}
-
-	if (a_PosX > 400 && a_PosX < 530)
-	{
-		light[6].power = 5;
-		glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
-	}
-	else
-	{
-		light[6].power = 0;
-		glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
-	}
-
-	if (a_PosX > 550 && a_PosX < 630)
-	{
-		light[7].power = 5;
-		glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
-	}
-	else
-	{
-		light[7].power = 0;
-		glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
+		light[0].position.Set(570, -243, -10);
 	}
 }
 
@@ -232,7 +177,7 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		alexis_beside_hmTS = 0;
 
-	if (a_PosX > 620 && a_PosX < 650 && textOccured == textOccurStorage)
+	if (a_PosX > 600 && a_PosX < 630 && textOccured == textOccurStorage)
 	{
 		alexis_beside_hm = true;
 		pEnter = true;

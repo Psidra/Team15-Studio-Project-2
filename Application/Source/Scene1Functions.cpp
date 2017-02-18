@@ -13,7 +13,7 @@
 void StudioProject2Scene1::LoadLight()
 {
 	light[0].type = Light::LIGHT_POINT;
-	light[0].position.Set(40, 10, -20);
+	light[0].position.Set(-80, 10, -10); // 40 10 -20
 	light[0].color.Set(0.251, 0.878, 0.816);
 	light[0].power = 5;
 	light[0].kC = 1.f;
@@ -55,138 +55,6 @@ void StudioProject2Scene1::LoadLight()
 	glUniform1f(m_parameters[U_LIGHT1_COSCUTOFF], light[1].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
 	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
-
-	light[2].type = Light::LIGHT_POINT;
-	light[2].position.Set(-80, 10, -10);
-	light[2].color.Set(0.251, 0.878, 0.816);
-	light[2].power = 5;
-	light[2].kC = 1.f;
-	light[2].kL = 0.01f;
-	light[2].kQ = 0.001f;
-	light[2].cosCutoff = cos(Math::DegreeToRadian(45));
-	light[2].cosInner = cos(Math::DegreeToRadian(30));
-	light[2].exponent = 3.f;
-	light[2].spotDirection.Set(0.f, 1.f, 0.f);
-
-	glUniform1i(m_parameters[U_LIGHT2_TYPE], light[2].type);
-	glUniform3fv(m_parameters[U_LIGHT2_COLOR], 1, &light[2].color.r);
-	glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
-	glUniform1f(m_parameters[U_LIGHT2_KC], light[2].kC);
-	glUniform1f(m_parameters[U_LIGHT2_KL], light[2].kL);
-	glUniform1f(m_parameters[U_LIGHT2_KQ], light[2].kQ);
-	glUniform1f(m_parameters[U_LIGHT2_COSCUTOFF], light[2].cosCutoff);
-	glUniform1f(m_parameters[U_LIGHT2_COSINNER], light[2].cosInner);
-	glUniform1f(m_parameters[U_LIGHT2_EXPONENT], light[2].exponent);
-
-	light[3].type = Light::LIGHT_POINT;
-	light[3].position.Set(130, 0, -10);
-	light[3].color.Set(0.251, 0.878, 0.816);
-	light[3].power = 5;
-	light[3].kC = 1.f;
-	light[3].kL = 0.01f;
-	light[3].kQ = 0.001f;
-	light[3].cosCutoff = cos(Math::DegreeToRadian(45));
-	light[3].cosInner = cos(Math::DegreeToRadian(30));
-	light[3].exponent = 3.f;
-	light[3].spotDirection.Set(0.f, 1.f, 0.f);
-
-	glUniform1i(m_parameters[U_LIGHT3_TYPE], light[3].type);
-	glUniform3fv(m_parameters[U_LIGHT3_COLOR], 1, &light[3].color.r);
-	glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
-	glUniform1f(m_parameters[U_LIGHT3_KC], light[3].kC);
-	glUniform1f(m_parameters[U_LIGHT3_KL], light[3].kL);
-	glUniform1f(m_parameters[U_LIGHT3_KQ], light[3].kQ);
-	glUniform1f(m_parameters[U_LIGHT3_COSCUTOFF], light[3].cosCutoff);
-	glUniform1f(m_parameters[U_LIGHT3_COSINNER], light[3].cosInner);
-	glUniform1f(m_parameters[U_LIGHT3_EXPONENT], light[3].exponent);
-
-	light[4].type = Light::LIGHT_POINT;
-	light[4].position.Set(235, -75, -10);
-	light[4].color.Set(0.251, 0.878, 0.816);
-	light[4].power = 5;
-	light[4].kC = 1.f;
-	light[4].kL = 0.01f;
-	light[4].kQ = 0.001f;
-	light[4].cosCutoff = cos(Math::DegreeToRadian(45));
-	light[4].cosInner = cos(Math::DegreeToRadian(30));
-	light[4].exponent = 3.f;
-	light[4].spotDirection.Set(0.f, 1.f, 0.f);
-
-	glUniform1i(m_parameters[U_LIGHT4_TYPE], light[4].type);
-	glUniform3fv(m_parameters[U_LIGHT4_COLOR], 1, &light[4].color.r);
-	glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
-	glUniform1f(m_parameters[U_LIGHT4_KC], light[4].kC);
-	glUniform1f(m_parameters[U_LIGHT4_KL], light[4].kL);
-	glUniform1f(m_parameters[U_LIGHT4_KQ], light[4].kQ);
-	glUniform1f(m_parameters[U_LIGHT4_COSCUTOFF], light[4].cosCutoff);
-	glUniform1f(m_parameters[U_LIGHT4_COSINNER], light[4].cosInner);
-	glUniform1f(m_parameters[U_LIGHT4_EXPONENT], light[4].exponent);
-
-	light[5].type = Light::LIGHT_POINT;
-	light[5].position.Set(330, -155, -10);
-	light[5].color.Set(0.251, 0.878, 0.816);
-	light[5].power = 5;
-	light[5].kC = 1.f;
-	light[5].kL = 0.01f;
-	light[5].kQ = 0.001f;
-	light[5].cosCutoff = cos(Math::DegreeToRadian(45));
-	light[5].cosInner = cos(Math::DegreeToRadian(30));
-	light[5].exponent = 3.f;
-	light[5].spotDirection.Set(0.f, 1.f, 0.f);
-
-	glUniform1i(m_parameters[U_LIGHT5_TYPE], light[5].type);
-	glUniform3fv(m_parameters[U_LIGHT5_COLOR], 1, &light[5].color.r);
-	glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
-	glUniform1f(m_parameters[U_LIGHT5_KC], light[5].kC);
-	glUniform1f(m_parameters[U_LIGHT5_KL], light[5].kL);
-	glUniform1f(m_parameters[U_LIGHT5_KQ], light[5].kQ);
-	glUniform1f(m_parameters[U_LIGHT5_COSCUTOFF], light[5].cosCutoff);
-	glUniform1f(m_parameters[U_LIGHT5_COSINNER], light[5].cosInner);
-	glUniform1f(m_parameters[U_LIGHT5_EXPONENT], light[5].exponent);
-
-	light[6].type = Light::LIGHT_POINT;
-	light[6].position.Set(440, -243, -10);
-	light[6].color.Set(0.251, 0.878, 0.816);
-	light[6].power = 5;
-	light[6].kC = 1.f;
-	light[6].kL = 0.01f;
-	light[6].kQ = 0.001f;
-	light[6].cosCutoff = cos(Math::DegreeToRadian(45));
-	light[6].cosInner = cos(Math::DegreeToRadian(30));
-	light[6].exponent = 3.f;
-	light[6].spotDirection.Set(0.f, 1.f, 0.f);
-
-	glUniform1i(m_parameters[U_LIGHT6_TYPE], light[6].type);
-	glUniform3fv(m_parameters[U_LIGHT6_COLOR], 1, &light[6].color.r);
-	glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
-	glUniform1f(m_parameters[U_LIGHT6_KC], light[6].kC);
-	glUniform1f(m_parameters[U_LIGHT6_KL], light[6].kL);
-	glUniform1f(m_parameters[U_LIGHT6_KQ], light[6].kQ);
-	glUniform1f(m_parameters[U_LIGHT6_COSCUTOFF], light[6].cosCutoff);
-	glUniform1f(m_parameters[U_LIGHT6_COSINNER], light[6].cosInner);
-	glUniform1f(m_parameters[U_LIGHT6_EXPONENT], light[6].exponent);
-
-	light[7].type = Light::LIGHT_POINT;
-	light[7].position.Set(570, -243, -10);
-	light[7].color.Set(0.251, 0.878, 0.816);
-	light[7].power = 5;
-	light[7].kC = 1.f;
-	light[7].kL = 0.01f;
-	light[7].kQ = 0.001f;
-	light[7].cosCutoff = cos(Math::DegreeToRadian(45));
-	light[7].cosInner = cos(Math::DegreeToRadian(30));
-	light[7].exponent = 3.f;
-	light[7].spotDirection.Set(0.f, 1.f, 0.f);
-
-	glUniform1i(m_parameters[U_LIGHT7_TYPE], light[7].type);
-	glUniform3fv(m_parameters[U_LIGHT7_COLOR], 1, &light[7].color.r);
-	glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
-	glUniform1f(m_parameters[U_LIGHT7_KC], light[7].kC);
-	glUniform1f(m_parameters[U_LIGHT7_KL], light[7].kL);
-	glUniform1f(m_parameters[U_LIGHT7_KQ], light[7].kQ);
-	glUniform1f(m_parameters[U_LIGHT7_COSCUTOFF], light[7].cosCutoff);
-	glUniform1f(m_parameters[U_LIGHT7_COSINNER], light[7].cosInner);
-	glUniform1f(m_parameters[U_LIGHT7_EXPONENT], light[7].exponent);
 }
 
 void StudioProject2Scene1::LoadCharacter()
