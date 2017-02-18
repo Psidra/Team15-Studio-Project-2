@@ -30,10 +30,9 @@ void StudioProject2Scene1::Init()
 	PlayerClass::get_instance();
 	/*----Camera & Camera Variables----*/
 
-	EnemyClass fullMutant;
-	fullMutant.EnemyPos.posX;
-	fullMutant.EnemyPos.posY;
-	fullMutant.EnemyPos.posZ;
+	fullMutant.EnemyPos.posX = 750.f;
+	fullMutant.EnemyPos.posY = -252.2f;
+	fullMutant.EnemyPos.posZ = 0.f;
 	enemy.push_back(fullMutant);
 	
 	PlayerClass::get_instance()->Coord.posX = -15.f;
@@ -208,7 +207,7 @@ void StudioProject2Scene1::Init()
 
 	meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	meshList[GEO_MUTANT_TORSO]->MeshBBox.scale(1.f, 2.1f, 1.f);
-	meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(600.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
+	meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(750.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
 
 	/*-----------------------------------------------------------------------------*/
 	
@@ -346,6 +345,8 @@ void StudioProject2Scene1::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 	camera.Update(dt, a_PosX, a_PosY);
+	enemy[0].detection();
+	enemy[0].movement(dt);
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
@@ -700,7 +701,7 @@ void StudioProject2Scene1::Render()
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
 	modelStack.PushMatrix();
-	modelStack.Translate(600.f, -252.2f, 0);
+	modelStack.Translate(enemy[0].EnemyPos.posX, enemy[0].EnemyPos.posY, enemy[0].EnemyPos.posZ);
 
 	modelStack.PushMatrix();
 	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
