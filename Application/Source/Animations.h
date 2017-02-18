@@ -22,6 +22,7 @@ void Transform(bool inject, MS* modelStack, double* timeElapsed, const std::stri
 
 // Mutant
 
+void IdleAnim_M(MS* modelStack, double* timeElapsed, const std::string& dagNode);
 void AttackAnim_M(bool attack_M, MS* modelStack, double* timeElapsed, const std::string& dagNode);
 void WalkAnim_M(MS* modelStack, double* timeElapsed, const std::string& dagNode);
 void DeathAnim_M(bool isdead_M, MS* modelStack, double* timeElapsed, const std::string& dagNode);
