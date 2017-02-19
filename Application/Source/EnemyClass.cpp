@@ -39,11 +39,11 @@ void EnemyClass::movement(double dt)
 {
 	if (moveRange == true)
 	{
-		if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) > 10)
+		if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) > 5)
 		{
 			EnemyPos.posX -= (float)(30.f * dt);
 		}
-		else if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) < -10)
+		else if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) < -5)
 		{
 			EnemyPos.posX += (float)(30.f * dt);
 		}
@@ -74,10 +74,10 @@ void EnemyClass::detection()
 {
 	if (!isDead())
 	{
-		int distBetweenThem = EnemyPos.posX - PlayerClass::get_instance()->Coord.posX;
+		float distBetweenThem = EnemyPos.posX - PlayerClass::get_instance()->Coord.posX;
 
-		if ((distBetweenThem < 61 && distBetweenThem > 29) || // Detect the player but stand at its spot  (60 to 30) 
-			(distBetweenThem < -29 && distBetweenThem > -61)) // and changes it to throwing projectile state (-30 to -60)
+		if ((distBetweenThem < 61.f && distBetweenThem > 29.f) || // Detect the player but stand at its spot  (60 to 30) 
+			(distBetweenThem < -29.f && distBetweenThem > -61.f)) // and changes it to throwing projectile state (-30 to -60)
 		{
 			projectileThrowRange = true;
 		}
@@ -86,8 +86,8 @@ void EnemyClass::detection()
 			projectileThrowRange = false;
 		}
 
-		if ((distBetweenThem < 30 && distBetweenThem > 9) || // Change state to move towards player (29 to 10) (-10 to -29)
-			(distBetweenThem < -9 && distBetweenThem > -30))
+		if ((distBetweenThem < 30.f && distBetweenThem > 3.f) || // Change state to move towards player (29 to 10) (-10 to -29)
+			(distBetweenThem < -3.f && distBetweenThem > -30.f))
 		{
 			moveRange = true;
 		}
@@ -96,7 +96,7 @@ void EnemyClass::detection()
 			moveRange = false;
 		}
 
-		if (distBetweenThem < 10 && distBetweenThem > -10) // Change state to melee attack (9 to -9)
+		if (distBetweenThem < 3.f && distBetweenThem > -3.f) // Change state to melee attack (9 to -9)
 		{
 			meleeAtkRange = true;
 		}

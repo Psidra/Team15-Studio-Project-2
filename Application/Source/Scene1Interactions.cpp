@@ -12,35 +12,35 @@
 
 void StudioProject2Scene1::LightInteraction()
 {
-	if (a_PosX < 25)
+	if (PlayerClass::get_instance()->Coord.posX < 25)
 	{
 		light[0].position.Set(-80, 10, -10);
 		light[1].power = 1;
 		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
 	}
-	else if (a_PosX > 25 && a_PosX < 90)
+	else if (PlayerClass::get_instance()->Coord.posX > 25 && PlayerClass::get_instance()->Coord.posX < 90)
 	{
 		light[0].position.Set(40, 10, -20);
 		light[1].power = 0;
 		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
 	}
-	else if (a_PosX > 90 && a_PosX < 200)
+	else if (PlayerClass::get_instance()->Coord.posX > 90 && PlayerClass::get_instance()->Coord.posX < 200)
 	{
 		light[0].position.Set(130, 0, -10);
 	}
-	else if (a_PosX > 200 && a_PosX < 300)
+	else if (PlayerClass::get_instance()->Coord.posX > 200 && PlayerClass::get_instance()->Coord.posX < 300)
 	{
 		light[0].position.Set(235, -75, -10);
 	}
-	else if (a_PosX > 300 && a_PosX < 400)
+	else if (PlayerClass::get_instance()->Coord.posX > 300 && PlayerClass::get_instance()->Coord.posX < 400)
 	{
 		light[0].position.Set(330, -155, 10);
 	}
-	else if (a_PosX > 400 && a_PosX < 550)
+	else if (PlayerClass::get_instance()->Coord.posX > 400 && PlayerClass::get_instance()->Coord.posX < 550)
 	{
 		light[0].position.Set(440, -243, -10);
 	}
-	else if (a_PosX > 550 && a_PosX < 650)
+	else if (PlayerClass::get_instance()->Coord.posX > 550 && PlayerClass::get_instance()->Coord.posX < 650)
 	{
 		light[0].position.Set(570, -243, -10);
 	}
@@ -56,14 +56,14 @@ void StudioProject2Scene1::TextInteraction()
 		pressEnterTS = 0;
 
 	/*-------------------Spawn Text--------*/
-	if (a_PosX < -17.f || a_PosX > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
+	if (PlayerClass::get_instance()->Coord.posX < -17.f || PlayerClass::get_instance()->Coord.posX > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
 	{
 		spawnTS = 0;
 	}
 	/*-------------------------------------*/
 
 	/*-----------Syringe Text-------------*/
-	if (a_PosX > 10.f && a_PosX < 20.f && textOccured == textOccurStorage)
+	if (PlayerClass::get_instance()->Coord.posX > 10.f && PlayerClass::get_instance()->Coord.posX < 20.f && textOccured == textOccurStorage)
 	{	// Make syringe text appear once only when near syringe
 		syringeTriggedText = true;
 		pEnter = true;
@@ -84,7 +84,7 @@ void StudioProject2Scene1::TextInteraction()
 	/*--------------------------------------*/
 
 	/*------------Box Text--------------------*/
-	if (a_PosX > 450.f && a_PosX < 500.f && textOccured > textOccurStorage) //When near box, text appears
+	if (PlayerClass::get_instance()->Coord.posX > 450.f && PlayerClass::get_instance()->Coord.posX < 500.f && textOccured > textOccurStorage) //When near box, text appears
 	{
 		textOccurStorage = textOccured + 1; // tOS > tO
 		nexttext = false;
@@ -125,7 +125,7 @@ void StudioProject2Scene1::TextInteraction()
 	}
 	/*----------------------------------------------*/
 
-	if (a_PosX > 550 && a_PosX < 600 && textOccurStorage > textOccured)
+	if (PlayerClass::get_instance()->Coord.posX > 550 && PlayerClass::get_instance()->Coord.posX < 600 && textOccurStorage > textOccured)
 	{
 		hmTriggeredText = true;
 		pEnter = true;
@@ -177,7 +177,7 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		alexis_beside_hmTS = 0;
 
-	if (a_PosX > 600 && a_PosX < 630 && textOccured == textOccurStorage)
+	if (PlayerClass::get_instance()->Coord.posX > 600 && PlayerClass::get_instance()->Coord.posX < 630 && textOccured == textOccurStorage)
 	{
 		alexis_beside_hm = true;
 		pEnter = true;

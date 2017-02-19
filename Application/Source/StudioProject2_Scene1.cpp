@@ -40,9 +40,6 @@ void StudioProject2Scene1::Init()
 	PlayerClass::get_instance()->Coord.posY = 0.f;
 	PlayerClass::get_instance()->Coord.posZ = 0.f;
 
-	a_PosX = PlayerClass::get_instance()->Coord.posX;
-	a_PosY = PlayerClass::get_instance()->Coord.posY;
-	a_PosZ = PlayerClass::get_instance()->Coord.posZ;
 	/*---------------------------------*/
 
 	/*--------Heart Variables----------*/
@@ -345,9 +342,9 @@ void StudioProject2Scene1::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-	camera.Update(dt, a_PosX, a_PosY);
-	enemy[0].detection();
+	camera.Update(dt, PlayerClass::get_instance()->Coord.posX, PlayerClass::get_instance()->Coord.posY);
 	enemy[0].movement(dt);
+	enemy[0].detection();
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
@@ -383,7 +380,7 @@ void StudioProject2Scene1::Update(double dt)
 				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_MUTANT_TORSO]->MeshBBox) ||
 				pressedD == true)
 			{
-				a_PosX -= (float)(30.f * dt);
+				PlayerClass::get_instance()->Coord.posX -= (float)(30.f * dt);
 				pressedD = false;
 				pressedA = true;
 
@@ -411,7 +408,7 @@ void StudioProject2Scene1::Update(double dt)
 				!meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_MUTANT_TORSO]->MeshBBox) ||
 				pressedA == true)
 			{
-				a_PosX += (float)(30.f * dt);
+				PlayerClass::get_instance()->Coord.posX += (float)(30.f * dt);
 				pressedA = false;
 				pressedD = true;
 
@@ -495,13 +492,13 @@ void StudioProject2Scene1::Update(double dt)
 				else
 				{
 					bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
-					a_PosY -= (float)(30.f * dt);
+					PlayerClass::get_instance()->Coord.posY -= (float)(30.f * dt);
 				}
 			}
 		}
 		else
 		{
-				a_PosY += (float)(30.f * dt);
+			PlayerClass::get_instance()->Coord.posY += (float)(30.f * dt);
 		}
 	}
 
@@ -513,7 +510,7 @@ void StudioProject2Scene1::Update(double dt)
 
 	if (meshList[GEO_ALEXIS_CROTCH]->MeshBBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox))
 	{
-		a_PosX += (float)(30.f * dt);
+		PlayerClass::get_instance()->Coord.posX += (float)(30.f * dt);
 	}
 	
 	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.loadBB("OBJ//Character//crotch.obj");
@@ -586,16 +583,16 @@ void StudioProject2Scene1::Update(double dt)
 	if (bufferTime_trigger_slope > elapsedTime && trigger == true)
 	{
 		if (elapsedTime < (bufferTime_trigger_slope - 10.99f))
-			a_PosY = -3.f;
-		a_PosX += (float)(30.f * dt);
-		a_PosY -= (float)(3.25f * dt);
+			PlayerClass::get_instance()->Coord.posY = -3.f;
+		PlayerClass::get_instance()->Coord.posX += (float)(30.f * dt);
+		PlayerClass::get_instance()->Coord.posY -= (float)(3.25f * dt);
 		if (elapsedTime > (bufferTime_trigger_slope - 10.8f))
 		{
-			a_PosY -= (float)(10.f * dt);
+			PlayerClass::get_instance()->Coord.posY -= (float)(10.f * dt);
 		}
 		if (elapsedTime > (bufferTime_trigger_slope - 8.f))
 		{
-			a_PosY -= (float)(12.5f * dt);
+			PlayerClass::get_instance()->Coord.posY -= (float)(12.5f * dt);
 		}
 	}
 	else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
@@ -636,8 +633,8 @@ void StudioProject2Scene1::Render()
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.scale(1.1f, 4.5f, 1.f);					// This was a mistake tbh
-	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(a_PosX, (a_PosY + 7.9f), a_PosZ);	// I should have put the scale in init
-		modelStack.Translate(a_PosX, a_PosY, a_PosZ);								// too late for that now
+	meshList[GEO_ALEXIS_CROTCH]->MeshBBox.translate(PlayerClass::get_instance()->Coord.posX, (PlayerClass::get_instance()->Coord.posY + 7.9f), PlayerClass::get_instance()->Coord.posZ);	// I should have put the scale in init
+	modelStack.Translate(PlayerClass::get_instance()->Coord.posX, PlayerClass::get_instance()->Coord.posY, PlayerClass::get_instance()->Coord.posZ);								// too late for that now
 		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
 
 		// add in grab animation later
@@ -687,7 +684,7 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();							// render collision box
-	modelStack.Translate(a_PosX, (a_PosY + 7.9f), a_PosZ);	// i need this
+	modelStack.Translate(PlayerClass::get_instance()->Coord.posX, (PlayerClass::get_instance()->Coord.posY + 7.9f), PlayerClass::get_instance()->Coord.posZ);	// i need this
 	modelStack.Scale(1.1f, 4.5f, 1.f);					// if you remove it bad things will happen
 	RenderMesh(meshList[GEO_BBOX], false);				// remove this later when showing actual shit of course
 	modelStack.PopMatrix();								// :ok_hand:
