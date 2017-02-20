@@ -15,6 +15,7 @@ void EnemyClass::update(double dt)
 {
 	this->detection();
 	this->movement(dt);
+	this->proj_update();
 }
 
 void EnemyClass::movement(double dt)
@@ -67,7 +68,7 @@ void EnemyClass::attack(bool isranged, unsigned int projType, Vector3 pos, Vecto
 	}
 	else
 	{
-
+		// do some shit
 	}
 }
 void EnemyClass::detection()
@@ -104,5 +105,13 @@ void EnemyClass::detection()
 		{
 			meleeAtkRange = false;
 		}
+	}
+}
+
+void EnemyClass::proj_update()
+{
+	for (unsigned int projectiles = 0; projectiles < this->spit_.size(); projectiles++)
+	{
+		this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
 	}
 }
