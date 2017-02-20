@@ -8,7 +8,7 @@ class Projectile
 {
 public:
 	Projectile() {};
-	Projectile(unsigned int projType, Vector3 pos, Vector3 dir) : projType_(projType), defaultPosition_(pos), direction_(dir){
+	Projectile(unsigned int projType, Vector3 pos, Vector3 dir) : projType_(projType), defaultPosition_(pos), direction_(dir) {
 		position_ = pos;
 	};
 	~Projectile() {};

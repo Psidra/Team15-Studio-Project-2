@@ -10,7 +10,6 @@
 #include "MeshBuilder.h"
 #include "MatrixStack.h"
 #include "Light.h"
-#include "EnemyClass.h"
 
 class StudioProject2Scene1 : public Scene
 {
@@ -23,9 +22,9 @@ public:
 	virtual void Render();
 	virtual void RenderMesh(Mesh *mesh, bool enableLight);
 	virtual void Exit();
-	std::vector<EnemyClass> enemy;
 	virtual bool otheranims();
 	virtual void RenderProjectiles();
+	virtual void RenderMutant();
 
 	enum GEOMETRY_TYPE
 	{
@@ -184,7 +183,6 @@ private:
 	float a_RotationLeftLeg;
 	float a_RotationRightLeg;
 	/*------------------------------------------------------------*/
-	EnemyClass fullMutant;
 
 	float ShortBox_PosX;
 	float TallBox_PosX;

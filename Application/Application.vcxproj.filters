@@ -62,9 +62,6 @@
     <ClCompile Include="Source\BoundingBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EnemyClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\LoadATOM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +78,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyClassManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnemyClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -145,9 +148,6 @@
     <ClInclude Include="Source\BoundingBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EnemyClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\LoadATOM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -158,6 +158,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyClassManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

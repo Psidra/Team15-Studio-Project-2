@@ -1,37 +1,20 @@
 #include "EnemyClass.h"
 #include "PlayerClass.h"
-#include "StudioProject2_Scene1.h"
 #include "Projectile.h"
 #include "ProjectileBuilder.h"
 
-EnemyClass::EnemyClass() : _health(100), meleeAtkRange(false), moveRange(false), projectileThrowRange(false)
+void EnemyClass::init()
 {
-	
+	health = 100;
+	direction_m.x = -1;
+	positionStorageX1 = position_m.x + 30;
+	positionStorageX2 = position_m.x - 30;
 }
 
-EnemyClass::~EnemyClass()
+void EnemyClass::update(double dt)
 {
-
-}
-
-bool EnemyClass::isDead()
-{
-	if (_health <= 0)
-		return true;
-	else
-		return false;
-}
-
-void EnemyClass::battle()
-{
-	if (meleeAtkRange == true)
-	{
-
-	}
-	else
-	{
-		
-	}
+	this->detection();
+	this->movement(dt);
 }
 
 void EnemyClass::movement(double dt)
@@ -41,12 +24,12 @@ void EnemyClass::movement(double dt)
 		if ((position_m.x - PlayerClass::get_instance()->position_a.x) > 5)
 		{
 			position_m.x -= (float)(20.f * dt);
-			lookRight = false;
+			direction_m.x = -1;
 		}
 		else if ((position_m.x - PlayerClass::get_instance()->position_a.x) < -5)
 		{
 			position_m.x += (float)(20.f * dt);
-			lookRight = true;
+			direction_m.x = 1;
 		}
 	}
 	else // idle movement
@@ -54,9 +37,9 @@ void EnemyClass::movement(double dt)
 		if (meleeAtkRange || projectileThrowRange)
 		{
 			if (position_m.x < PlayerClass::get_instance()->position_a.x)
-				lookRight = true;
+				direction_m.x = 1;
 			else
-				lookRight = false;
+				direction_m.x = -1;
 		}
 		else
 		{
@@ -68,21 +51,28 @@ void EnemyClass::movement(double dt)
 			}
 
 			if (movementDirection == 1)
-				lookRight = true;
+				direction_m.x = 1;
 			else
-				lookRight = false;
+				direction_m.x = -1;
 		}
 	}
 }
 
-unsigned int EnemyClass::get_currHealth()
+void EnemyClass::attack(bool isranged, unsigned int projType, Vector3 pos, Vector3 dir, double dt)
 {
-	return _health;
-}
+	if (isranged)
+	{
+		Projectile* projectile = projectileBuilder::GenerateProjectile(projType, pos, dir);
+		spit_.push_back(projectile);
+	}
+	else
+	{
 
+	}
+}
 void EnemyClass::detection()
 {
-	if (!isDead())
+	if (health > 0)
 	{
 		float distBetweenThem = position_m.x - PlayerClass::get_instance()->position_a.x;
 
@@ -114,30 +104,5 @@ void EnemyClass::detection()
 		{
 			meleeAtkRange = false;
 		}
-	}
-}
-
-void EnemyClass::update()
-{
-	positionStorageX1 = position_m.x + 30;
-	positionStorageX2 = position_m.x - 30;
-	enemyLookingDir = 0;
-}
-
-void EnemyClass::rangedattack(unsigned int projType, Vector3 pos, double dt)
-{
-	Projectile* GenerateProjectile;
-	spit_.push_back(GenerateProjectile);
-}
-
-void EnemyClass::facingDirection()
-{
-	if (enemyLookingDir == 0 && !lookRight)
-	{
-		enemyLookingDir = 180;
-	}
-	if (enemyLookingDir == 180 && lookRight)
-	{
-		enemyLookingDir = 0;
 	}
 }

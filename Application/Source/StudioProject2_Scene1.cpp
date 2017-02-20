@@ -9,6 +9,9 @@
 #include "Camera.h"
 #include "PlayerClass.h"
 #include "Animations.h"
+#include "EnemyClassManager.h"
+#include "EnemyClass.h"
+#include <vector>
 
 #define VK_1 0x31
 #define VK_2 0x32
@@ -30,11 +33,7 @@ void StudioProject2Scene1::Init()
 	PlayerClass::get_instance();
 	/*----Camera & Camera Variables----*/
 
-	fullMutant.position_m.x = 750.f;
-	fullMutant.position_m.y = -252.2f;
-	fullMutant.position_m.z = 0.f;
-	enemy.push_back(fullMutant);
-	enemy[0].update();
+	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	
 	PlayerClass::get_instance()->position_a.x = -15.f;
 	PlayerClass::get_instance()->position_a.y = 0.f;
@@ -345,10 +344,8 @@ void StudioProject2Scene1::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y);
-	RenderProjectiles();
-	enemy[0].movement(dt);
-	enemy[0].detection();
-	enemy[0].facingDirection();
+	EnemyManager::get_instance()->EnemyList[0]->update(dt);
+
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
 	/*----------------------------------------------------------*/
@@ -440,7 +437,6 @@ void StudioProject2Scene1::Update(double dt)
 		if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
 		{
 			bufferTime_attack = elapsedTime + 1;
-			enemy[0].rangedattack(1, camera.position, dt);
 		}
 		if (Application::IsKeyPressed('F'))
 		{
@@ -512,7 +508,7 @@ void StudioProject2Scene1::Update(double dt)
 		trigger = true;
 	}
 
-	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox))
+	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 	{
 		PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	}
@@ -702,78 +698,9 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
-	modelStack.PushMatrix();
-	modelStack.Translate(enemy[0].position_m.x, enemy[0].position_m.y, enemy[0].position_m.z);
-	modelStack.Rotate(enemy[0].enemyLookingDir, 0, 1, 0);
+	RenderProjectiles();
 
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
-
-	RenderMesh(meshList[GEO_MUTANT_HEAD], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftArm");
-
-	RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftFeet");
-
-	RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftThigh");
-
-	RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftUpperarm");
-
-	RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_Neck");
-
-	RenderMesh(meshList[GEO_MUTANT_NECK], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_RightArm");
-
-	RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_RightFeet");
-
-	RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_RightThigh");
-
-	RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_RightUpperarm");
-
-	RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_Torso");
-
-	RenderMesh(meshList[GEO_MUTANT_TORSO], true);
-	modelStack.PopMatrix();
-
-	modelStack.PopMatrix();
+	RenderMutant();
 	/*-------------------------------------------------------*/
 
 	/*-------------------------------------------------------*/
@@ -1003,25 +930,116 @@ void StudioProject2Scene1::Exit()
 
 void StudioProject2Scene1::RenderProjectiles()
 {
-	for (unsigned int numenemy = 0; numenemy < enemy.size(); numenemy++)
-	{
-		for (unsigned int projectiles = 0; projectiles < enemy[numenemy].spit_.size(); projectiles++)
-		{
-			if (meshList[GEO_SPIT]->MeshBBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) || meshList[GEO_SPIT]->MeshBBox.collide(PlayerClass::get_instance()->PlayerHitBox))
-			{
-				enemy[numenemy].spit_[projectiles]->~Projectile();
-			}
-			else
-			{
-				if (enemy[numenemy].spit_[projectiles] == nullptr)
-					break;
-				modelStack.PushMatrix();
-				modelStack.Translate(enemy[numenemy].spit_[projectiles]->position_.x,
-									 enemy[numenemy].spit_[projectiles]->position_.y,
-									 enemy[numenemy].spit_[projectiles]->position_.z);
-				RenderMesh(meshList[GEO_SPIT], false);
-				modelStack.PopMatrix();
-			}
-		}
-	}
+	//for (unsigned int numenemy = 0; numenemy < enemy.size(); numenemy++)
+	//{
+	//	for (unsigned int projectiles = 0; projectiles < enemy[numenemy].spit_.size(); projectiles++)
+	//	{
+	//		if (meshList[GEO_SPIT]->MeshBBox.collide(meshList[GEO_FLOOR]->MeshBBox) || meshList[GEO_SPIT]->MeshBBox.collide(PlayerClass::get_instance()->PlayerHitBox))
+	//		{
+	//			enemy[numenemy].spit_[projectiles]->~Projectile();
+	//		}
+	//		else
+	//		{
+	//			if (enemy[numenemy].spit_[projectiles] == nullptr)
+	//				break;
+	//			modelStack.PushMatrix();
+	//			modelStack.Translate(enemy[numenemy].spit_[projectiles]->position_.x,
+	//								 enemy[numenemy].spit_[projectiles]->position_.y,
+	//								 enemy[numenemy].spit_[projectiles]->position_.z);
+	//			RenderMesh(meshList[GEO_SPIT], false);
+	//			modelStack.PopMatrix();
+	//		}
+	//	}
+	//}
+}
+
+void StudioProject2Scene1::RenderMutant()
+{
+	modelStack.PushMatrix();
+	EnemyManager* enemies = EnemyManager::get_instance();
+
+	modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
+						 EnemyManager::get_instance()->EnemyList[0]->position_m.y,
+						 EnemyManager::get_instance()->EnemyList[0]->position_m.z);
+
+	if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
+		modelStack.Rotate(180, 0, 1, 0);
+	else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
+		modelStack.Rotate(0, 0, 1, 0);
+
+	//for (auto &i : enemies->EnemyList)
+	//{
+	//	if (i->direction_m == (-1, 0, 0))
+	//		modelStack.Rotate(0, 0, 1, 0);
+	//	else
+	//		modelStack.Rotate(180, 0, 1, 0);
+	//}
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
+
+	RenderMesh(meshList[GEO_MUTANT_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftArm");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftFeet");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftThigh");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftUpperarm");
+
+	RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_Neck");
+
+	RenderMesh(meshList[GEO_MUTANT_NECK], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightArm");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightFeet");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightThigh");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_RightUpperarm");
+
+	RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	IdleAnim_M(&modelStack, &et[20], "Mutant_Torso");
+
+	RenderMesh(meshList[GEO_MUTANT_TORSO], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
 }
