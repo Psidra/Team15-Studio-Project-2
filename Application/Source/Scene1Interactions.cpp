@@ -9,6 +9,8 @@
 #include "Camera.h"
 #include "PlayerClass.h"
 #include "Animations.h"
+#include "EnemyClass.h"
+#include "EnemyClassManager.h"
 
 void StudioProject2Scene1::LightInteraction()
 {
@@ -177,7 +179,8 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		alexis_beside_hmTS = 0;
 
-	if (PlayerClass::get_instance()->position_a.x > 600 && PlayerClass::get_instance()->position_a.x < 630 && textOccured == textOccurStorage)
+	if (PlayerClass::get_instance()->position_a.x > 600 && PlayerClass::get_instance()->position_a.x < 630 && textOccured == textOccurStorage
+		&& textOccured != -1)
 	{
 		alexis_beside_hm = true;
 		pEnter = true;
@@ -191,51 +194,68 @@ void StudioProject2Scene1::TextInteraction()
 		nexttext = false;
 	}
 
+	if (postProjectileThrownText == true)
+		postProjectileThrownTS = 2;
+	else
+		postProjectileThrownTS = 0;
 
-	//if () [Right after projectile barely missed]
-	//{  need a boolean to set true 
-	//   when projectile is thrown
-	//	 postProjectileThrownText = true;
-	//	 postProjectileThrownTS = 2;
-	//}
+	if (EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 60
+		&& textOccured > textOccurStorage) //[Right after projectile barely missed]
+	{  
+		postProjectileThrownText = true;
+		pEnter = true;
+		textOccurStorage = textOccured + 1; // tO < tOS
+	}
 
-	//if (postProjectileThrownTS == 2)
-	//{
-	//	if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		postProjectileThrownTS = 0;
-	//   }
-	//}
+	if (postProjectileThrownText == true && nexttext == true)
+	{
+		pEnter = false;
+		postProjectileThrownText = false;
+		nexttext = false;
+	}
 
-	//if (postProjectileThrownText == true
-	//     && [insert coordinates of character.x or character.z when fm and char distance is less than 10])
-	//{
-	//	 fm_triggedText = true;
-	//   fm_triggedTS = 2;
-	//   postProjectileThrownText = false;
-	//}
+	if (fm_triggedText == true)
+		fm_triggedTS = 2;
+	else
+		fm_triggedTS = 0;
 
-	//if (fm_triggedText == true)
-	//{
-	//   if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		alexisText = true;
-	//		fm_triggedTS = 0;
-	//      alexisTS = 2;
-	//		fm_triggedText = false;
-	//   }
-	//}
+	if (textOccurStorage > textOccured && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 30)
+	{
+		fm_triggedText = true;
+		pEnter = true;
+		textOccured = -1;
+		textOccurStorage = textOccured; // tO == tOS == -1
+	}
 
-	//if (alexisText == true)
-	//{
-	//    if (Application::IsKeyPressed((VK_RETURN))
-	//   {
-	//		guideText = true;
-	//		alexisTS = 0;
-	//		guideTS = 2;
-	//		alexisText = false;
-	//   }
-	//}
+	if (alexisText == true)
+		alexisTS = 2;
+	else
+		alexisTS = 0;
+
+	if (fm_triggedText == true && nexttext == true)
+	{
+		fm_triggedText = false;
+		alexisText = true;
+		nexttext = false;
+	}
+
+	if (guideText == true)
+		guideTS = 2;
+	else
+		guideTS = 0;
+
+	if (alexisText == true && nexttext == true)
+	{
+		alexisText = false;
+		guideText = true;
+		nexttext = false;
+	}
+
+	if (guideText == true && nexttext == true)
+	{
+		pEnter = false;
+		guideText = false;
+		nexttext = false;
+	}
 	/*-------------------------------------------------------------------*/
-
 }
