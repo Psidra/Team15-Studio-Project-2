@@ -14,25 +14,35 @@ public:
 			return instance;
 	}
 
-	void edit_health(int HP);
 	unsigned int get_health();
 
 	void add_energy(int EP);
 	unsigned int get_energy();
 
 	void movement();
+	void healthSystem();
+	void init();
+	void facingDirection();
+
+	struct PlayerLife
+	{
+		float a_heart[10];
+		float a_blankheart[10];
+		int heartCounter;
+	};
 
 	BoundingBox PlayerHitBox;
-
 	Vector3 position_a;
+	PlayerLife Hearts;
+	int a_LookingDirection;
 
 private:
-	PlayerClass() {};
+	PlayerClass(): _health(100), a_LookingDirection(90) {};
 	static PlayerClass* instance;
 
 	unsigned int _health;
 	unsigned int _energy;
-	bool _dead;
+	bool isDead();
 };
 
 #endif //PLAYERCLASS_H

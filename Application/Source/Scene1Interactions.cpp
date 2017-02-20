@@ -239,12 +239,3 @@ void StudioProject2Scene1::TextInteraction()
 	/*-------------------------------------------------------------------*/
 
 }
-
-void StudioProject2Scene1::HeadDirection()
-{
-	if ((pressedA == true && a_LookingDirection == 90.f) ||
-		(pressedD == true && a_LookingDirection == -90.f))
-	{
-		a_LookingDirection *= -1;
-	}
-}
