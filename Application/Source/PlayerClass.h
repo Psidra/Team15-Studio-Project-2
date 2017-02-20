@@ -20,20 +20,15 @@ public:
 	void add_energy(int EP);
 	unsigned int get_energy();
 
-	struct Coordinates
-	{
-		float posX;
-		float posY;
-		float posZ;
-	};
+	void movement();
 
-	Coordinates Coord;
+	BoundingBox PlayerHitBox;
+
+	Vector3 position_a;
 
 private:
 	PlayerClass() {};
 	static PlayerClass* instance;
-
-	BoundingBox PlayerHitBox;
 
 	unsigned int _health;
 	unsigned int _energy;

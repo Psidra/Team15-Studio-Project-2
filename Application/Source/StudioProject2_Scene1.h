@@ -25,6 +25,7 @@ public:
 	virtual void Exit();
 	std::vector<EnemyClass> enemy;
 	virtual bool otheranims();
+	virtual void RenderProjectiles();
 
 	enum GEOMETRY_TYPE
 	{
@@ -47,7 +48,7 @@ public:
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
-		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO,
+		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO, GEO_SPIT,
 		//UI Objects
 		GEO_HEART, GEO_BLANKHEART,
 		GEO_TEXTBOX,
@@ -179,10 +180,6 @@ private:
 	bool attack;
 	bool trigger;
 	bool grab;
-
-	float a_PosX;
-	float a_PosY;
-	float a_PosZ;
 
 	float a_RotationLeftLeg;
 	float a_RotationRightLeg;

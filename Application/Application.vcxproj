@@ -97,6 +97,8 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\PlayerClass.cpp" />
+    <ClCompile Include="Source\Projectile.cpp" />
+    <ClCompile Include="Source\ProjectileBulder.cpp" />
     <ClCompile Include="Source\Scene1Interactions.cpp" />
     <ClCompile Include="Source\Scene1Functions.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
@@ -122,6 +124,8 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\PlayerClass.h" />
+    <ClInclude Include="Source\Projectile.h" />
+    <ClInclude Include="Source\ProjectileBuilder.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\shader.hpp" />

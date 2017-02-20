@@ -1,13 +1,12 @@
 #include "EnemyClass.h"
 #include "PlayerClass.h"
 #include "StudioProject2_Scene1.h"
+#include "Projectile.h"
+#include "ProjectileBuilder.h"
 
-EnemyClass::EnemyClass()
+EnemyClass::EnemyClass() : _health(100), meleeAtkRange(false), moveRange(false), projectileThrowRange(false)
 {
-	_health = 100;
-	meleeAtkRange = false;
-	moveRange = false;
-	projectileThrowRange = false;
+	
 }
 
 EnemyClass::~EnemyClass()
@@ -39,13 +38,13 @@ void EnemyClass::movement(double dt)
 {
 	if (moveRange == true)
 	{
-		if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) > 5)
+		if ((position_m.x - PlayerClass::get_instance()->position_a.x) > 5)
 		{
-			EnemyPos.posX -= (float)(30.f * dt);
+			position_m.x -= (float)(30.f * dt);
 		}
-		else if ((EnemyPos.posX - PlayerClass::get_instance()->Coord.posX) < -5)
+		else if ((position_m.x - PlayerClass::get_instance()->position_a.x) < -5)
 		{
-			EnemyPos.posX += (float)(30.f * dt);
+			position_m.x += (float)(30.f * dt);
 		}
 	}
 	else // idle movement
@@ -56,8 +55,8 @@ void EnemyClass::movement(double dt)
 		else // when not throwing projectile then move
 		{
 			static float movementDirection = 1.f;
-			EnemyPos.posX += (float)(20.f * dt * movementDirection);
-			if ((EnemyPos.posX > positionStorageX1 && movementDirection != -1.f)|| (EnemyPos.posX < positionStorageX2 && movementDirection != 1.f))
+			position_m.x += (float)(20.f * dt * movementDirection);
+			if ((position_m.x > positionStorageX1 && movementDirection != -1.f)|| (position_m.x < positionStorageX2 && movementDirection != 1.f))
 			{
 					movementDirection *= -1;
 			}
@@ -74,7 +73,7 @@ void EnemyClass::detection()
 {
 	if (!isDead())
 	{
-		float distBetweenThem = EnemyPos.posX - PlayerClass::get_instance()->Coord.posX;
+		float distBetweenThem = position_m.x - PlayerClass::get_instance()->position_a.x;
 
 		if ((distBetweenThem < 61.f && distBetweenThem > 29.f) || // Detect the player but stand at its spot  (60 to 30) 
 			(distBetweenThem < -29.f && distBetweenThem > -61.f)) // and changes it to throwing projectile state (-30 to -60)
@@ -109,6 +108,12 @@ void EnemyClass::detection()
 
 void EnemyClass::update()
 {
-	positionStorageX1 = EnemyPos.posX + 30;
-	positionStorageX2 = EnemyPos.posX - 30;
+	positionStorageX1 = position_m.x + 30;
+	positionStorageX2 = position_m.x - 30;
+}
+
+void EnemyClass::rangedattack(unsigned int projType, Vector3 pos, Vector3 dir, double dt)
+{
+	Projectile* GenerateProjectile;
+	spit_.push_back(GenerateProjectile);
 }

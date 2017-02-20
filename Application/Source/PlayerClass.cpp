@@ -32,4 +32,3 @@ unsigned int PlayerClass::get_energy()
 {
 	return _energy;
 }
-

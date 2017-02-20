@@ -2,6 +2,9 @@
 #define ENEMYCLASS_H
 
 #include "BoundingBox.h"
+#include "Projectile.h"
+#include "Vector3.h"
+#include <vector>
 
 class EnemyClass
 {
@@ -13,16 +16,12 @@ public:
 	void movement(double dt);
 	void update();
 
+	std::vector<Projectile*> spit_;
+	void rangedattack(unsigned int projType, Vector3 pos, double dt); // mutants be spitting straight fire yo
+
 	unsigned int get_currHealth();
 
-	struct Coordinates
-	{
-		float posX;
-		float posY;
-		float posZ;
-	};
-
-	Coordinates EnemyPos;
+	Vector3 position_m;
 
 private:
 	float positionStorageX1;
