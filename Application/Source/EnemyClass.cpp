@@ -117,7 +117,7 @@ void EnemyClass::detection()
 	}
 }
 
-void EnemyClass::update()
+void EnemyClass::init()
 {
 	positionStorageX1 = position_m.x + 30;
 	positionStorageX2 = position_m.x - 30;

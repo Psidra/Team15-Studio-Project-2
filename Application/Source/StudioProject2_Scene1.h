@@ -120,12 +120,6 @@ private:
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
 	void LightInteraction();
 	void TextInteraction(); 
-	void HeadDirection();
-
-	/*--------Render Mutants Function-----------*/
-	void RenderHalfMutant();
-	void RenderFullMutant();
-	/*------------------------------------------*/
 
 	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
 	/*--------------------Text Variables--------------------------*/
@@ -172,7 +166,6 @@ private:
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
-	float a_LookingDirection;
 	bool pressedD;
 	bool pressedA;
 	bool injump;
@@ -180,29 +173,12 @@ private:
 	bool attack;
 	bool trigger;
 	bool grab;
-
-	float a_RotationLeftLeg;
-	float a_RotationRightLeg;
 	/*------------------------------------------------------------*/
 	EnemyClass fullMutant;
 
 	float ShortBox_PosX;
 	float TallBox_PosX;
 
-	/*----------------Health System UI variables (hearts)---------*/
-	float a_heart1;
-	float a_heart2;
-	float a_heart3;
-	float a_heart4;
-	float a_heart5;
-	float a_blankheart1;
-	float a_blankheart2;
-	float a_blankheart3;
-	float a_blankheart4;
-	float a_blankheart5;
-
-	int heartCounter;
-	/*------------------------------------------------------------*/
 	std::string fps;
 	
 	// TIME

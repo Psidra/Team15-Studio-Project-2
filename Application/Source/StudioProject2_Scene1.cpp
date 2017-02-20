@@ -28,28 +28,25 @@ StudioProject2Scene1::~StudioProject2Scene1()
 void StudioProject2Scene1::Init()
 {
 	PlayerClass::get_instance();
-	/*----Camera & Camera Variables----*/
+	/*----Player & Camera Variables----*/
 
 	fullMutant.position_m.x = 750.f;
 	fullMutant.position_m.y = -252.2f;
 	fullMutant.position_m.z = 0.f;
 	enemy.push_back(fullMutant);
-	enemy[0].update();
+	enemy[0].init();
 	
 	PlayerClass::get_instance()->position_a.x = -15.f;
 	PlayerClass::get_instance()->position_a.y = 0.f;
 	PlayerClass::get_instance()->position_a.z = 0.f;
 
+	for (int i = 0; i < 10; i++) // First Scene so definitely start with full health
+	{
+		PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
+		PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
+	}
 	/*---------------------------------*/
-
-	/*--------Heart Variables----------*/
-	a_heart1 = 2;
-	a_heart2 = 2;
-	a_heart3 = 2;
-	a_heart4 = 2;
-	a_heart5 = 2;
-	heartCounter = 5;
-	/*--------------------------------*/
+	
 
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -308,7 +305,6 @@ void StudioProject2Scene1::Init()
 	bufferTime_grab = elapsedTime - 1.f;
 
 	/*-----Character--------*/
-	a_LookingDirection = 90.0f;
 	pressedA = false;
 	pressedD = false;
 	injump = false;
@@ -345,10 +341,18 @@ void StudioProject2Scene1::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y);
+	/*-------Player Functions------------------*/
+	PlayerClass::get_instance()->healthSystem();
+	PlayerClass::get_instance()->facingDirection();
+	/*-----------------------------------------*/
 	RenderProjectiles();
+
+	/*-------AI Functions---------------*/
 	enemy[0].movement(dt);
 	enemy[0].detection();
 	enemy[0].facingDirection();
+	/*---------------------------------*/
+
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
 	/*----------------------------------------------------------*/
@@ -365,7 +369,6 @@ void StudioProject2Scene1::Update(double dt)
 	if (Application::IsKeyPressed(VK_4))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	HeadDirection();
 	/*------------------------------Collision Check------------------------------*/
 	if (!otheranims())
 	{
@@ -521,67 +524,7 @@ void StudioProject2Scene1::Update(double dt)
 	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG
 	/*--------------------------------------------------------*/
 	
-	/*----------Health System (Hearts)------*/
-	if (Application::IsKeyPressed('V'))
-	{
-		heartCounter--;
-		if (heartCounter == 4)
-		{
-			a_heart5 = 0;
-			a_blankheart5 = 2;
-		}
-		if (heartCounter == 3)
-		{
-			a_heart4 = 0;
-			a_blankheart4 = 2;
-		}
-		if (heartCounter == 2)
-		{
-			a_heart3 = 0;
-			a_blankheart3 = 2;
-		}
-		if (heartCounter == 1)
-		{
-			a_heart2 = 0;
-			a_blankheart2 = 2;
-		}
-		if (heartCounter == 0)
-		{
-			a_heart1 = 0;
-			a_blankheart1 = 2;
-		}
-	}
-	if (Application::IsKeyPressed('C'))
-	{
-		heartCounter++;
-		if (heartCounter == 5)
-		{
-			a_blankheart5 = 0;
-			a_heart5 = 2;
-		}
-		if (heartCounter == 4)
-		{
-			a_blankheart4 = 0;
-			a_heart4 = 2;
-		}
-		if (heartCounter == 3)
-		{
-			a_blankheart3 = 0;
-			a_heart3 = 2;
-		}
-		if (heartCounter == 2)
-		{
-			a_blankheart2 = 0;
-			a_heart2 = 2;
-		}
-		if (heartCounter == 1)
-		{
-			a_blankheart1 = 0;
-			a_heart1 = 2;
-		}
-	}
 	
-	/*--------------------------------------*/
 
 	/*---------Triggers------*/
 	if (bufferTime_trigger_slope > elapsedTime && trigger == true)
@@ -639,7 +582,7 @@ void StudioProject2Scene1::Render()
 	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);					// This was a mistake tbh
 	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// I should have put the scale in init
 	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);								// too late for that now
-		modelStack.Rotate(a_LookingDirection, 0, 1, 0);
+		modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
 
 		// add in grab animation later
 
@@ -944,17 +887,17 @@ void StudioProject2Scene1::Render()
 	/*-----------------------------*/
 
 	/*----Heart Rendering----------*/
-	RenderMeshOnScreen(meshList[GEO_HEART], 2, 28.5, a_heart1, a_heart1, 0);
-	RenderMeshOnScreen(meshList[GEO_HEART], 4, 28.5, a_heart2, a_heart2, 0);
-	RenderMeshOnScreen(meshList[GEO_HEART], 6, 28.5, a_heart3, a_heart3, 0);
-	RenderMeshOnScreen(meshList[GEO_HEART], 8, 28.5, a_heart4, a_heart4, 0);
-	RenderMeshOnScreen(meshList[GEO_HEART], 10, 28.5, a_heart5, a_heart5, 0);
+		float positionXscreen = 2;
+		float positionYscreen = 28.5;
+		for (int i = 0; i < 10; i++)
+		{
+			RenderMeshOnScreen(meshList[GEO_HEART], positionXscreen, positionYscreen,
+				PlayerClass::get_instance()->Hearts.a_heart[i], PlayerClass::get_instance()->Hearts.a_heart[i], 0);
+			RenderMeshOnScreen(meshList[GEO_BLANKHEART], positionXscreen, positionYscreen,
+				PlayerClass::get_instance()->Hearts.a_blankheart[i], PlayerClass::get_instance()->Hearts.a_blankheart[i], 0);
 
-	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 2, 28.5, a_blankheart1, a_blankheart1, 0);
-	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 4, 28.5, a_blankheart2, a_blankheart2, 0);
-	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 6, 28.5, a_blankheart3, a_blankheart3, 0);
-	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 8, 28.5, a_blankheart4, a_blankheart4, 0);
-	RenderMeshOnScreen(meshList[GEO_BLANKHEART], 10, 28.5, a_blankheart5, a_blankheart5, 0);
+			positionXscreen += 2;
+		}
 	/*-----------------------------*/
 
 	/*---------------Text log Rendering--------*/

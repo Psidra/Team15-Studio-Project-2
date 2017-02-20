@@ -14,7 +14,7 @@ public:
 	void battle();
 	void detection();
 	void movement(double dt);
-	void update();
+	void init();
 	void facingDirection();
 
 	std::vector<Projectile*> spit_;
