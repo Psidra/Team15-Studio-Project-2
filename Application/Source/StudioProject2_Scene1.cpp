@@ -186,6 +186,12 @@ void StudioProject2Scene1::Init()
 
 	meshList[GEO_TREE] = MeshBuilder::GenerateOBJ("tree", "OBJ//tree.obj");
 	meshList[GEO_TREE]->textureID = LoadTGA("Image//tree.tga");
+
+	meshList[GEO_CLUSTERTREE] = MeshBuilder::GenerateOBJ("clustertree", "OBJ//clustertree.obj");
+	meshList[GEO_CLUSTERTREE]->textureID = LoadTGA("Image//tree.tga");
+
+	meshList[GEO_DEBRIS] = MeshBuilder::GenerateOBJ("debris", "OBJ//Debri.obj");
+	meshList[GEO_DEBRIS]->textureID = LoadTGA("Image//Debri_Texture");
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -692,6 +698,76 @@ void StudioProject2Scene1::Render()
 		modelStack.Translate(-10, 0, 0);
 	}
 	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(440, -256, 20);
+	modelStack.Scale(4, 4, 4);
+	modelStack.Rotate(-180, 0, 1, 0);
+	for (unsigned i = 0; i < 5; ++i)
+	{
+		RenderMesh(meshList[GEO_TREE], true);
+		modelStack.Translate(-20, 0, 0);
+	}
+	modelStack.PopMatrix();
+
+	//Cluster
+	modelStack.PushMatrix();
+	modelStack.Translate(70, -11, -70);
+	modelStack.Scale(4.5, 4.5, 4.5);
+	modelStack.Rotate(180, 0, 1, 0);
+	RenderMesh(meshList[GEO_CLUSTERTREE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(400, -256, -80);
+	modelStack.Scale(4.5, 4.5, 4.5);
+	modelStack.Rotate(180, 0, 1, 0);
+	for (unsigned i = 0; i < 10; ++i)
+	{
+		RenderMesh(meshList[GEO_CLUSTERTREE], true);
+		modelStack.Translate(-28, 0, 0);
+	}
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(370, -256, -130);
+	modelStack.Scale(5, 5, 5);
+	modelStack.Rotate(180, 0, 1, 0);
+	for (unsigned i = 0; i < 10; ++i)
+	{
+		RenderMesh(meshList[GEO_CLUSTERTREE], true);
+		modelStack.Translate(-20, 0, 0);
+	}
+	modelStack.PopMatrix();
+	/*-----------------------------------*/
+	/*--------Debris------------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(600, -253, 40);
+	modelStack.Scale(0.2, 0.2, 0.2);
+	RenderMesh(meshList[GEO_DEBRIS], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(500, -253, 40);
+	modelStack.Scale(0.2, 0.2, 0.2);
+	modelStack.Rotate(-45, 0, 1, 0);
+	RenderMesh(meshList[GEO_DEBRIS], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(510, -253, -20);
+	modelStack.Scale(0.2, 0.2, 0.2);
+	modelStack.Rotate(-105, 0, 1, 0);
+	RenderMesh(meshList[GEO_DEBRIS], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(515, -253, -20);
+	modelStack.Scale(0.2, 0.2, 0.2);
+	modelStack.Rotate(-80, 0, 1, 0);
+	RenderMesh(meshList[GEO_DEBRIS], true);
+	modelStack.PopMatrix();
+
 	/*----------------------------------------------------*/
 
 	modelStack.PushMatrix();
