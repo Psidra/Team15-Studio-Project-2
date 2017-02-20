@@ -31,22 +31,36 @@ StudioProject2Scene1::~StudioProject2Scene1()
 void StudioProject2Scene1::Init()
 {
 	PlayerClass::get_instance();
-	/*----Player & Camera Variables----*/
+	/*----Player & AI & Camera Variables----*/
 
 	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
-	
-	PlayerClass::get_instance()->position_a.x = -15.f;
-	PlayerClass::get_instance()->position_a.y = 0.f;
-	PlayerClass::get_instance()->position_a.z = 0.f;
+	PlayerClass::get_instance()->position_a = Vector3(-15.f,0.f,0.f);
 
-	for (int i = 0; i < 10; i++) // First Scene so definitely start with full health
+	/* Hearts size (User Interface) Initialisation--------------*/
+	PlayerClass::get_instance()->Hearts.heartCounter = PlayerClass::get_instance()->get_health() / 10;
+
+	if (PlayerClass::get_instance()->Hearts.heartCounter == 10) // full health then just do this
 	{
-		PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
-		PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
+		for (int i = 0; i < 10; i++) 
+		{
+			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
+			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
+		}
 	}
-	/*---------------------------------*/
-	
-
+	else // if not full health, shuld init the size of the blankhearts and red hearts
+	{
+		for (int i = 0; i < PlayerClass::get_instance()->Hearts.heartCounter; i++)
+		{
+			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
+			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
+		}
+		for (int i = PlayerClass::get_instance()->Hearts.heartCounter; i < 10; i++)
+		{
+			PlayerClass::get_instance()->Hearts.a_heart[i] = 0;
+			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 2;
+		}
+	}
+	/*-------------------------------------------------------------------------------*/
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 
@@ -379,8 +393,7 @@ void StudioProject2Scene1::Update(double dt)
 		if (Application::IsKeyPressed('A') && !trigger)
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MUTANT_TORSO]->MeshBBox) ||
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)  ||
 				pressedD == true)
 			{
 				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
@@ -407,9 +420,8 @@ void StudioProject2Scene1::Update(double dt)
 		if (Application::IsKeyPressed('D') && !trigger)
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MUTANT_TORSO]->MeshBBox) ||
-				pressedA == true)
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) 
+				 ||	pressedA == true)
 			{
 				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 				pressedA = false;
