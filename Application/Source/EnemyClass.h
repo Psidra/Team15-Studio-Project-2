@@ -12,6 +12,7 @@ public:
 	void detection();
 	void movement(double dt);
 	void update();
+	void facingDirection();
 
 	unsigned int get_currHealth();
 
@@ -23,6 +24,7 @@ public:
 	};
 
 	Coordinates EnemyPos;
+	int enemyLookingDir;
 
 private:
 	float positionStorageX1;
@@ -32,6 +34,7 @@ private:
 	bool moveRange;
 	bool meleeAtkRange;
 	bool projectileThrowRange;
+	bool lookRight;
 };
 
 #endif //EnemyClass_H

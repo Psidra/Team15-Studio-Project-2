@@ -345,7 +345,7 @@ void StudioProject2Scene1::Update(double dt)
 	camera.Update(dt, PlayerClass::get_instance()->Coord.posX, PlayerClass::get_instance()->Coord.posY);
 	enemy[0].movement(dt);
 	enemy[0].detection();
-
+	enemy[0].facingDirection();
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
 	/*----------------------------------------------------------*/
@@ -700,6 +700,7 @@ void StudioProject2Scene1::Render()
 	/*-----------------Mutants (Fuglymon)---------------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(enemy[0].EnemyPos.posX, enemy[0].EnemyPos.posY, enemy[0].EnemyPos.posZ);
+	modelStack.Rotate(enemy[0].enemyLookingDir, 0, 1, 0);
 
 	modelStack.PushMatrix();
 	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
