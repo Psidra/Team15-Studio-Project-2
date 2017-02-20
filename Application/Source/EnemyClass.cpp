@@ -40,26 +40,37 @@ void EnemyClass::movement(double dt)
 	{
 		if ((position_m.x - PlayerClass::get_instance()->position_a.x) > 5)
 		{
-			position_m.x -= (float)(30.f * dt);
+			position_m.x -= (float)(20.f * dt);
+			lookRight = false;
 		}
 		else if ((position_m.x - PlayerClass::get_instance()->position_a.x) < -5)
 		{
-			position_m.x += (float)(30.f * dt);
+			position_m.x += (float)(20.f * dt);
+			lookRight = true;
 		}
 	}
 	else // idle movement
 	{
-		if (projectileThrowRange == true) // when throwing projectile, shouldnt move
+		if (meleeAtkRange || projectileThrowRange)
 		{
+			if (position_m.x < PlayerClass::get_instance()->position_a.x)
+				lookRight = true;
+			else
+				lookRight = false;
 		}
-		else // when not throwing projectile then move
+		else
 		{
 			static float movementDirection = 1.f;
 			position_m.x += (float)(20.f * dt * movementDirection);
-			if ((position_m.x > positionStorageX1 && movementDirection != -1.f)|| (position_m.x < positionStorageX2 && movementDirection != 1.f))
+			if ((position_m.x > positionStorageX1 && movementDirection != -1.f) || (position_m.x < positionStorageX2 && movementDirection != 1.f))
 			{
-					movementDirection *= -1;
+				movementDirection *= -1;
 			}
+
+			if (movementDirection == 1)
+				lookRight = true;
+			else
+				lookRight = false;
 		}
 	}
 }
@@ -85,8 +96,8 @@ void EnemyClass::detection()
 			projectileThrowRange = false;
 		}
 
-		if ((distBetweenThem < 30.f && distBetweenThem > 3.f) || // Change state to move towards player (29 to 10) (-10 to -29)
-			(distBetweenThem < -3.f && distBetweenThem > -30.f))
+		if ((distBetweenThem < 30.f && distBetweenThem > 5.f) || // Change state to move towards player (29 to 10) (-10 to -29)
+			(distBetweenThem < -5.f && distBetweenThem > -30.f))
 		{
 			moveRange = true;
 		}
@@ -95,7 +106,7 @@ void EnemyClass::detection()
 			moveRange = false;
 		}
 
-		if (distBetweenThem < 3.f && distBetweenThem > -3.f) // Change state to melee attack (9 to -9)
+		if (distBetweenThem < 5.f && distBetweenThem > -5.f) // Change state to melee attack (9 to -9)
 		{
 			meleeAtkRange = true;
 		}
@@ -110,10 +121,23 @@ void EnemyClass::update()
 {
 	positionStorageX1 = position_m.x + 30;
 	positionStorageX2 = position_m.x - 30;
+	enemyLookingDir = 0;
 }
 
-void EnemyClass::rangedattack(unsigned int projType, Vector3 pos, Vector3 dir, double dt)
+void EnemyClass::rangedattack(unsigned int projType, Vector3 pos, double dt)
 {
 	Projectile* GenerateProjectile;
 	spit_.push_back(GenerateProjectile);
+}
+
+void EnemyClass::facingDirection()
+{
+	if (enemyLookingDir == 0 && !lookRight)
+	{
+		enemyLookingDir = 180;
+	}
+	if (enemyLookingDir == 180 && lookRight)
+	{
+		enemyLookingDir = 0;
+	}
 }

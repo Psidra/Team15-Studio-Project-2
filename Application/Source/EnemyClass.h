@@ -15,6 +15,7 @@ public:
 	void detection();
 	void movement(double dt);
 	void update();
+	void facingDirection();
 
 	std::vector<Projectile*> spit_;
 	void rangedattack(unsigned int projType, Vector3 pos, double dt); // mutants be spitting straight fire yo
@@ -22,6 +23,7 @@ public:
 	unsigned int get_currHealth();
 
 	Vector3 position_m;
+	int enemyLookingDir;
 
 private:
 	float positionStorageX1;
@@ -31,6 +33,7 @@ private:
 	bool moveRange;
 	bool meleeAtkRange;
 	bool projectileThrowRange;
+	bool lookRight;
 };
 
 #endif //EnemyClass_H
