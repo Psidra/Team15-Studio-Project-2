@@ -219,7 +219,7 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		fm_triggedTS = 0;
 
-	if (textOccurStorage > textOccured && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 30)
+	if (textOccurStorage > textOccured && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
 	{
 		fm_triggedText = true;
 		pEnter = true;
