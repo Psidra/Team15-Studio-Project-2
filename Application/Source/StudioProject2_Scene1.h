@@ -10,6 +10,7 @@
 #include "MeshBuilder.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include "HalfMutant.h"
 
 class StudioProject2Scene1 : public Scene
 {
@@ -45,14 +46,17 @@ public:
 		GEO_HOUSEFLOOR, GEO_HOUSE, GEO_HOUSELEFTWALL, GEO_TEXT, GEO_LIGHTBULB,
 		GEO_LIGHTSTAND, GEO_HOUSEFRONT, GEO_BOX_SHORT, GEO_BOX_TALL, GEO_HILL,
 		GEO_TRUMP, GEO_FLOOR, GEO_TREE, GEO_BOX_SHORTTEST, GEO_BOX_TALLTEST, GEO_TRUMPTEST,
-		GEO_CLUSTERTREE, GEO_DEBRIS, GEO_SYRINGE,
+		GEO_CLUSTERTREE, GEO_DEBRIS, GEO_SYRINGE, 
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
 		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO, GEO_SPIT,
+		// half mutant & npc
+		GEO_HUMAN, GEO_HM_HEAD, GEO_HM_BODY, GEO_HM_LEFTARM,
+		GEO_HM_RIGHTARM, GEO_HM_LEFTLEG, GEO_HM_RIGHTLEG,
 		//UI Objects
 		GEO_HEART, GEO_BLANKHEART,
-		GEO_TEXTBOX,
+		GEO_TEXTBOX, 
 
 		//Triggers
 		GEO_TRIGGER_SLOPE,
@@ -110,6 +114,7 @@ private:
 	Camera4 camera;
 	Light light[2];
 	MS modelStack, viewStack, projectionStack;
+	std::vector<HalfMutant> hmvec;
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];

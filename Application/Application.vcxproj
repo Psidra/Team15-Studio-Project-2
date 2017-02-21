@@ -91,6 +91,7 @@
     <ClCompile Include="Source\Camera4_SideScroller.cpp" />
     <ClCompile Include="Source\EnemyClass.cpp" />
     <ClCompile Include="Source\EnemyClassManager.cpp" />
+    <ClCompile Include="Source\HalfMutant.cpp" />
     <ClCompile Include="Source\LoadATOM.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Source\Camera4_SideScroller.h" />
     <ClInclude Include="Source\EnemyClass.h" />
     <ClInclude Include="Source\EnemyClassManager.h" />
+    <ClInclude Include="Source\HalfMutant.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadATOM.h" />
     <ClInclude Include="Source\LoadOBJ.h" />

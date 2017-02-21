@@ -11,6 +11,7 @@
 #include "Animations.h"
 #include "EnemyClassManager.h"
 #include "EnemyClass.h"
+#include "HalfMutant.h"
 #include <vector>
 
 #define VK_1 0x31
@@ -31,6 +32,15 @@ StudioProject2Scene1::~StudioProject2Scene1()
 void StudioProject2Scene1::Init()
 {
 	PlayerClass::get_instance();
+	/*--------Half Mutant Variable----------*/
+	HalfMutant halfmut;
+	halfmut.position_hm = Vector3(640.f, -252.2f, 0.f);
+	hmvec.push_back(halfmut);
+	hmvec[0].init();
+	hmvec[0].size_hm = Vector3(1, 1, 1);
+	hmvec[0].size_human = Vector3(0.1, 0.1, 0.1);
+	/*--------------------------------------*/
+
 	/*----Player & AI & Camera Variables----*/
 
 	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
@@ -229,7 +239,24 @@ void StudioProject2Scene1::Init()
 		EnemyManager::get_instance()->EnemyList[0]->position_m.y + 2.4f, EnemyManager::get_instance()->EnemyList[0]->position_m.z); // y + 2.4
 
 	/*-----------------------------------------------------------------------------*/
-	
+	/*-------------------------Human and Half Mutant Loading-----------------------*/
+	meshList[GEO_HUMAN] = MeshBuilder::GenerateOBJ("npcHuman", "OBJ//npc.obj");
+	meshList[GEO_HUMAN]->textureID = LoadTGA("Image//npctexture.tga");
+
+	meshList[GEO_HM_HEAD] = MeshBuilder::GenerateOBJ("hm_head", "OBJ//Halfmutant//head_hm.obj");
+	meshList[GEO_HM_HEAD]->textureID = LoadTGA("Image//hm_facetexture.tga");
+	meshList[GEO_HM_BODY] = MeshBuilder::GenerateOBJ("hm_body", "OBJ//Halfmutant//body_hm.obj");
+	meshList[GEO_HM_BODY]->textureID = LoadTGA("Image//hm_torsotexture.tga");
+	meshList[GEO_HM_RIGHTARM] = MeshBuilder::GenerateOBJ("hm_rArm", "OBJ//Halfmutant//Rightarm_hm.obj");
+	meshList[GEO_HM_RIGHTARM]->textureID = LoadTGA("Image//hm_armtexture.tga");
+	meshList[GEO_HM_LEFTARM] = MeshBuilder::GenerateOBJ("hm_lArm", "OBJ//Halfmutant//Leftarm_hm.obj");
+	meshList[GEO_HM_LEFTARM]->textureID = LoadTGA("Image//hm_armtexture.tga");
+	meshList[GEO_HM_RIGHTLEG] = MeshBuilder::GenerateOBJ("hm_rLeg", "OBJ//Halfmutant//Rightleg_hm.obj");
+	meshList[GEO_HM_RIGHTLEG]->textureID = LoadTGA("Image//hm_legtexture.tga");
+	meshList[GEO_HM_LEFTLEG] = MeshBuilder::GenerateOBJ("hm_lLeg", "OBJ//Halfmutant//Leftleg_hm.obj");
+	meshList[GEO_HM_LEFTLEG]->textureID = LoadTGA("Image//hm_legtexture.tga");
+	/*-----------------------------------------------------------------------------*/
+
 	/*--------------------------Character Loading----------------------------------*/
 	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
 	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
@@ -350,6 +377,11 @@ void StudioProject2Scene1::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y);
+
+	/*-------Half Mutant Functions------------*/
+	hmvec[0].movement(dt);
+	hmvec[0].transformation();
+	/*----------------------------------------*/
 
 	/*-------AI Functions---------------*/
 
@@ -728,8 +760,48 @@ void StudioProject2Scene1::Render()
 	RenderMutant();
 	/*-------------------------------------------------------*/
 
-	/*-------------------------------------------------------*/
+	/*---------------Half Mutant & Human---------------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(hmvec[0].position_hm.x, hmvec[0].position_hm.y, hmvec[0].position_hm.z);
+	modelStack.Rotate(hmvec[0].hm_LookingDirection, 0, 1, 0);
+	modelStack.Scale(hmvec[0].size_hm.x, hmvec[0].size_hm.y, hmvec[0].size_hm.z);
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_HM_BODY], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_HM_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_HM_RIGHTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_HM_LEFTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_HM_LEFTLEG], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_HM_RIGHTLEG], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
 	
+	// human
+	modelStack.PushMatrix();
+	modelStack.Translate(hmvec[0].position_hm.x, hmvec[0].position_hm.y, hmvec[0].position_hm.z);
+	modelStack.Rotate(hmvec[0].hm_LookingDirection, 0, 1, 0);
+	modelStack.Scale(hmvec[0].size_human.x, hmvec[0].size_human.y, hmvec[0].size_human.z);
+	RenderMesh(meshList[GEO_HUMAN], true);
+	modelStack.PopMatrix();
+	/*-------------------------------------------------------*/
+
+	/*-------------------------------------------------------*/
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_HOUSELEFTWALL], true);
 	modelStack.PopMatrix();
