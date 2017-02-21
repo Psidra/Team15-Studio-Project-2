@@ -74,10 +74,16 @@ bool PlayerClass::isDead()
 
 void PlayerClass::facingDirection()
 {
-	if ((Application::IsKeyPressed('A') && a_LookingDirection == 90) ||
-		(Application::IsKeyPressed('D') && a_LookingDirection == -90))
+	if (Application::IsKeyPressed('A') && Application::IsKeyPressed('D'))
 	{
-		a_LookingDirection *= -1;
+	}
+	else
+	{
+		if ((Application::IsKeyPressed('A') && a_LookingDirection == 90) ||
+			(Application::IsKeyPressed('D') && a_LookingDirection == -90))
+		{
+			a_LookingDirection *= -1;
+		}
 	}
 }
 
