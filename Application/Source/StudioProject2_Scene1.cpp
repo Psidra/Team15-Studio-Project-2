@@ -360,8 +360,8 @@ void StudioProject2Scene1::Init()
 	/*-----Character--------*/
 	pressedA = false;
 	pressedD = false;
+	inmovement = false;
 	injump = false;
-	infall = true;
 	attack = false;
 	trigger = false;
 	grab = false;
@@ -426,7 +426,7 @@ void StudioProject2Scene1::Update(double dt)
 
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthUI();
-	if (!trigger)
+	if (!trigger && !otheranims() && !holdanims())
 		PlayerClass::get_instance()->facingDirection();
 	/*-----------------------------------------*/
 
@@ -449,11 +449,12 @@ void StudioProject2Scene1::Update(double dt)
 	/*------------------------------Collision Check------------------------------*/
 	if (!otheranims() || holdanims())
 	{
-		for (unsigned i = 0; i < 7; i++)
+		for (unsigned i = 0; i < 6; i++)
 			et[i] = 0;
 	}
 	if (!holdanims())
 	{
+		et[7] = 0;
 		et[8] = 0;
 		et[9] = 0;
 	}
@@ -461,17 +462,18 @@ void StudioProject2Scene1::Update(double dt)
 	// !PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox)
 
 	if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
-	{						// *I hope.
-
-		if (Application::IsKeyPressed('A'))
+	{									// *I hope.
+		inmovement = false;				// so many if statements I could write a philosophy book
+		if (Application::IsKeyPressed('A') && !roll)
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)  ||
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
 				pressedD == true)
 			{
 				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
 				pressedD = false;
 				pressedA = true;
+				inmovement = true;
 
 				if (grab)
 				{
@@ -490,15 +492,17 @@ void StudioProject2Scene1::Update(double dt)
 				}
 			}
 		}
-		if (Application::IsKeyPressed('D'))
+
+		if (Application::IsKeyPressed('D') && !roll)
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
 				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
-				 ||	pressedA == true)
+				|| pressedA == true)
 			{
 				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 				pressedA = false;
 				pressedD = true;
+				inmovement = true;
 
 				if (grab)
 				{
@@ -517,21 +521,22 @@ void StudioProject2Scene1::Update(double dt)
 				}
 			}
 		}
+
 		if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
 		{
 			bufferTime_Jump = elapsedTime + 0.6f;
 			bufferTime_JumpUp = elapsedTime + 0.3f;
 		}
-		if (Application::IsKeyPressed(VK_LBUTTON) && !attack)
+		if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !holdanims())
 			bufferTime_attack = elapsedTime + 1.f;
 
-		if (Application::IsKeyPressed('F'))
+		if (Application::IsKeyPressed('F') && !block && !roll)
 			bufferTime_grab = elapsedTime + 0.15f;
 
-		if (Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT))
+		if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
 			bufferTime_block = elapsedTime + 0.5f;
 
-		if (Application::IsKeyPressed(VK_RBUTTON) && !roll)
+		if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
 		{
 			bufferTime_roll = elapsedTime + 0.7f;
 			bufferTime_iframeroll = elapsedTime + 0.35f;
@@ -558,11 +563,19 @@ void StudioProject2Scene1::Update(double dt)
 	}
 	else
 		attack = false;
-	
+
 	if (bufferTime_roll > elapsedTime)
 	{
 		roll = true;
-		et[1] += dt;
+		et[7] += dt;
+		if (pressedA &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+		else if (pressedD &&
+				 !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+				 !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	}
 	else
 		roll = false;
@@ -582,6 +595,11 @@ void StudioProject2Scene1::Update(double dt)
 	}
 	else
 		grab = false;
+
+	if (inmovement)
+		et[6] += dt;
+	else
+		et[6] = 0;
 
 	et[20] += dt;		// This is for me to see if the idleanim is running at all
 
@@ -702,69 +720,81 @@ void StudioProject2Scene1::Render()
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();*/
 
+	unsigned int num_anim;
+	for (num_anim = 0; num_anim < 30;)
+	{
+		if (et[num_anim] == 0.f)
+			num_anim++;
+		else
+			break;
+	}
+
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);					// This was a mistake tbh
-	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// I should have put the scale in init
-	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);								// too late for that now
+	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);																																// This was a mistake tbh
+	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// I should have put the scale in init (i think)
+	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);											// too late for that now w/e
 		modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
 
 		// add in grab animation later
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et[0], "polySurface9"); // HEAD
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
 
 		RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et[0], "pSphere17");//ARM WITH SWORD
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
 
 		RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et[0], "polySurface32");//BODY
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
 
 		RenderMesh(meshList[GEO_ALEXIS_BODY], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et[0], "pSphere14");//LEFTARM
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
 
 		RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et[0], "pCylinder15");//crotch
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
 
 		RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et[0], "pSphere9");//RIGHT LEG
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
 
 		RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AttackAnim(attack, &modelStack, &et[0], "pSphere10");//LEFTLEG
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
 
 		RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 		modelStack.PopMatrix();
 
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();							// render collision box
-	modelStack.Translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// i need this
-	modelStack.Scale(1.1f, 4.5f, 1.f);					// if you remove it bad things will happen
-	RenderMesh(meshList[GEO_BBOX], false);				// remove this later when showing actual shit of course
-	modelStack.PopMatrix();								// :ok_hand:
-														// for some reason I needed to flip translate and scale here to fit with the actual hitbox
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMESHIT]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
-	modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
+	modelStack.Translate(PlayerClass::get_instance()->position_a.x,
+						 (PlayerClass::get_instance()->position_a.y + 7.9f), // render collision box
+						 PlayerClass::get_instance()->position_a.z);		 // i need this
+	modelStack.Scale(1.1f, 4.5f, 1.f);										 // if you remove it bad things will happen
+	RenderMesh(meshList[GEO_BBOX], false);									 // remove this later when showing actual shit of course
+	modelStack.PopMatrix();												 	 // :ok_hand:
+																			 // for some reason I needed to flip translate and scale here to fit with the actual hitbox
+
+	//modelStack.PushMatrix();								// why did i even render this?
+	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
+	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
 	modelStack.PushMatrix();
 	modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// i need this
