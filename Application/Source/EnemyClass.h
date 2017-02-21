@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Projectile.h"
+#include "BoundingBox.h"
 
 class EnemyClass
 {
@@ -21,6 +22,7 @@ public:
 
 	std::vector<Projectile*> spit_;
 
+	BoundingBox EnemyHitBox;
 	Vector3 position_m;
 	Vector3 direction_m;
 

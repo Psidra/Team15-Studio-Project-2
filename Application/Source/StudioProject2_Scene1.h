@@ -26,7 +26,7 @@ public:
 	virtual bool otheranims();
 	virtual void RenderProjectiles();
 	virtual void RenderMutant();
-	double et[30];
+
 	enum GEOMETRY_TYPE
 	{
 		GEO_AXIS,
@@ -180,6 +180,17 @@ private:
 	bool attack;
 	bool trigger;
 	bool grab;
+
+	double et[30];
+	/*  Alexis:
+	0 = attack
+	1 = idle
+
+	Half-Mutant:
+
+	Mutant:
+	20 = idle
+	*/
 	/*------------------------------------------------------------*/
 
 	float ShortBox_PosX;
@@ -198,6 +209,7 @@ private:
 	double bufferTime_text;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
+	double bufferTime_iframe;			// iframe is for damage/roll
 
 };
 
