@@ -1,4 +1,5 @@
 #include "StudioProject2_Scene1.h"
+#include "StudioProject2_Scene2.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
@@ -11,6 +12,8 @@
 #include "Animations.h"
 #include "EnemyClassManager.h"
 #include "EnemyClass.h"
+
+#include "SceneManager.h"
 #include <vector>
 
 #define VK_1 0x31
@@ -591,6 +594,13 @@ void StudioProject2Scene1::Update(double dt)
 	/*--------------------------------------*/
 	TextInteraction();
 	LightInteraction();
+
+	/*---------Change Scene------*/
+
+	if (PlayerClass::get_instance()->position_a.x > 800 || Application::IsKeyPressed('P'))
+	{
+		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+	}
 }
 
 void StudioProject2Scene1::Render()
@@ -809,6 +819,9 @@ void StudioProject2Scene1::Render()
 		RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
+
+
+
 }
 
 bool StudioProject2Scene1::otheranims()
