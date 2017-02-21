@@ -305,6 +305,28 @@ void StudioProject2Scene1::RenderLightStands()
 	RenderMesh(meshList[GEO_LIGHTBULB], true);
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(680, -253, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(780, -253, -10);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
 }
 
 void StudioProject2Scene1::RenderTrees()

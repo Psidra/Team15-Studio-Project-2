@@ -46,6 +46,14 @@ void StudioProject2Scene1::LightInteraction()
 	{
 		light[0].position.Set(570, -243, -10);
 	}
+	else if (PlayerClass::get_instance()->position_a.x > 650 && PlayerClass::get_instance()->position_a.x < 750)
+	{
+		light[0].position.Set(670, -243, -10);
+	}
+	else if (PlayerClass::get_instance()->position_a.x > 750 && PlayerClass::get_instance()->position_a.x < 850)
+	{
+		light[0].position.Set(770, -243, -10);
+	}
 }
 
 void StudioProject2Scene1::TextInteraction()
