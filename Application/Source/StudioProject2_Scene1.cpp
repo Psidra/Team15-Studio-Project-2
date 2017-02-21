@@ -364,7 +364,8 @@ void StudioProject2Scene1::Update(double dt)
 	EnemyManager::get_instance()->EnemyList[0]->update(dt);
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthUI();
-	PlayerClass::get_instance()->facingDirection();
+	if (!trigger)
+		PlayerClass::get_instance()->facingDirection();
 	/*-----------------------------------------*/
 
 	/*-----------Updates the FPS to be stated on screen---------*/
