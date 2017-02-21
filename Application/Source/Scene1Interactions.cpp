@@ -86,6 +86,9 @@ void StudioProject2Scene1::TextInteraction()
 
 	if (syringeTriggedText == true && nexttext == true)
 	{
+		syringeSizeX = 0.1f;
+		syringeSizeY = 0.1f;
+		syringeSizeZ = 0.1f;
 		textOccured = textOccurStorage + 1; // tO > tOS
 		syringeTriggedText = false;
 		pEnter = false;

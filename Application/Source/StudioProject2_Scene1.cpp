@@ -192,6 +192,9 @@ void StudioProject2Scene1::Init()
 
 	meshList[GEO_DEBRIS] = MeshBuilder::GenerateOBJ("debris", "OBJ//Debri.obj");
 	meshList[GEO_DEBRIS]->textureID = LoadTGA("Image//Debri_Texture.tga");
+	
+	meshList[GEO_SYRINGE] = MeshBuilder::GenerateOBJ("syringe", "OBJ//Scene1//syn.obj");
+	meshList[GEO_SYRINGE]->textureID = LoadTGA("Image//crotchtext.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -314,6 +317,9 @@ void StudioProject2Scene1::Init()
 	MouseControl = false;
 	ShortBox_PosX = 0.f;
 	TallBox_PosX = 0.f;
+	syringeSizeX = 1.f;
+	syringeSizeY = 1.f;
+	syringeSizeZ = 1.f;
 
 	/*-----Character--------*/
 	pressedA = false;
@@ -695,6 +701,10 @@ void StudioProject2Scene1::Render()
 	RenderMesh(meshList[GEO_HOUSE], true);
 	modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Scale(syringeSizeX, syringeSizeY, syringeSizeZ);
+	RenderMesh(meshList[GEO_SYRINGE], true);
+	modelStack.PopMatrix();
 	/*--------------------trees rendering-----------------*/
 	RenderTrees();
 	/*-----------------------------------*/
