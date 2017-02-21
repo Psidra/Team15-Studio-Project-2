@@ -20,10 +20,10 @@ public:
 	unsigned int get_energy();
 
 	void movement();
-	void healthSystem();
+	void healthUI();
 	void init();
 	void facingDirection();
-	void edit_health();
+	void healthSystem();
 
 	struct PlayerLife
 	{

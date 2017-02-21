@@ -46,6 +46,14 @@ void StudioProject2Scene1::LightInteraction()
 	{
 		light[0].position.Set(570, -243, -10);
 	}
+	else if (PlayerClass::get_instance()->position_a.x > 650 && PlayerClass::get_instance()->position_a.x < 750)
+	{
+		light[0].position.Set(670, -243, -10);
+	}
+	else if (PlayerClass::get_instance()->position_a.x > 750 && PlayerClass::get_instance()->position_a.x < 850)
+	{
+		light[0].position.Set(770, -243, -10);
+	}
 }
 
 void StudioProject2Scene1::TextInteraction()
@@ -78,6 +86,9 @@ void StudioProject2Scene1::TextInteraction()
 
 	if (syringeTriggedText == true && nexttext == true)
 	{
+		syringeSizeX = 0.1f;
+		syringeSizeY = 0.1f;
+		syringeSizeZ = 0.1f;
 		textOccured = textOccurStorage + 1; // tO > tOS
 		syringeTriggedText = false;
 		pEnter = false;

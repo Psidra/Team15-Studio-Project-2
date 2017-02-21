@@ -1,5 +1,5 @@
-#ifndef StudioProject2Scene1_H
-#define StudioProject2Scene1_H
+#ifndef StudioProject2Scene2_H
+#define StudioProject2Scene2_H
 #include <string>
 #include <vector>
 #include "Scene.h"
@@ -11,11 +11,11 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-class StudioProject2Scene1 : public Scene
+class StudioProject2Scene2 : public Scene
 {
 public:
-	StudioProject2Scene1();
-	~StudioProject2Scene1();
+	StudioProject2Scene2();
+	~StudioProject2Scene2();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -25,6 +25,7 @@ public:
 	virtual bool otheranims();
 	virtual void RenderProjectiles();
 	virtual void RenderMutant();
+	double et[30];
 
 	enum GEOMETRY_TYPE
 	{
@@ -41,17 +42,14 @@ public:
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM,
 		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG,
 		//Environmental Objects
-		GEO_HOUSEFLOOR, GEO_HOUSE, GEO_HOUSELEFTWALL, GEO_TEXT, GEO_LIGHTBULB,
-		GEO_LIGHTSTAND, GEO_HOUSEFRONT, GEO_BOX_SHORT, GEO_BOX_TALL, GEO_HILL,
-		GEO_TRUMP, GEO_FLOOR, GEO_TREE, GEO_BOX_SHORTTEST, GEO_BOX_TALLTEST, GEO_TRUMPTEST,
-		GEO_CLUSTERTREE, GEO_DEBRIS, GEO_SYRINGE,
+		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE,
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
 		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO, GEO_SPIT,
 		//UI Objects
 		GEO_HEART, GEO_BLANKHEART,
-		GEO_TEXTBOX,
+		GEO_TEXTBOX, GEO_TEXT,
 
 		//Triggers
 		GEO_TRIGGER_SLOPE,
@@ -93,7 +91,7 @@ public:
 		U_LIGHT1_EXPONENT,
 
 		U_LIGHTENABLED,
-		U_NUMLIGHTS, 
+		U_NUMLIGHTS,
 
 		U_COLOR_TEXTURE_ENABLED,
 		U_COLOR_TEXTURE,
@@ -114,57 +112,19 @@ private:
 	unsigned m_parameters[U_TOTAL];
 
 	void LoadLight();
-	void LoadCharacter();
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
+	
 	void LightInteraction();
-	void TextInteraction(); 
+	void TextInteraction();
 	void RenderTrees();
 	void RenderLightStands();
 	void RenderTextInteractions();
-	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
+
 	/*--------------------Text Variables--------------------------*/
-	int spawnTS; // all text size 2
-	int pressEnterTS;
-
-	bool syringeTriggedText; 
-	int	syringeTriggedTS;
-
-	bool boxTriggedText; 
-	int boxTriggedTS;
-	bool boxTriggedText_Two; 
-	int boxTriggedTS_two;
-
-	bool hmTriggeredText; 
-	int hmTriggedTS;
-
-	bool hm_to_alexis; 
-	int hm_to_alexisTS;
-
-	bool alexis_to_hm; 
-	int alexis_to_hmTS;
-
-	bool alexis_beside_hm; 
-	int alexis_beside_hmTS;
-
-	bool postProjectileThrownText; 
-	int postProjectileThrownTS;
-
-	bool fm_triggedText; 
-	int fm_triggedTS;
-
-	bool alexisText;  
-	int alexisTS;
-
-	bool guideText; 
-	int guideTS;
-
 	bool pEnter;
-	int textOccurStorage;
-	int textOccured;
-	bool nexttext;
-
+	int pressEnterTS;
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
@@ -175,27 +135,10 @@ private:
 	bool attack;
 	bool trigger;
 	bool grab;
-
-	double et[30];
-	/*  Alexis:
-	0 = attack
-	1 = idle
-
-	Half-Mutant:
-
-	Mutant:
-	20 = idle
-	*/
 	/*------------------------------------------------------------*/
 
-	float ShortBox_PosX;
-	float TallBox_PosX;
-	float syringeSizeX;
-	float syringeSizeY;
-	float syringeSizeZ;
-
 	std::string fps;
-	
+
 	// TIME
 	double elapsedTime;
 	double bufferTime_JumpUp;
@@ -204,7 +147,6 @@ private:
 	double bufferTime_text;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
-	double bufferTime_iframe;			// iframe is for damage/roll
 
 };
 
