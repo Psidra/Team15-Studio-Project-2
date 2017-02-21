@@ -63,8 +63,7 @@ void EnemyClass::attack(bool isranged, unsigned int projType, Vector3 pos, Vecto
 {
 	if (isranged)
 	{
-		Projectile* projectile = projectileBuilder::GenerateProjectile(projType, pos, dir);
-		spit_.push_back(projectile);
+		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
 	}
 	else
 	{

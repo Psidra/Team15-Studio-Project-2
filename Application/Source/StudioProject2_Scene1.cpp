@@ -220,11 +220,10 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
 	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
 
-
-
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.scale(1.f, 2.1f, 1.f);
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(750.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
+	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.scale(1.f, 2.1f, 1.f);
+	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
+		EnemyManager::get_instance()->EnemyList[0]->position_m.y + 2.4f, EnemyManager::get_instance()->EnemyList[0]->position_m.z); // y + 2.4
 
 	/*-----------------------------------------------------------------------------*/
 	
@@ -262,6 +261,7 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
 	/*-----------------------------------------------------------------------------*/ 
 	
 	/*-------------------------Loading Hearts-----------------------------------------*/
@@ -315,12 +315,6 @@ void StudioProject2Scene1::Init()
 	MouseControl = false;
 	ShortBox_PosX = 0.f;
 	TallBox_PosX = 0.f;
-	bufferTime_JumpUp = elapsedTime - 1.f;
-	bufferTime_Jump = elapsedTime - 1.f;
-	bufferTime_attack = elapsedTime - 1.f;
-	bufferTime_text = elapsedTime - 1.f;
-	bufferTime_trigger_slope = elapsedTime - 1.f;
-	bufferTime_grab = elapsedTime - 1.f;
 
 	/*-----Character--------*/
 	pressedA = false;
@@ -344,16 +338,6 @@ void StudioProject2Scene1::Init()
 	/*-------------------------------------------------------------------------------*/
 }
 
-double et[30];
-/*  Alexis:
-	0 = attack
-	1 = idle
-
-	Half-Mutant:
-
-	Mutant:
-	20 = idle
-*/
 void StudioProject2Scene1::Update(double dt)
 {
 	int framespersec = 1 / dt;
@@ -361,8 +345,36 @@ void StudioProject2Scene1::Update(double dt)
 	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y);
 
 	/*-------AI Functions---------------*/
-	RenderProjectiles();
+
 	EnemyManager::get_instance()->EnemyList[0]->update(dt);
+
+	// I spent 10 years trying to fix projectile because I wanted to avoid using erase.
+	// Erase won today. Erase, me, 1:0. Shit.
+
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		{
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+			{
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) || EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+				{
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+				}
+				else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox))
+				{
+					// take damage
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+					bufferTime_iframe = elapsedTime + 0.2f; // irrelevant this isnt used anywhere yet*
+				}
+			}
+		}
+	}
+
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthSystem();
 	PlayerClass::get_instance()->facingDirection();
@@ -424,7 +436,8 @@ void StudioProject2Scene1::Update(double dt)
 		if (Application::IsKeyPressed('D') && !trigger)
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) 
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) &&
+				!PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox)
 				 ||	pressedA == true)
 			{
 				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
@@ -456,10 +469,7 @@ void StudioProject2Scene1::Update(double dt)
 		if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
 		{
 			bufferTime_attack = elapsedTime + 1;
-
 			EnemyManager::get_instance()->EnemyList[0]->attack(true, 1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt);
-			EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
-			meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.max_, EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.min_);
 		}
 		if (Application::IsKeyPressed('F'))
 		{
@@ -542,15 +552,14 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 		{
-			PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
-
-			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
-
-			meshList[GEO_TESTBBOX]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
 		}
 	}
 
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG
+
+	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
+																												// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
 	/*--------------------------------------------------------*/
 	
 	
@@ -670,21 +679,12 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
 	modelStack.PushMatrix();
-	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
-	{
-		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-		{
-			meshList[GEO_TESTBBOX]->MeshBBox.translate(EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.x,
-				(EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.y + 10.f),
-				EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.z);
-				RenderMesh(meshList[GEO_TESTBBOX], false);			// remove this later when showing actual shit of course
-		}
-	}
+	modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// i need this
+	RenderMesh(meshList[GEO_TESTBBOX], false);
 	modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
 	RenderProjectiles();
-
 	RenderMutant();
 	/*-------------------------------------------------------*/
 
@@ -989,30 +989,15 @@ void StudioProject2Scene1::RenderProjectiles()
 	{
 		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) || EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
 			{
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->~Projectile();
-			}
-			else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox))
-			{
-				// take damage
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->~Projectile();
-			}
-			else
-			{
-				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] == nullptr)
-					break;
 				modelStack.PushMatrix();
 				modelStack.Translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-									 (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-									 EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
 				RenderMesh(meshList[GEO_SPIT], false);
 				modelStack.PopMatrix();
 			}
-
-			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-				(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
 		}
 	}
 }
@@ -1020,7 +1005,9 @@ void StudioProject2Scene1::RenderProjectiles()
 void StudioProject2Scene1::RenderMutant()
 {
 	modelStack.PushMatrix();
-	EnemyManager* enemies = EnemyManager::get_instance();
+	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
+		EnemyManager::get_instance()->EnemyList[0]->position_m.y,
+		EnemyManager::get_instance()->EnemyList[0]->position_m.z);
 
 	modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
 						 EnemyManager::get_instance()->EnemyList[0]->position_m.y,
