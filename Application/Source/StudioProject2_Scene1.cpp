@@ -1,4 +1,5 @@
 #include "StudioProject2_Scene1.h"
+#include "StudioProject2_Scene2.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
@@ -11,6 +12,7 @@
 #include "Animations.h"
 #include "EnemyClassManager.h"
 #include "EnemyClass.h"
+#include "SceneManager.h"
 #include "HalfMutant.h"
 #include <vector>
 
@@ -297,6 +299,14 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HEART] = MeshBuilder::GenerateQuad("heart", Color(1, 0, 0));
 	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(0, 0, 0));
 	/*--------------------------------------------------------------------------------*/
+
+	/*-------------------------Loading Mutant Health----------------------------------*/
+	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
+	meshList[GEO_M_RHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
+	meshList[GEO_M_BHEART] = MeshBuilder::GenerateOBJ("MutantHealthBlack", "OBJ//M_HealthBlack.obj");
+	meshList[GEO_M_BHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
+	/*--------------------------------------------------------------------------------*/
+
 
 	/*------------------------Initialising Text Variables-------------------------------*/
 	spawnTS = 2;
@@ -657,6 +667,13 @@ void StudioProject2Scene1::Update(double dt)
 	/*--------------------------------------*/
 	TextInteraction();
 	LightInteraction();
+
+	/*---------Change Scene------*/
+
+	if (PlayerClass::get_instance()->position_a.x > 800 || Application::IsKeyPressed('P'))
+	{
+		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+	}
 }
 
 void StudioProject2Scene1::Render()
@@ -882,8 +899,8 @@ void StudioProject2Scene1::Render()
 
 	/*-----------------Skybox-------------------*/
 	modelStack.PushMatrix();
-	modelStack.Translate(50, 170, -200);
-	modelStack.Scale(1000, 500, 500);
+	modelStack.Translate(450, 80, -200);
+	modelStack.Scale(1600, 675, 1);
 	RenderMesh(meshList[GEO_SKYBOX], false);
 	modelStack.PopMatrix();
 	/*------------------------------------------*/
@@ -915,6 +932,9 @@ void StudioProject2Scene1::Render()
 		RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
+
+
+
 }
 
 bool StudioProject2Scene1::otheranims()
@@ -968,16 +988,37 @@ void StudioProject2Scene1::RenderMutant()
 						 EnemyManager::get_instance()->EnemyList[0]->position_m.y,
 						 EnemyManager::get_instance()->EnemyList[0]->position_m.z);
 
+	modelStack.PushMatrix();
+
+		modelStack.PushMatrix();
+		if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
+			modelStack.Rotate(180, 0, 1, 0);
+		else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
+			modelStack.Rotate(0, 0, 1, 0);
+
+			IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
+
+			RenderMesh(meshList[GEO_MUTANT_HEAD], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
+		modelStack.Translate(-2, 5, 0);
+		//if (EnemyManager::get_instance()->EnemyList[0]->healthsystem())
+		RenderMesh(meshList[GEO_M_RHEART], false);
+		modelStack.Translate(3, 0, 0);
+		//if (attack)
+		//	RenderMesh(meshList[GEO_M_BHEART], false);
+		//else
+			RenderMesh(meshList[GEO_M_RHEART], false);
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	
+	
 	if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
 		modelStack.Rotate(180, 0, 1, 0);
 	else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
 		modelStack.Rotate(0, 0, 1, 0);
 
-	modelStack.PushMatrix();
-	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
-
-	RenderMesh(meshList[GEO_MUTANT_HEAD], true);
-	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftArm");

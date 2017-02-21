@@ -140,6 +140,9 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_TREE]->textureID = LoadTGA("Image//tree.tga");
 	meshList[GEO_CLUSTERTREE] = MeshBuilder::GenerateOBJ("clustertree", "OBJ//clustertree.obj");
 	meshList[GEO_CLUSTERTREE]->textureID = LoadTGA("Image//tree.tga");
+
+	meshList[GEO_SCENE2] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
+	//meshList[GEO_SCENE2]->textureID = LoadTGA("Image//housetexture.tga");
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
@@ -235,6 +238,7 @@ void StudioProject2Scene2::Init()
 	// Make sure you pass uniform parameters after glUseProgram()
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
 	/*-------------------------------------------------------------------------------*/
+
 }
 
 /*  Alexis:
@@ -582,6 +586,11 @@ void StudioProject2Scene2::Render()
 	/*-------------------------------------------------------*/
 
 	/*--------------------Environmental Objects--------------*/
+	modelStack.PushMatrix();
+	modelStack.Scale(0.2,0.2,0.2);
+	RenderMesh(meshList[GEO_SCENE2], false);
+	modelStack.PopMatrix();
+
 	/*-------------------------------------------------------*/
 
 	/*-----------------Environmental Light Rendering------*/
