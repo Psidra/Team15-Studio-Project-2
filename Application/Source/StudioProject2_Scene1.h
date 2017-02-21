@@ -53,6 +53,9 @@ public:
 		GEO_HEART, GEO_BLANKHEART,
 		GEO_TEXTBOX,
 
+		//Mutant Health
+		GEO_M_RHEART, GEO_M_BHEART,
+
 		//Triggers
 		GEO_TRIGGER_SLOPE,
 
