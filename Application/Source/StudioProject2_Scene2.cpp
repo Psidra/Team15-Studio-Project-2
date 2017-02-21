@@ -18,7 +18,7 @@
 #define VK_3 0x33
 #define VK_4 0x34
 
-bool MouseControl;
+//bool MouseControl;
 
 StudioProject2Scene2::StudioProject2Scene2()
 {
@@ -213,7 +213,7 @@ void StudioProject2Scene2::Init()
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
-	MouseControl = false;
+	//MouseControl = false;
 	
 	/*-----Character--------*/
 	pressedA = false;
@@ -627,8 +627,8 @@ void StudioProject2Scene2::Exit()
 	glDeleteProgram(m_programID);
 }
 
-//void StudioProject2Scene2::RenderProjectiles()
-//{
+void StudioProject2Scene2::RenderProjectiles()
+{
 //	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 //	{
 //		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
@@ -659,10 +659,10 @@ void StudioProject2Scene2::Exit()
 //				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
 //		}
 //	}
-//}
-//
-//void StudioProject2Scene2::RenderMutant()
-//{
+}
+
+void StudioProject2Scene2::RenderMutant()
+{
 //	modelStack.PushMatrix();
 //	EnemyManager* enemies = EnemyManager::get_instance();
 //
@@ -742,4 +742,4 @@ void StudioProject2Scene2::Exit()
 //	modelStack.PopMatrix();
 //
 //	modelStack.PopMatrix();
-//}
+}
