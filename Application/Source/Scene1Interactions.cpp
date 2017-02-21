@@ -73,10 +73,11 @@ void StudioProject2Scene1::TextInteraction()
 	/*-------------------------------------*/
 
 	/*-----------Syringe Text-------------*/
-	if (PlayerClass::get_instance()->position_a.x > 10.f && PlayerClass::get_instance()->position_a.x < 20.f && textOccured == textOccurStorage)
+	if (PlayerClass::get_instance()->position_a.x > 10.f && PlayerClass::get_instance()->position_a.x < 20.f && textOccured == 0)
 	{	// Make syringe text appear once only when near syringe
 		syringeTriggedText = true;
 		pEnter = true;
+		textOccured = 1;
 	}
 
 	if (syringeTriggedText == true)
@@ -89,7 +90,6 @@ void StudioProject2Scene1::TextInteraction()
 		syringeSizeX = 0.1f;
 		syringeSizeY = 0.1f;
 		syringeSizeZ = 0.1f;
-		textOccured = textOccurStorage + 1; // tO > tOS
 		syringeTriggedText = false;
 		pEnter = false;
 		nexttext = false;
@@ -97,9 +97,9 @@ void StudioProject2Scene1::TextInteraction()
 	/*--------------------------------------*/
 
 	/*------------Box Text--------------------*/
-	if (PlayerClass::get_instance()->position_a.x > 450.f && PlayerClass::get_instance()->position_a.x < 500.f && textOccured > textOccurStorage) //When near box, text appears
+	if (PlayerClass::get_instance()->position_a.x > 450.f && PlayerClass::get_instance()->position_a.x < 500.f && textOccured == 1) //When near box, text appears
 	{
-		textOccurStorage = textOccured + 1; // tOS > tO
+		textOccured = 2; 
 		nexttext = false;
 		pEnter = true;
 		boxTriggedText = true;
@@ -138,11 +138,11 @@ void StudioProject2Scene1::TextInteraction()
 	}
 	/*----------------------------------------------*/
 
-	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccurStorage > textOccured)
+	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccured == 2)
 	{
 		hmTriggeredText = true;
 		pEnter = true;
-		textOccured = textOccurStorage;
+		textOccured = 3;
 	}
 
 	if (hmTriggeredText == true)
@@ -180,8 +180,6 @@ void StudioProject2Scene1::TextInteraction()
 		alexis_to_hm = false;
 		pEnter = false;
 		nexttext = false;
-		//Since cannot get back to the other side of the wall, 
-		//the syringe text wont be reachable , so reuse the tO == tOS condition for next text
 	}
 	/*----------------------------------------------------*/
 
@@ -190,12 +188,11 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		alexis_beside_hmTS = 0;
 
-	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 3 && textOccured == textOccurStorage
-		&& textOccured != -1)
+	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 3 && textOccured == 3)
 	{
 		alexis_beside_hm = true;
 		pEnter = true;
-		textOccured = textOccurStorage + 1;  //tO > tOS
+		textOccured = 4;  
 	}
 
 	if (alexis_beside_hm == true && nexttext == true)
@@ -211,11 +208,11 @@ void StudioProject2Scene1::TextInteraction()
 		postProjectileThrownTS = 0;
 
 	if (EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 60
-		&& textOccured > textOccurStorage) 
+		&& textOccured == 4) 
 	{  
 		postProjectileThrownText = true;
 		pEnter = true;
-		textOccurStorage = textOccured + 1; // tO < tOS
+		textOccured = 5; 
 	}
 
 	if (postProjectileThrownText == true && nexttext == true)
@@ -230,12 +227,11 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		fm_triggedTS = 0;
 
-	if (textOccurStorage > textOccured && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
+	if (textOccured == 5 && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
 	{
 		fm_triggedText = true;
 		pEnter = true;
-		textOccured = -1;
-		textOccurStorage = textOccured; // tO == tOS == -1
+		textOccured = 6;
 	}
 
 	if (alexisText == true)

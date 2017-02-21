@@ -345,7 +345,6 @@ void StudioProject2Scene1::Init()
 	guideTS = 0;
 
 	pEnter = false;
-	textOccurStorage = 0;
 	textOccured = 0;
 	nexttext = false;
 	/*----------------------------------------------------------------------------------*/

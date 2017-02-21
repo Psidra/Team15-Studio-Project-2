@@ -170,7 +170,6 @@ private:
 	int guideTS;
 
 	bool pEnter;
-	int textOccurStorage;
 	int textOccured;
 	bool nexttext;
 
