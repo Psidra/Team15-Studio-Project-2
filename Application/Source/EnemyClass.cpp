@@ -59,16 +59,19 @@ void EnemyClass::movement(double dt)
 	}
 }
 
-void EnemyClass::attack(bool isranged, unsigned int projType, Vector3 pos, Vector3 dir, double dt)
+void EnemyClass::attack(unsigned int projType, Vector3 pos, Vector3 dir, double dt)
 {
-	if (isranged)
+	if (this->projectileThrowRange)
 	{
-		Projectile* projectile = projectileBuilder::GenerateProjectile(projType, pos, dir);
-		spit_.push_back(projectile);
+		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
+	}
+	else if (this->meleeAtkRange)
+	{
+		// some shit
 	}
 	else
 	{
-		// do some shit
+		// jackshit
 	}
 }
 void EnemyClass::detection()
@@ -77,8 +80,8 @@ void EnemyClass::detection()
 	{
 		float distBetweenThem = position_m.x - PlayerClass::get_instance()->position_a.x;
 
-		if ((distBetweenThem < 61.f && distBetweenThem > 29.f) || // Detect the player but stand at its spot  (60 to 30) 
-			(distBetweenThem < -29.f && distBetweenThem > -61.f)) // and changes it to throwing projectile state (-30 to -60)
+		if ((distBetweenThem < 61.f && distBetweenThem > 30.f) || // Detect the player but stand at its spot  (60 to 30) 
+			(distBetweenThem < -30.f && distBetweenThem > -61.f)) // and changes it to throwing projectile state (-30 to -60)
 		{
 			projectileThrowRange = true;
 		}

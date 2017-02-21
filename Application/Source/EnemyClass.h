@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Projectile.h"
+#include "BoundingBox.h"
 
 class EnemyClass
 {
@@ -14,13 +15,14 @@ public:
 	void init();
 	void update(double dt);
 	void movement(double dt);
-	void attack(bool ranged, unsigned int projType, Vector3 pos, Vector3 dir, double dt);
+	void attack(unsigned int projType, Vector3 pos, Vector3 dir, double dt);
 	void detection();
 	void edit_health();
 	void proj_update();
 
 	std::vector<Projectile*> spit_;
 
+	BoundingBox EnemyHitBox;
 	Vector3 position_m;
 	Vector3 direction_m;
 

@@ -22,16 +22,16 @@ unsigned int PlayerClass::get_energy()
 void PlayerClass::healthUI()
 {
 	/*----------Health System (Hearts)------*/
-	if (Application::IsKeyPressed('V'))
-	{
-		if (_health > 0)
-			_health -= 10;
-	}
-	if (Application::IsKeyPressed('C'))
-	{
-		if (_health < 100)
-			_health += 10;
-	}
+	//if (Application::IsKeyPressed('V'))
+	//{
+	//	if (_health > 0)
+	//		_health -= 10;
+	//}
+	//if (Application::IsKeyPressed('C'))
+	//{
+	//	if (_health < 100)
+	//		_health += 10;
+	//}
 
 	if (!isDead())
 	{
@@ -87,3 +87,10 @@ void PlayerClass::facingDirection()
 	}
 }
 
+void PlayerClass::healthSystem(bool Block)
+{
+	if (Block)
+		this->_health -= 10;
+	else
+		this->_health -= 20;
+}

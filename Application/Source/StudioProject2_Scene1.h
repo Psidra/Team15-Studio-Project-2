@@ -10,6 +10,7 @@
 #include "MeshBuilder.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include "HalfMutant.h"
 
 class StudioProject2Scene1 : public Scene
 {
@@ -23,9 +24,10 @@ public:
 	virtual void RenderMesh(Mesh *mesh, bool enableLight);
 	virtual void Exit();
 	virtual bool otheranims();
+	virtual bool holdanims();
 	virtual void RenderProjectiles();
 	virtual void RenderMutant();
-	double et[30];
+
 	enum GEOMETRY_TYPE
 	{
 		GEO_AXIS,
@@ -44,14 +46,17 @@ public:
 		GEO_HOUSEFLOOR, GEO_HOUSE, GEO_HOUSELEFTWALL, GEO_TEXT, GEO_LIGHTBULB,
 		GEO_LIGHTSTAND, GEO_HOUSEFRONT, GEO_BOX_SHORT, GEO_BOX_TALL, GEO_HILL,
 		GEO_TRUMP, GEO_FLOOR, GEO_TREE, GEO_BOX_SHORTTEST, GEO_BOX_TALLTEST, GEO_TRUMPTEST,
-		GEO_CLUSTERTREE, GEO_DEBRIS, GEO_SYRINGE,
+		GEO_CLUSTERTREE, GEO_DEBRIS, GEO_SYRINGE, 
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
 		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO, GEO_SPIT,
+		// half mutant & npc
+		GEO_HUMAN, GEO_HM_HEAD, GEO_HM_BODY, GEO_HM_LEFTARM,
+		GEO_HM_RIGHTARM, GEO_HM_LEFTLEG, GEO_HM_RIGHTLEG,
 		//UI Objects
 		GEO_HEART, GEO_BLANKHEART,
-		GEO_TEXTBOX,
+		GEO_TEXTBOX, 
 
 		//Mutant Health
 		GEO_M_RHEART, GEO_M_BHEART,
@@ -112,6 +117,7 @@ private:
 	Camera4 camera;
 	Light light[2];
 	MS modelStack, viewStack, projectionStack;
+	std::vector<HalfMutant> hmvec;
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
@@ -178,6 +184,22 @@ private:
 	bool attack;
 	bool trigger;
 	bool grab;
+	bool block;
+	bool roll;
+
+	double et[30];
+	/*  Alexis:
+	0 = attack
+	1 = roll
+	8 = block
+	9 = grab
+
+	Half-Mutant:
+
+	Mutant:
+	20 = idle
+	21 = attack
+	*/
 	/*------------------------------------------------------------*/
 
 	float ShortBox_PosX;
@@ -196,6 +218,12 @@ private:
 	double bufferTime_text;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
+	double bufferTime_iframe;			// iframe is for damage taken
+	double bufferTime_block;			// OLD SPICE ODOUR BODY BLOCKER BLOCKS BACTERIA AND SMELL FOR UP TO 24 HOURS
+	double bufferTime_roll;
+	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
+
+	double bufferTime_attack_M;
 
 };
 

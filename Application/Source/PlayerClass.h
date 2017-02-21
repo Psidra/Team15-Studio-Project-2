@@ -23,7 +23,7 @@ public:
 	void healthUI();
 	void init();
 	void facingDirection();
-	void healthSystem();
+	void healthSystem(bool Block);
 
 	struct PlayerLife
 	{
