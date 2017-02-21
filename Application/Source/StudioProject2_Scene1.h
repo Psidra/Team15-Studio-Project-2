@@ -23,6 +23,7 @@ public:
 	virtual void RenderMesh(Mesh *mesh, bool enableLight);
 	virtual void Exit();
 	virtual bool otheranims();
+	virtual bool holdanims();
 	virtual void RenderProjectiles();
 	virtual void RenderMutant();
 
@@ -175,16 +176,21 @@ private:
 	bool attack;
 	bool trigger;
 	bool grab;
+	bool block;
+	bool roll;
 
 	double et[30];
 	/*  Alexis:
 	0 = attack
-	1 = idle
+	1 = roll
+	8 = block
+	9 = grab
 
 	Half-Mutant:
 
 	Mutant:
 	20 = idle
+	21 = attack
 	*/
 	/*------------------------------------------------------------*/
 
@@ -204,7 +210,12 @@ private:
 	double bufferTime_text;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
-	double bufferTime_iframe;			// iframe is for damage/roll
+	double bufferTime_iframe;			// iframe is for damage taken
+	double bufferTime_block;			// OLD SPICE ODOUR BODY BLOCKER BLOCKS BACTERIA AND SMELL FOR UP TO 24 HOURS
+	double bufferTime_roll;
+	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
+
+	double bufferTime_attack_M;
 
 };
 
