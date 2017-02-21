@@ -138,7 +138,7 @@ void StudioProject2Scene1::TextInteraction()
 	}
 	/*----------------------------------------------*/
 
-	if (PlayerClass::get_instance()->position_a.x > 550 && PlayerClass::get_instance()->position_a.x < 600 && textOccurStorage > textOccured)
+	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccurStorage > textOccured)
 	{
 		hmTriggeredText = true;
 		pEnter = true;
@@ -190,7 +190,7 @@ void StudioProject2Scene1::TextInteraction()
 	else
 		alexis_beside_hmTS = 0;
 
-	if (PlayerClass::get_instance()->position_a.x > 600 && PlayerClass::get_instance()->position_a.x < 630 && textOccured == textOccurStorage
+	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 3 && textOccured == textOccurStorage
 		&& textOccured != -1)
 	{
 		alexis_beside_hm = true;
@@ -211,7 +211,7 @@ void StudioProject2Scene1::TextInteraction()
 		postProjectileThrownTS = 0;
 
 	if (EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 60
-		&& textOccured > textOccurStorage) //[Right after projectile barely missed]
+		&& textOccured > textOccurStorage) 
 	{  
 		postProjectileThrownText = true;
 		pEnter = true;
