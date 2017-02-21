@@ -45,7 +45,7 @@ void EnemyClass::movement(double dt)
 		else
 		{
 			static float movementDirection = 1.f;
-			position_m.x += (float)(20.f * dt * movementDirection);
+			position_m.x += (float)(10.f * dt * movementDirection);
 			if ((position_m.x > positionStorageX1 && movementDirection != -1.f) || (position_m.x < positionStorageX2 && movementDirection != 1.f))
 			{
 				movementDirection *= -1;
