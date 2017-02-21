@@ -220,6 +220,8 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
 	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
 
+
+
 	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	//meshList[GEO_MUTANT_TORSO]->MeshBBox.scale(1.f, 2.1f, 1.f);
 	//meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(750.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
@@ -260,9 +262,6 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_MUTANT_TORSO]->MeshBBox.max_, meshList[GEO_MUTANT_TORSO]->MeshBBox.min_);
-	meshList[GEO_TESTBBOX]->MeshBBox.scale(1.f, 2.1f, 1.f);
-	meshList[GEO_TESTBBOX]->MeshBBox.translate(600.f, -248.8f, 0);
 	/*-----------------------------------------------------------------------------*/ 
 	
 	/*-------------------------Loading Hearts-----------------------------------------*/
@@ -364,7 +363,6 @@ void StudioProject2Scene1::Update(double dt)
 	/*-------AI Functions---------------*/
 	RenderProjectiles();
 	EnemyManager::get_instance()->EnemyList[0]->update(dt);
-
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthSystem();
 	PlayerClass::get_instance()->facingDirection();
@@ -458,6 +456,10 @@ void StudioProject2Scene1::Update(double dt)
 		if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
 		{
 			bufferTime_attack = elapsedTime + 1;
+
+			EnemyManager::get_instance()->EnemyList[0]->attack(true, 1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt);
+			EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+			meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.max_, EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.min_);
 		}
 		if (Application::IsKeyPressed('F'))
 		{
@@ -535,6 +537,19 @@ void StudioProject2Scene1::Update(double dt)
 	}
 	
 	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		{
+			PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+
+			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+
+			meshList[GEO_TESTBBOX]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
+		}
+	}
+
 	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG
 	/*--------------------------------------------------------*/
 	
@@ -655,7 +670,16 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_TESTBBOX], false);			// remove this later when showing actual shit of course
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		{
+			meshList[GEO_TESTBBOX]->MeshBBox.translate(EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.x,
+				(EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.y + 10.f),
+				EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.z);
+				RenderMesh(meshList[GEO_TESTBBOX], false);			// remove this later when showing actual shit of course
+		}
+	}
 	modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
@@ -961,27 +985,36 @@ void StudioProject2Scene1::Exit()
 
 void StudioProject2Scene1::RenderProjectiles()
 {
-	//for (unsigned int numenemy = 0; numenemy < enemy.size(); numenemy++)
-	//{
-	//	for (unsigned int projectiles = 0; projectiles < enemy[numenemy].spit_.size(); projectiles++)
-	//	{
-	//		if (meshList[GEO_SPIT]->MeshBBox.collide(meshList[GEO_FLOOR]->MeshBBox) || meshList[GEO_SPIT]->MeshBBox.collide(PlayerClass::get_instance()->PlayerHitBox))
-	//		{
-	//			enemy[numenemy].spit_[projectiles]->~Projectile();
-	//		}
-	//		else
-	//		{
-	//			if (enemy[numenemy].spit_[projectiles] == nullptr)
-	//				break;
-	//			modelStack.PushMatrix();
-	//			modelStack.Translate(enemy[numenemy].spit_[projectiles]->position_.x,
-	//								 enemy[numenemy].spit_[projectiles]->position_.y,
-	//								 enemy[numenemy].spit_[projectiles]->position_.z);
-	//			RenderMesh(meshList[GEO_SPIT], false);
-	//			modelStack.PopMatrix();
-	//		}
-	//	}
-	//}
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		{
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) || EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+			{
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->~Projectile();
+			}
+			else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox))
+			{
+				// take damage
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->~Projectile();
+			}
+			else
+			{
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] == nullptr)
+					break;
+				modelStack.PushMatrix();
+				modelStack.Translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+									 (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+									 EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+				RenderMesh(meshList[GEO_SPIT], false);
+				modelStack.PopMatrix();
+			}
+
+			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+				(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+		}
+	}
 }
 
 void StudioProject2Scene1::RenderMutant()
@@ -997,14 +1030,6 @@ void StudioProject2Scene1::RenderMutant()
 		modelStack.Rotate(180, 0, 1, 0);
 	else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
 		modelStack.Rotate(0, 0, 1, 0);
-
-	//for (auto &i : enemies->EnemyList)
-	//{
-	//	if (i->direction_m == (-1, 0, 0))
-	//		modelStack.Rotate(0, 0, 1, 0);
-	//	else
-	//		modelStack.Rotate(180, 0, 1, 0);
-	//}
 
 	modelStack.PushMatrix();
 	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");

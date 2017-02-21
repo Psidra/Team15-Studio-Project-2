@@ -4,9 +4,9 @@ void BoundingBox::loadBB(const std::string &file_path)
 {
 	std::ifstream fileStream(file_path, std::ios::binary);
 
-	Vector3 vLowerLeftFront = (-9999999999.0f, -9999999999.0f, 9999999999.0f);
-	Vector3 vUpperRightBack = (9999999999.0f, 9999999999.0f, -9999999999.0f);
-
+	Vector3 vLowerLeftFront = (-999999999.0f, -999999999.0f, 999999999.0f); // one more digit and the world implodes on itself I think.
+	Vector3 vUpperRightBack = (999999999.0f, 999999999.0f, -999999999.0f);  // ...or something similar to that extent. (Max value is 2 bil.)
+																			// Update: Okay, nothing happened. Still, don't add another digit.
 	while (!fileStream.eof())
 	{
 		char buf[256];
