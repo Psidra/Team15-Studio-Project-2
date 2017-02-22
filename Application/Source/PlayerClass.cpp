@@ -8,12 +8,6 @@ unsigned int PlayerClass::get_health()
 	return _health;
 }
 
-void PlayerClass::add_energy(int EP)
-{
-	if (_energy < 10)
-		_energy += EP;
-}
-
 unsigned int PlayerClass::get_energy()
 {
 	return _energy;
@@ -120,4 +114,39 @@ void PlayerClass::bossFightFacingDirection()
 		if (Application::IsKeyPressed('D'))
 			a_LookingDirection = 180.f;
 	}
+}
+
+void PlayerClass::manaUI()
+{
+	if (!isDead())
+	{
+		Hearts.energyCounter = _energy / 10;
+
+		if (Hearts.energyCounter == 10)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				Hearts.a_energy[i] = 2;
+				Hearts.a_blankenergy[i] = 0;
+			}
+		}
+		else
+		{
+			for (int i = 0; i < Hearts.energyCounter; i++)
+			{
+				Hearts.a_energy[i] = 2;
+				Hearts.a_blankenergy[i] = 0;
+			}
+			for (int i = Hearts.energyCounter; i < 10; i++)
+			{
+				Hearts.a_blankenergy[i] = 2;
+				Hearts.a_energy[i] = 0;
+			}
+		}
+	}
+}
+
+void PlayerClass::manaSystem()
+{
+
 }

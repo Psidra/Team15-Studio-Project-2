@@ -12,7 +12,7 @@
 #include "EnemyClassManager.h"
 #include "EnemyClass.h"
 #include "SceneManager.h"
-#include "HalfMutant.h"
+#include "Boss.h"
 #include <vector>
 
 #define VK_1 0x31
@@ -35,6 +35,10 @@ void SceneBoss::Init()
 	PlayerClass::get_instance()->position_a = Vector3(50,0,0);
 	/*-----------Hearts Initialisation-----*/
 	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->manaUI();
+
+	Boss::get_instance()->bossHealthUI();
+	Boss::get_instance()->bossInit();
 	/*-------------------------------------*/
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -144,6 +148,9 @@ void SceneBoss::Init()
 	/*-------------------------Loading Hearts-----------------------------------------*/
 	meshList[GEO_HEART] = MeshBuilder::GenerateQuad("heart", Color(1, 0, 0));
 	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(0, 0, 0));
+	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
+	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
+	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 1));
 	/*--------------------------------------------------------------------------------*/
 	/*-------------------------Loading Mutant Health----------------------------------*/
 	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
@@ -167,6 +174,13 @@ void SceneBoss::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
+
+	/*--------Boss Functions--------------*/
+	Boss::get_instance()->bossHealthSystem();
+	Boss::get_instance()->bossHealthUI();
+	Boss::get_instance()->stateManager();
+	Boss::get_instance()->dmgOvertime(elapsedTime);
+	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
 	//EnemyManager::get_instance()->EnemyList[0]->update(dt);
@@ -203,23 +217,6 @@ void SceneBoss::Update(double dt)
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->bossFightFacingDirection();
 	/*-----------------------------------------*/
-
-	/*-----------Updates the FPS to be stated on screen---------*/
-	fps = "FPS:" + std::to_string(framespersec);
-	/*----------------------------------------------------------*/
-
-	if (Application::IsKeyPressed(VK_1))
-		glEnable(GL_CULL_FACE);
-
-	if (Application::IsKeyPressed(VK_2))
-		glDisable(GL_CULL_FACE);
-
-	if (Application::IsKeyPressed(VK_3))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	if (Application::IsKeyPressed(VK_4))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 	if (!otheranims() || holdanims())
 	{
 		for (unsigned i = 0; i < 7; i++)
@@ -231,6 +228,7 @@ void SceneBoss::Update(double dt)
 		et[9] = 0;
 	}
 
+	/*----------Player Movement and Collisions------------*/
 	if ((Application::IsKeyPressed('A') && Application::IsKeyPressed('D')) ||
 		(Application::IsKeyPressed('W') && Application::IsKeyPressed('S')))
 	{
@@ -254,7 +252,7 @@ void SceneBoss::Update(double dt)
 			PlayerClass::get_instance()->position_a.z -= (float)(30.f * dt);
 		}
 	}
-
+	/*-----------------------------------------------*/
 	if (bufferTime_attack > elapsedTime)
 	{
 		attack = true;
@@ -294,6 +292,29 @@ void SceneBoss::Update(double dt)
 
 	//EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
 	// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
+
+	/*-----------Updates the FPS to be stated on screen---------*/
+	fps = "FPS:" + std::to_string(framespersec);
+	/*----------------------------------------------------------*/
+
+	if (Application::IsKeyPressed(VK_1))
+		glEnable(GL_CULL_FACE);
+
+	if (Application::IsKeyPressed(VK_2))
+		glDisable(GL_CULL_FACE);
+
+	if (Application::IsKeyPressed(VK_3))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	if (Application::IsKeyPressed(VK_4))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	/*-------------Scene Change--------*/
+	if (Boss::get_instance()->get_health() <= 0)
+	{
+		//SceneManager::getInstance()->changeScene(new); [Change Scene to Victory Scene]
+	}
+	/*---------------------------------*/
 }
 
 void SceneBoss::Render()
@@ -336,43 +357,36 @@ void SceneBoss::Render()
 	// add in grab animation later
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "polySurface9"); // HEAD
 
 	RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere17");//ARM WITH SWORD
 
 	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "polySurface32");//BODY
 
 	RenderMesh(meshList[GEO_ALEXIS_BODY], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere14");//LEFTARM
 
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pCylinder15");//crotch
 
 	RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere9");//RIGHT LEG
 
 	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere10");//LEFTLEG
 
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 	modelStack.PopMatrix();
@@ -408,19 +422,41 @@ void SceneBoss::Render()
 	RenderLightStands();
 	/*----------------------------------------------------*/
 
-	/*----Heart Rendering----------*/
+	/*----Heart and Energy Bar Rendering----------*/
 	float positionXscreen = 2;
-	float positionYscreen = 28.5;
 	for (int i = 0; i < 10; i++)
 	{
-		RenderMeshOnScreen(meshList[GEO_HEART], positionXscreen, positionYscreen,
+		RenderMeshOnScreen(meshList[GEO_HEART], positionXscreen, 28.5,
 			PlayerClass::get_instance()->Hearts.a_heart[i], PlayerClass::get_instance()->Hearts.a_heart[i], 0);
-		RenderMeshOnScreen(meshList[GEO_BLANKHEART], positionXscreen, positionYscreen,
+		RenderMeshOnScreen(meshList[GEO_BLANKHEART], positionXscreen, 28.5,
 			PlayerClass::get_instance()->Hearts.a_blankheart[i], PlayerClass::get_instance()->Hearts.a_blankheart[i], 0);
 
 		positionXscreen += 2;
 	}
+
+	float energyX = 4;
+	for (int i = 0; i < 10; i++)
+	{
+		RenderMeshOnScreen(meshList[GEO_ENERGY], energyX, 26.5,
+			PlayerClass::get_instance()->Hearts.a_energy[i], PlayerClass::get_instance()->Hearts.a_energy[i], 0);
+		RenderMeshOnScreen(meshList[GEO_BLANKENERGY], energyX, 26.5,
+			PlayerClass::get_instance()->Hearts.a_energy[i], PlayerClass::get_instance()->Hearts.a_energy[i], 0);
+
+		energyX += 1;
+	}
 	/*-----------------------------*/
+	/*--------Boss Life Rendering---*/
+	float posXscreen = 6;
+	for (int i = 0; i < 30; i++)
+	{
+		RenderMeshOnScreen(meshList[GEO_BOSSLIFE], posXscreen, 1,
+			Boss::get_instance()->bossLife.boss_heart[i], Boss::get_instance()->bossLife.boss_heart[i], 0);
+
+		posXscreen += 0.5;
+	}
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "BOSS", Color(1, 1, 0), 2, 3, -8.5);
+	/*------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
