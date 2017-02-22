@@ -205,9 +205,11 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
-	/*-------------------------Loading Hearts-----------------------------------------*/
-	meshList[GEO_HEART] = MeshBuilder::GenerateQuad("heart", Color(1, 0, 0));
-	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(0, 0, 0));
+	/*-------------------------Loading Alexis Health----------------------------------*/
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
+	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
+	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
+	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
 	/*--------------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
@@ -605,7 +607,7 @@ void StudioProject2Scene2::Render()
 	float positionYscreen = 28.5;
 	for (int i = 0; i < 10; i++)
 	{
-		RenderMeshOnScreen(meshList[GEO_HEART], positionXscreen, positionYscreen,
+		RenderMeshOnScreen(meshList[GEO_ALEXIS_LIFE], positionXscreen, positionYscreen,
 			PlayerClass::get_instance()->Hearts.a_heart[i], PlayerClass::get_instance()->Hearts.a_heart[i], 0);
 		RenderMeshOnScreen(meshList[GEO_BLANKHEART], positionXscreen, positionYscreen,
 			PlayerClass::get_instance()->Hearts.a_blankheart[i], PlayerClass::get_instance()->Hearts.a_blankheart[i], 0);
