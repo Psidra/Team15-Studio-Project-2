@@ -131,10 +131,7 @@ void StudioProject2MainMenu::Update(double dt)
 	//	light[0].position.y += (float)(LSPEED * dt);
 
 	if (Application::IsKeyPressed(VK_RETURN))
-	{
-		SceneManager* scene = SceneManager::getInstance();
-		scene->changeScene(new StudioProject2Scene1());
-	}
+		SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
 
 }
 

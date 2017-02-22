@@ -670,9 +670,7 @@ void StudioProject2Scene1::Update(double dt)
 	/*---------Change Scene------*/
 
 	if (PlayerClass::get_instance()->position_a.x > 800 || Application::IsKeyPressed('P'))
-	{
 		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
-	}
 }
 
 void StudioProject2Scene1::Render()
