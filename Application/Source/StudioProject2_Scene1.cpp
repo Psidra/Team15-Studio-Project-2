@@ -46,30 +46,7 @@ void StudioProject2Scene1::Init()
 	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	PlayerClass::get_instance()->position_a = Vector3(-15.f,0.f,0.f);
 
-	/* Hearts size (User Interface) Initialisation--------------*/
-	PlayerClass::get_instance()->Hearts.heartCounter = PlayerClass::get_instance()->get_health() / 10;
-
-	if (PlayerClass::get_instance()->Hearts.heartCounter == 10) // full health then just do this
-	{
-		for (int i = 0; i < 10; i++) 
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
-		}
-	}
-	else // if not full health, shuld init the size of the blankhearts and red hearts
-	{
-		for (int i = 0; i < PlayerClass::get_instance()->Hearts.heartCounter; i++)
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
-		}
-		for (int i = PlayerClass::get_instance()->Hearts.heartCounter; i < 10; i++)
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 0;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 2;
-		}
-	}
+	PlayerClass::get_instance()->healthUI();
 	/*-------------------------------------------------------------------------------*/
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -189,9 +166,9 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_TRUMPTEST]->MeshBBox.scale(0.75f, 1.7f, 1);
 	meshList[GEO_TRUMPTEST]->MeshBBox.translate(550.1f, -250.f, 0);
 
-	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
+	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//lighttop.obj");
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
-	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//Scene1//lightbottom.obj");
+	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//lightbottom.obj");
 	meshList[GEO_LIGHTSTAND]->textureID = LoadTGA("Image//lighttext.tga");
 
 	meshList[GEO_TREE] = MeshBuilder::GenerateOBJ("tree", "OBJ//tree.obj");
@@ -305,6 +282,11 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
 
+	/*--------------------------HUD (Half) Loading---------------------------------------*/
+	meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
+	meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
+	/*-----------------------------------------------------------------------------------*/
+
 	/*-----------------------------Trigger Check-----------------------------------*/
 	meshList[GEO_TRIGGER_SLOPE] = MeshBuilder::GenerateOBJ("Trigger_Slope", "OBJ//TriggerBox.obj");
 	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.loadBB("OBJ//TriggerBox.obj");
@@ -316,9 +298,11 @@ void StudioProject2Scene1::Init()
 	//meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
 	/*-----------------------------------------------------------------------------*/ 
 	
-	/*-------------------------Loading Hearts-----------------------------------------*/
-	meshList[GEO_HEART] = MeshBuilder::GenerateQuad("heart", Color(1, 0, 0));
-	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(0, 0, 0));
+	/*-------------------------Loading Alexis Health----------------------------------*/
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
+	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
+	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
+	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
 	/*--------------------------------------------------------------------------------*/
 
 	/*-------------------------Loading Mutant Health----------------------------------*/
@@ -327,7 +311,6 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_M_BHEART] = MeshBuilder::GenerateOBJ("MutantHealthBlack", "OBJ//M_HealthBlack.obj");
 	meshList[GEO_M_BHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
 	/*--------------------------------------------------------------------------------*/
-
 
 	/*------------------------Initialising Text Variables-------------------------------*/
 	spawnTS = 2;
@@ -1047,12 +1030,16 @@ void StudioProject2Scene1::Render()
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
 	/*-----------------------------*/
 
+	/*----Half mutant count--------*/
+	//RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 10, 10, 30, 30,,);
+	/*-----------------------------*/
+
 	/*----Heart Rendering----------*/
 		float positionXscreen = 2;
 		float positionYscreen = 28.5;
 		for (int i = 0; i < 10; i++)
 		{
-			RenderMeshOnScreen(meshList[GEO_HEART], positionXscreen, positionYscreen,
+			RenderMeshOnScreen(meshList[GEO_ALEXIS_LIFE], positionXscreen, positionYscreen,
 				PlayerClass::get_instance()->Hearts.a_heart[i], PlayerClass::get_instance()->Hearts.a_heart[i], 0);
 			RenderMeshOnScreen(meshList[GEO_BLANKHEART], positionXscreen, positionYscreen,
 				PlayerClass::get_instance()->Hearts.a_blankheart[i], PlayerClass::get_instance()->Hearts.a_blankheart[i], 0);
@@ -1060,6 +1047,7 @@ void StudioProject2Scene1::Render()
 			positionXscreen += 2;
 		}
 	/*-----------------------------*/
+
 
 	/*---------------Text log Rendering--------*/
 		RenderTextInteractions();

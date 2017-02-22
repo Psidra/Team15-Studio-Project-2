@@ -15,21 +15,25 @@ public:
 	}
 
 	unsigned int get_health();
-
-	void add_energy(int EP);
 	unsigned int get_energy();
 
-	void movement();
 	void healthUI();
+	void manaUI();
+	void manaSystem();
 	void init();
 	void facingDirection();
 	void healthSystem(bool Block);
+	void bossFightFacingDirection();
 
 	struct PlayerLife
 	{
 		float a_heart[10];
 		float a_blankheart[10];
 		int heartCounter;
+
+		float a_energy[10];
+		float a_blankenergy[10];
+		int energyCounter;
 	};
 
 	BoundingBox PlayerHitBox;
@@ -38,7 +42,7 @@ public:
 	int a_LookingDirection;
 
 private:
-	PlayerClass(): _health(100), a_LookingDirection(90) {};
+	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90){};
 	static PlayerClass* instance;
 
 	unsigned int _health;

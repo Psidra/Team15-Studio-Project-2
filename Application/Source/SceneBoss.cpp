@@ -1,0 +1,613 @@
+#include "SceneBoss.h"
+#include "GL\glew.h"
+#include "Mtx44.h"
+#include "Application.h"
+#include "Vertex.h"
+#include "Utility.h"
+#include "shader.hpp"
+#include "LoadTGA.h"
+#include "Camera.h"
+#include "PlayerClass.h"
+#include "Animations.h"
+#include "EnemyClassManager.h"
+#include "EnemyClass.h"
+#include "SceneManager.h"
+#include "Boss.h"
+#include <vector>
+
+#define VK_1 0x31
+#define VK_2 0x32
+#define VK_3 0x33
+#define VK_4 0x34
+
+SceneBoss::SceneBoss()
+{
+}
+
+SceneBoss::~SceneBoss()
+{
+}
+
+void SceneBoss::Init()
+{
+	PlayerClass::get_instance();
+	PlayerClass::get_instance()->a_LookingDirection = -90.f;
+	PlayerClass::get_instance()->position_a = Vector3(50,0,0);
+	/*-----------Hearts Initialisation-----*/
+	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->manaUI();
+
+	Boss::get_instance()->bossHealthUI();
+	Boss::get_instance()->bossInit();
+	/*-------------------------------------*/
+	// Init VBO here
+	glClearColor(0.f, 0.f, 0.f, 0.f);
+
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE); // was enabled but disable it for skybox and leg model
+	glEnable(GL_BLEND);
+
+	// Load vertex and fragment shaders
+	m_programID = LoadShaders("Shader//Texture.vertexshader", "Shader//Text.fragmentshader");
+	m_parameters[U_MVP] = glGetUniformLocation(m_programID, "MVP");
+	m_parameters[U_MODELVIEW] = glGetUniformLocation(m_programID, "MV");
+	m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE] = glGetUniformLocation(m_programID, "MV_inverse_transpose");
+	m_parameters[U_MATERIAL_AMBIENT] = glGetUniformLocation(m_programID, "material.kAmbient");
+	m_parameters[U_MATERIAL_DIFFUSE] = glGetUniformLocation(m_programID, "material.kDiffuse");
+	m_parameters[U_MATERIAL_SPECULAR] = glGetUniformLocation(m_programID, "material.kSpecular");
+	m_parameters[U_MATERIAL_SHININESS] = glGetUniformLocation(m_programID, "material.kShininess");
+
+	m_parameters[U_LIGHT0_POSITION] = glGetUniformLocation(m_programID, "lights[0].position_cameraspace");
+	m_parameters[U_LIGHT0_COLOR] = glGetUniformLocation(m_programID, "lights[0].color");
+	m_parameters[U_LIGHT0_POWER] = glGetUniformLocation(m_programID, "lights[0].power");
+	m_parameters[U_LIGHT0_KC] = glGetUniformLocation(m_programID, "lights[0].kC");
+	m_parameters[U_LIGHT0_KL] = glGetUniformLocation(m_programID, "lights[0].kL");
+	m_parameters[U_LIGHT0_KQ] = glGetUniformLocation(m_programID, "lights[0].kQ");
+	m_parameters[U_LIGHT0_TYPE] = glGetUniformLocation(m_programID, "lights[0].type");
+	m_parameters[U_LIGHT0_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[0].spotDirection");
+	m_parameters[U_LIGHT0_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[0].cosCutoff");
+	m_parameters[U_LIGHT0_COSINNER] = glGetUniformLocation(m_programID, "lights[0].cosInner");
+	m_parameters[U_LIGHT0_EXPONENT] = glGetUniformLocation(m_programID, "lights[0].exponent");
+
+	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
+	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); //in case you missed out practical 7
+	// Get a handle for our "colorTexture" uniform
+	m_parameters[U_COLOR_TEXTURE_ENABLED] = glGetUniformLocation(m_programID, "colorTextureEnabled");
+	m_parameters[U_COLOR_TEXTURE] = glGetUniformLocation(m_programID, "colorTexture");
+
+	// Get a handle for our "textColor" uniform
+	m_parameters[U_TEXT_ENABLED] = glGetUniformLocation(m_programID, "textEnabled");
+	m_parameters[U_TEXT_COLOR] = glGetUniformLocation(m_programID, "textColor");
+
+	glUseProgram(m_programID);
+
+	glGenVertexArrays(1, &m_vertexArrayID);
+	glBindVertexArray(m_vertexArrayID);
+
+	for (int i = 0; i < NUM_GEOMETRY; ++i)
+		meshList[i] = NULL;
+
+	camera.Init(Vector3(90, 180, 10), Vector3(10, 0, 10), Vector3(0, 1, 0));
+
+	meshList[GEO_AXIS] = MeshBuilder::GenerateAxis("reference");
+	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1.f, 1.f, 1.f), 18, 36, 1.f);
+
+	/*-----------------------------Skybox Loading----------------------------------*/
+	//meshList[GEO_SKYBOX] = MeshBuilder::GenerateQuad("skybox", Color(1, 1, 1));
+	//meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//SkyBG.tga");
+	meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1));
+	/*-----------------------------------------------------------------------------*/
+
+	/*--------------------------Mutants Loading------------------------------------*/
+	meshList[GEO_MUTANT_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Mutant_UpdatedOBJ//Mutant_Head.obj");
+	meshList[GEO_MUTANT_HEAD]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_LEFTARM] = MeshBuilder::GenerateOBJ("aBody", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftArm.obj");
+	meshList[GEO_MUTANT_LEFTARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_LEFTFEET] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftFeet.obj");
+	meshList[GEO_MUTANT_LEFTFEET]->textureID = LoadTGA("Image//Mutant_Texture.tga");;
+	meshList[GEO_MUTANT_LEFTTHIGH] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftThigh.obj");
+	meshList[GEO_MUTANT_LEFTTHIGH]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_LEFTUPPERARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//Mutant_UpdatedOBJ//Mutant_LeftUpperarm.obj");
+	meshList[GEO_MUTANT_LEFTUPPERARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_NECK] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Neck.obj");
+	meshList[GEO_MUTANT_NECK]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTARM] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightArm.obj");
+	meshList[GEO_MUTANT_RIGHTARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTFEET] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightFeet.obj");
+	meshList[GEO_MUTANT_RIGHTFEET]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightThigh.obj");
+	meshList[GEO_MUTANT_RIGHTTHIGH]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_RIGHTUPPERARM] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_RightUpperarm.obj");
+	meshList[GEO_MUTANT_RIGHTUPPERARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_MUTANT_TORSO] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
+	/*-------------------------------------------------------------*/
+	/*--------------------------Character Loading----------------------------------*/
+	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
+	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
+	meshList[GEO_ALEXIS_BODY] = MeshBuilder::GenerateOBJ("aBody", "OBJ//Character//body.obj");
+	meshList[GEO_ALEXIS_BODY]->textureID = LoadTGA("Image//bodytext.tga");
+	meshList[GEO_ALEXIS_CROTCH] = MeshBuilder::GenerateOBJ("aCrotch", "OBJ//Character//crotch.obj");
+	meshList[GEO_ALEXIS_CROTCH]->textureID = LoadTGA("Image//crotchtext.tga");
+	meshList[GEO_ALEXIS_RIGHTARM] = MeshBuilder::GenerateOBJ("aRightArm", "OBJ//Character//rightarm.obj");
+	meshList[GEO_ALEXIS_RIGHTARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_LEFTARM] = MeshBuilder::GenerateOBJ("aLeftArm", "OBJ//Character//leftarm.obj");
+	meshList[GEO_ALEXIS_LEFTARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXIS_RIGHTLEG] = MeshBuilder::GenerateOBJ("aRightLeg", "OBJ//Character//rightleg.obj");
+	meshList[GEO_ALEXIS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+	meshList[GEO_ALEXIS_LEFTLEG] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Character//leftleg.obj");
+	meshList[GEO_ALEXIS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+
+	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	/*-----------------------------------------------------------------------------*/
+	/*--------------------------Text Loading---------------------------------------*/
+	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
+	/*-----------------------------------------------------------------------------*/
+	/*-------------------------Loading Hearts-----------------------------------------*/
+	meshList[GEO_HEART] = MeshBuilder::GenerateQuad("heart", Color(1, 0, 0));
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(0, 0, 0));
+	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
+	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
+	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 1));
+	/*--------------------------------------------------------------------------------*/
+	/*-------------------------Loading Mutant Health----------------------------------*/
+	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
+	meshList[GEO_M_RHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
+	meshList[GEO_M_BHEART] = MeshBuilder::GenerateOBJ("MutantHealthBlack", "OBJ//M_HealthBlack.obj");
+	meshList[GEO_M_BHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
+	/*--------------------------------------------------------------------------------*/
+
+	Mtx44 projection;
+	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
+	projectionStack.LoadMatrix(projection);
+
+	/*----------------------Light Initialisation-----------------------------------*/
+	LoadLight();
+	// Make sure you pass uniform parameters after glUseProgram()
+	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
+	/*-------------------------------------------------------------------------------*/
+}
+
+void SceneBoss::Update(double dt)
+{
+	int framespersec = 1 / dt;
+	elapsedTime += dt;
+
+	/*--------Boss Functions--------------*/
+	Boss::get_instance()->bossHealthSystem();
+	Boss::get_instance()->bossHealthUI();
+	Boss::get_instance()->stateManager();
+	Boss::get_instance()->dmgOvertime(elapsedTime);
+	/*------------------------------------*/
+
+	/*-------AI Functions---------------*/
+	//EnemyManager::get_instance()->EnemyList[0]->update(dt);
+
+	//// I spent 10 years trying to fix projectile because I wanted to avoid using erase.
+	//// Erase won today. Erase, me, 1:0. Shit.
+
+	//for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
+	//{
+	//	for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+	//	{
+	//		if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+	//		{
+	//			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+	//				(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+
+	//			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) || EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+	//			{
+	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+	//			}
+	//			else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
+	//				(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
+	//			{
+	//				PlayerClass::get_instance()->healthSystem(block);
+	//				bufferTime_iframe = elapsedTime + 0.3f;
+	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+	//			}
+	//		}
+	//	}
+	//}
+
+	/*-------Player Functions------------------*/
+	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->bossFightFacingDirection();
+	/*-----------------------------------------*/
+	if (!otheranims() || holdanims())
+	{
+		for (unsigned i = 0; i < 7; i++)
+			et[i] = 0;
+	}
+	if (!holdanims())
+	{
+		et[8] = 0;
+		et[9] = 0;
+	}
+
+	/*----------Player Movement and Collisions------------*/
+	if ((Application::IsKeyPressed('A') && Application::IsKeyPressed('D')) ||
+		(Application::IsKeyPressed('W') && Application::IsKeyPressed('S')))
+	{
+	}
+	else
+	{
+		if (Application::IsKeyPressed('W'))
+		{
+			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+		}
+		if (Application::IsKeyPressed('S'))
+		{
+			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+		}
+		if (Application::IsKeyPressed('A'))
+		{
+			PlayerClass::get_instance()->position_a.z += (float)(30.f * dt);
+		}
+		if (Application::IsKeyPressed('D'))
+		{
+			PlayerClass::get_instance()->position_a.z -= (float)(30.f * dt);
+		}
+	}
+	/*-----------------------------------------------*/
+	if (bufferTime_attack > elapsedTime)
+	{
+		attack = true;
+		et[0] += dt;
+	}
+	else
+		attack = false;
+
+	if (bufferTime_roll > elapsedTime)
+	{
+		roll = true;
+		et[1] += dt;
+	}
+	else
+		roll = false;
+
+	if (bufferTime_block > elapsedTime)
+	{
+		block = true;
+		et[8] += dt;
+	}
+	else
+		block = false;
+
+	et[20] += dt;		// This is for me to see if the idleanim is running at all
+
+	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		{
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+		}
+	}
+
+	//EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
+	// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
+
+	/*-----------Updates the FPS to be stated on screen---------*/
+	fps = "FPS:" + std::to_string(framespersec);
+	/*----------------------------------------------------------*/
+
+	if (Application::IsKeyPressed(VK_1))
+		glEnable(GL_CULL_FACE);
+
+	if (Application::IsKeyPressed(VK_2))
+		glDisable(GL_CULL_FACE);
+
+	if (Application::IsKeyPressed(VK_3))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	if (Application::IsKeyPressed(VK_4))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	/*-------------Scene Change--------*/
+	if (Boss::get_instance()->get_health() <= 0)
+	{
+		//SceneManager::getInstance()->changeScene(new); [Change Scene to Victory Scene]
+	}
+	/*---------------------------------*/
+}
+
+void SceneBoss::Render()
+{
+	// Render VBO here
+	Mtx44 MVP;
+
+	// Clear color & depth buffer every frame
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	viewStack.LoadIdentity();
+	viewStack.LookAt(
+		camera.position.x, camera.position.y, camera.position.z,
+		camera.target.x, camera.target.y, camera.target.z,
+		camera.up.x, camera.up.y, camera.up.z);
+
+	modelStack.LoadIdentity();
+
+	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
+	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+
+	/*modelStack.PushMatrix();
+	modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
+	RenderMesh(meshList[GEO_LIGHTBALL], false);
+	modelStack.PopMatrix();*/
+
+	modelStack.PushMatrix();
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(130, 130, 130);
+	RenderMesh(meshList[GEO_GROUND], false);
+	modelStack.PopMatrix();
+	/*-----------------Main Character (Alexis)---------------------*/
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);					// This was a mistake tbh
+	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// I should have put the scale in init
+	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);								// too late for that now
+	modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
+
+	// add in grab animation later
+
+	modelStack.PushMatrix();
+
+	RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+
+	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+
+	RenderMesh(meshList[GEO_ALEXIS_BODY], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+
+	RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+
+	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();							// render collision box
+	//modelStack.Translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// i need this
+	//modelStack.Scale(1.1f, 4.5f, 1.f);					// if you remove it bad things will happen
+	//RenderMesh(meshList[GEO_BBOX], false);				// remove this later when showing actual shit of course
+	//modelStack.PopMatrix();								// :ok_hand:
+	// for some reason I needed to flip translate and scale here to fit with the actual hitbox
+
+	//modelStack.PushMatrix();
+	//modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// i need this
+	//RenderMesh(meshList[GEO_TESTBBOX], false);
+	//modelStack.PopMatrix();
+
+	/*-----------------Mutants (Fuglymon)---------------------*/
+	RenderProjectiles();
+	RenderMutant();
+	/*-------------------------------------------------------*/
+
+	/*-----------------Skybox-------------------*/
+	/*modelStack.PushMatrix();
+	modelStack.Translate(450, 80, -200);
+	modelStack.Scale(1600, 675, 1);
+	RenderMesh(meshList[GEO_SKYBOX], false);
+	modelStack.PopMatrix();*/
+	/*------------------------------------------*/
+
+	/*-----------------Environmental Light Rendering------*/
+	RenderLightStands();
+	/*----------------------------------------------------*/
+
+	/*----Heart and Energy Bar Rendering----------*/
+	float positionXscreen = 2;
+	for (int i = 0; i < 10; i++)
+	{
+		RenderMeshOnScreen(meshList[GEO_HEART], positionXscreen, 28.5,
+			PlayerClass::get_instance()->Hearts.a_heart[i], PlayerClass::get_instance()->Hearts.a_heart[i], 0);
+		RenderMeshOnScreen(meshList[GEO_BLANKHEART], positionXscreen, 28.5,
+			PlayerClass::get_instance()->Hearts.a_blankheart[i], PlayerClass::get_instance()->Hearts.a_blankheart[i], 0);
+
+		positionXscreen += 2;
+	}
+
+	float energyX = 4;
+	for (int i = 0; i < 10; i++)
+	{
+		RenderMeshOnScreen(meshList[GEO_ENERGY], energyX, 26.5,
+			PlayerClass::get_instance()->Hearts.a_energy[i], PlayerClass::get_instance()->Hearts.a_energy[i], 0);
+		RenderMeshOnScreen(meshList[GEO_BLANKENERGY], energyX, 26.5,
+			PlayerClass::get_instance()->Hearts.a_energy[i], PlayerClass::get_instance()->Hearts.a_energy[i], 0);
+
+		energyX += 1;
+	}
+	/*-----------------------------*/
+	/*--------Boss Life Rendering---*/
+	float posXscreen = 6;
+	for (int i = 0; i < 30; i++)
+	{
+		RenderMeshOnScreen(meshList[GEO_BOSSLIFE], posXscreen, 1,
+			Boss::get_instance()->bossLife.boss_heart[i], Boss::get_instance()->bossLife.boss_heart[i], 0);
+
+		posXscreen += 0.5;
+	}
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "BOSS", Color(1, 1, 0), 2, 3, -8.5);
+	/*------------------------------*/
+	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
+}
+
+bool SceneBoss::otheranims()
+{
+	return (attack || roll);
+}
+
+bool SceneBoss::holdanims()
+{
+	return block;
+}
+
+void SceneBoss::RenderMutant()
+{
+	//modelStack.PushMatrix();
+	//EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
+	//	EnemyManager::get_instance()->EnemyList[0]->position_m.y,
+	//	EnemyManager::get_instance()->EnemyList[0]->position_m.z);
+
+	//modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
+	//	EnemyManager::get_instance()->EnemyList[0]->position_m.y,
+	//	EnemyManager::get_instance()->EnemyList[0]->position_m.z);
+
+	//modelStack.PushMatrix();
+
+	//modelStack.PushMatrix();
+	//if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
+	//	modelStack.Rotate(180, 0, 1, 0);
+	//else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
+	//	modelStack.Rotate(0, 0, 1, 0);
+
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
+
+	//RenderMesh(meshList[GEO_MUTANT_HEAD], true);
+	//modelStack.PopMatrix();
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
+	//modelStack.Translate(-2, 5, 0);
+	////if (EnemyManager::get_instance()->EnemyList[0]->healthsystem())
+	//RenderMesh(meshList[GEO_M_RHEART], false);
+	//modelStack.Translate(3, 0, 0);
+	////if (attack)
+	////	RenderMesh(meshList[GEO_M_BHEART], false);
+	////else
+	//RenderMesh(meshList[GEO_M_RHEART], false);
+	//modelStack.PopMatrix();
+	//modelStack.PopMatrix();
+
+
+	//if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
+	//	modelStack.Rotate(180, 0, 1, 0);
+	//else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
+	//	modelStack.Rotate(0, 0, 1, 0);
+
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_LeftArm");
+
+	//RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_LeftFeet");
+
+	//RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_LeftThigh");
+
+	//RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_LeftUpperarm");
+
+	//RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_Neck");
+
+	//RenderMesh(meshList[GEO_MUTANT_NECK], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_RightArm");
+
+	//RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_RightFeet");
+
+	//RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_RightThigh");
+
+	//RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_RightUpperarm");
+
+	//RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//IdleAnim_M(&modelStack, &et[20], "Mutant_Torso");
+
+	//RenderMesh(meshList[GEO_MUTANT_TORSO], true);
+	//modelStack.PopMatrix();
+
+	//modelStack.PopMatrix();
+}
+
+void SceneBoss::RenderProjectiles()
+{
+	/*for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		{
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+			{
+				modelStack.PushMatrix();
+				modelStack.Translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+				RenderMesh(meshList[GEO_SPIT], false);
+				modelStack.PopMatrix();
+			}
+		}
+	}*/
+}
+
+void SceneBoss::Exit()
+{
+	// Cleanup VBO here
+	for (int i = 0; i < NUM_GEOMETRY; ++i)
+		if (meshList[i] != NULL)
+			delete meshList[i];
+
+	glDeleteVertexArrays(1, &m_vertexArrayID);
+	glDeleteProgram(m_programID);
+}
+
+
+
+
+
+

@@ -8,12 +8,6 @@ unsigned int PlayerClass::get_health()
 	return _health;
 }
 
-void PlayerClass::add_energy(int EP)
-{
-	if (_energy < 10)
-		_energy += EP;
-}
-
 unsigned int PlayerClass::get_energy()
 {
 	return _energy;
@@ -93,4 +87,66 @@ void PlayerClass::healthSystem(bool Block)
 		this->_health -= 10;
 	else
 		this->_health -= 20;
+}
+
+void PlayerClass::bossFightFacingDirection()
+{
+	if ((Application::IsKeyPressed('A') && Application::IsKeyPressed('D')) ||
+		(Application::IsKeyPressed('W') && Application::IsKeyPressed('S')))
+	{
+	}
+	else
+	{	// W-A , W-D, S-A, S-D, W, A, S, D
+		if (Application::IsKeyPressed('A') && Application::IsKeyPressed('W'))
+			a_LookingDirection = -45.f;
+		if (Application::IsKeyPressed('A') && Application::IsKeyPressed('S'))
+			a_LookingDirection = 45.f;
+		if (Application::IsKeyPressed('D') && Application::IsKeyPressed('W'))
+			a_LookingDirection = -135.f;
+		if (Application::IsKeyPressed('D') && Application::IsKeyPressed('S'))
+			a_LookingDirection = 135.f;
+		if (Application::IsKeyPressed('W'))
+			a_LookingDirection = -90.f;
+		if (Application::IsKeyPressed('S'))
+			a_LookingDirection = 90.f;
+		if (Application::IsKeyPressed('A'))
+			a_LookingDirection = 0.f;
+		if (Application::IsKeyPressed('D'))
+			a_LookingDirection = 180.f;
+	}
+}
+
+void PlayerClass::manaUI()
+{
+	if (!isDead())
+	{
+		Hearts.energyCounter = _energy / 10;
+
+		if (Hearts.energyCounter == 10)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				Hearts.a_energy[i] = 2;
+				Hearts.a_blankenergy[i] = 0;
+			}
+		}
+		else
+		{
+			for (int i = 0; i < Hearts.energyCounter; i++)
+			{
+				Hearts.a_energy[i] = 2;
+				Hearts.a_blankenergy[i] = 0;
+			}
+			for (int i = Hearts.energyCounter; i < 10; i++)
+			{
+				Hearts.a_blankenergy[i] = 2;
+				Hearts.a_energy[i] = 0;
+			}
+		}
+	}
+}
+
+void PlayerClass::manaSystem()
+{
+
 }
