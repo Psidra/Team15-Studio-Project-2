@@ -141,6 +141,9 @@ void StudioProject2MainMenu::Update(double dt)
 		SceneManager::getInstance()->changeScene(new SceneBoss());
 	}
 
+	
+
+
 }
 
 void StudioProject2MainMenu::text()

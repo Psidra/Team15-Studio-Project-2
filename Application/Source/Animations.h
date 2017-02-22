@@ -6,14 +6,18 @@
 
 // Alexis
 
-void AttackAnim(bool attack, MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void WalkAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void SlideAnim(bool trigger, MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void GrabAnim(bool grab, MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void InjectAnim(bool inject, MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void DeathAnim(bool isdead, MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void RollAnim(bool dodge, MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void BlockAnim(bool block, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+void AnimCheck(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+
+// I feel like an idiot, why did I even think doing that(below) was a good idea
+
+//void AttackAnim(bool attack, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void WalkAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void SlideAnim(bool trigger, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void GrabAnim(bool grab, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void InjectAnim(bool inject, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void DeathAnim(bool isdead, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void RollAnim(bool dodge, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void BlockAnim(bool block, MS* modelStack, double* timeElapsed, const std::string& dagNode);
 
 // 1/2 Mutant
 
