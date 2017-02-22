@@ -132,9 +132,9 @@ void StudioProject2Scene2::Init()
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------Environment Objects Loading---------------------------------*/
-	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
+	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//lighttop.obj");
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
-	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//Scene1//lightbottom.obj");
+	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//lightbottom.obj");
 	meshList[GEO_LIGHTSTAND]->textureID = LoadTGA("Image//lighttext.tga");
 	meshList[GEO_TREE] = MeshBuilder::GenerateOBJ("tree", "OBJ//tree.obj");
 	meshList[GEO_TREE]->textureID = LoadTGA("Image//tree.tga");
@@ -503,6 +503,15 @@ void StudioProject2Scene2::Render()
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
 	modelStack.PopMatrix();*/
 
+	unsigned int num_anim;
+	for (num_anim = 0; num_anim < 30;)
+	{
+		if (et[num_anim] == 0)
+			num_anim++;
+		else
+			break;
+	}
+
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -514,43 +523,43 @@ void StudioProject2Scene2::Render()
 	// add in grab animation later
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "polySurface9"); // HEAD
+	AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
 
 	RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere17");//ARM WITH SWORD
+	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
 
 	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "polySurface32");//BODY
+	AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
 
 	RenderMesh(meshList[GEO_ALEXIS_BODY], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere14");//LEFTARM
+	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
 
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pCylinder15");//crotch
+	AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
 
 	RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere9");//RIGHT LEG
+	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
 
 	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AttackAnim(attack, &modelStack, &et[0], "pSphere10");//LEFTLEG
+	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
 
 	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 	modelStack.PopMatrix();

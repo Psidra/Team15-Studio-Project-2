@@ -105,6 +105,8 @@
     <ClCompile Include="Source\Scene1Functions.cpp" />
     <ClCompile Include="Source\Scene2Functions.cpp" />
     <ClCompile Include="Source\Scene2Interactions.cpp" />
+    <ClCompile Include="Source\SceneBoss.cpp" />
+    <ClCompile Include="Source\SceneBossFunctions.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\StudioProject2_MainMenu.cpp" />
@@ -134,6 +136,7 @@
     <ClInclude Include="Source\Projectile.h" />
     <ClInclude Include="Source\ProjectileBuilder.h" />
     <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\SceneBoss.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\StudioProject2_MainMenu.h" />

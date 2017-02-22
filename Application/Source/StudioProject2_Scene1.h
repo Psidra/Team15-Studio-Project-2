@@ -178,8 +178,8 @@ private:
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
 	bool pressedD;
 	bool pressedA;
+	bool inmovement;
 	bool injump;
-	bool infall;
 	bool attack;
 	bool trigger;
 	bool grab;
@@ -189,7 +189,8 @@ private:
 	double et[30];
 	/*  Alexis:
 	0 = attack
-	1 = roll
+	6 = walk
+	7 = roll
 	8 = block
 	9 = grab
 

@@ -94,3 +94,30 @@ void PlayerClass::healthSystem(bool Block)
 	else
 		this->_health -= 20;
 }
+
+void PlayerClass::bossFightFacingDirection()
+{
+	if ((Application::IsKeyPressed('A') && Application::IsKeyPressed('D')) ||
+		(Application::IsKeyPressed('W') && Application::IsKeyPressed('S')))
+	{
+	}
+	else
+	{	// W-A , W-D, S-A, S-D, W, A, S, D
+		if (Application::IsKeyPressed('A') && Application::IsKeyPressed('W'))
+			a_LookingDirection = -45.f;
+		if (Application::IsKeyPressed('A') && Application::IsKeyPressed('S'))
+			a_LookingDirection = 45.f;
+		if (Application::IsKeyPressed('D') && Application::IsKeyPressed('W'))
+			a_LookingDirection = -135.f;
+		if (Application::IsKeyPressed('D') && Application::IsKeyPressed('S'))
+			a_LookingDirection = 135.f;
+		if (Application::IsKeyPressed('W'))
+			a_LookingDirection = -90.f;
+		if (Application::IsKeyPressed('S'))
+			a_LookingDirection = 90.f;
+		if (Application::IsKeyPressed('A'))
+			a_LookingDirection = 0.f;
+		if (Application::IsKeyPressed('D'))
+			a_LookingDirection = 180.f;
+	}
+}

@@ -397,3 +397,4 @@ void StudioProject2Scene1::RenderTextInteractions()
 
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to continue", Color(1, 1, 1), pressEnterTS, 1, -6);
 }
+

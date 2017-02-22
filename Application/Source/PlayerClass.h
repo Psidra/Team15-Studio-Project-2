@@ -19,11 +19,11 @@ public:
 	void add_energy(int EP);
 	unsigned int get_energy();
 
-	void movement();
 	void healthUI();
 	void init();
 	void facingDirection();
 	void healthSystem(bool Block);
+	void bossFightFacingDirection();
 
 	struct PlayerLife
 	{

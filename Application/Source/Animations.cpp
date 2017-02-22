@@ -3,49 +3,66 @@
 
 // Alexis
 
-void AttackAnim(bool attack, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+void AnimCheck(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode)
 {
-	double zero = 0;
-	if (attack)
-		LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);
-	else if (!attack)
-		LoadAtom("ATOM//attack.atom", modelStack, &zero, dagNode);
+		double zero = 0;
+
+		switch (num_anim) {
+		case 0:
+			LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);
+			break;
+		case 6:
+			LoadAtom("ATOM//walk.atom", modelStack, timeElapsed, dagNode); // no worky
+			break;
+		default:
+			LoadAtom("ATOM//attack.atom", modelStack, &zero, dagNode);
+			break;
+		}
 }
 
-void WalkAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode)
-{
-
-}
-
-void SlideAnim(bool trigger, MS* modelStack, double* timeElapsed, const std::string& dagNode)
-{
-
-}
-
-void GrabAnim(bool grab, MS* modelStack, double* timeElapsed, const std::string& dagNode)
-{
-
-}
-
-void InjectAnim(bool inject, MS* modelStack, double* timeElapsed, const std::string& dagNode)
-{
-
-}
-
-void DeathAnim(bool isdead, MS* modelStack, double* timeElapsed, const std::string& dagNode)
-{
-
-}
-
-void RollAnim(bool dodge, MS* modelStack, double* timeElapsed, const std::string& dagNode)
-{
-
-}
-
-void BlockAnim(bool block, MS* modelStack, double* timeElapsed, const std::string& dagNode)
-{
-
-}
+//void AttackAnim(bool attack, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//	double zero = 0;
+//	if (attack)
+//		LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);
+//	else if (!attack)
+//		LoadAtom("ATOM//attack.atom", modelStack, &zero, dagNode);
+//}
+//
+//void WalkAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//
+//}
+//
+//void SlideAnim(bool trigger, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//
+//}
+//
+//void GrabAnim(bool grab, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//
+//}
+//
+//void InjectAnim(bool inject, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//
+//}
+//
+//void DeathAnim(bool isdead, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//
+//}
+//
+//void RollAnim(bool dodge, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//
+//}
+//
+//void BlockAnim(bool block, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+//{
+//
+//}
 
 // 1/2 Mutant
 

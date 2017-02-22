@@ -1,5 +1,6 @@
 #include "StudioProject2_MainMenu.h"
 #include "StudioProject2_Scene1.h"
+#include "SceneBoss.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
@@ -135,6 +136,13 @@ void StudioProject2MainMenu::Update(double dt)
 		SceneManager* scene = SceneManager::getInstance();
 		scene->changeScene(new StudioProject2Scene1());
 	}
+	if (Application::IsKeyPressed('T'))
+	{
+		SceneManager::getInstance()->changeScene(new SceneBoss());
+	}
+
+	
+
 
 }
 
