@@ -130,11 +130,13 @@ private:
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
 	bool pressedD;
 	bool pressedA;
+	bool inmovement;
 	bool injump;
-	bool infall;
 	bool attack;
 	bool trigger;
 	bool grab;
+	bool block;
+	bool roll;
 	/*------------------------------------------------------------*/
 
 	std::string fps;

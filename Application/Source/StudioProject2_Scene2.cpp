@@ -11,6 +11,8 @@
 #include "Animations.h"
 #include "EnemyClassManager.h"
 #include "EnemyClass.h"
+#include "SceneManager.h"
+#include "HalfMutant.h"
 #include <vector>
 
 #define VK_1 0x31
@@ -18,7 +20,6 @@
 #define VK_3 0x33
 #define VK_4 0x34
 
-//bool MouseControl;
 
 StudioProject2Scene2::StudioProject2Scene2()
 {
@@ -218,13 +219,11 @@ void StudioProject2Scene2::Init()
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
-	//MouseControl = false;
 	
 	/*-----Character--------*/
 	pressedA = false;
 	pressedD = false;
 	injump = false;
-	infall = true;
 	attack = false;
 	trigger = false;
 	grab = false;
@@ -252,6 +251,7 @@ Half-Mutant:
 Mutant:
 20 = idle
 */
+
 void StudioProject2Scene2::Update(double dt)
 {
 	int framespersec = 1 / dt;
@@ -355,7 +355,7 @@ void StudioProject2Scene2::Update(double dt)
 		{
 			bufferTime_attack = elapsedTime + 1;
 
-			EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt);
+			EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
 			EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
 			meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.max_, EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.min_);
 		}
@@ -632,7 +632,7 @@ void StudioProject2Scene2::Render()
 
 bool StudioProject2Scene2::otheranims()
 {
-	return (injump || infall || attack || trigger || grab);
+	return (attack || trigger || grab);
 }
 
 void StudioProject2Scene2::Exit()

@@ -5,7 +5,6 @@
 #include "StudioProject2_Scene1.h"
 
 extern GLFWwindow* m_window;
-extern bool MouseControl;
 
 /******************************************************************************/
 /*!
@@ -245,58 +244,58 @@ void Camera3::Update(double dt)
 
 	// rat movement
 
-	if (MouseControl == true)
-	{
-		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwGetCursorPos(m_window, &MouseX, &MouseY);
-		offsetX = 400 - MouseX;
-		offsetY = MouseY - 300;
+	//if (MouseControl)
+	//{
+	//	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//	glfwGetCursorPos(m_window, &MouseX, &MouseY);
+	//	offsetX = 400 - MouseX;
+	//	offsetY = MouseY - 300;
 
-		if (offsetX > 0)
-		{
-			float yaw = (float)(offsetX * dt * sens);
-			Mtx44 rotation;
-			rotation.SetToRotation(yaw, 0, 1, 0);
-			view = rotation * view;
-			target = position + view;
-			up = rotation * up;
-			glfwSetCursorPos(m_window, 400, 300);
-		}
-		if (offsetX < 0)
-		{
-			float yaw = (float)(offsetX * dt * sens);
-			Mtx44 rotation;
-			rotation.SetToRotation(yaw, 0, 1, 0);
-			view = rotation * view;
-			target = position + view;
-			up = rotation * up;
-			glfwSetCursorPos(m_window, 400, 300);
-		}
+	//	if (offsetX > 0)
+	//	{
+	//		float yaw = (float)(offsetX * dt * sens);
+	//		Mtx44 rotation;
+	//		rotation.SetToRotation(yaw, 0, 1, 0);
+	//		view = rotation * view;
+	//		target = position + view;
+	//		up = rotation * up;
+	//		glfwSetCursorPos(m_window, 400, 300);
+	//	}
+	//	if (offsetX < 0)
+	//	{
+	//		float yaw = (float)(offsetX * dt * sens);
+	//		Mtx44 rotation;
+	//		rotation.SetToRotation(yaw, 0, 1, 0);
+	//		view = rotation * view;
+	//		target = position + view;
+	//		up = rotation * up;
+	//		glfwSetCursorPos(m_window, 400, 300);
+	//	}
 
-		if (offsetY > 0)
-		{
-			float pitch = (float)(-offsetY * dt * sens);
-			Mtx44 rotation;
-			right.y = 0;
-			rotation.SetToRotation(pitch, right.x, right.y, right.z);
-			up = right.Cross(view).Normalized();
-			view = rotation * view;
-			target = position + view;
-			glfwSetCursorPos(m_window, 400, 300);
-		}
-		if (offsetY < 0)
-		{
-			float pitch = (float)(-offsetY * dt * sens);
-			Mtx44 rotation;
-			right.y = 0;
-			rotation.SetToRotation(pitch, right.x, right.y, right.z);
-			up = right.Cross(view).Normalized();
-			view = rotation * view;
-			target = position + view;
-			glfwSetCursorPos(m_window, 400, 300);
-		}
-	}
-	else
+	//	if (offsetY > 0)
+	//	{
+	//		float pitch = (float)(-offsetY * dt * sens);
+	//		Mtx44 rotation;
+	//		right.y = 0;
+	//		rotation.SetToRotation(pitch, right.x, right.y, right.z);
+	//		up = right.Cross(view).Normalized();
+	//		view = rotation * view;
+	//		target = position + view;
+	//		glfwSetCursorPos(m_window, 400, 300);
+	//	}
+	//	if (offsetY < 0)
+	//	{
+	//		float pitch = (float)(-offsetY * dt * sens);
+	//		Mtx44 rotation;
+	//		right.y = 0;
+	//		rotation.SetToRotation(pitch, right.x, right.y, right.z);
+	//		up = right.Cross(view).Normalized();
+	//		view = rotation * view;
+	//		target = position + view;
+	//		glfwSetCursorPos(m_window, 400, 300);
+	//	}
+	//}
+	//else
 	{
 		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		if (Application::IsKeyPressed(VK_LEFT))

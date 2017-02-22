@@ -6,13 +6,15 @@
 void AnimCheck(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode)
 {
 		double zero = 0;
-
 		switch (num_anim) {
 		case 0:
 			LoadAtom("ATOM//attack.atom", modelStack, timeElapsed, dagNode);
 			break;
+		case 7:
+			LoadAtom("ATOM//duckroll.atom", modelStack, timeElapsed, dagNode);
+			break;
 		case 6:
-			LoadAtom("ATOM//walk.atom", modelStack, timeElapsed, dagNode); // no worky
+			LoadAtom("ATOM//walk2.atom", modelStack, timeElapsed, dagNode); // no worky
 			break;
 		default:
 			LoadAtom("ATOM//attack.atom", modelStack, &zero, dagNode);
