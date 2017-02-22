@@ -84,7 +84,6 @@ void StudioProject2MainMenu::Init()
 	/*------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
-	//MouseControl = false;
 
 
 	Mtx44 projection;

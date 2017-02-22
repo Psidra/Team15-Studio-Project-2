@@ -5,7 +5,6 @@
 #include "StudioProject2_Scene1.h"
 
 extern GLFWwindow* m_window;
-extern bool MouseControl;
 
 /******************************************************************************/
 /*!
