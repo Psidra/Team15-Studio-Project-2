@@ -48,30 +48,7 @@ void StudioProject2Scene1::Init()
 	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	PlayerClass::get_instance()->position_a = Vector3(-15.f,0.f,0.f);
 
-	/* Hearts size (User Interface) Initialisation--------------*/
-	PlayerClass::get_instance()->Hearts.heartCounter = PlayerClass::get_instance()->get_health() / 10;
-
-	if (PlayerClass::get_instance()->Hearts.heartCounter == 10) // full health then just do this
-	{
-		for (int i = 0; i < 10; i++) 
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
-		}
-	}
-	else // if not full health, shuld init the size of the blankhearts and red hearts
-	{
-		for (int i = 0; i < PlayerClass::get_instance()->Hearts.heartCounter; i++)
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
-		}
-		for (int i = PlayerClass::get_instance()->Hearts.heartCounter; i < 10; i++)
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 0;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 2;
-		}
-	}
+	PlayerClass::get_instance()->healthUI();
 	/*-------------------------------------------------------------------------------*/
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -191,9 +168,9 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_TRUMPTEST]->MeshBBox.scale(0.75f, 1.7f, 1);
 	meshList[GEO_TRUMPTEST]->MeshBBox.translate(550.1f, -250.f, 0);
 
-	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//Scene1//lighttop.obj");
+	meshList[GEO_LIGHTBULB] = MeshBuilder::GenerateOBJ("bulb", "OBJ//lighttop.obj");
 	meshList[GEO_LIGHTBULB]->textureID = LoadTGA("Image//lighttext.tga");
-	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//Scene1//lightbottom.obj");
+	meshList[GEO_LIGHTSTAND] = MeshBuilder::GenerateOBJ("lightstand", "OBJ//lightbottom.obj");
 	meshList[GEO_LIGHTSTAND]->textureID = LoadTGA("Image//lighttext.tga");
 
 	meshList[GEO_TREE] = MeshBuilder::GenerateOBJ("tree", "OBJ//tree.obj");
