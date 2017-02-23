@@ -23,6 +23,7 @@ private:
 	float positionStorageX1;
 	float positionStorageX2;
 	bool charNear;
+	bool saveCount;
 };
 
 #endif

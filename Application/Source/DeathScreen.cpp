@@ -1,11 +1,12 @@
 #include "StudioProject2_MainMenu.h"
 #include "StudioProject2_Scene1.h"
-#include "EnemyClassManager.h"
+#include "StudioProject2_Scene2.h"
 #include "DeathScreen.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
+#include "EnemyClassManager.h"
 #include "Vertex.h"
 #include "Utility.h"
 #include "shader.hpp"
@@ -19,15 +20,15 @@
 #define VK_4 0x34
 
 
-StudioProject2MainMenu::StudioProject2MainMenu()
+DeathScreen::DeathScreen()
 {
 }
 
-StudioProject2MainMenu::~StudioProject2MainMenu()
+DeathScreen::~DeathScreen()
 {
 }
 
-void StudioProject2MainMenu::Init()
+void DeathScreen::Init()
 {
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -77,8 +78,15 @@ void StudioProject2MainMenu::Init()
 		meshList[i] = NULL;
 
 	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
+
 	
-	/*--------------------------Image Loading--------------------------------------*/
+	/*--------------------------HUD Loading---------------------------------------*/
+	meshList[GEO_DEATHSCREEN] = MeshBuilder::GenerateQuad("deathscreen", Color(1, 1, 1));
+	meshList[GEO_DEATHSCREEN]->textureID = LoadTGA("Image//deathscreen.tga");
+	meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
+	meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
+	meshList[GEO_FULL_COUNT] = MeshBuilder::GenerateQuad("hudfull", Color(1, 1, 1));
+	meshList[GEO_FULL_COUNT]->textureID = LoadTGA("Image//fullhud.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -96,7 +104,7 @@ void StudioProject2MainMenu::Init()
 
 }
 
-void StudioProject2MainMenu::Update(double dt)
+void DeathScreen::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	//elapsedTime += dt;
@@ -104,6 +112,10 @@ void StudioProject2MainMenu::Update(double dt)
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
+	hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
+	fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
+	timer = "Time:" + std::to_string(PlayerClass::get_instance()->timeSpend) + "s";
+	deathLocation = "Location:" + SceneManager::getInstance()->Location;
 	/*----------------------------------------------------------*/
 
 	if (Application::IsKeyPressed(VK_1))
@@ -134,29 +146,33 @@ void StudioProject2MainMenu::Update(double dt)
 
 	if (Application::IsKeyPressed(VK_RETURN))
 	{
-		SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
-		SceneManager::getInstance()->Location = "Secluded Forest";
+		EnemyManager::get_instance()->EnemyList[0]->restartLevel();
+		PlayerClass::get_instance()->timeSpend = 0.0f;
+		SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
 	}
-	if (Application::IsKeyPressed('T'))
+	if (Application::IsKeyPressed('R'))
 	{
-		SceneManager::getInstance()->changeScene(new SceneBoss());
+		if (SceneManager::getInstance()->Location == "Secluded Forest")
+		{
+			PlayerClass::get_instance()->restartLevel();
+			PlayerClass::get_instance()->timeSpend = 0.0f;
+			EnemyManager::get_instance()->EnemyList[0]->restartLevel();
+			SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
+		}
+		if (SceneManager::getInstance()->Location == "Inner City")
+		{
+			PlayerClass::get_instance()->restartLevel();
+			SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+		}
 	}
-	if (Application::IsKeyPressed('Y'))
-	{
-		SceneManager::getInstance()->changeScene(new DeathScreen());
-	}
-
-	
-
-
 }
 
-void StudioProject2MainMenu::text()
+void DeathScreen::text()
 {
 	//fill in when necessary
 }
 
-void StudioProject2MainMenu::Render()
+void DeathScreen::Render()
 {
 	// Render VBO here
 	Mtx44 MVP;
@@ -174,13 +190,21 @@ void StudioProject2MainMenu::Render()
 
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
-	
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Start Game", Color(1, 1, 1), 2, 11, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -6);
+
+	RenderMeshOnScreen(meshList[GEO_DEATHSCREEN], 0, 0, 80, 60, 0);
+	RenderMeshOnScreen(meshList[GEO_FULL_COUNT], 7, 3, 4, 4, 0);
+	RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 7, 2, 4, 4, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 3, 12, -5.2);
+	RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 3, 12, -6.8);
+	RenderTextOnScreen(meshList[GEO_TEXT], timer, Color(1, 1, 1), 3, 9.2, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], deathLocation, Color(1, 1, 1), 3, 6.5, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <R> to Restart the Level", Color(1, 1, 1), 2, 9, -8);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Return to Main Menu", Color(1, 1, 1), 2, 9, -7);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 9, -9);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
-void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
+void DeathScreen::RenderMesh(Mesh *mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
@@ -225,12 +249,12 @@ void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
 	}
 }
 
-void StudioProject2MainMenu::RenderSkybox()
+void DeathScreen::RenderSkybox()
 {
 	// Person in charge of implementing skybox, pls type the codes (rotate,transform,scale) here
 }
 
-void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color color)
+void DeathScreen::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -257,7 +281,7 @@ void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color colo
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
+void DeathScreen::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -300,7 +324,7 @@ void StudioProject2MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Co
 
 }
 
-void StudioProject2MainMenu::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
+void DeathScreen::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
 {
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
@@ -324,7 +348,7 @@ void StudioProject2MainMenu::RenderMeshOnScreen(Mesh* mesh, int x, int y, int si
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2MainMenu::Exit()
+void DeathScreen::Exit()
 {
 	// Cleanup VBO here
 	for (int i = 0; i < NUM_GEOMETRY; ++i)

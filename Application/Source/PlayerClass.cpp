@@ -52,6 +52,9 @@ void PlayerClass::healthUI()
 				Hearts.a_heart[i] = 0;
 			}
 		}
+
+		if (Application::IsKeyPressed('P'))
+			_health = 0;
 	}
 
 	
@@ -149,4 +152,33 @@ void PlayerClass::manaUI()
 void PlayerClass::manaSystem()
 {
 
+}
+
+void PlayerClass::timeSpent(float dt)
+{
+	timeSpend += dt;
+}
+
+void PlayerClass::restartLevel()
+{
+	_health = healthStorage;
+	_energy = energyStorage;
+	hm_Saved = hmSavedStorage;
+	fm_Killed = fmKilledStorage;
+}
+
+void PlayerClass::init()
+{
+	healthStorage = _health;
+	energyStorage = _energy;
+	hmSavedStorage = hm_Saved;
+	fmKilledStorage = fm_Killed;
+}
+
+void PlayerClass::restartGame()
+{
+	_health = 100;
+	_energy = 100;
+	hm_Saved = 0;
+	fm_Killed = 0;
 }

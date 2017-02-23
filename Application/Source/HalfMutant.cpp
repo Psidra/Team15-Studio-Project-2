@@ -1,5 +1,6 @@
 #include "HalfMutant.h"
 #include "Application.h"
+#include "PlayerClass.h"
 
 HalfMutant::HalfMutant()
 {
@@ -16,6 +17,8 @@ void HalfMutant::init()
 	hm_LookingDirection = 90.f;
 	positionStorageX1 = position_hm.x + 10; 
 	positionStorageX2 = position_hm.x - 10;	
+	charNear = false;
+	transformed = false;
 }
 
 void HalfMutant::movement(double dt)
@@ -48,19 +51,23 @@ void HalfMutant::transformation()
 {
 	int distBetweenThem = position_hm.x - PlayerClass::get_instance()->position_a.x;
 
-	if ((distBetweenThem < 3) && (distBetweenThem > -3))
+	if ((distBetweenThem < 3) && (distBetweenThem > -3) && transformed == false)
 	{
 		charNear = true;
-	}
-	else
-	{
-		charNear = false;
 	}
 	
 	if (charNear == true && Application::IsKeyPressed('F'))
 	{
 		transformed = true;
+		charNear = false;
+		saveCount = true;
 		size_hm = Vector3(0.1, 0.1, 0.1);
 		size_human = Vector3(1, 1, 1);
+	}
+
+	if (saveCount == true)
+	{
+		PlayerClass::get_instance()->hm_Saved++;
+		saveCount = false;
 	}
 }
