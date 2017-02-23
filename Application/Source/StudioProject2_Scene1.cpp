@@ -404,7 +404,7 @@ void StudioProject2Scene1::Update(double dt)
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
 	{
-		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() != 0)
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 		{
 			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
@@ -435,6 +435,7 @@ void StudioProject2Scene1::Update(double dt)
 	PlayerClass::get_instance()->healthUI();
 	if (!trigger && !otheranims() && !holdanims())
 		PlayerClass::get_instance()->facingDirection();
+
 	/*-----------------------------------------*/
 
 	/*-----------Updates the FPS to be stated on screen---------*/
@@ -556,7 +557,7 @@ void StudioProject2Scene1::Update(double dt)
 
 		/* mutant */
 
-		if (EnemyManager::get_instance()->EnemyList[0]->get_health() != 0)
+		if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 		{
 			if (elapsedTime > bufferTime_attack_M)
 			{
@@ -663,7 +664,7 @@ void StudioProject2Scene1::Update(double dt)
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 	{
-		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() != 0)
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 		{
 			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
@@ -673,7 +674,7 @@ void StudioProject2Scene1::Update(double dt)
 		}
 	}
 
-	if (EnemyManager::get_instance()->EnemyList[0]->get_health() != 0)
+	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 		EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
 																													// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
 	/*--------------------------------------------------------*/
@@ -886,7 +887,7 @@ void StudioProject2Scene1::Render()
 	//modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
-	if (EnemyManager::get_instance()->EnemyList[0]->get_health() != 0)
+	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 	{
 		RenderProjectiles();
 		RenderMutant();

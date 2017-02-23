@@ -17,6 +17,12 @@ void EnemyClass::update(double dt)
 	{
 		this->detection();
 		this->movement(dt);
+		
+		for (unsigned int projectiles = 0; projectiles < this->spit_.size(); projectiles++)
+		{
+			this->spit_[projectiles]->init_proj(this->position_m.x - PlayerClass::get_instance()->position_a.x);
+		}
+
 		this->proj_update();
 	}
 }
@@ -79,7 +85,7 @@ void EnemyClass::attack(unsigned int projType, Vector3 pos, Vector3 dir, double 
 
 void EnemyClass::detection()
 {
-	float distBetweenThem = position_m.x - PlayerClass::get_instance()->position_a.x;
+	float distBetweenThem = this->position_m.x - PlayerClass::get_instance()->position_a.x;
 
 	if ((distBetweenThem <= 60.f && distBetweenThem >= 30.f) || // Detect the player but stand at its spot  (60 to 30) 
 		(distBetweenThem <= -30.f && distBetweenThem >= -60.f)) // and changes it to throwing projectile state (-30 to -60)
@@ -115,6 +121,9 @@ void EnemyClass::proj_update()
 {
 	for (unsigned int projectiles = 0; projectiles < this->spit_.size(); projectiles++)
 	{
+		this->spit_[projectiles]->edit_passed_angle();
+		this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
+
 		this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
 	}
 }
