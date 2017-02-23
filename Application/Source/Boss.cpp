@@ -124,12 +124,12 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.x < PlayerClass::get_instance()->position_a.x + 6 &&
 				position_m.x > PlayerClass::get_instance()->position_a.x - 1)
 			{
-				position_m.x = PlayerClass::get_instance()->position_a.x + 10;
+				position_m.x = PlayerClass::get_instance()->position_a.x + 8;
 			}
 			else if (position_m.x > PlayerClass::get_instance()->position_a.x - 6 &&
 				position_m.x < PlayerClass::get_instance()->position_a.x)
 			{
-				position_m.x = PlayerClass::get_instance()->position_a.x - 10;
+				position_m.x = PlayerClass::get_instance()->position_a.x - 8;
 			}
 			/*------------------------------------------------------------------------------------*/
 
@@ -147,12 +147,12 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.x < PlayerClass::get_instance()->position_a.x + 6 &&
 				position_m.x > PlayerClass::get_instance()->position_a.x - 1)
 			{
-				position_m.x = PlayerClass::get_instance()->position_a.x + 10;
+				position_m.x = PlayerClass::get_instance()->position_a.x + 8;
 			}
 			else if (position_m.x > PlayerClass::get_instance()->position_a.x - 6 &&
 				position_m.x < PlayerClass::get_instance()->position_a.x)
 			{
-				position_m.x = PlayerClass::get_instance()->position_a.x - 10;
+				position_m.x = PlayerClass::get_instance()->position_a.x - 8;
 			}
 			/*------------------------------------------------------------------------------------*/
 
@@ -170,12 +170,12 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.z < PlayerClass::get_instance()->position_a.z + 6 &&
 				position_m.z > PlayerClass::get_instance()->position_a.z - 1)
 			{
-				position_m.z = PlayerClass::get_instance()->position_a.z + 10;
+				position_m.z = PlayerClass::get_instance()->position_a.z + 8;
 			}
 			else if (position_m.z > PlayerClass::get_instance()->position_a.z - 6 &&
 				position_m.z < PlayerClass::get_instance()->position_a.z)
 			{
-				position_m.z = PlayerClass::get_instance()->position_a.z - 10;
+				position_m.z = PlayerClass::get_instance()->position_a.z - 8;
 			}
 			/*------------------------------------------------------------------------------------*/
 
@@ -193,12 +193,12 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.z < PlayerClass::get_instance()->position_a.z + 6 &&
 				position_m.z > PlayerClass::get_instance()->position_a.z - 1)
 			{
-				position_m.z = PlayerClass::get_instance()->position_a.z + 10;
+				position_m.z = PlayerClass::get_instance()->position_a.z + 8;
 			}
 			else if (position_m.z > PlayerClass::get_instance()->position_a.z - 6 &&
 				position_m.z < PlayerClass::get_instance()->position_a.z)
 			{
-				position_m.z = PlayerClass::get_instance()->position_a.z - 10;
+				position_m.z = PlayerClass::get_instance()->position_a.z - 8;
 			}
 			/*------------------------------------------------------------------------------------*/
 
