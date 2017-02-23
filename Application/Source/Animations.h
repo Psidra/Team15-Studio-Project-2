@@ -21,22 +21,26 @@ void AnimCheck(unsigned int num_anim, MS* modelStack, double* timeElapsed, const
 
 // 1/2 Mutant
 
-void IdleAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void Transform(bool inject, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+void AnimCheck_H_Mutant(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+
+//void IdleAnim(MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void Transform(bool inject, MS* modelStack, double* timeElapsed, const std::string& dagNode);
 
 // Mutant
 
-void IdleAnim_M(MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void AttackAnim_M(bool attack_M, MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void WalkAnim_M(MS* modelStack, double* timeElapsed, const std::string& dagNode);
-void DeathAnim_M(bool isdead_M, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+void AnimCheck_Mutant(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+
+//void IdleAnim_M(MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void AttackAnim_M(bool attack_M, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void WalkAnim_M(MS* modelStack, double* timeElapsed, const std::string& dagNode);
+//void DeathAnim_M(bool isdead_M, MS* modelStack, double* timeElapsed, const std::string& dagNode);
 
 // Boss
-
 // oh god no
 
 //shitty bat flying animation (BACKGROUND *INTERACTION)
 void Batanim(bool batfly, MS* modelStack, double* timeElapsed, const std::string& dagNode);
 
+void AnimCheck_Boss(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode);
 
 #endif // ANIMATIONS_H

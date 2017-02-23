@@ -41,11 +41,25 @@ private:
 	unsigned int boss_health;
 	int boss_lookingDirection;
 	double bufferTime_DoT;
-	bool tailAtk;
+	double bufferTime_Burrow;
+
+	/*-----For State Control---*/
+	bool tailAtk; 
 	bool spin;
 	bool burrow;
 	bool DmgOverTime;
 	bool magicImmunity;
+	/*------------------------*/
+	
+	/*----For preventing continuous update--*/
+	bool burrowDir;
+	bool burrowDist;
+	/*--------------------------------------*/
+
+	/*-----For preventing multiple actions---*/
+	bool spinning;
+	bool burrowing;
+	bool tailattacking;
 };
 
 #endif

@@ -42,6 +42,10 @@ public:
 		//main character (Alexis)
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM,
 		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG,
+		//main character stunt doobl (Alexus) :^)
+		GEO_ALEXUS_HEAD, GEO_ALEXUS_BODY, GEO_ALEXUS_RIGHT4ARM, GEO_ALEXUS_LEFT4ARM,
+		GEO_ALEXUS_CROTCH, GEO_ALEXUS_RIGHTTHIGH, GEO_ALEXUS_LEFTTHIGH,
+		GEO_ALEXUS_RIGHTARM, GEO_ALEXUS_LEFTARM, GEO_ALEXUS_RIGHTLEG, GEO_ALEXUS_LEFTLEG,
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
@@ -49,7 +53,9 @@ public:
 		GEO_M_RHEART, GEO_M_BHEART,
 		//UI Objects
 		GEO_BLANKHEART, GEO_ALEXIS_LIFE, GEO_BOSSLIFE, GEO_ENERGY, GEO_BLANKENERGY,
-		GEO_TEXT,
+		GEO_TEXT, GEO_LASER_CD, GEO_LASER, GEO_PROJSHIELD_CD, GEO_PROJSHIELD,
+		//Boss
+		GEO_BOSS,
 
 		NUM_GEOMETRY,
 	};
@@ -121,10 +127,9 @@ private:
 	// TIME
 	double elapsedTime;
 	double bufferTime_attack;
-	double bufferTime_text;
-	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
 	double bufferTime_roll;
 	double bufferTime_block;
+	double bufferTime_iframeroll;
 };
 
 #endif 
