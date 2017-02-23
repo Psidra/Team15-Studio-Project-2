@@ -206,13 +206,18 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
+	/*--------------------------HUD Loading--------------------------------------------------------*/
+	meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
+	meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
+	meshList[GEO_FULL_COUNT] = MeshBuilder::GenerateQuad("hudfull", Color(1, 1, 1));
+	meshList[GEO_FULL_COUNT]->textureID = LoadTGA("Image//fullhud.tga");
 	/*-------------------------Loading Alexis Health----------------------------------*/
 	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
 	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
 	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
 	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
 	/*--------------------------------------------------------------------------------*/
-
+	/*---------------------------------------------------------------------------------------------*/
 	/*------------------------Initialising Text Variables-------------------------------*/
 	pEnter = false;
 	pressEnterTS = 0;
@@ -266,8 +271,10 @@ void StudioProject2Scene2::Update(double dt)
 	PlayerClass::get_instance()->facingDirection();
 	/*-----------------------------------------*/
 
-	/*-----------Updates the FPS to be stated on screen---------*/
+	/*-----------HUD UPDATES---------*/
 	fps = "FPS:" + std::to_string(framespersec);
+	fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
+	hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
 	/*----------------------------------------------------------*/
 
 	if (Application::IsKeyPressed(VK_1))
@@ -610,6 +617,15 @@ void StudioProject2Scene2::Render()
 	/*----Textbox Rendering--------*/
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
+	/*-----------------------------*/
+	/*------------------HUD-------------------------------------------------*/
+	/*----Half mutant count--------*/
+	RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 5, 0.5, 8, 8, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 4, 12.3, -9);
+	/*-----------------------------*/
+	/*----Full mutant count--------*/
+	RenderMeshOnScreen(meshList[GEO_FULL_COUNT], 7, 0.5, 8, 8, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 4, 16.3, -9);
 	/*-----------------------------*/
 	/*----Heart Rendering----------*/
 	float positionXscreen = 2;

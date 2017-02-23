@@ -61,7 +61,7 @@ public:
 		GEO_HM_RIGHTARM, GEO_HM_LEFTLEG, GEO_HM_RIGHTLEG,
 		//UI Objects
 		GEO_ALEXIS_LIFE, GEO_BLANKHEART,
-		GEO_TEXTBOX, GEO_HALF_COUNT,
+		GEO_TEXTBOX, GEO_HALF_COUNT, GEO_FULL_COUNT,
 
 		//Mutant Health
 		GEO_M_RHEART, GEO_M_BHEART,
@@ -214,7 +214,9 @@ private:
 	float syringeSizeZ;
 
 	std::string fps;
-	
+	std::string hMutantSaved;
+	std::string fMutantKilled;
+
 	// TIME
 	double elapsedTime;
 	double bufferTime_JumpUp;

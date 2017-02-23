@@ -40,9 +40,11 @@ public:
 	Vector3 position_a;
 	PlayerLife Hearts;
 	int a_LookingDirection;
+	int hm_Saved;
+	int fm_Killed;
 
 private:
-	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90){};
+	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0) {};
 	static PlayerClass* instance;
 
 	unsigned int _health;

@@ -282,9 +282,18 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
 
-	/*--------------------------HUD (Half) Loading---------------------------------------*/
+	/*--------------------------HUD Loading---------------------------------------*/
 	meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
 	meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
+	meshList[GEO_FULL_COUNT] = MeshBuilder::GenerateQuad("hudfull", Color(1, 1, 1));
+	meshList[GEO_FULL_COUNT]->textureID = LoadTGA("Image//fullhud.tga");
+
+	/*-------------------------Loading Alexis Health----------------------------------*/
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
+	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
+	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
+	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
+	/*--------------------------------------------------------------------------------*/
 	/*-----------------------------------------------------------------------------------*/
 
 	/*-----------------------------Trigger Check-----------------------------------*/
@@ -298,13 +307,6 @@ void StudioProject2Scene1::Init()
 	//meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
 	/*-----------------------------------------------------------------------------*/ 
 	
-	/*-------------------------Loading Alexis Health----------------------------------*/
-	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
-	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
-	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
-	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
-	/*--------------------------------------------------------------------------------*/
-
 	/*-------------------------Loading Mutant Health----------------------------------*/
 	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
 	meshList[GEO_M_RHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
@@ -404,7 +406,7 @@ void StudioProject2Scene1::Update(double dt)
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
 	{
-		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() != 0)
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 		{
 			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
@@ -437,8 +439,10 @@ void StudioProject2Scene1::Update(double dt)
 		PlayerClass::get_instance()->facingDirection();
 	/*-----------------------------------------*/
 
-	/*-----------Updates the FPS to be stated on screen---------*/
+	/*-----------HUD UPDATES---------*/
 	fps = "FPS:" + std::to_string(framespersec);
+	fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
+	hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
 	/*----------------------------------------------------------*/
 
 	if (Application::IsKeyPressed(VK_1))
@@ -556,7 +560,7 @@ void StudioProject2Scene1::Update(double dt)
 
 		/* mutant */
 
-		if (EnemyManager::get_instance()->EnemyList[0]->get_health() != 0)
+		if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 		{
 			if (elapsedTime > bufferTime_attack_M)
 			{
@@ -589,8 +593,8 @@ void StudioProject2Scene1::Update(double dt)
 			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
 		else if (pressedD && !trigger &&
-				 !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				 !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	}
 	else
@@ -658,12 +662,12 @@ void StudioProject2Scene1::Update(double dt)
 
 	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 		PlayerClass::get_instance()->position_a.x += (float)(60.f * dt);
-	
+
 	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 	{
-		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() != 0)
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 		{
 			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
@@ -673,9 +677,9 @@ void StudioProject2Scene1::Update(double dt)
 		}
 	}
 
-	if (EnemyManager::get_instance()->EnemyList[0]->get_health() != 0)
+	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 		EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
-																													// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
+	// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
 	/*--------------------------------------------------------*/
 
 	/*---------Triggers------*/
@@ -700,11 +704,25 @@ void StudioProject2Scene1::Update(double dt)
 	TextInteraction();
 	LightInteraction();
 
+	/*--------------Updates the Full Mutant Kill Count--------*/
+	for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() == 0)
+		{
+			PlayerClass::get_instance()->fm_Killed++;
+			EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-1);
+		}
+	}
+	/*-------------------------------------------------------*/
 	/*---------Change Scene------*/
-
-	if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() == 0)))
+	if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0)))
 		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+
+	//if (PlayerClass::get_instance()->get_health <= 0)
+		//SceneManager::getInstance()->changeScene(new);
+	/*---------------------------*/
 }
+
 
 void StudioProject2Scene1::Render()
 {
@@ -886,7 +904,7 @@ void StudioProject2Scene1::Render()
 	//modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
-	if (EnemyManager::get_instance()->EnemyList[0]->get_health() != 0)
+	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 	{
 		RenderProjectiles();
 		RenderMutant();
@@ -1030,8 +1048,14 @@ void StudioProject2Scene1::Render()
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
 	/*-----------------------------*/
 
+	/*------------------HUD-------------------------------------------------*/
 	/*----Half mutant count--------*/
-	//RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 10, 10, 30, 30,,);
+	RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 5, 0.5, 8, 8,0);
+	RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 4, 12.3, -9);
+	/*-----------------------------*/
+	/*----Full mutant count--------*/
+	RenderMeshOnScreen(meshList[GEO_FULL_COUNT], 7, 0.5, 8, 8, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 4, 16.3, -9);
 	/*-----------------------------*/
 
 	/*----Heart Rendering----------*/
@@ -1050,12 +1074,10 @@ void StudioProject2Scene1::Render()
 
 
 	/*---------------Text log Rendering--------*/
-		RenderTextInteractions();
+	RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
-
-
-
+	/*----------------------------------------------------------------------------------*/
 }
 
 bool StudioProject2Scene1::otheranims()
