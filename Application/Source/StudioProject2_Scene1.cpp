@@ -183,6 +183,9 @@ void StudioProject2Scene1::Init()
 	
 	meshList[GEO_SYRINGE] = MeshBuilder::GenerateOBJ("syringe", "OBJ//Scene1//syn.obj");
 	meshList[GEO_SYRINGE]->textureID = LoadTGA("Image//crotchtext.tga");
+
+	meshList[GEO_BAT] = MeshBuilder::GenerateOBJ("bat", "OBJ//bat.obj");
+	//meshList[GEO_BAT]->textureID = LoadTGA("Image//crotchtext.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -439,6 +442,7 @@ void StudioProject2Scene1::Update(double dt)
 	PlayerClass::get_instance()->timeSpent(dt);
 	if (!trigger && !otheranims() && !holdanims())
 		PlayerClass::get_instance()->facingDirection();
+
 	/*-----------------------------------------*/
 
 	/*-----------HUD UPDATES---------*/
@@ -1035,6 +1039,12 @@ void StudioProject2Scene1::Render()
 	modelStack.Translate(550.f, -250.f, 0);
 	modelStack.Scale(1.f, 1.5f, 1.f);
 	RenderMesh(meshList[GEO_TRUMP], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(50.f, -20.f, 40);
+	modelStack.Scale(0.5f, 0.5f, 0.5f);
+	RenderMesh(meshList[GEO_BAT], true);
 	modelStack.PopMatrix();
 
 	/*-----------------Skybox-------------------*/
