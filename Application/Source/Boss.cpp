@@ -120,15 +120,41 @@ void Boss::burrowTeleportation(double timeElapsed)
 		{ // Example : Boss cannot teleport leftwards if he is too near to the left border
 			position_m.x += burrowRange;
 
+			/*-------To prevent boss teleportation position to overlapse with the char position---*/
+			if (position_m.x < PlayerClass::get_instance()->position_a.x + 6 &&
+				position_m.x > PlayerClass::get_instance()->position_a.x - 1)
+			{
+				position_m.x = PlayerClass::get_instance()->position_a.x + 10;
+			}
+			else if (position_m.x > PlayerClass::get_instance()->position_a.x - 6 &&
+				position_m.x < PlayerClass::get_instance()->position_a.x)
+			{
+				position_m.x = PlayerClass::get_instance()->position_a.x - 10;
+			}
+			/*------------------------------------------------------------------------------------*/
+
 			if (position_m.x > 65) // Prevents the boss from escaping the boundary
 				position_m.x = 55;
-
+			
 			bufferTime_Burrow = timeElapsed + 15.f;
 			burrowing = false;
 		}
 		else if (burrowDirection == 2 && position_m.x > -50)
 		{
 			position_m.x -= burrowRange;
+
+			/*-------To prevent boss teleportation position to overlapse with the char position---*/
+			if (position_m.x < PlayerClass::get_instance()->position_a.x + 6 &&
+				position_m.x > PlayerClass::get_instance()->position_a.x - 1)
+			{
+				position_m.x = PlayerClass::get_instance()->position_a.x + 10;
+			}
+			else if (position_m.x > PlayerClass::get_instance()->position_a.x - 6 &&
+				position_m.x < PlayerClass::get_instance()->position_a.x)
+			{
+				position_m.x = PlayerClass::get_instance()->position_a.x - 10;
+			}
+			/*------------------------------------------------------------------------------------*/
 
 			if (position_m.x < -65)
 				position_m.x = -55;
@@ -140,6 +166,19 @@ void Boss::burrowTeleportation(double timeElapsed)
 		{
 			position_m.z += burrowRange;
 
+			/*-------To prevent boss teleportation position to overlapse with the char position---*/
+			if (position_m.z < PlayerClass::get_instance()->position_a.z + 6 &&
+				position_m.z > PlayerClass::get_instance()->position_a.z - 1)
+			{
+				position_m.z = PlayerClass::get_instance()->position_a.z + 10;
+			}
+			else if (position_m.z > PlayerClass::get_instance()->position_a.z - 6 &&
+				position_m.z < PlayerClass::get_instance()->position_a.z)
+			{
+				position_m.z = PlayerClass::get_instance()->position_a.z - 10;
+			}
+			/*------------------------------------------------------------------------------------*/
+
 			if (position_m.z > 65)
 				position_m.z = 55;
 
@@ -149,6 +188,19 @@ void Boss::burrowTeleportation(double timeElapsed)
 		else if (burrowDirection == 4 && position_m.z > -50)
 		{
 			position_m.z -= burrowRange;
+
+			/*-------To prevent boss teleportation position to overlapse with the char position---*/
+			if (position_m.z < PlayerClass::get_instance()->position_a.z + 6 &&
+				position_m.z > PlayerClass::get_instance()->position_a.z - 1)
+			{
+				position_m.z = PlayerClass::get_instance()->position_a.z + 10;
+			}
+			else if (position_m.z > PlayerClass::get_instance()->position_a.z - 6 &&
+				position_m.z < PlayerClass::get_instance()->position_a.z)
+			{
+				position_m.z = PlayerClass::get_instance()->position_a.z - 10;
+			}
+			/*------------------------------------------------------------------------------------*/
 
 			if (position_m.z < -65)
 				position_m.z = -55;
