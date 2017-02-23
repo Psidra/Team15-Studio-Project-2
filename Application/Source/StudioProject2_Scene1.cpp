@@ -1,5 +1,6 @@
 #include "StudioProject2_Scene1.h"
 #include "StudioProject2_Scene2.h"
+#include "DeathScreen.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
@@ -45,6 +46,7 @@ void StudioProject2Scene1::Init()
 
 	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	PlayerClass::get_instance()->position_a = Vector3(-15.f,0.f,0.f);
+	PlayerClass::get_instance()->init();
 
 	PlayerClass::get_instance()->healthUI();
 	/*-------------------------------------------------------------------------------*/
@@ -435,6 +437,7 @@ void StudioProject2Scene1::Update(double dt)
 
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->timeSpent(dt);
 	if (!trigger && !otheranims() && !holdanims())
 		PlayerClass::get_instance()->facingDirection();
 	/*-----------------------------------------*/
@@ -716,10 +719,14 @@ void StudioProject2Scene1::Update(double dt)
 	/*-------------------------------------------------------*/
 	/*---------Change Scene------*/
 	if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0)))
+	{
+		SceneManager::getInstance()->Location = "Inner City";
 		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
-
-	//if (PlayerClass::get_instance()->get_health <= 0)
-		//SceneManager::getInstance()->changeScene(new);
+	}
+	if (PlayerClass::get_instance()->get_health() <= 0)
+	{
+		SceneManager::getInstance()->changeScene(new DeathScreen());
+	}
 	/*---------------------------*/
 }
 
@@ -1077,6 +1084,7 @@ void StudioProject2Scene1::Render()
 	RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
+	RenderTextOnScreen(meshList[GEO_TEXT], "SECLUDED FOREST", Color(0, 1, 0), 2.5, 1.5, -8.5);
 	/*----------------------------------------------------------------------------------*/
 }
 

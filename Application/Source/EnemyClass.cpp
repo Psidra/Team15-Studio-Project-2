@@ -124,6 +124,12 @@ void EnemyClass::edit_health(int HP)
 	this->health += HP;
 }
 
+
+void EnemyClass::restartLevel()
+{
+	health = 100;
+}
+
 int EnemyClass::get_health()
 {
 	return health;
