@@ -54,6 +54,8 @@ public:
 		//UI Objects
 		GEO_BLANKHEART, GEO_ALEXIS_LIFE, GEO_BOSSLIFE, GEO_ENERGY, GEO_BLANKENERGY,
 		GEO_TEXT, GEO_LASER_CD, GEO_LASER, GEO_PROJSHIELD_CD, GEO_PROJSHIELD,
+		//Boss
+		GEO_BOSS,
 
 		NUM_GEOMETRY,
 	};
@@ -125,10 +127,9 @@ private:
 	// TIME
 	double elapsedTime;
 	double bufferTime_attack;
-	double bufferTime_text;
-	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
 	double bufferTime_roll;
 	double bufferTime_block;
+	double bufferTime_iframeroll;
 };
 
 #endif 
