@@ -26,6 +26,7 @@ public:
 	void bossFightFacingDirection();
 	void timeSpent(float dt);
 	void restartLevel();
+	void restartGame();
 
 	struct PlayerLife
 	{

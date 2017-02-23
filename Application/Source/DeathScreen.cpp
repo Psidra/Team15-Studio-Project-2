@@ -146,6 +146,8 @@ void DeathScreen::Update(double dt)
 
 	if (Application::IsKeyPressed(VK_RETURN))
 	{
+		EnemyManager::get_instance()->EnemyList[0]->restartLevel();
+		PlayerClass::get_instance()->timeSpend = 0.0f;
 		SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
 	}
 	if (Application::IsKeyPressed('R'))
