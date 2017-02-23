@@ -27,6 +27,8 @@ public:
 	void timeSpent(float dt);
 	void restartLevel();
 	void restartGame();
+	void spells(double timeElapsed);
+	void spellUI(double timeElapsed);
 
 	struct PlayerLife
 	{
@@ -39,17 +41,32 @@ public:
 		int energyCounter;
 	};
 
+	struct SpellHUD
+	{
+		float projShieldReady;
+		float projShieldNotReady;
+
+		float laserReady;
+		float laserNotReady;
+	};
+
 	BoundingBox PlayerHitBox;
 	Vector3 position_a;
 	PlayerLife Hearts;
+	SpellHUD spellHUD;
 	int a_LookingDirection;
 	int hm_Saved;
 	int fm_Killed;
 	double timeSpend;
 private:
-	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f) {};
+	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f)
+	, energyProjShield(50), energyLaser(100) {};
 	static PlayerClass* instance;
 
+	double bufferTime_Laser;
+	double bufferTime_ProjShield;
+	unsigned int energyProjShield;
+	unsigned int energyLaser;
 	unsigned int _health;
 	unsigned int healthStorage;
 	int hmSavedStorage;

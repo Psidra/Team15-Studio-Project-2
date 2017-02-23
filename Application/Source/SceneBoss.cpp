@@ -145,16 +145,8 @@ void SceneBoss::Init()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
-	/*-------------------------Loading Alexis Health----------------------------------*/
-	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
-	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
-	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
-	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
-	/*--------------------------------------------------------------------------------*/
-	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
-	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
-	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 1));
-	/*--------------------------------------------------------------------------------*/
+
+	
 	/*-------------------------Loading Mutant Health----------------------------------*/
 	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
 	meshList[GEO_M_RHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
@@ -162,6 +154,27 @@ void SceneBoss::Init()
 	meshList[GEO_M_BHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
 	/*--------------------------------------------------------------------------------*/
 
+	/*------------------------------HUD Loading -------------------------------------*/
+	/*-------------------------Loading Alexis Health--------------------*/
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
+	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
+	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
+	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
+	/*-----------------------------------------------------------------*/
+	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
+	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
+	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 1));
+	/*---------------Spells----------*/
+	meshList[GEO_LASER] = MeshBuilder::GenerateQuad("lasericon", Color(1, 1, 1));
+	meshList[GEO_LASER]->textureID = LoadTGA("Image//laser.tga");
+	meshList[GEO_LASER_CD] = MeshBuilder::GenerateQuad("laserCDicon", Color(1, 1, 1));
+	meshList[GEO_LASER_CD]->textureID = LoadTGA("Image//laser_cooldown.tga");
+	meshList[GEO_PROJSHIELD] = MeshBuilder::GenerateQuad("projshieldicon", Color(1, 1, 1));
+	meshList[GEO_PROJSHIELD]->textureID = LoadTGA("Image//hardlight.tga");
+	meshList[GEO_PROJSHIELD_CD] = MeshBuilder::GenerateQuad("projshieldCDicon", Color(1, 1, 1));
+	meshList[GEO_PROJSHIELD_CD]->textureID = LoadTGA("Image//hardlight_cooldown.tga");
+	/*-------------------------------*/
+	/*--------------------------------------------------------------------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
 	projectionStack.LoadMatrix(projection);
@@ -220,6 +233,8 @@ void SceneBoss::Update(double dt)
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->manaUI();
 	PlayerClass::get_instance()->bossFightFacingDirection();
+	PlayerClass::get_instance()->spells(elapsedTime);
+	PlayerClass::get_instance()->spellUI(elapsedTime);
 	/*-----------------------------------------*/
 	if (!otheranims() || holdanims())
 	{
@@ -458,7 +473,18 @@ void SceneBoss::Render()
 
 		posXscreen += 0.5;
 	}
+	/*-----------------------------*/
+	/*------Spell HUD-----*/
+	RenderMeshOnScreen(meshList[GEO_LASER], 10, 0.5,
+		PlayerClass::get_instance()->spellHUD.laserReady, PlayerClass::get_instance()->spellHUD.laserReady, 0);
+	RenderMeshOnScreen(meshList[GEO_LASER_CD], 10, 0.5,
+		PlayerClass::get_instance()->spellHUD.laserNotReady, PlayerClass::get_instance()->spellHUD.laserNotReady, 0);
 
+	RenderMeshOnScreen(meshList[GEO_PROJSHIELD], 12, 0.5,
+		PlayerClass::get_instance()->spellHUD.projShieldReady, PlayerClass::get_instance()->spellHUD.projShieldReady, 0);
+	RenderMeshOnScreen(meshList[GEO_PROJSHIELD_CD],12, 0.5,
+		PlayerClass::get_instance()->spellHUD.projShieldNotReady, PlayerClass::get_instance()->spellHUD.projShieldNotReady, 0);
+	/*--------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], "ENERGY", Color(0, 0, 1), 2, 3, 17.5);
 	RenderTextOnScreen(meshList[GEO_TEXT], "BOSS", Color(1, 1, 0), 2, 3, -8.5);
 	/*------------------------------*/

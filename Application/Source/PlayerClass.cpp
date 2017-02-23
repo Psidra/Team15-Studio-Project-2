@@ -182,3 +182,46 @@ void PlayerClass::restartGame()
 	hm_Saved = 0;
 	fm_Killed = 0;
 }
+
+void PlayerClass::spells(double timeElapsed)
+{
+	if (_energy > 0)
+	{
+		if (Application::IsKeyPressed('Q') && timeElapsed > bufferTime_Laser) // Laser Beam
+		{
+			_energy -= energyLaser;
+			bufferTime_Laser = timeElapsed + 10.f;
+		}
+
+		if (Application::IsKeyPressed('R') && timeElapsed > bufferTime_ProjShield) // Projectile Shield
+		{
+			_energy -= energyProjShield;
+			bufferTime_ProjShield = timeElapsed + 7.f; 
+		}
+	}
+}
+
+void PlayerClass::spellUI(double timeElapsed)
+{
+	if (_energy < energyLaser || timeElapsed < bufferTime_Laser) // not enough energy or in cooldown
+	{
+		spellHUD.laserNotReady = 5.f;
+		spellHUD.laserReady = 0.f;
+	}
+	else
+	{
+		spellHUD.laserNotReady = 0.f;
+		spellHUD.laserReady = 5.f;
+	}
+
+	if (_energy < energyProjShield || timeElapsed < bufferTime_ProjShield)
+	{
+		spellHUD.projShieldNotReady = 5.f;
+		spellHUD.projShieldReady = 0.f;
+	}
+	else
+	{
+		spellHUD.projShieldNotReady = 0.f;
+		spellHUD.projShieldReady = 5.f;
+	}
+}
