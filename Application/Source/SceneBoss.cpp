@@ -145,9 +145,12 @@ void SceneBoss::Init()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
-	/*-------------------------Loading Hearts-----------------------------------------*/
-	meshList[GEO_HEART] = MeshBuilder::GenerateQuad("heart", Color(1, 0, 0));
-	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(0, 0, 0));
+	/*-------------------------Loading Alexis Health----------------------------------*/
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
+	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
+	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
+	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
+	/*--------------------------------------------------------------------------------*/
 	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
 	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
 	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 1));
@@ -215,6 +218,7 @@ void SceneBoss::Update(double dt)
 
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->manaUI();
 	PlayerClass::get_instance()->bossFightFacingDirection();
 	/*-----------------------------------------*/
 	if (!otheranims() || holdanims())
@@ -426,7 +430,7 @@ void SceneBoss::Render()
 	float positionXscreen = 2;
 	for (int i = 0; i < 10; i++)
 	{
-		RenderMeshOnScreen(meshList[GEO_HEART], positionXscreen, 28.5,
+		RenderMeshOnScreen(meshList[GEO_ALEXIS_LIFE], positionXscreen, 28.5,
 			PlayerClass::get_instance()->Hearts.a_heart[i], PlayerClass::get_instance()->Hearts.a_heart[i], 0);
 		RenderMeshOnScreen(meshList[GEO_BLANKHEART], positionXscreen, 28.5,
 			PlayerClass::get_instance()->Hearts.a_blankheart[i], PlayerClass::get_instance()->Hearts.a_blankheart[i], 0);
@@ -434,13 +438,13 @@ void SceneBoss::Render()
 		positionXscreen += 2;
 	}
 
-	float energyX = 4;
+	float energyX = 7;
 	for (int i = 0; i < 10; i++)
 	{
-		RenderMeshOnScreen(meshList[GEO_ENERGY], energyX, 26.5,
+		RenderMeshOnScreen(meshList[GEO_ENERGY], energyX, 27,
 			PlayerClass::get_instance()->Hearts.a_energy[i], PlayerClass::get_instance()->Hearts.a_energy[i], 0);
-		RenderMeshOnScreen(meshList[GEO_BLANKENERGY], energyX, 26.5,
-			PlayerClass::get_instance()->Hearts.a_energy[i], PlayerClass::get_instance()->Hearts.a_energy[i], 0);
+		RenderMeshOnScreen(meshList[GEO_BLANKENERGY], energyX, 27,
+			PlayerClass::get_instance()->Hearts.a_blankenergy[i], PlayerClass::get_instance()->Hearts.a_blankenergy[i], 0);
 
 		energyX += 1;
 	}
@@ -455,6 +459,7 @@ void SceneBoss::Render()
 		posXscreen += 0.5;
 	}
 
+	RenderTextOnScreen(meshList[GEO_TEXT], "ENERGY", Color(0, 0, 1), 2, 3, 17.5);
 	RenderTextOnScreen(meshList[GEO_TEXT], "BOSS", Color(1, 1, 0), 2, 3, -8.5);
 	/*------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
