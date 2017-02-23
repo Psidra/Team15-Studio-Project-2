@@ -13,9 +13,12 @@ void EnemyClass::init()
 
 void EnemyClass::update(double dt)
 {
-	this->detection();
-	this->movement(dt);
-	this->proj_update();
+	if (this->health > 0)
+	{
+		this->detection();
+		this->movement(dt);
+		this->proj_update();
+	}
 }
 
 void EnemyClass::movement(double dt)
@@ -59,55 +62,52 @@ void EnemyClass::movement(double dt)
 	}
 }
 
-void EnemyClass::attack(unsigned int projType, Vector3 pos, Vector3 dir, double dt)
+void EnemyClass::attack(unsigned int projType, Vector3 pos, Vector3 dir, double dt, bool block)
 {
 	if (this->projectileThrowRange)
-	{
 		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
-	}
 	else if (this->meleeAtkRange)
 	{
-		// some shit
+		if (this->EnemyHitBox.collide(PlayerClass::get_instance()->PlayerHitBox)) // can't roll dodge this I think
+			PlayerClass::get_instance()->healthSystem(block);
 	}
 	else
 	{
 		// jackshit
 	}
 }
+
 void EnemyClass::detection()
 {
-	if (health > 0)
+	float distBetweenThem = position_m.x - PlayerClass::get_instance()->position_a.x;
+
+	if ((distBetweenThem <= 60.f && distBetweenThem >= 30.f) || // Detect the player but stand at its spot  (60 to 30) 
+		(distBetweenThem <= -30.f && distBetweenThem >= -60.f)) // and changes it to throwing projectile state (-30 to -60)
 	{
-		float distBetweenThem = position_m.x - PlayerClass::get_instance()->position_a.x;
+		projectileThrowRange = true;
+	}
+	else
+	{
+		projectileThrowRange = false;
+	}
 
-		if ((distBetweenThem < 61.f && distBetweenThem > 30.f) || // Detect the player but stand at its spot  (60 to 30) 
-			(distBetweenThem < -30.f && distBetweenThem > -61.f)) // and changes it to throwing projectile state (-30 to -60)
-		{
-			projectileThrowRange = true;
-		}
-		else
-		{
-			projectileThrowRange = false;
-		}
+	if ((distBetweenThem <= 30.f && distBetweenThem >= 5.5f) || // Change state to move towards player (29 to 10) (-10 to -29)
+		(distBetweenThem <= -5.5f && distBetweenThem >= -30.f))
+	{
+		moveRange = true;
+	}
+	else
+	{
+		moveRange = false;
+	}
 
-		if ((distBetweenThem < 30.f && distBetweenThem > 5.f) || // Change state to move towards player (29 to 10) (-10 to -29)
-			(distBetweenThem < -5.f && distBetweenThem > -30.f))
-		{
-			moveRange = true;
-		}
-		else
-		{
-			moveRange = false;
-		}
-
-		if (distBetweenThem < 5.f && distBetweenThem > -5.f) // Change state to melee attack (9 to -9)
-		{
-			meleeAtkRange = true;
-		}
-		else
-		{
-			meleeAtkRange = false;
-		}
+	if (distBetweenThem <= 5.5f && distBetweenThem >= -5.5f) // Change state to melee attack (9 to -9)
+	{
+		meleeAtkRange = true;
+	}
+	else
+	{
+		meleeAtkRange = false;
 	}
 }
 
@@ -117,4 +117,20 @@ void EnemyClass::proj_update()
 	{
 		this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
 	}
+}
+
+void EnemyClass::edit_health(int HP)
+{
+	this->health += HP;
+}
+
+
+void EnemyClass::restartLevel()
+{
+	health = 100;
+}
+
+int EnemyClass::get_health()
+{
+	return health;
 }

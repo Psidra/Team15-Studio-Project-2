@@ -48,7 +48,7 @@ public:
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
 		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO, GEO_SPIT,
 		//UI Objects
-		GEO_ALEXIS_LIFE, GEO_BLANKHEART,
+		GEO_ALEXIS_LIFE, GEO_BLANKHEART, GEO_FULL_COUNT, GEO_HALF_COUNT,
 		GEO_TEXTBOX, GEO_TEXT,
 
 		//Triggers
@@ -130,14 +130,18 @@ private:
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
 	bool pressedD;
 	bool pressedA;
+	bool inmovement;
 	bool injump;
-	bool infall;
 	bool attack;
 	bool trigger;
 	bool grab;
+	bool block;
+	bool roll;
 	/*------------------------------------------------------------*/
 
 	std::string fps;
+	std::string fMutantKilled;
+	std::string hMutantSaved;
 
 	// TIME
 	double elapsedTime;

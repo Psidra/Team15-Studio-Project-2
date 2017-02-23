@@ -24,6 +24,8 @@ public:
 	void facingDirection();
 	void healthSystem(bool Block);
 	void bossFightFacingDirection();
+	void timeSpent(float dt);
+	void restartLevel();
 
 	struct PlayerLife
 	{
@@ -40,12 +42,18 @@ public:
 	Vector3 position_a;
 	PlayerLife Hearts;
 	int a_LookingDirection;
-
+	int hm_Saved;
+	int fm_Killed;
+	double timeSpend;
 private:
-	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90){};
+	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f) {};
 	static PlayerClass* instance;
 
 	unsigned int _health;
+	unsigned int healthStorage;
+	int hmSavedStorage;
+	int fmKilledStorage;
+	int energyStorage;
 	unsigned int _energy;
 	bool isDead();
 };

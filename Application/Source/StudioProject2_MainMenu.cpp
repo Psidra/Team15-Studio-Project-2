@@ -1,5 +1,6 @@
 #include "StudioProject2_MainMenu.h"
 #include "StudioProject2_Scene1.h"
+#include "DeathScreen.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
@@ -85,7 +86,6 @@ void StudioProject2MainMenu::Init()
 	/*------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
-	//MouseControl = false;
 
 
 	Mtx44 projection;
@@ -133,12 +133,16 @@ void StudioProject2MainMenu::Update(double dt)
 
 	if (Application::IsKeyPressed(VK_RETURN))
 	{
-		SceneManager* scene = SceneManager::getInstance();
-		scene->changeScene(new StudioProject2Scene1());
+		SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
+		SceneManager::getInstance()->Location = "Secluded Forest";
 	}
 	if (Application::IsKeyPressed('T'))
 	{
 		SceneManager::getInstance()->changeScene(new SceneBoss());
+	}
+	if (Application::IsKeyPressed('Y'))
+	{
+		SceneManager::getInstance()->changeScene(new DeathScreen());
 	}
 
 	

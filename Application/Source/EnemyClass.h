@@ -15,9 +15,11 @@ public:
 	void init();
 	void update(double dt);
 	void movement(double dt);
-	void attack(unsigned int projType, Vector3 pos, Vector3 dir, double dt);
+	void attack(unsigned int projType, Vector3 pos, Vector3 dir, double dt, bool block);
 	void detection();
-	void edit_health();
+	void edit_health(int HP);
+	void restartLevel();
+	int get_health();
 	void proj_update();
 
 	std::vector<Projectile*> spit_;

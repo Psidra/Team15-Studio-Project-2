@@ -17,8 +17,6 @@
 
 GLFWwindow* m_window;
 
-extern bool MouseControl;
-
 //Define an error callback
 static void error_callback(int error, const char* description)
 {

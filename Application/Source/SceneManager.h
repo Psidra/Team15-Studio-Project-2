@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "Application.h"
+#include <string>
 
 class SceneManager
 {
@@ -16,7 +17,7 @@ public:
 	{
 		return _hasPendingScene;
 	}
-
+	std::string Location;
 	void changeScene(Scene* scene);
 
 protected:
@@ -30,7 +31,6 @@ private:
 	bool _hasPendingScene = false;
 
 	StopWatch m_timer;
-
 	void Update();
 };
 

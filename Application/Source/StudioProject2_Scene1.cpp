@@ -1,5 +1,6 @@
 #include "StudioProject2_Scene1.h"
 #include "StudioProject2_Scene2.h"
+#include "DeathScreen.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
@@ -20,8 +21,6 @@
 #define VK_2 0x32
 #define VK_3 0x33
 #define VK_4 0x34
-
-bool MouseControl;
 
 StudioProject2Scene1::StudioProject2Scene1()
 {
@@ -47,6 +46,7 @@ void StudioProject2Scene1::Init()
 
 	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	PlayerClass::get_instance()->position_a = Vector3(-15.f,0.f,0.f);
+	PlayerClass::get_instance()->init();
 
 	PlayerClass::get_instance()->healthUI();
 	/*-------------------------------------------------------------------------------*/
@@ -210,12 +210,11 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_MUTANT_RIGHTUPPERARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
 	meshList[GEO_MUTANT_TORSO] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
-	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
+
+	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Mutant_Projectile.obj");
+	meshList[GEO_SPIT]->textureID = LoadTGA("Image//Mutant_Projectile_Texture.tga");
 
 	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
-	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.scale(1.f, 2.1f, 1.f);
-	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
-		EnemyManager::get_instance()->EnemyList[0]->position_m.y + 2.4f, EnemyManager::get_instance()->EnemyList[0]->position_m.z); // y + 2.4
 
 	/*-----------------------------------------------------------------------------*/
 	/*-------------------------Human and Half Mutant Loading-----------------------*/
@@ -254,6 +253,30 @@ void StudioProject2Scene1::Init()
 
 	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
 
+	meshList[GEO_ALEXUS_HEAD] = MeshBuilder::GenerateOBJ("uHead", "OBJ//Stcunt_double//head_.obj");
+	meshList[GEO_ALEXUS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
+	meshList[GEO_ALEXUS_BODY] = MeshBuilder::GenerateOBJ("uBody", "OBJ//Stcunt_double//body_.obj");
+	meshList[GEO_ALEXUS_BODY]->textureID = LoadTGA("Image//bodytext.tga");
+	meshList[GEO_ALEXUS_CROTCH] = MeshBuilder::GenerateOBJ("uCrotch", "OBJ//Stcunt_double//crotch_.obj");
+	meshList[GEO_ALEXUS_CROTCH]->textureID = LoadTGA("Image//crotchtext.tga");
+	meshList[GEO_ALEXUS_RIGHTARM] = MeshBuilder::GenerateOBJ("uRightArm", "OBJ//Stcunt_double//right_arm.obj");
+	meshList[GEO_ALEXUS_RIGHTARM]->textureID = LoadTGA("Image//rightarmtext.tga");
+	meshList[GEO_ALEXUS_LEFTARM] = MeshBuilder::GenerateOBJ("uLeftArm", "OBJ//Stcunt_double//left_arm.obj");
+	meshList[GEO_ALEXUS_LEFTARM]->textureID = LoadTGA("Image//leftarmtext.tga");
+	meshList[GEO_ALEXUS_RIGHTLEG] = MeshBuilder::GenerateOBJ("uRightLeg", "OBJ//Stcunt_double//right_leg.obj");
+	meshList[GEO_ALEXUS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+	meshList[GEO_ALEXUS_LEFTLEG] = MeshBuilder::GenerateOBJ("uLeftLeg", "OBJ//Stcunt_double//left_leg.obj");
+	meshList[GEO_ALEXUS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+
+	meshList[GEO_ALEXUS_RIGHT4ARM] = MeshBuilder::GenerateOBJ("uRight4Arm", "OBJ//Stcunt_double//r_foreArm.obj");
+	meshList[GEO_ALEXUS_RIGHT4ARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXUS_LEFT4ARM] = MeshBuilder::GenerateOBJ("uLeft4Arm", "OBJ//Stcunt_double//l_foreArm.obj");
+	meshList[GEO_ALEXUS_LEFT4ARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXUS_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("uRightLegT", "OBJ//Stcunt_double//right_thigh.obj");
+	meshList[GEO_ALEXUS_RIGHTTHIGH]->textureID = LoadTGA("Image//shoetext.tga");
+	meshList[GEO_ALEXUS_LEFTTHIGH] = MeshBuilder::GenerateOBJ("uLeftLegT", "OBJ//Stcunt_double//left_thigh.obj");
+	meshList[GEO_ALEXUS_LEFTTHIGH]->textureID = LoadTGA("Image//shoetext.tga");
+
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -261,9 +284,18 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
 
-	/*--------------------------HUD (Half) Loading---------------------------------------*/
+	/*--------------------------HUD Loading---------------------------------------*/
 	meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
 	meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
+	meshList[GEO_FULL_COUNT] = MeshBuilder::GenerateQuad("hudfull", Color(1, 1, 1));
+	meshList[GEO_FULL_COUNT]->textureID = LoadTGA("Image//fullhud.tga");
+
+	/*-------------------------Loading Alexis Health----------------------------------*/
+	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
+	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
+	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
+	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
+	/*--------------------------------------------------------------------------------*/
 	/*-----------------------------------------------------------------------------------*/
 
 	/*-----------------------------Trigger Check-----------------------------------*/
@@ -274,16 +306,9 @@ void StudioProject2Scene1::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
+	//meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
 	/*-----------------------------------------------------------------------------*/ 
 	
-	/*-------------------------Loading Alexis Health----------------------------------*/
-	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
-	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
-	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
-	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
-	/*--------------------------------------------------------------------------------*/
-
 	/*-------------------------Loading Mutant Health----------------------------------*/
 	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
 	meshList[GEO_M_RHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
@@ -333,7 +358,6 @@ void StudioProject2Scene1::Init()
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
-	MouseControl = false;
 	ShortBox_PosX = 0.f;
 	TallBox_PosX = 0.f;
 	syringeSizeX = 1.f;
@@ -384,24 +408,28 @@ void StudioProject2Scene1::Update(double dt)
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
 	{
-		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+				{
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+						(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
 
-				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) || EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
-				{
-					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
-				}
-				else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
-					(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
-				{
-					PlayerClass::get_instance()->healthSystem(block);
-					bufferTime_iframe = elapsedTime + 0.3f;
-					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+					if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+					{
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+					}
+					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
+						(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
+					{
+						PlayerClass::get_instance()->healthSystem(block);
+						bufferTime_iframe = elapsedTime + 0.3f;
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+					}
 				}
 			}
 		}
@@ -409,12 +437,15 @@ void StudioProject2Scene1::Update(double dt)
 
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->timeSpent(dt);
 	if (!trigger && !otheranims() && !holdanims())
 		PlayerClass::get_instance()->facingDirection();
 	/*-----------------------------------------*/
 
-	/*-----------Updates the FPS to be stated on screen---------*/
+	/*-----------HUD UPDATES---------*/
 	fps = "FPS:" + std::to_string(framespersec);
+	fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
+	hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
 	/*----------------------------------------------------------*/
 
 	if (Application::IsKeyPressed(VK_1))
@@ -510,27 +541,35 @@ void StudioProject2Scene1::Update(double dt)
 			bufferTime_Jump = elapsedTime + 0.6f;
 			bufferTime_JumpUp = elapsedTime + 0.3f;
 		}
-		if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !holdanims())
+		if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
+		{
 			bufferTime_attack = elapsedTime + 1.f;
+
+			if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
+				EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
+		}
 
 		if (Application::IsKeyPressed('F') && !block && !roll)
 			bufferTime_grab = elapsedTime + 0.15f;
 
 		if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
-			bufferTime_block = elapsedTime + 0.5f;
+			bufferTime_block = elapsedTime + 0.2f;
 
 		if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
 		{
-			bufferTime_roll = elapsedTime + 0.7f;
+			bufferTime_roll = elapsedTime + 0.8f;
 			bufferTime_iframeroll = elapsedTime + 0.35f;
 		}
 
 		/* mutant */
 
-		if (elapsedTime > bufferTime_attack_M)
+		if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 		{
-			EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt);
-			bufferTime_attack_M = elapsedTime + 2.5f;
+			if (elapsedTime > bufferTime_attack_M)
+			{
+				EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
+				bufferTime_attack_M = elapsedTime + 2.f;
+			}
 		}
 	}
 
@@ -551,13 +590,14 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		roll = true;
 		et[7] += dt;
-		if (pressedA &&
+
+		if (pressedA && !trigger &&
 			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
 			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
-		else if (pressedD &&
-				 !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				 !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+		else if (pressedD && !trigger &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	}
 	else
@@ -624,27 +664,26 @@ void StudioProject2Scene1::Update(double dt)
 	}
 
 	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-	{
-		PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
-	}
-	
+		PlayerClass::get_instance()->position_a.x += (float)(60.f * dt);
+
 	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 	{
-		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+			{
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+			}
 		}
 	}
 
-
-	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
-																												// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
+	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
+		EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
+	// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
 	/*--------------------------------------------------------*/
-	
-	
 
 	/*---------Triggers------*/
 	if (bufferTime_trigger_slope > elapsedTime && trigger == true)
@@ -668,11 +707,29 @@ void StudioProject2Scene1::Update(double dt)
 	TextInteraction();
 	LightInteraction();
 
+	/*--------------Updates the Full Mutant Kill Count--------*/
+	for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() == 0)
+		{
+			PlayerClass::get_instance()->fm_Killed++;
+			EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-1);
+		}
+	}
+	/*-------------------------------------------------------*/
 	/*---------Change Scene------*/
-
-	if (PlayerClass::get_instance()->position_a.x > 800 || Application::IsKeyPressed('P'))
+	if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0)))
+	{
+		SceneManager::getInstance()->Location = "Inner City";
 		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+	}
+	if (PlayerClass::get_instance()->get_health() <= 0)
+	{
+		SceneManager::getInstance()->changeScene(new DeathScreen());
+	}
+	/*---------------------------*/
 }
+
 
 void StudioProject2Scene1::Render()
 {
@@ -713,54 +770,126 @@ void StudioProject2Scene1::Render()
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);																																// This was a mistake tbh
-	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// I should have put the scale in init (i think)
-	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);											// too late for that now w/e
+	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);
+	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);
+	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);
 		modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
 
 		// add in grab animation later
 
-		modelStack.PushMatrix();
-		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
+		if (num_anim != 7)
+		{
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
 
-		RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
-		modelStack.PopMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
+			modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
 
-		RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
-		modelStack.PopMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
+			modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
 
-		RenderMesh(meshList[GEO_ALEXIS_BODY], true);
-		modelStack.PopMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_BODY], true);
+			modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
 
-		RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
-		modelStack.PopMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
+			modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
 
-		RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
-		modelStack.PopMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
+			modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
+			modelStack.PushMatrix();
+			//if (num_anim == 7 && et[num_anim] >= (10.0 / 30.0))
+			//	int a = 0;
+			//if (et[num_anim] >= (10.0 / 30.0))
+			//	int b = 1;
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
 
-		RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
-		modelStack.PopMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
+			modelStack.PopMatrix();
 
-		modelStack.PushMatrix();
-		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
 
-		RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
-		modelStack.PopMatrix();
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
+			modelStack.PopMatrix();
+		}
+		else
+		{
+			modelStack.PushMatrix();
+			AnimCheck(7, &modelStack, &et[7], "pCylinder15");//crotch
+			RenderMesh(meshList[GEO_ALEXUS_CROTCH], true);
+
+				modelStack.PushMatrix();
+				AnimCheck(7, &modelStack, &et[7], "polySurface32");//BODY
+				RenderMesh(meshList[GEO_ALEXUS_BODY], true);
+
+				modelStack.PushMatrix();
+				AnimCheck(7, &modelStack, &et[7], "polySurface9"); // HEAD
+				RenderMesh(meshList[GEO_ALEXUS_HEAD], true);
+
+				modelStack.PopMatrix();
+
+						modelStack.PushMatrix();
+						AnimCheck(7, &modelStack, &et[7], "pSphere17");//ARM WITH SWORD
+						RenderMesh(meshList[GEO_ALEXUS_LEFT4ARM], true);
+
+							modelStack.PushMatrix();
+							AnimCheck(7, &modelStack, &et[7], "polySurface24");//ARM WITH SWORD
+							RenderMesh(meshList[GEO_ALEXUS_LEFTARM], true);
+
+							modelStack.PopMatrix();
+						modelStack.PopMatrix();
+
+						modelStack.PushMatrix();
+						AnimCheck(7, &modelStack, &et[7], "pSphere14");//LEFTARM
+						RenderMesh(meshList[GEO_ALEXUS_RIGHT4ARM], true);
+
+							modelStack.PushMatrix();
+							AnimCheck(7, &modelStack, &et[7], "polySurface30");//LEFTARM
+							RenderMesh(meshList[GEO_ALEXUS_RIGHTARM], true);
+
+							modelStack.PopMatrix();
+						modelStack.PopMatrix();
+
+				modelStack.PopMatrix();
+
+				modelStack.PushMatrix();
+				AnimCheck(7, &modelStack, &et[7], "pSphere9");//RIGHT LEG
+				RenderMesh(meshList[GEO_ALEXUS_LEFTTHIGH], true);
+
+					modelStack.PushMatrix();
+					AnimCheck(7, &modelStack, &et[7], "polySurface10");//RIGHT LEG
+					RenderMesh(meshList[GEO_ALEXUS_LEFTLEG], true);
+
+					modelStack.PopMatrix();
+				modelStack.PopMatrix();
+
+				modelStack.PushMatrix();
+				AnimCheck(7, &modelStack, &et[7], "pSphere10");//LEFTLEG
+				RenderMesh(meshList[GEO_ALEXUS_RIGHTTHIGH], true);
+
+				modelStack.PushMatrix();
+				AnimCheck(7, &modelStack, &et[7], "polySurface12");//LEFTLEG
+				RenderMesh(meshList[GEO_ALEXUS_RIGHTLEG], true);
+
+				modelStack.PopMatrix();
+
+				modelStack.PopMatrix();
+
+			modelStack.PopMatrix();
+		}
 
 	modelStack.PopMatrix();
 
@@ -777,14 +906,16 @@ void StudioProject2Scene1::Render()
 	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
 	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
-	modelStack.PushMatrix();
-	modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// i need this
-	RenderMesh(meshList[GEO_TESTBBOX], false);
-	modelStack.PopMatrix();
+	//modelStack.PushMatrix();
+	//RenderMesh(meshList[GEO_TESTBBOX], false);
+	//modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
-	RenderProjectiles();
-	RenderMutant();
+	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
+	{
+		RenderProjectiles();
+		RenderMutant();
+	}
 	/*-------------------------------------------------------*/
 
 	/*---------------Half Mutant & Human---------------------*/
@@ -924,8 +1055,14 @@ void StudioProject2Scene1::Render()
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
 	/*-----------------------------*/
 
+	/*------------------HUD-------------------------------------------------*/
 	/*----Half mutant count--------*/
-	//RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 10, 10, 30, 30,,);
+	RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 5, 0.5, 8, 8,0);
+	RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 4, 12.3, -9);
+	/*-----------------------------*/
+	/*----Full mutant count--------*/
+	RenderMeshOnScreen(meshList[GEO_FULL_COUNT], 7, 0.5, 8, 8, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 4, 16.3, -9);
 	/*-----------------------------*/
 
 	/*----Heart Rendering----------*/
@@ -944,22 +1081,21 @@ void StudioProject2Scene1::Render()
 
 
 	/*---------------Text log Rendering--------*/
-		RenderTextInteractions();
+	RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
-
-
-
+	RenderTextOnScreen(meshList[GEO_TEXT], "SECLUDED FOREST", Color(0, 1, 0), 2.5, 1.5, -8.5);
+	/*----------------------------------------------------------------------------------*/
 }
 
 bool StudioProject2Scene1::otheranims()
 {
-	return (attack || trigger || roll);
+	return (attack || trigger);
 }
 
 bool StudioProject2Scene1::holdanims()
 {
-	return (grab || block);
+	return (roll || grab || block);
 }
 
 void StudioProject2Scene1::Exit()
@@ -995,6 +1131,9 @@ void StudioProject2Scene1::RenderProjectiles()
 void StudioProject2Scene1::RenderMutant()
 {
 	modelStack.PushMatrix();
+
+	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.scale(4.f, 2.1f, 1.f);
+
 	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
 		EnemyManager::get_instance()->EnemyList[0]->position_m.y,
 		EnemyManager::get_instance()->EnemyList[0]->position_m.z);
@@ -1015,16 +1154,16 @@ void StudioProject2Scene1::RenderMutant()
 
 			RenderMesh(meshList[GEO_MUTANT_HEAD], true);
 		modelStack.PopMatrix();
+
 		modelStack.PushMatrix();
 		IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
 		modelStack.Translate(-2, 5, 0);
-		//if (EnemyManager::get_instance()->EnemyList[0]->healthsystem())
 		RenderMesh(meshList[GEO_M_RHEART], false);
 		modelStack.Translate(3, 0, 0);
-		//if (attack)
-		//	RenderMesh(meshList[GEO_M_BHEART], false);
-		//else
+		if (EnemyManager::get_instance()->EnemyList[0]->get_health() == 100)
 			RenderMesh(meshList[GEO_M_RHEART], false);
+		else
+			RenderMesh(meshList[GEO_M_BHEART], false);
 		modelStack.PopMatrix();
 	modelStack.PopMatrix();
 	
