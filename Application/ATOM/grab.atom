@@ -1,13 +1,139 @@
 atomVersion 1.0;
 mayaVersion 2017;
-mayaSceneFile C:/Users/163637H/Desktop/Mutant_Idlemove.ma;
-timeUnit film;
+mayaSceneFile C:/Users/164364D/Desktop/newanimation/grab.ma;
+timeUnit ntsc;
 linearUnit cm;
 angularUnit deg;
-startTime 1;
+startTime 0;
 endTime 30;
 dagNode {
-  Mutant_Torso 1 4;
+  pCylinder15 1 4;
+  anim visibility visibility 0;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 spline step 1 0 0;
+      30 1 spline step 1 0 0;
+    }
+  }
+  anim translate.translateX translateX 1;
+  animData {
+    input time;
+    output linear;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 0.1 auto auto 1 0 0;
+      30 0.1 auto auto 1 0 0;
+    }
+  }
+  anim translate.translateY translateY 2;
+  animData {
+    input time;
+    output linear;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 5.4 auto auto 1 0 0;
+      30 5.4 auto auto 1 0 0;
+    }
+  }
+  anim translate.translateZ translateZ 3;
+  animData {
+    input time;
+    output linear;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 0 auto auto 1 0 0;
+      30 0 auto auto 1 0 0;
+    }
+  }
+  anim rotate.rotateX rotateX 4;
+  animData {
+    input time;
+    output angular;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 8.1533158 auto auto 1 0 0;
+      30 8.1533158 auto auto 1 0 0;
+    }
+  }
+  anim rotate.rotateY rotateY 5;
+  animData {
+    input time;
+    output angular;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 19.426673 auto auto 1 0 0;
+      30 19.426673 auto auto 1 0 0;
+    }
+  }
+  anim rotate.rotateZ rotateZ 6;
+  animData {
+    input time;
+    output angular;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 0 auto auto 1 0 0;
+      30 0 auto auto 1 0 0;
+    }
+  }
+  anim scale.scaleX scaleX 7;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 auto auto 1 0 0;
+      30 1 auto auto 1 0 0;
+    }
+  }
+  anim scale.scaleY scaleY 8;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 auto auto 1 0 0;
+      30 1 auto auto 1 0 0;
+    }
+  }
+  anim scale.scaleZ scaleZ 9;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 auto auto 1 0 0;
+      30 1 auto auto 1 0 0;
+    }
+  }
+}
+dagNode {
+  pCylinder15|polySurface32 2 4;
+}
+dagNode {
+  polySurface9 3 1;
   anim visibility visibility 0;
   animData {
     input time;
@@ -42,9 +168,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 6.119 auto auto 1 0 0;
-      15 -0.091100786 auto auto 1 0 0;
-      30 6.119 auto auto 1 0 0;
+      0 2.1 auto auto 1 0 0;
+      15 2.1 auto auto 1 0 0;
+      30 2.1 auto auto 1 0 0;
     }
   }
   anim translate.translateZ translateZ 3;
@@ -55,9 +181,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0.188 auto auto 1 0 0;
-      15 0.188 auto auto 1 0 0;
-      30 0.188 auto auto 1 0 0;
+      0 0 auto auto 1 0 0;
+      15 0 auto auto 1 0 0;
+      30 0 auto auto 1 0 0;
     }
   }
   anim rotate.rotateX rotateX 4;
@@ -68,9 +194,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -27.588327 auto auto 1 0 0;
+      15 -25.175721 auto auto 1 0 0;
+      30 -27.588327 auto auto 1 0 0;
     }
   }
   anim rotate.rotateY rotateY 5;
@@ -81,9 +207,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -35.292811 auto auto 1 0 0;
+      15 -35.292811 auto auto 1 0 0;
+      30 -35.292811 auto auto 1 0 0;
     }
   }
   anim rotate.rotateZ rotateZ 6;
@@ -95,7 +221,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -1.0735187 auto auto 1 0 0;
+      15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -140,7 +266,7 @@ dagNode {
   }
 }
 dagNode {
-  Mutant_Neck 2 2;
+  pSphere14 3 2;
   anim visibility visibility 0;
   animData {
     input time;
@@ -150,7 +276,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -162,9 +287,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -0.6 auto auto 1 0 0;
+      30 -0.6 auto auto 1 0 0;
     }
   }
   anim translate.translateY translateY 2;
@@ -175,9 +299,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 10.646 auto auto 1 0 0;
-      15 10.646 auto auto 1 0 0;
-      30 10.646 auto auto 1 0 0;
+      0 1.3931352 auto auto 1 0 0;
+      30 1.3931352 auto auto 1 0 0;
     }
   }
   anim translate.translateZ translateZ 3;
@@ -189,7 +312,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -201,9 +323,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -41.248096 auto auto 1 0 0;
+      30 -41.248096 auto auto 1 0 0;
     }
   }
   anim rotate.rotateY rotateY 5;
@@ -214,9 +335,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -3.9421225 auto auto 1 0 0;
+      30 -3.9421225 auto auto 1 0 0;
     }
   }
   anim rotate.rotateZ rotateZ 6;
@@ -227,9 +347,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 -0.97818877 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -3.7744487 auto auto 1 0 0;
+      30 -3.7744487 auto auto 1 0 0;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -241,7 +360,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -254,7 +372,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -267,13 +384,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
 }
 dagNode {
-  Mutant_Head 3 1;
+  polySurface30 4 1;
   anim visibility visibility 0;
   animData {
     input time;
@@ -283,7 +399,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -295,9 +410,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 2.817 auto auto 1 0 0;
-      15 2.817 auto auto 1 0 0;
-      30 2.817 auto auto 1 0 0;
+      0 -0.5 auto auto 1 0 0;
+      30 -0.5 auto auto 1 0 0;
     }
   }
   anim translate.translateY translateY 2;
@@ -308,9 +422,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 12.202 auto auto 1 0 0;
-      15 12.202 auto auto 1 0 0;
-      30 12.202 auto auto 1 0 0;
+      0 -0.9 auto auto 1 0 0;
+      30 -0.9 auto auto 1 0 0;
     }
   }
   anim translate.translateZ translateZ 3;
@@ -322,7 +435,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -335,7 +447,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -348,7 +459,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -360,9 +470,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 3.5377258 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -12.250441 auto auto 1 0 0;
+      30 -12.250441 auto auto 1 0 0;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -374,7 +483,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -387,7 +495,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -400,13 +507,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
 }
 dagNode {
-  Mutant_LeftUpperarm 2 2;
+  pSphere17 3 3;
   anim visibility visibility 0;
   animData {
     input time;
@@ -416,120 +522,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-    }
-  }
-  anim translate.translateX translateX 1;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateY translateY 2;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 10.329 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateZ translateZ 3;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1.365 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateX rotateX 4;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateY rotateY 5;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateZ rotateZ 6;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleX scaleX 7;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleY scaleY 8;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleZ scaleZ 9;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-    }
-  }
-}
-dagNode {
-  Mutant_LeftArm 3 1;
-  anim visibility visibility 0;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -541,9 +533,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 0.6 auto auto 1 0 0;
+      30 0.6 auto auto 1 0 0;
     }
   }
   anim translate.translateY translateY 2;
@@ -554,9 +545,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 6.944 auto auto 1 0 0;
-      15 6.944 auto auto 1 0 0;
-      30 6.944 auto auto 1 0 0;
+      0 1.3931352 auto auto 1 0 0;
+      30 1.3931352 auto auto 1 0 0;
     }
   }
   anim translate.translateZ translateZ 3;
@@ -567,9 +557,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 3.658 auto auto 1 0 0;
-      15 3.658 auto auto 1 0 0;
-      30 3.658 auto auto 1 0 0;
+      0 0 auto auto 1 0 0;
+      30 0 auto auto 1 0 0;
     }
   }
   anim rotate.rotateX rotateX 4;
@@ -580,9 +569,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -103.03104 auto auto 1 0 0;
+      30 -103.03104 auto auto 1 0 0;
     }
   }
   anim rotate.rotateY rotateY 5;
@@ -593,9 +581,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 49.392633 auto auto 1 0 0;
+      30 49.392633 auto auto 1 0 0;
     }
   }
   anim rotate.rotateZ rotateZ 6;
@@ -606,9 +593,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 -3.4480503 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -91.303952 auto auto 1 0 0;
+      30 -91.303952 auto auto 1 0 0;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -620,7 +606,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -633,7 +618,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -646,13 +630,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
 }
 dagNode {
-  Mutant_RightUpperarm 2 2;
+  polySurface24 4 1;
   anim visibility visibility 0;
   animData {
     input time;
@@ -662,120 +645,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-    }
-  }
-  anim translate.translateX translateX 1;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateY translateY 2;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 10.329 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateZ translateZ 3;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 -1.365 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateX rotateX 4;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateY rotateY 5;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateZ rotateZ 6;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleX scaleX 7;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleY scaleY 8;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleZ scaleZ 9;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-    }
-  }
-}
-dagNode {
-  Mutant_RightArm 3 1;
-  anim visibility visibility 0;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -787,9 +656,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 0.4 auto auto 1 0 0;
+      30 0.4 auto auto 1 0 0;
     }
   }
   anim translate.translateY translateY 2;
@@ -800,9 +668,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 6.944 auto auto 1 0 0;
-      15 6.944 auto auto 1 0 0;
-      30 6.944 auto auto 1 0 0;
+      0 -0.9 auto auto 1 0 0;
+      30 -0.9 auto auto 1 0 0;
     }
   }
   anim translate.translateZ translateZ 3;
@@ -813,9 +680,8 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 -3.658 auto auto 1 0 0;
-      15 -3.658 auto auto 1 0 0;
-      30 -3.658 auto auto 1 0 0;
+      0 0 auto auto 1 0 0;
+      30 0 auto auto 1 0 0;
     }
   }
   anim rotate.rotateX rotateX 4;
@@ -827,7 +693,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -840,7 +705,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -853,7 +717,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -3.4480503 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -866,7 +729,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -879,7 +741,6 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -892,13 +753,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
 }
 dagNode {
-  Mutant_RightThigh 1 2;
+  pSphere10 2 3;
   anim visibility visibility 0;
   animData {
     input time;
@@ -908,8 +768,141 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
-      30 1 spline step 1 0 0;
+      15 1 fixed step 1 0 0 0 3.3333335;
+      30 1 fixed step 1 0 0 0 3.3333335;
+    }
+  }
+  anim translate.translateX translateX 1;
+  animData {
+    input time;
+    output linear;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 0.4 auto auto 1 0 0;
+      15 0.4 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0.4 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim translate.translateY translateY 2;
+  animData {
+    input time;
+    output linear;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 -0.9 auto auto 1 0 0;
+      15 -0.9 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -0.9 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim translate.translateZ translateZ 3;
+  animData {
+    input time;
+    output linear;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 0 auto auto 1 0 0;
+      15 0 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim rotate.rotateX rotateX 4;
+  animData {
+    input time;
+    output angular;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 6.2329935 auto auto 1 0 0;
+      15 -26.598665 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 6.2329935 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim rotate.rotateY rotateY 5;
+  animData {
+    input time;
+    output angular;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 0 auto auto 1 0 0;
+      15 -18.864475 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim rotate.rotateZ rotateZ 6;
+  animData {
+    input time;
+    output angular;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 0.57333142 auto auto 1 0 0;
+      15 9.8054475 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0.57333142 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim scale.scaleX scaleX 7;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim scale.scaleY scaleY 8;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+  anim scale.scaleZ scaleZ 9;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
+    }
+  }
+}
+dagNode {
+  polySurface12 3 1;
+  anim visibility visibility 0;
+  animData {
+    input time;
+    output unitless;
+    weighted 1;
+    preInfinity constant;
+    postInfinity constant;
+    keys {
+      0 1 spline step 1 0 0;
+      15 1 fixed step 1 0 0 0 3.3333335;
+      30 1 fixed step 1 0 0 0 3.3333335;
     }
   }
   anim translate.translateX translateX 1;
@@ -921,8 +914,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      15 0 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim translate.translateY translateY 2;
@@ -933,9 +926,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 6.442 auto auto 1 0 0;
-      15 6.442 auto auto 1 0 0;
-      30 6.442 auto auto 1 0 0;
+      0 -1.6 auto auto 1 0 0;
+      15 -1.6 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -1.6 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim translate.translateZ translateZ 3;
@@ -946,9 +939,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0.899 auto auto 1 0 0;
-      15 0.899 auto auto 1 0 0;
-      30 0.899 auto auto 1 0 0;
+      0 0.1 auto auto 1 0 0;
+      15 0.1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0.1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim rotate.rotateX rotateX 4;
@@ -959,9 +952,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -1.3184982 auto auto 1 0 0;
+      15 18.17581 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -1.3184982 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim rotate.rotateY rotateY 5;
@@ -973,8 +966,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      15 0 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim rotate.rotateZ rotateZ 6;
@@ -986,8 +979,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 1.835007 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      15 0 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -999,8 +992,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim scale.scaleY scaleY 8;
@@ -1012,8 +1005,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim scale.scaleZ scaleZ 9;
@@ -1025,13 +1018,13 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
 }
 dagNode {
-  Mutant_RightFeet 2 1;
+  pSphere9 2 2;
   anim visibility visibility 0;
   animData {
     input time;
@@ -1041,8 +1034,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
-      30 1 spline step 1 0 0;
+      15 1 fixed step 1 0 0 0 3.3333335;
+      30 1 fixed step 1 0 0 0 3.3333335;
     }
   }
   anim translate.translateX translateX 1;
@@ -1053,9 +1046,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -0.6 auto auto 1 0 0;
+      15 -0.6 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -0.6 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim translate.translateY translateY 2;
@@ -1066,9 +1059,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 2.237 auto auto 1 0 0;
-      15 2.237 auto auto 1 0 0;
-      30 2.237 auto auto 1 0 0;
+      0 -0.9 auto auto 1 0 0;
+      15 -0.9 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -0.9 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim translate.translateZ translateZ 3;
@@ -1079,9 +1072,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 1.491 auto auto 1 0 0;
-      15 1.491 auto auto 1 0 0;
-      30 1.491 auto auto 1 0 0;
+      0 0 auto auto 1 0 0;
+      15 0 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 0 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim rotate.rotateX rotateX 4;
@@ -1092,9 +1085,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -18.250855 auto auto 1 0 0;
+      15 6.7793332 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -18.250855 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim rotate.rotateY rotateY 5;
@@ -1105,9 +1098,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -16.774375 auto auto 1 0 0;
+      15 -16.774375 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -16.774375 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim rotate.rotateZ rotateZ 6;
@@ -1118,9 +1111,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 0 auto auto 1 0 0;
-      15 -3.5791049 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
+      0 -0.94996345 auto auto 1 0 0;
+      15 -0.94996345 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 -0.94996345 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -1132,8 +1125,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim scale.scaleY scaleY 8;
@@ -1145,8 +1138,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
   anim scale.scaleZ scaleZ 9;
@@ -1158,274 +1151,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 3.3333335 0 6.666666;
+      30 1 fixed fixed 1 0 0 0 3.3333335 0 3.3333335;
     }
   }
 }
 dagNode {
-  Mutant_LeftThigh 1 2;
-  anim visibility visibility 0;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
-      30 1 spline step 1 0 0;
-    }
-  }
-  anim translate.translateX translateX 1;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateY translateY 2;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 6.442 auto auto 1 0 0;
-      15 6.442 auto auto 1 0 0;
-      30 6.442 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateZ translateZ 3;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 -0.899 auto auto 1 0 0;
-      15 -0.899 auto auto 1 0 0;
-      30 -0.899 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateX rotateX 4;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateY rotateY 5;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateZ rotateZ 6;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 1.835007 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleX scaleX 7;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleY scaleY 8;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleZ scaleZ 9;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
-    }
-  }
-}
-dagNode {
-  Mutant_LeftFeet 2 1;
-  anim visibility visibility 0;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
-      30 1 spline step 1 0 0;
-    }
-  }
-  anim translate.translateX translateX 1;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateY translateY 2;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 2.237 auto auto 1 0 0;
-      15 2.237 auto auto 1 0 0;
-      30 2.237 auto auto 1 0 0;
-    }
-  }
-  anim translate.translateZ translateZ 3;
-  animData {
-    input time;
-    output linear;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 -1.491 auto auto 1 0 0;
-      15 -1.491 auto auto 1 0 0;
-      30 -1.491 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateX rotateX 4;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateY rotateY 5;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim rotate.rotateZ rotateZ 6;
-  animData {
-    input time;
-    output angular;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 0 auto auto 1 0 0;
-      15 -1.7440979 auto auto 1 0 0;
-      30 0 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleX scaleX 7;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleY scaleY 8;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
-    }
-  }
-  anim scale.scaleZ scaleZ 9;
-  animData {
-    input time;
-    output unitless;
-    weighted 1;
-    preInfinity constant;
-    postInfinity constant;
-    keys {
-      0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
-    }
-  }
+  pSphere9|polySurface10 3 1;
 }
