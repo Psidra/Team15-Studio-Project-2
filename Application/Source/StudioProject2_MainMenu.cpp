@@ -1,5 +1,6 @@
 #include "StudioProject2_MainMenu.h"
 #include "StudioProject2_Scene1.h"
+#include "EnemyClassManager.h"
 #include "DeathScreen.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"

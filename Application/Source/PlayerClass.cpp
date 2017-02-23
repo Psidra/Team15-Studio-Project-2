@@ -174,3 +174,11 @@ void PlayerClass::init()
 	hmSavedStorage = hm_Saved;
 	fmKilledStorage = fm_Killed;
 }
+
+void PlayerClass::restartGame()
+{
+	_health = 100;
+	_energy = 100;
+	hm_Saved = 0;
+	fm_Killed = 0;
+}

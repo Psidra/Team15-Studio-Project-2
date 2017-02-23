@@ -46,8 +46,7 @@ void StudioProject2Scene1::Init()
 
 	EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	PlayerClass::get_instance()->position_a = Vector3(-15.f,0.f,0.f);
-	PlayerClass::get_instance()->init();
-
+	PlayerClass::get_instance()->restartGame();
 	PlayerClass::get_instance()->healthUI();
 	/*-------------------------------------------------------------------------------*/
 	// Init VBO here
