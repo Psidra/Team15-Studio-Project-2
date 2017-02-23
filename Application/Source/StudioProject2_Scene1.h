@@ -213,6 +213,8 @@ private:
 	float syringeSizeY;
 	float syringeSizeZ;
 
+	float movebat;
+
 	std::string fps;
 	std::string hMutantSaved;
 	std::string fMutantKilled;

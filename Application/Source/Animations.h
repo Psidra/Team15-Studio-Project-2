@@ -35,4 +35,8 @@ void DeathAnim_M(bool isdead_M, MS* modelStack, double* timeElapsed, const std::
 
 // oh god no
 
+//shitty bat flying animation (BACKGROUND *INTERACTION)
+void Batanim(bool batfly, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+
+
 #endif // ANIMATIONS_H

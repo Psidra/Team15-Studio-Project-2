@@ -378,6 +378,9 @@ void StudioProject2Scene1::Init()
 	roll = false;
 	/*----------------------*/
 
+	//bat
+	movebat = 1.f;
+
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
 	projectionStack.LoadMatrix(projection);
@@ -719,6 +722,7 @@ void StudioProject2Scene1::Update(double dt)
 		}
 	}
 	/*-------------------------------------------------------*/
+
 	/*---------Change Scene------*/
 	if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0)))
 	{
@@ -1040,11 +1044,22 @@ void StudioProject2Scene1::Render()
 	RenderMesh(meshList[GEO_TRUMP], true);
 	modelStack.PopMatrix();
 
+	//---------BAT---------
+	//don't hurt me :,D i suck at coding QnQ)/
 	modelStack.PushMatrix();
-	modelStack.Translate(50.f, -20.f, 40);
+	//Batanim(batfly, &modelStack, &et[num_anim], "bat");
+	if (PlayerClass::get_instance()->position_a.x >80)	
+	{ 
+		modelStack.Translate(10.f + (movebat++), -20.f, 40);
+	}
+	else
+	{
+		modelStack.Translate(10.f , -20.f, 40);
+	}
 	modelStack.Scale(0.5f, 0.5f, 0.5f);
 	RenderMesh(meshList[GEO_BAT], true);
 	modelStack.PopMatrix();
+	//---------------------
 
 	/*-----------------Skybox-------------------*/
 	modelStack.PushMatrix();

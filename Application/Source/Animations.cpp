@@ -103,3 +103,9 @@ void DeathAnim_M(bool isdead_M, MS* modelStack, double* timeElapsed, const std::
 // Boss
 
 // oh god no
+
+//shit bat anim
+void Batanim(bool batfly, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+{
+	LoadAtom("ATOM//bat.atom", modelStack, timeElapsed, dagNode);
+}
