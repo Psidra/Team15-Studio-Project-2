@@ -28,8 +28,8 @@ public:
 	void stateManager();
 	void dmgOvertime(double timeElapsed);
 	void burrowTeleportation(double timeElapsed);
-	void spinAttack(double timeElapsed);
-	void tailAttack(double timeElapsed);
+	void spinAttack(double timeElapsed, bool block);
+	void tailAttack(double timeElapsed, bool block);
 	unsigned int get_health();
 	BossLife bossLife;
 
@@ -41,8 +41,9 @@ private:
 	unsigned int boss_health;
 	int boss_lookingDirection;
 	double bufferTime_DoT;
-	double bufferTime_Burrow;
-
+	double cooldown_Burrow;
+	double cooldown_Spin;
+	double spinningDuration;
 	/*-----For State Control---*/
 	bool tailAtk; 
 	bool spin;

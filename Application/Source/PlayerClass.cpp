@@ -107,10 +107,20 @@ void PlayerClass::facingDirection()
 
 void PlayerClass::healthSystem(bool Block)
 {
-	if (Block)
-		this->_health -= 10;
+	if (bossFight == false) // for regular scene
+	{
+		if (Block)
+			this->_health -= 10;
+		else
+			this->_health -= 20;
+	}
 	else
-		this->_health -= 20;
+	{
+		if (Block)
+			this->_health -= 20;
+		else
+			this->_health -= 30;
+	}
 }
 
 void PlayerClass::bossFightFacingDirection()

@@ -60,7 +60,7 @@ public:
 	double timeSpend;
 private:
 	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f)
-	, energyProjShield(50), energyLaser(100) {};
+	, energyProjShield(50), energyLaser(100) , bossFight(false) {};
 	static PlayerClass* instance;
 
 	double bufferTime_Laser;
@@ -74,6 +74,7 @@ private:
 	int energyStorage;
 	unsigned int _energy;
 	bool isDead();
+	bool bossFight;
 };
 
 #endif //PLAYERCLASS_H

@@ -1,4 +1,3 @@
-#include "Boss.h"
 #include "PlayerClass.h"
 #include "Application.h"
 #include <time.h>
@@ -98,8 +97,8 @@ void Boss::burrowTeleportation(double timeElapsed)
 	int burrowRange = 0;
 	srand(time(NULL));
 	
-	if (burrow && timeElapsed > bufferTime_Burrow && // 15 second cooldown
-		!tailattacking && !spinning) // multiple actions should not happen at the same time
+	if (burrow && timeElapsed > cooldown_Burrow && // 15 second cooldown
+		!tailattacking && !spinning && !burrowing) // multiple actions should not happen at the same time and also burrowing not occured yet
 	{
 		burrowing = true;
 		burrowDist = true;
@@ -136,7 +135,7 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.x > 65) // Prevents the boss from escaping the boundary
 				position_m.x = 55;
 			
-			bufferTime_Burrow = timeElapsed + 15.f;
+			cooldown_Burrow = timeElapsed + 15.f;
 			burrowing = false;
 		}
 		else if (burrowDirection == 2 && position_m.x > -50)
@@ -159,7 +158,7 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.x < -65)
 				position_m.x = -55;
 
-			bufferTime_Burrow = timeElapsed + 15.f;
+			cooldown_Burrow = timeElapsed + 15.f;
 			burrowing = false;
  		}
 		else if (burrowDirection == 3 && position_m.z < 50)
@@ -182,7 +181,7 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.z > 65)
 				position_m.z = 55;
 
-			bufferTime_Burrow = timeElapsed + 15.f;
+			cooldown_Burrow = timeElapsed + 15.f;
 			burrowing = false;
 		}
 		else if (burrowDirection == 4 && position_m.z > -50)
@@ -205,18 +204,36 @@ void Boss::burrowTeleportation(double timeElapsed)
 			if (position_m.z < -65)
 				position_m.z = -55;
 
-			bufferTime_Burrow = timeElapsed + 15.f;
+			cooldown_Burrow = timeElapsed + 15.f; // burrow happens every 15 second PROVIDED if it dun overlapse with another action
 			burrowing = false;
 		}
 	}
 }
 
-void spinAttack(double timeElapsed)
+void Boss::spinAttack(double timeElapsed , bool block)
 {
+	if (spin)
+	{
+		if (timeElapsed > cooldown_Spin && !burrowing
+			&& !tailattacking && !spinning)
+		{
+			spinning = true;
+			spinningDuration = timeElapsed + 5.f;
+			if (EnemyHitBox.collide(PlayerClass::get_instance()->PlayerHitBox))
+			{
+				PlayerClass::get_instance()->healthSystem(block);
+			}
 
+			if (timeElapsed > spinningDuration) // every spin is 5 seconds
+			{
+				spinning = false;
+				cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
+			}
+		}
+	}
 }
 
-void tailAttack(double timeElapsed)
+void Boss::tailAttack(double timeElapsed, bool block)
 {
 
 }
