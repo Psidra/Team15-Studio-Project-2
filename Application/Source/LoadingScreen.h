@@ -24,6 +24,7 @@ public:
 	enum GEOMETRY_TYPE
 	{
 		GEO_LOADINGSCREEN,
+		GEO_LOADINGSYRINGE,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
@@ -70,10 +71,11 @@ private:
 	unsigned m_parameters[U_TOTAL];
 	double elapsedTime;
 	double bufferTime_Load;
-
+	float rotatingAngle;
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
+	void RenderMeshOnScreen2(Mesh* mesh, int x, int y, int sizex, int sizey, int position,float rotateAngle);
 
 	std::string fps;
 	std::string loadLocation;

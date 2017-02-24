@@ -152,11 +152,11 @@ void SelectionScreen::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Backspace> to Return to Main Menu", Color(1, 1, 1), 2, 11, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <1> to select 'Secluded Forest'", Color(1, 1, 1), 2, 11, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <2> to select 'Inner City'", Color(1, 1, 1), 2, 11, -6);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <3> to select 'Cavern of Truth'", Color(1, 1, 1), 2, 11, -7);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -8);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Backspace> to Return to Main Menu", Color(1, 1, 1), 2, 7, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <1> to select 'Secluded Forest'", Color(1, 1, 1), 2, 7, -5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <2> to select 'Inner City'", Color(1, 1, 1), 2, 7, -6);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <3> to select 'Cavern of Truth'", Color(1, 1, 1), 2, 7, -7);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 7, -8);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
