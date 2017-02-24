@@ -213,6 +213,7 @@ private:
 	float syringeSizeY;
 	float syringeSizeZ;
 
+	float movespeed;
 	float movebat;
 
 	std::string fps;
