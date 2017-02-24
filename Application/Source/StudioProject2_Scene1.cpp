@@ -1106,13 +1106,39 @@ void StudioProject2Scene1::Render()
 	//don't hurt me :,D i suck at coding QnQ)/
 	modelStack.PushMatrix();
 	//Batanim(batfly, &modelStack, &et[num_anim], "bat");
-	if (PlayerClass::get_instance()->position_a.x >80)	
+	if (PlayerClass::get_instance()->position_a.x >80 && PlayerClass::get_instance()->position_a.x <200)
 	{ 
-		modelStack.Translate(10.f + (movebat++), -20.f, 40);
+		modelStack.Translate(10.f + (++movebat), -25.f, 40);
 	}
 	else
 	{
-		modelStack.Translate(10.f , -20.f, 40);
+		modelStack.Translate(10.f , -25.f, 40);
+	}
+	modelStack.Scale(0.5f, 0.5f, 0.5f);
+	RenderMesh(meshList[GEO_BAT], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	if (PlayerClass::get_instance()->position_a.x >100 && PlayerClass::get_instance()->position_a.x <200)
+	{
+		modelStack.Translate(-5.f + (++movebat), -15.f, 40);
+	}
+	else
+	{
+		modelStack.Translate(-5.f, -20.f, 40);
+	}
+	modelStack.Scale(0.5f, 0.5f, 0.5f);
+	RenderMesh(meshList[GEO_BAT], true);
+	
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	if (PlayerClass::get_instance()->position_a.x >430 && PlayerClass::get_instance()->position_a.x <600)
+	{
+		modelStack.Translate(movebat++, -250.f, 80);
+	}
+	else
+	{
+		modelStack.Translate(400.f, -245.f, 70);
 	}
 	modelStack.Scale(0.5f, 0.5f, 0.5f);
 	RenderMesh(meshList[GEO_BAT], true);
