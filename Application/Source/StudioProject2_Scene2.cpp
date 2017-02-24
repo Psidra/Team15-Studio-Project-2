@@ -1,4 +1,5 @@
 #include "StudioProject2_Scene2.h"
+#include "LoadingScreen.h"
 #include "DeathScreen.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
@@ -33,7 +34,9 @@ StudioProject2Scene2::~StudioProject2Scene2()
 void StudioProject2Scene2::Init()
 {
 	PlayerClass::get_instance();
+
 	/*----Player & AI & Camera Variables----*/
+	PlayerClass::get_instance()->position_a = Vector3(-7.f, 10.f, 0.f);
 	PlayerClass::get_instance()->init();
 	/*--------------------------------------*/
 	/*--Hearts size (User Interface) Initialisation--------------*/
@@ -146,12 +149,14 @@ void StudioProject2Scene2::Init()
 
 	meshList[GEO_SCENE2] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
 	//meshList[GEO_SCENE2]->textureID = LoadTGA("Image//housetexture.tga");
-	meshList[GEO_FLOORBBOX] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
+	meshList[GEO_FLOORBBOX] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_BBox.obj");
 	meshList[GEO_SHELTEROBJ] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
 	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
 	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
 
-	//	GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL,
+	//	GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL BBBOX
+	meshList[GEO_FLOORBBOX]->MeshBBox.loadBB("OBJ//Scene2//Scene2_BBox.obj");
+
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
@@ -240,6 +245,7 @@ void StudioProject2Scene2::Init()
 	attack = false;
 	trigger = false;
 	grab = false;
+	movespeed = 30.f;
 	/*----------------------*/
 
 	Mtx44 projection;
@@ -252,18 +258,7 @@ void StudioProject2Scene2::Init()
 	// Make sure you pass uniform parameters after glUseProgram()
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
 	/*-------------------------------------------------------------------------------*/
-
 }
-
-/*  Alexis:
-0 = attack
-1 = idle
-
-Half-Mutant:
-
-Mutant:
-20 = idle
-*/
 
 void StudioProject2Scene2::Update(double dt)
 {
@@ -307,60 +302,62 @@ void StudioProject2Scene2::Update(double dt)
 	if (elapsedTime > 1.1f) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
 	{						// *I hope.
 
-		//	if (Application::IsKeyPressed('A') && !trigger)
-		//	{
-		//		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-		//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
-		//			pressedD == true)
-		//		{
-		//			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
-		//			pressedD = false;
-		//			pressedA = true;
+		inmovement = false;				// so many if statements I could write a philosophy book
+		if (Application::IsKeyPressed('A'))
+		{
+			//if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox) || pressedD == true)
+			//{
+				PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+				pressedD = false;
+				pressedA = true;
+				inmovement = true;
 
-		//			if (grab)
-		//			{
-		//				if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-		//				{
-		//					ShortBox_PosX -= (float)(30.f * dt);
-		//					meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-		//					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-		//				}
-		//				else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-		//				{
-		//					TallBox_PosX -= (float)(30.f * dt);
-		//					meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-		//					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-		//				}
-		//			}
-		//		}
-		//	}
-		//	if (Application::IsKeyPressed('D') && !trigger)
-		//	{
-		//		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-		//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
-		//			|| pressedA == true)
-		//		{
-		//			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
-		//			pressedA = false;
-		//			pressedD = true;
+				//if (grab)
+				//{
+				//	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				//	{
+				//		ShortBox_PosX -= (float)(movespeed * dt);
+				//		meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+				//		meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+				//	}
+				//	else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+				//	{
+				//		TallBox_PosX -= (float)(movespeed * dt);
+				//		meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+				//		meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+				//	}
+				//}
+			//}
+		}
 
-		//			if (grab)
-		//			{
-		//				if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
-		//				{
-		//					ShortBox_PosX += (float)(30.f * dt);
-		//					meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-		//					meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-		//				}
-		//				else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-		//				{
-		//					TallBox_PosX += (float)(30.f * dt);
-		//					meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-		//					meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-		//				}
-		//			}
-		//		}
-		//	}
+		if (Application::IsKeyPressed('D'))
+		{
+	/*		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox) || pressedA == true)
+			{*/
+				PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+				pressedA = false;
+				pressedD = true;
+				inmovement = true;
+
+				//if (grab)
+				//{
+				//	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+				//	{
+				//		ShortBox_PosX += (float)(movespeed * dt);
+				//		meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+				//		meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+				//	}
+				//	else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+				//	{
+				//		TallBox_PosX += (float)(movespeed * dt);
+				//		meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+				//		meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+				//	}
+				//}
+			//}
+		}
+
+	
 		if (Application::IsKeyPressed('W') && (bufferTime_Jump < elapsedTime) && !trigger)
 		{
 			bufferTime_Jump = elapsedTime + 0.6f;
@@ -370,9 +367,10 @@ void StudioProject2Scene2::Update(double dt)
 		{
 			bufferTime_attack = elapsedTime + 1;
 
-			EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-			EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
-			meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.max_, EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.min_);
+			/*		EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
+					EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+					meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.max_, EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.min_);
+					}*/
 		}
 		/*if (Application::IsKeyPressed('F'))
 		{
@@ -404,6 +402,11 @@ void StudioProject2Scene2::Update(double dt)
 	{
 		grab = false;
 	}
+
+	if (inmovement && !holdanims())
+		et[6] += dt;
+	else
+		et[6] = 0;
 
 	et[20] += dt;		// This is for me to see if the idleanim is running at all
 
@@ -449,19 +452,19 @@ void StudioProject2Scene2::Update(double dt)
 	//	PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	//}
 
-	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	//PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
 
-	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
-	{
-		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-		{
-			PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	//for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	//{
+	//	for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+	//	{
+	//		PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
 
-			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+	//		EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
 
-			meshList[GEO_TESTBBOX]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
-		}
-	}
+	//		meshList[GEO_TESTBBOX]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
+	//	}
+	//}
 
 	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG
 	/*--------------------------------------------------------*/
@@ -524,9 +527,9 @@ void StudioProject2Scene2::Render()
 	modelStack.PopMatrix();*/
 
 	unsigned int num_anim;
-	for (num_anim = 0; num_anim < 30;)
+	for (num_anim = 0; num_anim < 10;)
 	{
-		if (et[num_anim] == 0)
+		if (et[num_anim] <= 0)
 			num_anim++;
 		else
 			break;
@@ -545,43 +548,43 @@ void StudioProject2Scene2::Render()
 	modelStack.PushMatrix();
 	AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
 
-	RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
+	RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
 
-	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
+	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
 
-	RenderMesh(meshList[GEO_ALEXIS_BODY], true);
+	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
 
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
 
-	RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
+	RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
 
-	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
+	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
 
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
+	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
 	modelStack.PopMatrix();
 
 	modelStack.PopMatrix();
@@ -611,15 +614,16 @@ void StudioProject2Scene2::Render()
 	modelStack.PopMatrix();
 	/*------------------------------------------------*/
 	/*-----------------Mutants (Fuglymon)---------------------*/
-	RenderProjectiles();
+	//RenderProjectiles();
 
-	RenderMutant();
+	//RenderMutant();
 	/*-------------------------------------------------------*/
 
 	/*--------------------Environmental Objects--------------*/
 	modelStack.PushMatrix();
-	modelStack.Scale(0.2,0.2,0.2);
-	RenderMesh(meshList[GEO_SCENE2], false);
+	modelStack.Translate(0, -5, 0);
+	RenderMesh(meshList[GEO_FLOORBBOX], false);
+	RenderMesh(meshList[GEO_SCENE2], true);
 	modelStack.PopMatrix();
 
 	/*-------------------------------------------------------*/
@@ -792,4 +796,9 @@ void StudioProject2Scene2::RenderMutant()
 //	modelStack.PopMatrix();
 //
 //	modelStack.PopMatrix();
+}
+
+bool StudioProject2Scene2::holdanims()
+{
+	return (roll || grab || block);
 }

@@ -15,6 +15,7 @@ public:
 	Vector3 position_hm;
 	Vector3 size_hm;
 	Vector3 size_human;
+	bool get_near();
 
 	int hm_LookingDirection;
 

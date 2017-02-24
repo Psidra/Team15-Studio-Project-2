@@ -637,7 +637,17 @@ void StudioProject2Scene1::Update(double dt)
 	else
 		et[6] = 0;
 
-	et[10] += dt;
+	if (hmvec[0].get_near())
+	{
+		et[10] = 0;
+		et[11] += dt;
+	}
+	else
+	{
+		et[10] += dt;
+		et[11] = 0;
+	}
+
 	et[20] += dt;
 
 	if (!trigger)
@@ -975,6 +985,15 @@ void StudioProject2Scene1::Render()
 	}
 	/*-------------------------------------------------------*/
 
+	unsigned int num_anim_hmutant;
+	for (num_anim_hmutant = 10; num_anim_hmutant < 20;)
+	{
+		if (et[num_anim_hmutant] <= 0.f)
+			num_anim_hmutant++;
+		else
+			break;
+	}
+
 	/*---------------Half Mutant & Human---------------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(hmvec[0].position_hm.x, hmvec[0].position_hm.y, hmvec[0].position_hm.z);
@@ -982,33 +1001,33 @@ void StudioProject2Scene1::Render()
 	modelStack.Scale(hmvec[0].size_hm.x, hmvec[0].size_hm.y, hmvec[0].size_hm.z);
 
 	modelStack.PushMatrix();
-	AnimCheck_H_Mutant(10, &modelStack, &et[10], "body");
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "body");
 	RenderMesh(meshList[GEO_HM_BODY], true);
 
 		modelStack.PushMatrix();
-		AnimCheck_H_Mutant(10, &modelStack, &et[10], "Head");
+		AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "Head");
 		RenderMesh(meshList[GEO_HM_HEAD], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AnimCheck_H_Mutant(10, &modelStack, &et[10], "RightArm");
+		AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "RightArm");
 		RenderMesh(meshList[GEO_HM_RIGHTARM], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		AnimCheck_H_Mutant(10, &modelStack, &et[10], "LeftArm");
+		AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "LeftArm");
 		RenderMesh(meshList[GEO_HM_LEFTARM], true);
 
 		modelStack.PopMatrix();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AnimCheck_H_Mutant(10, &modelStack, &et[10], "LeftLeg");
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "LeftLeg");
 	RenderMesh(meshList[GEO_HM_LEFTLEG], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	AnimCheck_H_Mutant(10, &modelStack, &et[10], "RightLeg");
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "RightLeg");
 	RenderMesh(meshList[GEO_HM_RIGHTLEG], true);
 	modelStack.PopMatrix();
 

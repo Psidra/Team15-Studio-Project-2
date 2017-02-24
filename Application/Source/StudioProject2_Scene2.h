@@ -25,7 +25,7 @@ public:
 	virtual bool otheranims();
 	virtual void RenderProjectiles();
 	virtual void RenderMutant();
-	double et[30];
+	virtual bool holdanims();
 
 	enum GEOMETRY_TYPE
 	{

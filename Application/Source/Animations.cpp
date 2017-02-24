@@ -32,7 +32,15 @@ void AnimCheck(unsigned int num_anim, MS* modelStack, double* timeElapsed, const
 
 void AnimCheck_H_Mutant(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode)
 {
-	LoadAtom("ATOM//halfidle.atom", modelStack, timeElapsed, dagNode);
+	double zero = 0;
+	switch (num_anim) {
+	case 10:
+		LoadAtom("ATOM//halfwalk2.atom", modelStack, timeElapsed, dagNode);
+		break;
+	case 11:
+		LoadAtom("ATOM//halfidle.atom", modelStack, timeElapsed, dagNode);
+		break;
+	}
 }
 
 // Mutant

@@ -52,10 +52,10 @@ void HalfMutant::transformation()
 	int distBetweenThem = position_hm.x - PlayerClass::get_instance()->position_a.x;
 
 	if ((distBetweenThem < 3) && (distBetweenThem > -3) && transformed == false)
-	{
 		charNear = true;
-	}
-	
+	else
+		charNear = false;
+
 	if (charNear == true && Application::IsKeyPressed('F'))
 	{
 		transformed = true;
@@ -70,4 +70,9 @@ void HalfMutant::transformation()
 		PlayerClass::get_instance()->hm_Saved++;
 		saveCount = false;
 	}
+}
+
+bool HalfMutant::get_near()
+{
+	return charNear;
 }

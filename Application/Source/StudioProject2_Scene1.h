@@ -137,6 +137,7 @@ private:
 	void RenderTrees();
 	void RenderLightStands();
 	void RenderTextInteractions();
+
 	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
 	/*--------------------Text Variables--------------------------*/
 	int spawnTS; // all text size 2
