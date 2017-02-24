@@ -13,6 +13,12 @@ void AnimCheck(unsigned int num_anim, MS* modelStack, double* timeElapsed, const
 		case 7:
 			LoadAtom("ATOM//duckroll.atom", modelStack, timeElapsed, dagNode);
 			break;
+		case 8:
+			LoadAtom("ATOM//block.atom", modelStack, timeElapsed, dagNode);
+			break;
+		case 9:
+			LoadAtom("ATOM//grab.atom", modelStack, timeElapsed, dagNode);
+			break;
 		case 6:
 			LoadAtom("ATOM//walk2.atom", modelStack, timeElapsed, dagNode);
 			break;

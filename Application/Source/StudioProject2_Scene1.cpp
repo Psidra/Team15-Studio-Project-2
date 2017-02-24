@@ -377,6 +377,7 @@ void StudioProject2Scene1::Init()
 	block = false;
 	roll = false;
 	/*----------------------*/
+	movespeed = 30.f;
 
 	//bat
 	movebat = 1.f;
@@ -424,6 +425,7 @@ void StudioProject2Scene1::Update(double dt)
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
 
 					if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOOR]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
 					{
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
@@ -490,7 +492,7 @@ void StudioProject2Scene1::Update(double dt)
 				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
 				pressedD == true)
 			{
-				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+				PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
 				pressedD = false;
 				pressedA = true;
 				inmovement = true;
@@ -499,15 +501,15 @@ void StudioProject2Scene1::Update(double dt)
 				{
 					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
 					{
-						ShortBox_PosX -= (float)(30.f * dt);
-						meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+						ShortBox_PosX -= (float)(movespeed * dt);
+						meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
 					}
 					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
 					{
-						TallBox_PosX -= (float)(30.f * dt);
-						meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
-						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(30.f * dt)), 0, 0);
+						TallBox_PosX -= (float)(movespeed * dt);
+						meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
 					}
 				}
 			}
@@ -519,7 +521,7 @@ void StudioProject2Scene1::Update(double dt)
 				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
 				|| pressedA == true)
 			{
-				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+				PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
 				pressedA = false;
 				pressedD = true;
 				inmovement = true;
@@ -528,15 +530,15 @@ void StudioProject2Scene1::Update(double dt)
 				{
 					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
 					{
-						ShortBox_PosX += (float)(30.f * dt);
-						meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+						ShortBox_PosX += (float)(movespeed * dt);
+						meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
 					}
 					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 					{
-						TallBox_PosX += (float)(30.f * dt);
-						meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
-						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(30.f * dt)), 0, 0);
+						TallBox_PosX += (float)(movespeed * dt);
+						meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
 					}
 				}
 			}
@@ -625,7 +627,12 @@ void StudioProject2Scene1::Update(double dt)
 	else
 		grab = false;
 
-	if (inmovement)
+	if (block || grab)
+		movespeed = 17.f;
+	else
+		movespeed = 30.f;
+
+	if (inmovement && !holdanims())
 		et[6] += dt;
 	else
 		et[6] = 0;
@@ -636,12 +643,10 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		if (injump == false)
 		{
-			if (/*!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&*/
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
 				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox) &&
 				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOOR]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) /*&&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox))
 			{
 				if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) &&
 					PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
@@ -687,8 +692,7 @@ void StudioProject2Scene1::Update(double dt)
 	}
 
 	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
-		EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
-	// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
+		EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	/*--------------------------------------------------------*/
 
 	/*---------Triggers------*/
@@ -784,116 +788,111 @@ void StudioProject2Scene1::Render()
 
 		// add in grab animation later
 
-		if (num_anim != 7)
+		if (num_anim == 7 || num_anim == 8 || num_anim == 9)
 		{
-			modelStack.PushMatrix();
-			AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
-
-			RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
-
-			RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
-
-			RenderMesh(meshList[GEO_ALEXIS_BODY], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
-
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
-			modelStack.PopMatrix();
-
 			modelStack.PushMatrix();
 			AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
-
-			RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			//if (num_anim == 7 && et[num_anim] >= (10.0 / 30.0))
-			//	int a = 0;
-			//if (et[num_anim] >= (10.0 / 30.0))
-			//	int b = 1;
-			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
-
-			RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
-
-			RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
-			modelStack.PopMatrix();
-		}
-		else
-		{
-			modelStack.PushMatrix();
-			AnimCheck(7, &modelStack, &et[7], "pCylinder15");//crotch
 			RenderMesh(meshList[GEO_ALEXUS_CROTCH], true);
 
 				modelStack.PushMatrix();
-				AnimCheck(7, &modelStack, &et[7], "polySurface32");//BODY
+				AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
 				RenderMesh(meshList[GEO_ALEXUS_BODY], true);
 
-				modelStack.PushMatrix();
-				AnimCheck(7, &modelStack, &et[7], "polySurface9"); // HEAD
-				RenderMesh(meshList[GEO_ALEXUS_HEAD], true);
+					modelStack.PushMatrix();
+					AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
+					RenderMesh(meshList[GEO_ALEXUS_HEAD], true);
+
+					modelStack.PopMatrix();
+
+					modelStack.PushMatrix();
+					AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
+					RenderMesh(meshList[GEO_ALEXUS_LEFT4ARM], true);
+
+						modelStack.PushMatrix();
+						AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface24");//ARM WITH SWORD
+						RenderMesh(meshList[GEO_ALEXUS_LEFTARM], true);
+
+						modelStack.PopMatrix();
+					modelStack.PopMatrix();
+
+					modelStack.PushMatrix();
+					AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
+					RenderMesh(meshList[GEO_ALEXUS_RIGHT4ARM], true);
+
+						modelStack.PushMatrix();
+						AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface30");//LEFTARM
+						RenderMesh(meshList[GEO_ALEXUS_RIGHTARM], true);
+
+						modelStack.PopMatrix();
+					modelStack.PopMatrix();
 
 				modelStack.PopMatrix();
 
-						modelStack.PushMatrix();
-						AnimCheck(7, &modelStack, &et[7], "pSphere17");//ARM WITH SWORD
-						RenderMesh(meshList[GEO_ALEXUS_LEFT4ARM], true);
-
-							modelStack.PushMatrix();
-							AnimCheck(7, &modelStack, &et[7], "polySurface24");//ARM WITH SWORD
-							RenderMesh(meshList[GEO_ALEXUS_LEFTARM], true);
-
-							modelStack.PopMatrix();
-						modelStack.PopMatrix();
-
-						modelStack.PushMatrix();
-						AnimCheck(7, &modelStack, &et[7], "pSphere14");//LEFTARM
-						RenderMesh(meshList[GEO_ALEXUS_RIGHT4ARM], true);
-
-							modelStack.PushMatrix();
-							AnimCheck(7, &modelStack, &et[7], "polySurface30");//LEFTARM
-							RenderMesh(meshList[GEO_ALEXUS_RIGHTARM], true);
-
-							modelStack.PopMatrix();
-						modelStack.PopMatrix();
-
-				modelStack.PopMatrix();
-
 				modelStack.PushMatrix();
-				AnimCheck(7, &modelStack, &et[7], "pSphere9");//RIGHT LEG
+				AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
 				RenderMesh(meshList[GEO_ALEXUS_LEFTTHIGH], true);
 
 					modelStack.PushMatrix();
-					AnimCheck(7, &modelStack, &et[7], "polySurface10");//RIGHT LEG
+					AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface10");//RIGHT LEG
 					RenderMesh(meshList[GEO_ALEXUS_LEFTLEG], true);
 
 					modelStack.PopMatrix();
 				modelStack.PopMatrix();
 
 				modelStack.PushMatrix();
-				AnimCheck(7, &modelStack, &et[7], "pSphere10");//LEFTLEG
+				AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
 				RenderMesh(meshList[GEO_ALEXUS_RIGHTTHIGH], true);
 
-				modelStack.PushMatrix();
-				AnimCheck(7, &modelStack, &et[7], "polySurface12");//LEFTLEG
-				RenderMesh(meshList[GEO_ALEXUS_RIGHTLEG], true);
+					modelStack.PushMatrix();
+					AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface12");//LEFTLEG
+					RenderMesh(meshList[GEO_ALEXUS_RIGHTLEG], true);
 
+					modelStack.PopMatrix();
 				modelStack.PopMatrix();
 
-				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+		}
+		else
+		{
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
+			RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
+
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
+			RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
+
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
+			RenderMesh(meshList[GEO_ALEXIS_BODY], true);
+
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
+
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
+			RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
+
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
+			RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
+
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
+			RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
 
 			modelStack.PopMatrix();
 		}
