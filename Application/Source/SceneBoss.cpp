@@ -187,7 +187,7 @@ void SceneBoss::Init()
 	/*-----------------------------------------------------------------*/
 	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
 	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
-	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 1));
+	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 0));
 	/*---------------Spells----------*/
 	meshList[GEO_LASER] = MeshBuilder::GenerateQuad("lasericon", Color(1, 1, 1));
 	meshList[GEO_LASER]->textureID = LoadTGA("Image//laser.tga");
@@ -198,6 +198,8 @@ void SceneBoss::Init()
 	meshList[GEO_PROJSHIELD_CD] = MeshBuilder::GenerateQuad("projshieldCDicon", Color(1, 1, 1));
 	meshList[GEO_PROJSHIELD_CD]->textureID = LoadTGA("Image//hardlight_cooldown.tga");
 	/*-------------------------------*/
+
+	meshList[GEO_BOSS] = MeshBuilder::GenerateCube("makeshiftboss", Color(1, 0, 0));
 	/*--------------------------------------------------------------------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -220,6 +222,7 @@ void SceneBoss::Update(double dt)
 	Boss::get_instance()->bossHealthUI();
 	Boss::get_instance()->stateManager();
 	Boss::get_instance()->dmgOvertime(elapsedTime);
+	Boss::get_instance()->burrowTeleportation(elapsedTime);
 	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
@@ -262,18 +265,20 @@ void SceneBoss::Update(double dt)
 	/*-----------------------------------------*/
 	if (!otheranims() || holdanims())
 	{
-		for (unsigned i = 0; i < 7; i++)
+		for (unsigned i = 0; i < 6; i++)
 			et[i] = 0;
 	}
 	if (!holdanims())
 	{
+		et[7] = 0;
 		et[8] = 0;
 		et[9] = 0;
 	}
 
 	/*----------Player Movement and Collisions------------*/
 	if ((Application::IsKeyPressed('A') && Application::IsKeyPressed('D')) ||
-		(Application::IsKeyPressed('W') && Application::IsKeyPressed('S')))
+		(Application::IsKeyPressed('W') && Application::IsKeyPressed('S')) || 
+		roll == true)
 	{
 	}
 	else
@@ -295,6 +300,23 @@ void SceneBoss::Update(double dt)
 			PlayerClass::get_instance()->position_a.z -= (float)(30.f * dt);
 		}
 	}
+
+	if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !holdanims())
+	{
+		bufferTime_attack = elapsedTime + 1.f;
+
+		//if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
+		//	EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
+	}
+
+	if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !roll)
+		bufferTime_block = elapsedTime + 0.2f;
+
+	if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
+	{
+		bufferTime_roll = elapsedTime + 0.8f;
+		bufferTime_iframeroll = elapsedTime + 0.35f;
+	}
 	/*-----------------------------------------------*/
 	if (bufferTime_attack > elapsedTime)
 	{
@@ -307,7 +329,7 @@ void SceneBoss::Update(double dt)
 	if (bufferTime_roll > elapsedTime)
 	{
 		roll = true;
-		et[1] += dt;
+		et[7] += dt;
 	}
 	else
 		roll = false;
@@ -393,7 +415,7 @@ void SceneBoss::Render()
 	unsigned int num_anim;
 	for (num_anim = 0; num_anim < 30;)
 	{
-		if (et[num_anim] == 0.f)
+		if (et[num_anim] <= 0.f)
 			num_anim++;
 		else
 			break;
@@ -442,10 +464,6 @@ void SceneBoss::Render()
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		//if (num_anim == 7 && et[num_anim] >= (10.0 / 30.0))
-		//	int a = 0;
-		//if (et[num_anim] >= (10.0 / 30.0))
-		//	int b = 1;
 		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
 
 		RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
@@ -542,6 +560,15 @@ void SceneBoss::Render()
 	RenderMutant();
 	/*-------------------------------------------------------*/
 
+	/*------Boss-----*/
+	modelStack.PushMatrix();
+	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y,
+		Boss::get_instance()->position_m.z);
+	modelStack.Scale(10, 10, 10);
+	RenderMesh(meshList[GEO_BOSS], false);
+	modelStack.PopMatrix();
+	/*---------------*/
+
 	/*-----------------Skybox-------------------*/
 	/*modelStack.PushMatrix();
 	modelStack.Translate(450, 80, -200);
@@ -604,14 +631,16 @@ void SceneBoss::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
+
 bool SceneBoss::otheranims()
 {
-	return (attack || roll);
+	return (attack);
 }
 
 bool SceneBoss::holdanims()
 {
-	return block;
+	return (roll || block);
+
 }
 
 void SceneBoss::RenderMutant()

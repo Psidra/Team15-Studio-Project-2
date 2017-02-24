@@ -149,6 +149,7 @@ void PlayerClass::manaUI()
 	}
 }
 
+
 void PlayerClass::manaSystem()
 {
 

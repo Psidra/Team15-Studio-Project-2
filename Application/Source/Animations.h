@@ -38,6 +38,9 @@ void AnimCheck_Mutant(unsigned int num_anim, MS* modelStack, double* timeElapsed
 // Boss
 // oh god no
 
+//shitty bat flying animation (BACKGROUND *INTERACTION)
+void Batanim(bool batfly, MS* modelStack, double* timeElapsed, const std::string& dagNode);
+
 void AnimCheck_Boss(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode);
 
 #endif // ANIMATIONS_H
