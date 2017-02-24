@@ -398,7 +398,7 @@ void StudioProject2Scene1::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y);
+	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
 
 	/*-------Half Mutant Functions------------*/
 	hmvec[0].movement(dt);

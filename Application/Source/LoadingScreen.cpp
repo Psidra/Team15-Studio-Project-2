@@ -81,6 +81,8 @@ void LoadingScreen::Init()
 	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	/*--------------------------Image Loading--------------------------------------*/
+	meshList[GEO_LOADINGSYRINGE] = MeshBuilder::GenerateQuad("loadingsyringe", Color(1, 1, 1));
+	meshList[GEO_LOADINGSYRINGE]->textureID = LoadTGA("Image//loadingsyringe.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -90,6 +92,7 @@ void LoadingScreen::Init()
 
 	/*---------------------------Initialising Variables---------------------------------*/
 	bufferTime_Load = elapsedTime + 5.f;
+	rotatingAngle = 0.f;
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -103,7 +106,7 @@ void LoadingScreen::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 	camera.Update(dt);
-
+	rotatingAngle += 10.f;
 	/*-----------HUD UPDATE---------*/
 	fps = "FPS:" + std::to_string(framespersec);
 	loadLocation = "Loading:" + SceneManager::getInstance()->Location;
@@ -145,7 +148,8 @@ void LoadingScreen::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 
-	RenderTextOnScreen(meshList[GEO_TEXT], loadLocation, Color(1, 1, 1), 2, 3, -8);
+	RenderMeshOnScreen2(meshList[GEO_LOADINGSYRINGE], 5, 5, 15, 15, 0, rotatingAngle);
+	RenderTextOnScreen(meshList[GEO_TEXT], loadLocation, Color(1, 1, 1), 3, 4, -9);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
@@ -279,6 +283,31 @@ void LoadingScreen::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int 
 	//to do: scale and translate accordingly
 	modelStack.Scale(sizex, sizey, position);
 	modelStack.Translate(x + 0.5f, y + 0.5f, 0);
+
+	RenderMesh(mesh, false); //UI should not have light
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	glEnable(GL_DEPTH_TEST);
+}
+
+void LoadingScreen::RenderMeshOnScreen2(Mesh* mesh, int x, int y, int sizex, int sizey, int position, float rotateAngle)
+{
+	glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();
+
+	//to do: scale and translate accordingly
+	modelStack.Translate(x + 0.5f, y + 0.5f, 0);
+	modelStack.Rotate(-rotateAngle, 0, 0, 1);
+	modelStack.Scale(sizex, sizey, position);
 
 	RenderMesh(mesh, false); //UI should not have light
 	projectionStack.PopMatrix();
