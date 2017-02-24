@@ -1,19 +1,17 @@
 #include "StudioProject2_MainMenu.h"
-#include "LoadingScreen.h"
-#include "SelectionScreen.h"
 #include "VictoryScreen.h"
-#include "EnemyClassManager.h"
-#include "DeathScreen.h"
+#include "SceneCredits.h"
+#include "PlayerClass.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
 #include "Mtx44.h"
 #include "Application.h"
+#include "EnemyClassManager.h"
 #include "Vertex.h"
 #include "Utility.h"
 #include "shader.hpp"
 #include "LoadTGA.h"
 #include "Camera.h"
-#include "SceneCredits.h"
 #include "SceneManager.h"
 
 #define VK_1 0x31
@@ -22,15 +20,15 @@
 #define VK_4 0x34
 
 
-StudioProject2MainMenu::StudioProject2MainMenu()
+VictoryScreen::VictoryScreen()
 {
 }
 
-StudioProject2MainMenu::~StudioProject2MainMenu()
+VictoryScreen::~VictoryScreen()
 {
 }
 
-void StudioProject2MainMenu::Init()
+void VictoryScreen::Init()
 {
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -80,8 +78,11 @@ void StudioProject2MainMenu::Init()
 		meshList[i] = NULL;
 
 	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	
-	/*--------------------------Image Loading--------------------------------------*/
+
+
+	/*--------------------------HUD Loading---------------------------------------*/
+	meshList[GEO_VICTORYSCREEN] = MeshBuilder::GenerateQuad("victoryscreen", Color(1, 1, 1));
+	meshList[GEO_VICTORYSCREEN]->textureID = LoadTGA("Image//victory.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -99,7 +100,7 @@ void StudioProject2MainMenu::Init()
 
 }
 
-void StudioProject2MainMenu::Update(double dt)
+void VictoryScreen::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	//elapsedTime += dt;
@@ -107,39 +108,19 @@ void StudioProject2MainMenu::Update(double dt)
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
+	hMutantSaved = std::to_string(PlayerClass::get_instance()->hm_Saved);
+	fMutantKilled = std::to_string(PlayerClass::get_instance()->fm_Killed);
+	timer = std::to_string(PlayerClass::get_instance()->timeSpend) + "s";
 	/*----------------------------------------------------------*/
 
 	if (Application::IsKeyPressed(VK_RETURN))
 	{
-		SceneManager::getInstance()->Location = "Secluded Forest";
-		SceneManager::getInstance()->changeScene(new LoadingScreen());
-	}
-	if (Application::IsKeyPressed(VK_SPACE))
-	{
-		SceneManager::getInstance()->changeScene(new SelectionScreen());
-	}
-	if (Application::IsKeyPressed('T'))
-	{
-		SceneManager::getInstance()->changeScene(new SceneBoss());
-	}
-	if (Application::IsKeyPressed('Y'))
-	{
-		SceneManager::getInstance()->changeScene(new DeathScreen());
-	}
-	if (Application::IsKeyPressed('M'))
-	{
-		SceneManager::getInstance()->changeScene(new VictoryScreen());
-	}
-	if (Application::IsKeyPressed('N'))
-	{
 		SceneManager::getInstance()->changeScene(new SceneCredits());
 	}
 	
-
-
 }
 
-void StudioProject2MainMenu::Render()
+void VictoryScreen::Render()
 {
 	// Render VBO here
 	Mtx44 MVP;
@@ -154,17 +135,19 @@ void StudioProject2MainMenu::Render()
 		camera.up.x, camera.up.y, camera.up.z);
 
 	modelStack.LoadIdentity();
-	
+
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+
+	RenderMeshOnScreen(meshList[GEO_VICTORYSCREEN], 0, 0, 80, 60, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 3, 20, -2);
+	RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 3, 20, -4.3);
+	RenderTextOnScreen(meshList[GEO_TEXT], timer, Color(1, 1, 1), 3, 20, -6.5);
 	
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Start Game", Color(1, 1, 1), 2, 11, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space> to Select a Level", Color(1, 1, 1), 2, 11, -6);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -7);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
-void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
+void VictoryScreen::RenderMesh(Mesh *mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
@@ -209,7 +192,7 @@ void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
 	}
 }
 
-void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color color)
+void VictoryScreen::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -236,7 +219,7 @@ void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color colo
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
+void VictoryScreen::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -279,7 +262,7 @@ void StudioProject2MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Co
 
 }
 
-void StudioProject2MainMenu::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
+void VictoryScreen::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
 {
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
@@ -303,7 +286,7 @@ void StudioProject2MainMenu::RenderMeshOnScreen(Mesh* mesh, int x, int y, int si
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2MainMenu::Exit()
+void VictoryScreen::Exit()
 {
 	// Cleanup VBO here
 	for (int i = 0; i < NUM_GEOMETRY; ++i)

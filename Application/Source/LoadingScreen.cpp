@@ -111,17 +111,14 @@ void LoadingScreen::Update(double dt)
 
 
 	if (SceneManager::getInstance()->Location == "Secluded Forest" && elapsedTime > bufferTime_Load)
-	{
 		SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
-	}
 	if (SceneManager::getInstance()->Location == "Inner City" && elapsedTime > bufferTime_Load)
-	{
 		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
-	}
 	if (SceneManager::getInstance()->Location == "Cavern of Truth" && elapsedTime > bufferTime_Load)
 	{
-
 	}
+	if (SceneManager::getInstance()->Location == "Inner Cavern" && elapsedTime > bufferTime_Load)
+		SceneManager::getInstance()->changeScene(new SceneBoss());
 	
 
 

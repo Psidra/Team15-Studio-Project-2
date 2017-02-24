@@ -13,6 +13,8 @@
 #include "EnemyClass.h"
 #include "SceneManager.h"
 #include "Boss.h"
+#include "DeathScreen.h"
+#include "VictoryScreen.h"
 #include <vector>
 
 #define VK_1 0x31
@@ -259,6 +261,7 @@ void SceneBoss::Update(double dt)
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->manaUI();
+	PlayerClass::get_instance()->timeSpent(dt);
 	PlayerClass::get_instance()->bossFightFacingDirection();
 	PlayerClass::get_instance()->spells(elapsedTime);
 	PlayerClass::get_instance()->spellUI(elapsedTime);
@@ -376,9 +379,9 @@ void SceneBoss::Update(double dt)
 
 	/*-------------Scene Change--------*/
 	if (Boss::get_instance()->get_health() <= 0)
-	{
-		//SceneManager::getInstance()->changeScene(new); [Change Scene to Victory Scene]
-	}
+		SceneManager::getInstance()->changeScene(new VictoryScreen()); 
+	if (PlayerClass::get_instance()->get_health() <= 0)
+		SceneManager::getInstance()->changeScene(new DeathScreen());
 	/*---------------------------------*/
 }
 
