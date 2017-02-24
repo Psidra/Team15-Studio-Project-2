@@ -637,7 +637,8 @@ void StudioProject2Scene1::Update(double dt)
 	else
 		et[6] = 0;
 
-	et[20] += dt;		// This is for me to see if the idleanim is running at all
+	et[10] += dt;
+	et[20] += dt;
 
 	if (!trigger)
 	{
@@ -672,6 +673,47 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		bufferTime_trigger_slope = elapsedTime + 11.f;
 		trigger = true;
+	}
+
+	if (EnemyManager::get_instance()->EnemyList[0]->get_action() == 1)
+	{
+		et[20] = 0;
+		et[21] = 0;
+		et[22] += dt;
+		et[23] = 0;
+
+		if (elapsedTime + 1.5f < bufferTime_attack_M)
+		{
+			et[20] = 0;
+			et[22] += dt;
+		}
+		else
+		{
+			et[22] = 0;
+			et[20] += dt;
+		}
+	}
+	else if (EnemyManager::get_instance()->EnemyList[0]->get_action() == 2)
+	{
+		et[21] = 0;
+		et[22] = 0;
+		if ((elapsedTime + 0.5f < bufferTime_attack_M) && (elapsedTime + 1.5f > bufferTime_attack_M))
+		{
+			et[23] = 0;
+			et[20] += dt;
+		}
+		else
+		{
+			et[20] = 0;
+			et[23] += dt;
+		}
+	}
+	else
+	{
+		et[20] = 0;
+		et[21] += dt;
+		et[22] = 0;
+		et[23] = 0;
 	}
 
 	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
@@ -770,7 +812,7 @@ void StudioProject2Scene1::Render()
 	modelStack.PopMatrix();*/
 
 	unsigned int num_anim;
-	for (num_anim = 0; num_anim < 30;)
+	for (num_anim = 0; num_anim < 10;)
 	{
 		if (et[num_anim] <= 0.f)
 			num_anim++;
@@ -917,10 +959,19 @@ void StudioProject2Scene1::Render()
 	//modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
+	unsigned int num_anim_mutant;
+	for (num_anim_mutant = 20; num_anim_mutant <= 30;)
+	{
+		if (et[num_anim_mutant] <= 0.f)
+			num_anim_mutant++;
+		else
+			break;
+	}
+	
 	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 	{
 		RenderProjectiles();
-		RenderMutant();
+		RenderMutant(num_anim_mutant);
 	}
 	/*-------------------------------------------------------*/
 
@@ -931,26 +982,33 @@ void StudioProject2Scene1::Render()
 	modelStack.Scale(hmvec[0].size_hm.x, hmvec[0].size_hm.y, hmvec[0].size_hm.z);
 
 	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(10, &modelStack, &et[10], "body");
 	RenderMesh(meshList[GEO_HM_BODY], true);
+
+		modelStack.PushMatrix();
+		AnimCheck_H_Mutant(10, &modelStack, &et[10], "Head");
+		RenderMesh(meshList[GEO_HM_HEAD], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck_H_Mutant(10, &modelStack, &et[10], "RightArm");
+		RenderMesh(meshList[GEO_HM_RIGHTARM], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck_H_Mutant(10, &modelStack, &et[10], "LeftArm");
+		RenderMesh(meshList[GEO_HM_LEFTARM], true);
+
+		modelStack.PopMatrix();
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_HM_HEAD], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_HM_RIGHTARM], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_HM_LEFTARM], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(10, &modelStack, &et[10], "LeftLeg");
 	RenderMesh(meshList[GEO_HM_LEFTLEG], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(10, &modelStack, &et[10], "RightLeg");
 	RenderMesh(meshList[GEO_HM_RIGHTLEG], true);
 	modelStack.PopMatrix();
 
@@ -1177,7 +1235,7 @@ void StudioProject2Scene1::RenderProjectiles()
 	}
 }
 
-void StudioProject2Scene1::RenderMutant()
+void StudioProject2Scene1::RenderMutant(unsigned int num_anim_mutant)
 {
 	modelStack.PushMatrix();
 
@@ -1190,98 +1248,84 @@ void StudioProject2Scene1::RenderMutant()
 	modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
 						 EnemyManager::get_instance()->EnemyList[0]->position_m.y,
 						 EnemyManager::get_instance()->EnemyList[0]->position_m.z);
-
-	modelStack.PushMatrix();
-
-		modelStack.PushMatrix();
-		if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
-			modelStack.Rotate(180, 0, 1, 0);
-		else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
-			modelStack.Rotate(0, 0, 1, 0);
-
-			AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_Head");
-
-			RenderMesh(meshList[GEO_MUTANT_HEAD], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_Head");
-		modelStack.Translate(-2, 5, 0);
-		RenderMesh(meshList[GEO_M_RHEART], false);
-		modelStack.Translate(3, 0, 0);
-		if (EnemyManager::get_instance()->EnemyList[0]->get_health() == 100)
-			RenderMesh(meshList[GEO_M_RHEART], false);
-		else
-			RenderMesh(meshList[GEO_M_BHEART], false);
-		modelStack.PopMatrix();
-	modelStack.PopMatrix();
-	
 	
 	if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
 		modelStack.Rotate(180, 0, 1, 0);
 	else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
 		modelStack.Rotate(0, 0, 1, 0);
 
+		modelStack.PushMatrix();
+		AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_Torso");
+		RenderMesh(meshList[GEO_MUTANT_TORSO], true);
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_LeftArm");
+			modelStack.PushMatrix();
+			AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_Neck");
+			RenderMesh(meshList[GEO_MUTANT_NECK], true);
 
-	RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
-	modelStack.PopMatrix();
+				modelStack.PushMatrix();
+				AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_Head");
+				RenderMesh(meshList[GEO_MUTANT_HEAD], true);
+				modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_LeftFeet");
+				modelStack.PushMatrix();
+				if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
+					modelStack.Rotate(-180, 0, 1, 0);
 
-	RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
-	modelStack.PopMatrix();
+				AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_Head");
+				modelStack.Translate(-2, 5, 0);
+				RenderMesh(meshList[GEO_M_RHEART], false);
+				modelStack.Translate(3, 0, 0);
+				if (EnemyManager::get_instance()->EnemyList[0]->get_health() == 100)
+					RenderMesh(meshList[GEO_M_RHEART], false);
+				else
+					RenderMesh(meshList[GEO_M_BHEART], false);
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_LeftThigh");
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
 
-	RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
-	modelStack.PopMatrix();
+			modelStack.PushMatrix();
+			AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftUpperarm");
+			RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_LeftUpperarm");
+				modelStack.PushMatrix();
+				AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftArm");
+				RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
 
-	RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
-	modelStack.PopMatrix();
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_Neck");
+			modelStack.PushMatrix();
+			AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightUpperarm");
+			RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
 
-	RenderMesh(meshList[GEO_MUTANT_NECK], true);
-	modelStack.PopMatrix();
+				modelStack.PushMatrix();
+				AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightArm");
+				RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_RightArm");
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
 
-	RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
-	modelStack.PopMatrix();
+			modelStack.PushMatrix();
+			AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftThigh");
+			RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_RightFeet");
+				modelStack.PushMatrix();
+				AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftFeet");
+				RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
 
-	RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
-	modelStack.PopMatrix();
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_RightThigh");
+			modelStack.PushMatrix();
+			AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightThigh");
+			RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
 
-	RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
-	modelStack.PopMatrix();
+				modelStack.PushMatrix();
+				AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightFeet");
+				RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
 
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_RightUpperarm");
-
-	RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_Torso");
-
-	RenderMesh(meshList[GEO_MUTANT_TORSO], true);
-	modelStack.PopMatrix();
-
+				modelStack.PopMatrix(); // staircase ayy
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
 	modelStack.PopMatrix();
 }

@@ -1,6 +1,6 @@
 atomVersion 1.0;
 mayaVersion 2017;
-mayaSceneFile C:/Users/User/Desktop/Updated_FullMutant_IdleMove.ma;
+mayaSceneFile C:/Users/User/Desktop/Mutant_Melee.ma;
 timeUnit ntsc;
 linearUnit cm;
 angularUnit deg;
@@ -17,6 +17,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      8 1 fixed step 1 0 0 0 4;
       15 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
@@ -30,7 +31,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.764 auto auto 1 0 0;
-      15 0.764 auto auto 1 0 0;
+      8 4.0716049 fixed fixed 1 0 0 0 4 0 6;
+      15 4.072 auto auto 1 0 0;
       30 0.764 auto auto 1 0 0;
     }
   }
@@ -43,7 +45,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 6.289 auto auto 1 0 0;
-      15 6.1520007 auto auto 1 0 0;
+      8 5.664189 fixed fixed 1 0 0 0 4 0 6;
+      15 5.6390089 auto auto 1 0 0;
       30 6.289 auto auto 1 0 0;
     }
   }
@@ -56,6 +59,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.129 auto auto 1 0 0;
+      8 0.129 fixed fixed 1 0 0 0 4 0 6;
       15 0.129 auto auto 1 0 0;
       30 0.129 auto auto 1 0 0;
     }
@@ -69,7 +73,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      8 0 fixed fixed 1 0 0 0 4 0 6;
+      15 -2.6303338 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -82,7 +87,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      8 0 fixed fixed 1 0 0 0 4 0 6;
+      15 -0.7993027 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -95,7 +101,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -1.074 auto auto 1 0 0;
+      8 -12.862074 fixed fixed 1 0 0 0 4 0 6;
+      15 -32.537999 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -108,6 +115,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      8 1 fixed fixed 1 0 0 0 4 0 6;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -121,6 +129,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      8 1 fixed fixed 1 0 0 0 4 0 6;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -134,6 +143,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      8 1 fixed fixed 1 0 0 0 4 0 6;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -150,7 +160,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      4 1 spline step 1 0 0;
+      6 1 spline step 1 0 0;
+      10 1 spline step 1 0 0;
       15 1 spline step 1 0 0;
+      20 1 fixed step 1 0 0 0 1.6666665;
+      25 1 fixed step 1 0 0 0 1.0000002;
       30 1 spline step 1 0 0;
     }
   }
@@ -163,7 +178,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.012 auto auto 1 0 0;
+      4 0.012 auto auto 1 0 0;
+      6 0.012 auto auto 1 0 0;
+      10 0.012 auto auto 1 0 0;
       15 0.012 auto auto 1 0 0;
+      20 0.012 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 0.012 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 0.012 auto auto 1 0 0;
     }
   }
@@ -176,7 +196,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.801 auto auto 1 0 0;
+      4 0.801 auto auto 1 0 0;
+      6 0.801 auto auto 1 0 0;
+      10 0.801 auto auto 1 0 0;
       15 0.801 auto auto 1 0 0;
+      20 0.801 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 0.801 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 0.801 auto auto 1 0 0;
     }
   }
@@ -189,7 +214,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.558 auto auto 1 0 0;
+      4 0.558 auto auto 1 0 0;
+      6 0.558 auto auto 1 0 0;
+      10 0.558 auto auto 1 0 0;
       15 0.558 auto auto 1 0 0;
+      20 0.558 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 0.558 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 0.558 auto auto 1 0 0;
     }
   }
@@ -202,7 +232,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      4 0 auto auto 1 0 0;
+      6 0 auto auto 1 0 0;
+      10 0 auto auto 1 0 0;
+      15 -0.7394571 auto auto 1 0 0;
+      20 -0.7394571 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 0 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 0 auto auto 1 0 0;
     }
   }
@@ -215,7 +250,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      4 0 auto auto 1 0 0;
+      6 0 auto auto 1 0 0;
+      10 0 auto auto 1 0 0;
+      15 -1.5864814 auto auto 1 0 0;
+      20 -1.5864814 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 0 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 0 auto auto 1 0 0;
     }
   }
@@ -228,7 +268,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 1.835 auto auto 1 0 0;
+      4 36.524452 auto auto 1 0 0;
+      6 33.399048 auto auto 1 0 0;
+      10 32.583962 auto auto 1 0 0;
+      15 49.386121 auto auto 1 0 0;
+      20 49.386121 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 41.547669 fixed fixed 1 0 0 -73.104935 3.4409237 -73.104942 13.763692;
       30 0 auto auto 1 0 0;
     }
   }
@@ -241,7 +286,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      4 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      20 1 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 1 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 1 auto auto 1 0 0;
     }
   }
@@ -254,7 +304,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      4 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      20 1 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 1 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 1 auto auto 1 0 0;
     }
   }
@@ -267,7 +322,12 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      4 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      20 1 fixed fixed 1 0 0 0 1.6666665 0 2.3333335;
+      25 1 fixed fixed 1 0 0 0 1.0000002 0 3.9999998;
       30 1 auto auto 1 0 0;
     }
   }
@@ -283,7 +343,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      3 1 spline step 1 0 0;
+      8 1 spline step 1 0 0;
+      10 1 spline step 1 0 0;
       15 1 spline step 1 0 0;
+      18 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -296,7 +360,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.226 auto auto 1 0 0;
+      3 0.226 auto auto 1 0 0;
+      8 0.226 auto auto 1 0 0;
+      10 0.226 auto auto 1 0 0;
       15 0.226 auto auto 1 0 0;
+      18 0.226 auto auto 1 0 0;
       30 0.226 auto auto 1 0 0;
     }
   }
@@ -309,7 +377,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 -4.3642697 auto auto 1 0 0;
+      3 -4.3642697 auto auto 1 0 0;
+      8 -4.3642697 auto auto 1 0 0;
+      10 -4.3642697 auto auto 1 0 0;
       15 -4.3642697 auto auto 1 0 0;
+      18 -4.3642697 auto auto 1 0 0;
       30 -4.3642697 auto auto 1 0 0;
     }
   }
@@ -322,7 +394,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.676 auto auto 1 0 0;
+      3 0.676 auto auto 1 0 0;
+      8 0.676 auto auto 1 0 0;
+      10 0.676 auto auto 1 0 0;
       15 0.676 auto auto 1 0 0;
+      18 0.676 auto auto 1 0 0;
       30 0.676 auto auto 1 0 0;
     }
   }
@@ -335,7 +411,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
+      3 0 auto auto 1 0 0;
+      8 0 auto auto 1 0 0;
+      10 0 auto auto 1 0 0;
       15 0 auto auto 1 0 0;
+      18 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -348,7 +428,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
+      3 0 auto auto 1 0 0;
+      8 0 auto auto 1 0 0;
+      10 0 auto auto 1 0 0;
       15 0 auto auto 1 0 0;
+      18 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -361,7 +445,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -3.579 auto auto 1 0 0;
+      3 -63.778529 auto auto 1 0 0;
+      8 -13.039439 auto auto 1 0 0;
+      10 8.0204099 auto auto 1 0 0;
+      15 1.2015099 auto auto 1 0 0;
+      18 -33.95735 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -374,7 +462,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      3 1 auto auto 1 0 0;
+      8 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      18 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -387,7 +479,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      3 1 auto auto 1 0 0;
+      8 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      18 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -400,7 +496,11 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      3 1 auto auto 1 0 0;
+      8 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      18 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -416,6 +516,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      6 1 spline step 1 0 0;
       15 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
@@ -429,6 +530,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.012 auto auto 1 0 0;
+      6 0.012 auto auto 1 0 0;
       15 0.012 auto auto 1 0 0;
       30 0.012 auto auto 1 0 0;
     }
@@ -442,6 +544,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.801 auto auto 1 0 0;
+      6 0.801 auto auto 1 0 0;
       15 0.801 auto auto 1 0 0;
       30 0.801 auto auto 1 0 0;
     }
@@ -455,6 +558,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 -0.816 auto auto 1 0 0;
+      6 -0.816 auto auto 1 0 0;
       15 -0.816 auto auto 1 0 0;
       30 -0.816 auto auto 1 0 0;
     }
@@ -468,6 +572,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
+      6 0 auto auto 1 0 0;
       15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
@@ -481,6 +586,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
+      6 0 auto auto 1 0 0;
       15 0 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
@@ -494,7 +600,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 1.835 auto auto 1 0 0;
+      6 -13.341633 auto auto 1 0 0;
+      15 -0.25404285 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -507,6 +614,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -520,6 +628,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -533,6 +642,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -549,7 +659,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
+      4 1 spline step 1 0 0;
+      15 1 fixed step 1 0 0 0 1.3333334;
       30 1 spline step 1 0 0;
     }
   }
@@ -562,7 +673,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.226 auto auto 1 0 0;
-      15 0.226 auto auto 1 0 0;
+      4 0.226 auto auto 1 0 0;
+      15 0.226 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 0.226 auto auto 1 0 0;
     }
   }
@@ -575,7 +687,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 -4.365 auto auto 1 0 0;
-      15 -4.365 auto auto 1 0 0;
+      4 -4.365 auto auto 1 0 0;
+      15 -4.365 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 -4.365 auto auto 1 0 0;
     }
   }
@@ -588,7 +701,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 -0.676 auto auto 1 0 0;
-      15 -0.676 auto auto 1 0 0;
+      4 -0.676 auto auto 1 0 0;
+      15 -0.676 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 -0.676 auto auto 1 0 0;
     }
   }
@@ -601,7 +715,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      4 0 auto auto 1 0 0;
+      15 -0.68786269 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 0 auto auto 1 0 0;
     }
   }
@@ -614,7 +729,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      4 0 auto auto 1 0 0;
+      15 -2.5025384 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 0 auto auto 1 0 0;
     }
   }
@@ -627,7 +743,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -3.579 auto auto 1 0 0;
+      4 14.732233 auto auto 1 0 0;
+      15 43.117914 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 0 auto auto 1 0 0;
     }
   }
@@ -640,7 +757,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      4 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 1 auto auto 1 0 0;
     }
   }
@@ -653,7 +771,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      4 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 1 auto auto 1 0 0;
     }
   }
@@ -666,7 +785,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      4 1 auto auto 1 0 0;
+      15 1 fixed fixed 1 0 0 0 1.3333334 0 8.666667;
       30 1 auto auto 1 0 0;
     }
   }
@@ -682,7 +802,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      6 1 fixed step 1 0 0 0 1.3333334;
+      10 1 fixed step 1 0 0 0 1.3333334;
       15 1 spline step 1 0 0;
+      23 1 fixed step 1 0 0 0 1.3333333;
       30 1 spline step 1 0 0;
     }
   }
@@ -695,7 +818,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 -0.629 auto auto 1 0 0;
+      6 -0.629 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 -0.629 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
       15 -0.629 auto auto 1 0 0;
+      23 -0.629 fixed fixed 1 0 0 0 1.3333333 0 3.6666667;
       30 -0.629 auto auto 1 0 0;
     }
   }
@@ -708,7 +834,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 4.768 auto auto 1 0 0;
+      6 4.768 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 4.768 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
       15 4.768 auto auto 1 0 0;
+      23 4.768 fixed fixed 1 0 0 0 1.3333333 0 3.6666667;
       30 4.768 auto auto 1 0 0;
     }
   }
@@ -721,7 +850,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.909 auto auto 1 0 0;
-      15 0.909 auto auto 1 0 0;
+      6 0.909 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 0.909 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      15 1.2968684 auto auto 1 0 0;
+      23 1.2288334 fixed fixed 1 0 0 -1.4812181 1.3337789 -1.4812181 3.6678922;
       30 0.909 auto auto 1 0 0;
     }
   }
@@ -734,7 +866,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      6 -55.443493 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 -74.122137 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      15 45.734868 auto auto 1 0 0;
+      23 -4.9153042 fixed fixed 1 0 0 0 1.3333333 0 3.6666667;
       30 0 auto auto 1 0 0;
     }
   }
@@ -747,7 +882,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -5.6319763 auto auto 1 0 0;
+      6 26.543661 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 26.543661 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      15 -40.750012 auto auto 1 0 0;
+      23 15.304985 fixed fixed 1 0 0 0 1.3333333 0 3.6666667;
       30 0 auto auto 1 0 0;
     }
   }
@@ -760,7 +898,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      6 77.431271 fixed fixed 1 0 0 42.668615 1.8133535 42.668615 2.2666919;
+      10 77.431271 fixed fixed 1 0 0 42.668615 1.8133535 42.668615 2.2666919;
+      15 61.105385 auto auto 1 0 0;
+      23 55.506534 fixed fixed 1 0 0 -76.20789 5.5928473 -76.20789 15.380332;
       30 0 auto auto 1 0 0;
     }
   }
@@ -773,7 +914,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 1 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
       15 1 auto auto 1 0 0;
+      23 1 fixed fixed 1 0 0 0 1.3333333 0 3.6666667;
       30 1 auto auto 1 0 0;
     }
   }
@@ -786,7 +930,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 1 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
       15 1 auto auto 1 0 0;
+      23 1 fixed fixed 1 0 0 0 1.3333333 0 3.6666667;
       30 1 auto auto 1 0 0;
     }
   }
@@ -799,7 +946,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
+      10 1 fixed fixed 1 0 0 0 1.3333334 0 1.6666667;
       15 1 auto auto 1 0 0;
+      23 1 fixed fixed 1 0 0 0 1.3333333 0 3.6666667;
       30 1 auto auto 1 0 0;
     }
   }
@@ -815,7 +965,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      6 1 fixed step 1 0 0 0 1.3333334;
+      12 1 spline step 1 0 0;
       15 1 spline step 1 0 0;
+      18 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -828,7 +981,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.09 auto auto 1 0 0;
+      6 0.09 fixed fixed 1 0 0 0 1.3333334 0 2.3333335;
+      12 0.09 auto auto 1 0 0;
       15 0.09 auto auto 1 0 0;
+      18 0.09 auto auto 1 0 0;
       30 0.09 auto auto 1 0 0;
     }
   }
@@ -841,7 +997,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 -3.487 auto auto 1 0 0;
+      6 -3.487 fixed fixed 1 0 0 0 1.3333334 0 2.3333335;
+      12 -3.487 auto auto 1 0 0;
       15 -3.487 auto auto 1 0 0;
+      18 -3.487 auto auto 1 0 0;
       30 -3.487 auto auto 1 0 0;
     }
   }
@@ -854,7 +1013,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 2.95 auto auto 1 0 0;
+      6 2.95 fixed fixed 1 0 0 0 1.3333334 0 2.3333335;
+      12 2.95 auto auto 1 0 0;
       15 2.95 auto auto 1 0 0;
+      18 2.95 auto auto 1 0 0;
       30 2.95 auto auto 1 0 0;
     }
   }
@@ -867,7 +1029,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      6 -21.648806 fixed fixed 1 0 0 0 1.3333334 0 2.3333335;
+      12 7.7721918 auto auto 1 0 0;
+      15 74.729087 auto auto 1 0 0;
+      18 71.866267 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -880,7 +1045,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      6 -3.9014401 fixed fixed 1 0 0 80.38425 7.982132 80.38425 13.96873;
+      12 59.757191 auto auto 1 0 0;
+      15 49.508661 auto auto 1 0 0;
+      18 7.6003972 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -893,7 +1061,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -3.448 auto auto 1 0 0;
+      6 -6.4219668 fixed fixed 1 0 0 -82.722211 10.525205 -82.722211 18.419107;
+      12 -18.144295 auto auto 1 0 0;
+      15 10.387102 auto auto 1 0 0;
+      18 21.496837 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -906,7 +1077,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 fixed fixed 1 0 0 0 1.3333334 0 2.3333335;
+      12 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      18 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -919,7 +1093,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 fixed fixed 1 0 0 0 1.3333334 0 2.3333335;
+      12 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      18 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -932,7 +1109,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 fixed fixed 1 0 0 0 1.3333334 0 2.3333335;
+      12 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      18 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -948,7 +1128,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
+      10 1 spline step 1 0 0;
+      20 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -961,7 +1142,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 -0.638 auto auto 1 0 0;
-      15 -0.638 auto auto 1 0 0;
+      10 -0.638 auto auto 1 0 0;
+      20 -0.638 auto auto 1 0 0;
       30 -0.638 auto auto 1 0 0;
     }
   }
@@ -974,7 +1156,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 4.241 auto auto 1 0 0;
-      15 4.241 auto auto 1 0 0;
+      10 4.241 auto auto 1 0 0;
+      20 4.241 auto auto 1 0 0;
       30 4.241 auto auto 1 0 0;
     }
   }
@@ -987,7 +1170,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 -0.081 auto auto 1 0 0;
-      15 -0.081 auto auto 1 0 0;
+      10 -0.081 auto auto 1 0 0;
+      20 -0.081 auto auto 1 0 0;
       30 -0.081 auto auto 1 0 0;
     }
   }
@@ -1000,7 +1184,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      10 -5.7847562 auto auto 1 0 0;
+      20 14.182098 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1013,7 +1198,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      10 1.6662989 auto auto 1 0 0;
+      20 9.6000791 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1026,7 +1212,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -0.978 auto auto 1 0 0;
+      10 43.142689 auto auto 1 0 0;
+      20 1.0475498 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1039,7 +1226,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
+      20 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1052,7 +1240,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
+      20 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1065,7 +1254,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
+      20 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1081,7 +1271,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
-      15 1 spline step 1 0 0;
+      9 1 spline step 1 0 0;
+      14 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -1094,7 +1285,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 2.487 auto auto 1 0 0;
-      15 2.487 auto auto 1 0 0;
+      9 2.487 auto auto 1 0 0;
+      14 2.487 auto auto 1 0 0;
       30 2.487 auto auto 1 0 0;
     }
   }
@@ -1107,7 +1299,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1.882 auto auto 1 0 0;
-      15 1.882 auto auto 1 0 0;
+      9 1.882 auto auto 1 0 0;
+      14 1.882 auto auto 1 0 0;
       30 1.882 auto auto 1 0 0;
     }
   }
@@ -1120,7 +1313,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 -0.048 auto auto 1 0 0;
-      15 -0.048 auto auto 1 0 0;
+      9 -0.048 auto auto 1 0 0;
+      14 -0.048 auto auto 1 0 0;
       30 -0.048 auto auto 1 0 0;
     }
   }
@@ -1133,7 +1327,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      9 -1.5188488 auto auto 1 0 0;
+      14 -6.5290562 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1146,7 +1341,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      9 -5.8650316 auto auto 1 0 0;
+      14 -5.5275376 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1159,7 +1355,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 3.538 auto auto 1 0 0;
+      9 -34.881745 auto auto 1 0 0;
+      14 0.570163 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1172,7 +1369,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      9 1 auto auto 1 0 0;
+      14 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1185,7 +1383,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      9 1 auto auto 1 0 0;
+      14 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1198,7 +1397,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
-      15 1 auto auto 1 0 0;
+      9 1 auto auto 1 0 0;
+      14 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1214,6 +1414,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      6 1 spline step 1 0 0;
+      10 1 spline step 1 0 0;
       15 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
@@ -1227,6 +1429,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 -0.629 auto auto 1 0 0;
+      6 -0.629 auto auto 1 0 0;
+      10 -0.629 auto auto 1 0 0;
       15 -0.629 auto auto 1 0 0;
       30 -0.629 auto auto 1 0 0;
     }
@@ -1240,6 +1444,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 4.768 auto auto 1 0 0;
+      6 4.768 auto auto 1 0 0;
+      10 4.768 auto auto 1 0 0;
       15 4.768 auto auto 1 0 0;
       30 4.768 auto auto 1 0 0;
     }
@@ -1253,6 +1459,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 -1.167 auto auto 1 0 0;
+      6 -1.167 auto auto 1 0 0;
+      10 -1.167 auto auto 1 0 0;
       15 -1.167 auto auto 1 0 0;
       30 -1.167 auto auto 1 0 0;
     }
@@ -1266,7 +1474,9 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      6 57.193757 auto auto 1 0 0;
+      10 65.14903 auto auto 1 0 0;
+      15 -36.653183 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1279,7 +1489,9 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 5.632 auto auto 1 0 0;
+      6 -20.516128 auto auto 1 0 0;
+      10 -18.653424 auto auto 1 0 0;
+      15 -14.024697 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1292,7 +1504,9 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      6 107.26926 auto auto 1 0 0;
+      10 97.530053 auto auto 1 0 0;
+      15 73.328599 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1305,6 +1519,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -1318,6 +1534,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -1331,6 +1549,8 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      6 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
@@ -1347,7 +1567,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 spline step 1 0 0;
+      10 1 spline step 1 0 0;
       15 1 spline step 1 0 0;
+      19 1 fixed step 1 0 0 0 0.66666663;
+      26 1 spline step 1 0 0;
       30 1 spline step 1 0 0;
     }
   }
@@ -1360,7 +1583,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0.09 auto auto 1 0 0;
+      10 0.09 auto auto 1 0 0;
       15 0.09 auto auto 1 0 0;
+      19 0.09 fixed fixed 1 0 0 0 0.66666663 0 4.3333335;
+      26 0.09 auto auto 1 0 0;
       30 0.09 auto auto 1 0 0;
     }
   }
@@ -1373,7 +1599,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 -3.487 auto auto 1 0 0;
+      10 -3.487 auto auto 1 0 0;
       15 -3.487 auto auto 1 0 0;
+      19 -3.487 fixed fixed 1 0 0 0 0.66666663 0 4.3333335;
+      26 -3.487 auto auto 1 0 0;
       30 -3.487 auto auto 1 0 0;
     }
   }
@@ -1386,7 +1615,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 -2.95 auto auto 1 0 0;
+      10 -2.95 auto auto 1 0 0;
       15 -2.95 auto auto 1 0 0;
+      19 -2.95 fixed fixed 1 0 0 0 0.66666663 0 4.3333335;
+      26 -2.95 auto auto 1 0 0;
       30 -2.95 auto auto 1 0 0;
     }
   }
@@ -1399,7 +1631,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      10 0 auto auto 1 0 0;
+      15 12.688263 auto auto 1 0 0;
+      19 -38.759432 fixed fixed 1 0 0 0 0.66666663 0 4.3333335;
+      26 -2.2963304 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1412,7 +1647,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 0 auto auto 1 0 0;
+      10 -40.24039 auto auto 1 0 0;
+      15 -31.759885 auto auto 1 0 0;
+      19 -26.299856 fixed fixed 1 0 0 43.178393 0.91421038 43.178397 5.942368;
+      26 -11.132811 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1425,7 +1663,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      15 -3.448 auto auto 1 0 0;
+      10 0 auto auto 1 0 0;
+      15 -23.15824 auto auto 1 0 0;
+      19 1.6813646 fixed fixed 1 0 0 57.06816 1.2262995 57.068157 7.9709473;
+      26 51.900352 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }
@@ -1438,7 +1679,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      19 1 fixed fixed 1 0 0 0 0.66666663 0 4.3333335;
+      26 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1451,7 +1695,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      19 1 fixed fixed 1 0 0 0 0.66666663 0 4.3333335;
+      26 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }
@@ -1464,7 +1711,10 @@ dagNode {
     postInfinity constant;
     keys {
       0 1 auto auto 1 0 0;
+      10 1 auto auto 1 0 0;
       15 1 auto auto 1 0 0;
+      19 1 fixed fixed 1 0 0 0 0.66666663 0 4.3333335;
+      26 1 auto auto 1 0 0;
       30 1 auto auto 1 0 0;
     }
   }

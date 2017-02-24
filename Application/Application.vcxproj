@@ -110,6 +110,7 @@
     <ClCompile Include="Source\Scene2Interactions.cpp" />
     <ClCompile Include="Source\SceneBoss.cpp" />
     <ClCompile Include="Source\SceneBossFunctions.cpp" />
+    <ClCompile Include="Source\SceneCredits.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\SelectionScreen.cpp" />
     <ClCompile Include="Source\shader.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Source\StudioProject2_Scene1.cpp" />
     <ClCompile Include="Source\StudioProject2_Scene2.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
+    <ClCompile Include="Source\VictoryScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animations.h" />
@@ -144,6 +146,7 @@
     <ClInclude Include="Source\ProjectileBuilder.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneBoss.h" />
+    <ClInclude Include="Source\SceneCredits.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\SelectionScreen.h" />
     <ClInclude Include="Source\shader.hpp" />
@@ -152,6 +155,7 @@
     <ClInclude Include="Source\StudioProject2_Scene2.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
+    <ClInclude Include="Source\VictoryScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

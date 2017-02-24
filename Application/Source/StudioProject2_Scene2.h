@@ -43,6 +43,7 @@ public:
 		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG,
 		//Environmental Objects
 		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE, GEO_SCENE2,
+		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL,
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
@@ -137,11 +138,33 @@ private:
 	bool grab;
 	bool block;
 	bool roll;
+
+	double et[30];
+	/*  Alexis:
+	0 = attack
+	6 = walk
+	7 = roll
+	8 = block
+	9 = grab
+
+	Half-Mutant:
+
+	Mutant:
+	20 = idle
+	21 = walk
+	22 = attack
+	23 = spit
+	*/
 	/*------------------------------------------------------------*/
 
+	float ShortBox_PosX;
+	float TallBox_PosX;
+
+	float movespeed;
+
 	std::string fps;
-	std::string fMutantKilled;
 	std::string hMutantSaved;
+	std::string fMutantKilled;
 
 	// TIME
 	double elapsedTime;
@@ -151,7 +174,12 @@ private:
 	double bufferTime_text;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
+	double bufferTime_iframe;			// iframe is for damage taken
+	double bufferTime_block;			// OLD SPICE ODOUR BODY BLOCKER BLOCKS BACTERIA AND SMELL FOR UP TO 24 HOURS
+	double bufferTime_roll;
+	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
 
+	double bufferTime_attack_M;
 };
 
 #endif 
