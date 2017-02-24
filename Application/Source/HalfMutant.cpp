@@ -1,6 +1,7 @@
 #include "HalfMutant.h"
 #include "Application.h"
 #include "PlayerClass.h"
+#include "GLFW\glfw3.h"
 
 HalfMutant::HalfMutant()
 {
@@ -56,13 +57,31 @@ void HalfMutant::transformation()
 	else
 		charNear = false;
 
-	if (charNear == true && Application::IsKeyPressed('F'))
+	int Controller = glfwJoystickPresent(GLFW_JOYSTICK_1);
+
+	if (Controller == 1)
 	{
-		transformed = true;
-		charNear = false;
-		saveCount = true;
-		size_hm = Vector3(0.1, 0.1, 0.1);
-		size_human = Vector3(1, 1, 1);
+		int xboxcontrols;
+		const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxcontrols);
+		if (charNear == true && (Application::IsKeyPressed('F') || GLFW_PRESS == xbox[5]))
+		{
+			transformed = true;
+			charNear = false;
+			saveCount = true;
+			size_hm = Vector3(0.1, 0.1, 0.1);
+			size_human = Vector3(1, 1, 1);
+		}
+	}
+	else
+	{
+		if (charNear == true && Application::IsKeyPressed('F'))
+		{
+			transformed = true;
+			charNear = false;
+			saveCount = true;
+			size_hm = Vector3(0.1, 0.1, 0.1);
+			size_human = Vector3(1, 1, 1);
+		}
 	}
 
 	if (saveCount == true)
