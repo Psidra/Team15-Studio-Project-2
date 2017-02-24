@@ -10,6 +10,7 @@
 #include "MeshBuilder.h"
 #include "MatrixStack.h"
 #include "Light.h"
+#include "HalfMutant.h"
 
 class StudioProject2Scene2 : public Scene
 {
@@ -23,8 +24,9 @@ public:
 	virtual void RenderMesh(Mesh *mesh, bool enableLight);
 	virtual void Exit();
 	virtual bool otheranims();
+	virtual bool holdanims();
 	virtual void RenderProjectiles();
-	virtual void RenderMutant();
+	virtual void RenderMutant(unsigned int num_anim_mutant);
 
 	enum GEOMETRY_TYPE
 	{
@@ -40,16 +42,30 @@ public:
 		//main character (Alexis)
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM,
 		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG,
+		//main character stunt doobl (Alexus) :^)
+		GEO_ALEXUS_HEAD, GEO_ALEXUS_BODY, GEO_ALEXUS_RIGHT4ARM, GEO_ALEXUS_LEFT4ARM,
+		GEO_ALEXUS_CROTCH, GEO_ALEXUS_RIGHTTHIGH, GEO_ALEXUS_LEFTTHIGH,
+		GEO_ALEXUS_RIGHTARM, GEO_ALEXUS_LEFTARM, GEO_ALEXUS_RIGHTLEG, GEO_ALEXUS_LEFTLEG,
+
 		//Environmental Objects
 		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE, GEO_SCENE2,
 		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL,
+
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
 		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO, GEO_SPIT,
+
+		// half mutant & npc
+		GEO_HUMAN, GEO_HM_HEAD, GEO_HM_BODY, GEO_HM_LEFTARM,
+		GEO_HM_RIGHTARM, GEO_HM_LEFTLEG, GEO_HM_RIGHTLEG,
+
 		//UI Objects
 		GEO_ALEXIS_LIFE, GEO_BLANKHEART, GEO_FULL_COUNT, GEO_HALF_COUNT,
 		GEO_TEXTBOX, GEO_TEXT,
+
+		//Mutant Health
+		GEO_M_RHEART, GEO_M_BHEART,
 
 		//Triggers
 		GEO_TRIGGER_SLOPE,
@@ -107,6 +123,7 @@ private:
 	Camera4 camera;
 	Light light[2];
 	MS modelStack, viewStack, projectionStack;
+	std::vector<HalfMutant> hmvec;
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];

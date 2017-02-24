@@ -34,8 +34,25 @@ StudioProject2Scene2::~StudioProject2Scene2()
 void StudioProject2Scene2::Init()
 {
 	PlayerClass::get_instance();
+	/*--------Half Mutant Variable----------*/
+	HalfMutant halfmut2;
+	halfmut2.position_hm = Vector3(640.f, -252.2f, 0.f);
+	hmvec.push_back(halfmut2);
+	hmvec[0].init();
+	hmvec[0].size_hm = Vector3(1, 1, 1);
+	hmvec[0].size_human = Vector3(0.1, 0.1, 0.1);
+	/*--------------------------------------*/
 
 	/*----Player & AI & Camera Variables----*/
+
+	for (unsigned int numenemy = 1; numenemy < 4; numenemy++)
+	{
+		for (unsigned int spawnx = 300.f; spawnx < 320.f; spawnx += 5.f)
+		{
+			EnemyManager::get_instance()->spawnEnemy(Vector3(spawnx, 10.f, 0.f));
+		}
+	}
+
 	PlayerClass::get_instance()->position_a = Vector3(-7.f, 10.f, 0.f);
 	PlayerClass::get_instance()->init();
 	/*--------------------------------------*/
@@ -150,12 +167,14 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_SCENE2] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
 	//meshList[GEO_SCENE2]->textureID = LoadTGA("Image//housetexture.tga");
 	meshList[GEO_FLOORBBOX] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_BBox.obj");
-	meshList[GEO_SHELTEROBJ] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
-	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
-	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
+	meshList[GEO_SHELTEROBJ] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//ShelterObject.obj");
+	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpTower.obj");
+	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpWall.obj");
 
-	//	GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL BBBOX
 	meshList[GEO_FLOORBBOX]->MeshBBox.loadBB("OBJ//Scene2//Scene2_BBox.obj");
+	meshList[GEO_SHELTEROBJ]->MeshBBox.loadBB("OBJ//Scene2//ShelterObject.obj");
+	meshList[GEO_TRUMPTOWER]->MeshBBox.loadBB("OBJ//Scene2//TrumpTower.obj");
+	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
 
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -182,16 +201,33 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_MUTANT_RIGHTUPPERARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
 	meshList[GEO_MUTANT_TORSO] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
-	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
 
+	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Mutant_Projectile.obj");
+	meshList[GEO_SPIT]->textureID = LoadTGA("Image//Mutant_Projectile_Texture.tga");
 
-
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.scale(1.f, 2.1f, 1.f);
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.translate(750.f, -248.8f, 0); // y + 1.2f. EG: if i want y at -250, it'd be -250 + 1.2 = 248.8
+	for (unsigned int numenemy = 1; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		EnemyManager::get_instance()->EnemyList[numenemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	}
 
 	/*-----------------------------------------------------------------------------*/
+	/*-------------------------Human and Half Mutant Loading-----------------------*/
+	meshList[GEO_HUMAN] = MeshBuilder::GenerateOBJ("npcHuman", "OBJ//npc.obj");
+	meshList[GEO_HUMAN]->textureID = LoadTGA("Image//npctexture.tga");
 
+	meshList[GEO_HM_HEAD] = MeshBuilder::GenerateOBJ("hm_head", "OBJ//Halfmutant//head_hm.obj");
+	meshList[GEO_HM_HEAD]->textureID = LoadTGA("Image//hm_facetexture.tga");
+	meshList[GEO_HM_BODY] = MeshBuilder::GenerateOBJ("hm_body", "OBJ//Halfmutant//body_hm.obj");
+	meshList[GEO_HM_BODY]->textureID = LoadTGA("Image//hm_torsotexture.tga");
+	meshList[GEO_HM_RIGHTARM] = MeshBuilder::GenerateOBJ("hm_rArm", "OBJ//Halfmutant//Rightarm_hm.obj");
+	meshList[GEO_HM_RIGHTARM]->textureID = LoadTGA("Image//hm_armtexture.tga");
+	meshList[GEO_HM_LEFTARM] = MeshBuilder::GenerateOBJ("hm_lArm", "OBJ//Halfmutant//Leftarm_hm.obj");
+	meshList[GEO_HM_LEFTARM]->textureID = LoadTGA("Image//hm_armtexture.tga");
+	meshList[GEO_HM_RIGHTLEG] = MeshBuilder::GenerateOBJ("hm_rLeg", "OBJ//Halfmutant//Rightleg_hm.obj");
+	meshList[GEO_HM_RIGHTLEG]->textureID = LoadTGA("Image//hm_legtexture.tga");
+	meshList[GEO_HM_LEFTLEG] = MeshBuilder::GenerateOBJ("hm_lLeg", "OBJ//Halfmutant//Leftleg_hm.obj");
+	meshList[GEO_HM_LEFTLEG]->textureID = LoadTGA("Image//hm_legtexture.tga");
+	/*-----------------------------------------------------------------------------*/
 	/*--------------------------Character Loading----------------------------------*/
 	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
 	meshList[GEO_ALEXIS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
@@ -209,31 +245,107 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_ALEXIS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
 
 	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+
+	meshList[GEO_ALEXUS_HEAD] = MeshBuilder::GenerateOBJ("uHead", "OBJ//Stcunt_double//head_.obj");
+	meshList[GEO_ALEXUS_HEAD]->textureID = LoadTGA("Image//facehairtext.tga");
+	meshList[GEO_ALEXUS_BODY] = MeshBuilder::GenerateOBJ("uBody", "OBJ//Stcunt_double//body_.obj");
+	meshList[GEO_ALEXUS_BODY]->textureID = LoadTGA("Image//bodytext.tga");
+	meshList[GEO_ALEXUS_CROTCH] = MeshBuilder::GenerateOBJ("uCrotch", "OBJ//Stcunt_double//crotch_.obj");
+	meshList[GEO_ALEXUS_CROTCH]->textureID = LoadTGA("Image//crotchtext.tga");
+	meshList[GEO_ALEXUS_RIGHTARM] = MeshBuilder::GenerateOBJ("uRightArm", "OBJ//Stcunt_double//right_arm.obj");
+	meshList[GEO_ALEXUS_RIGHTARM]->textureID = LoadTGA("Image//rightarmtext.tga");
+	meshList[GEO_ALEXUS_LEFTARM] = MeshBuilder::GenerateOBJ("uLeftArm", "OBJ//Stcunt_double//left_arm.obj");
+	meshList[GEO_ALEXUS_LEFTARM]->textureID = LoadTGA("Image//leftarmtext.tga");
+	meshList[GEO_ALEXUS_RIGHTLEG] = MeshBuilder::GenerateOBJ("uRightLeg", "OBJ//Stcunt_double//right_leg.obj");
+	meshList[GEO_ALEXUS_RIGHTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+	meshList[GEO_ALEXUS_LEFTLEG] = MeshBuilder::GenerateOBJ("uLeftLeg", "OBJ//Stcunt_double//left_leg.obj");
+	meshList[GEO_ALEXUS_LEFTLEG]->textureID = LoadTGA("Image//shoetext.tga");
+
+	meshList[GEO_ALEXUS_RIGHT4ARM] = MeshBuilder::GenerateOBJ("uRight4Arm", "OBJ//Stcunt_double//r_foreArm.obj");
+	meshList[GEO_ALEXUS_RIGHT4ARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXUS_LEFT4ARM] = MeshBuilder::GenerateOBJ("uLeft4Arm", "OBJ//Stcunt_double//l_foreArm.obj");
+	meshList[GEO_ALEXUS_LEFT4ARM]->textureID = LoadTGA("Image//armtext.tga");
+	meshList[GEO_ALEXUS_RIGHTTHIGH] = MeshBuilder::GenerateOBJ("uRightLegT", "OBJ//Stcunt_double//right_thigh.obj");
+	meshList[GEO_ALEXUS_RIGHTTHIGH]->textureID = LoadTGA("Image//shoetext.tga");
+	meshList[GEO_ALEXUS_LEFTTHIGH] = MeshBuilder::GenerateOBJ("uLeftLegT", "OBJ//Stcunt_double//left_thigh.obj");
+	meshList[GEO_ALEXUS_LEFTTHIGH]->textureID = LoadTGA("Image//shoetext.tga");
+
 	/*-----------------------------------------------------------------------------*/
 	/*--------------------------Text Loading---------------------------------------*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
 
-	/*-----------------------------Checking BBox-----------------------------------*/
-	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
-	/*-----------------------------------------------------------------------------*/
-
-	/*--------------------------HUD Loading--------------------------------------------------------*/
+	/*--------------------------HUD Loading---------------------------------------*/
 	meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
 	meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
 	meshList[GEO_FULL_COUNT] = MeshBuilder::GenerateQuad("hudfull", Color(1, 1, 1));
 	meshList[GEO_FULL_COUNT]->textureID = LoadTGA("Image//fullhud.tga");
+
 	/*-------------------------Loading Alexis Health----------------------------------*/
 	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
 	meshList[GEO_BLANKHEART]->textureID = LoadTGA("Image//heartsb.tga");
 	meshList[GEO_ALEXIS_LIFE] = MeshBuilder::GenerateQuad("heart", Color(1, 1, 1));
 	meshList[GEO_ALEXIS_LIFE]->textureID = LoadTGA("Image//hearts.tga");
-	/*--------------------------------------------------------------------------------*/
 	/*---------------------------------------------------------------------------------------------*/
+	
+	/*-----------------------------Trigger Check-----------------------------------*/
+	meshList[GEO_TRIGGER_SLOPE] = MeshBuilder::GenerateOBJ("Trigger_Slope", "OBJ//TriggerBox.obj");
+	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.loadBB("OBJ//TriggerBox.obj");
+	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.translate(-12.f, 10.f, 0);
+	/*-----------------------------------------------------------------------------*/
+
+	/*-----------------------------Checking BBox-----------------------------------*/
+	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
+	//meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
+	/*-----------------------------------------------------------------------------*/
+
+	/*-------------------------Loading Mutant Health----------------------------------*/
+	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
+	meshList[GEO_M_RHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
+	meshList[GEO_M_BHEART] = MeshBuilder::GenerateOBJ("MutantHealthBlack", "OBJ//M_HealthBlack.obj");
+	meshList[GEO_M_BHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
+	/*--------------------------------------------------------------------------------*/
+
 	/*------------------------Initialising Text Variables-------------------------------*/
-	pEnter = false;
-	pressEnterTS = 0;
+	//spawnTS = 2;
+	//pressEnterTS = 0;
+
+	//syringeTriggedText = false;
+	//syringeTriggedTS = 0;
+
+	//boxTriggedText = false;
+	//boxTriggedTS = 0;
+	//boxTriggedText_Two = false;
+	//boxTriggedTS_two = 0;
+
+	//hmTriggeredText = false;
+	//hmTriggedTS = 0;
+
+	//hm_to_alexis = false;
+	//hm_to_alexisTS = 0;
+
+	//alexis_to_hm = false;
+	//alexis_to_hmTS = 0;
+
+	//alexis_beside_hm = false;
+	//alexis_beside_hmTS = 0;
+
+	//postProjectileThrownText = false;
+	//postProjectileThrownTS = 0;
+
+	//fm_triggedText = false;
+	//fm_triggedTS = 0;
+
+	//alexisText = false;
+	//alexisTS = 0;
+
+	//guideText = false;
+	//guideTS = 0;
+
+	//pEnter = false;
+	//textOccured = 0;
+	//nexttext = false;
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
@@ -241,12 +353,15 @@ void StudioProject2Scene2::Init()
 	/*-----Character--------*/
 	pressedA = false;
 	pressedD = false;
+	inmovement = false;
 	injump = false;
 	attack = false;
 	trigger = false;
 	grab = false;
-	movespeed = 30.f;
+	block = false;
+	roll = false;
 	/*----------------------*/
+	movespeed = 30.f;
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -264,14 +379,56 @@ void StudioProject2Scene2::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y);
+	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
+
+	/*-------Half Mutant Functions------------*/
+	hmvec[0].movement(dt);
+	hmvec[0].transformation();
+	/*----------------------------------------*/
 
 	/*-------AI Functions---------------*/
-	//RenderProjectiles();
-	//EnemyManager::get_instance()->EnemyList[0]->update(dt);
+
+	EnemyManager::get_instance()->EnemyList[0]->update(dt);
+
+	// I spent 10 years trying to fix projectile because I wanted to avoid using erase.
+	// Erase won today. Erase, me, 1:0. Shit.
+
+	for (unsigned int numenemy = 1; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
+	{
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
+		{
+			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+			{
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+				{
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+						(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+
+					if (/*EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOOR]->MeshBBox) ||
+						*/EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+					{
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+					}
+					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
+						(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
+					{
+						PlayerClass::get_instance()->healthSystem(block);
+						bufferTime_iframe = elapsedTime + 0.3f;
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+					}
+				}
+			}
+		}
+	}
+
 	/*-------Player Functions------------------*/
 	PlayerClass::get_instance()->healthUI();
-	PlayerClass::get_instance()->facingDirection();
+	PlayerClass::get_instance()->timeSpent(dt);
+	if (!trigger && !otheranims() && !holdanims())
+		PlayerClass::get_instance()->facingDirection();
+
 	/*-----------------------------------------*/
 
 	/*-----------HUD UPDATES---------*/
@@ -293,95 +450,237 @@ void StudioProject2Scene2::Update(double dt)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	/*------------------------------Collision Check------------------------------*/
-	if (!otheranims())
+	if (!otheranims() || holdanims())
 	{
-		for (unsigned i = 0; i < 9; i++)
+		for (unsigned i = 0; i < 6; i++)
 			et[i] = 0;
 	}
-
-	if (elapsedTime > 1.1f) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
-	{						// *I hope.
-
-		inmovement = false;				// so many if statements I could write a philosophy book
-		if (Application::IsKeyPressed('A'))
-		{
-			//if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox) || pressedD == true)
-			//{
-				PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
-				pressedD = false;
-				pressedA = true;
-				inmovement = true;
-
-				//if (grab)
-				//{
-				//	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-				//	{
-				//		ShortBox_PosX -= (float)(movespeed * dt);
-				//		meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-				//		meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-				//	}
-				//	else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-				//	{
-				//		TallBox_PosX -= (float)(movespeed * dt);
-				//		meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-				//		meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-				//	}
-				//}
-			//}
-		}
-
-		if (Application::IsKeyPressed('D'))
-		{
-	/*		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox) || pressedA == true)
-			{*/
-				PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
-				pressedA = false;
-				pressedD = true;
-				inmovement = true;
-
-				//if (grab)
-				//{
-				//	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
-				//	{
-				//		ShortBox_PosX += (float)(movespeed * dt);
-				//		meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-				//		meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-				//	}
-				//	else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-				//	{
-				//		TallBox_PosX += (float)(movespeed * dt);
-				//		meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-				//		meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-				//	}
-				//}
-			//}
-		}
-
-	
-		if (Application::IsKeyPressed('W') && (bufferTime_Jump < elapsedTime) && !trigger)
-		{
-			bufferTime_Jump = elapsedTime + 0.6f;
-			bufferTime_JumpUp = elapsedTime + 0.3f;
-		}
-		if (Application::IsKeyPressed(VK_LBUTTON) && (bufferTime_attack < elapsedTime) && !trigger)
-		{
-			bufferTime_attack = elapsedTime + 1;
-
-			/*		EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
-					meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.max_, EnemyManager::get_instance()->EnemyList[0]->spit_[0]->projHitBox_.min_);
-					}*/
-		}
-		/*if (Application::IsKeyPressed('F'))
-		{
-		bufferTime_grab = elapsedTime + 0.15f;
-		}*/
+	if (!holdanims())
+	{
+		et[7] = 0;
+		et[8] = 0;
+		et[9] = 0;
 	}
 
-	/*if (bufferTime_JumpUp > elapsedTime)
+	//// !PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox)
+	//int Connected = glfwJoystickPresent(GLFW_JOYSTICK_1);
+
+	//if (Connected == 1)
+	//{
+	//	int xboxButtonCount;
+	//	const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxButtonCount);
+	//	if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+	//	{									// *I hope.
+	//		inmovement = false;				// so many if statements I could write a philosophy book
+	//		if ((GLFW_PRESS == xbox[13] || Application::IsKeyPressed('A')) && !roll)
+	//		{
+	//			if (/*!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+	//				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+	//				*/pressedD == true)
+	//			{
+	//				PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+	//				pressedD = false;
+	//				pressedA = true;
+	//				inmovement = true;
+
+	//				if (grab)
+	//				{
+	//					//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+	//					//{
+	//					//	ShortBox_PosX -= (float)(movespeed * dt);
+	//					//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+	//					//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+	//					//}
+	//					//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+	//					//{
+	//					//	TallBox_PosX -= (float)(movespeed * dt);
+	//					//	meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+	//					//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+	//					//}
+	//				}
+	//			}
+	//		}
+
+	//		if (GLFW_PRESS == xbox[11] || Application::IsKeyPressed('D') && !roll)
+	//		{
+	//			if (/*!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+	//				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
+	//				||*/ pressedA == true)
+	//			{
+	//				PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+	//				pressedA = false;
+	//				pressedD = true;
+	//				inmovement = true;
+
+	//				if (grab)
+	//				{
+	//					//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+	//					//{
+	//					//	ShortBox_PosX += (float)(movespeed * dt);
+	//					//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+	//					//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+	//					//}
+	//					//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+	//					//{
+	//					//	TallBox_PosX += (float)(movespeed * dt);
+	//					//	meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+	//					//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+	//					//}
+	//				}
+	//			}
+	//		}
+
+	//		if ((GLFW_PRESS == xbox[0] || Application::IsKeyPressed('W')) && elapsedTime > bufferTime_Jump)
+	//		{
+	//			bufferTime_Jump = elapsedTime + 0.6f;
+	//			bufferTime_JumpUp = elapsedTime + 0.3f;
+	//		}
+	//		if ((GLFW_PRESS == xbox[2] || Application::IsKeyPressed(VK_LBUTTON)) && !attack && !injump && !holdanims())
+	//		{
+	//			bufferTime_attack = elapsedTime + 1.f;
+
+	//			if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
+	//				EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
+	//		}
+
+	//		if ((GLFW_PRESS == xbox[5] || Application::IsKeyPressed('F')) && !block && !roll)
+	//			bufferTime_grab = elapsedTime + 0.15f;
+
+	//		if ((GLFW_PRESS == xbox[3] || Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
+	//			bufferTime_block = elapsedTime + 0.2f;
+
+	//		if ((GLFW_PRESS == xbox[1] || Application::IsKeyPressed(VK_RBUTTON)) && !holdanims())
+	//		{
+	//			bufferTime_roll = elapsedTime + 0.8f;
+	//			bufferTime_iframeroll = elapsedTime + 0.35f;
+	//		}
+
+	//		/* mutant */
+
+	//		for (unsigned int numEnemy = 1; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	//		{
+	//			if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+	//			{
+	//				if (elapsedTime > bufferTime_attack_M)
+	//				{
+	//					EnemyManager::get_instance()->EnemyList[numEnemy]->attack(1, EnemyManager::get_instance()->EnemyList[numEnemy]->position_m, EnemyManager::get_instance()->EnemyList[numEnemy]->direction_m, dt, block);
+	//					bufferTime_attack_M = elapsedTime + 2.f;
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+	//else
+	{
+		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+		{									// *I hope.
+			inmovement = false;				// so many if statements I could write a philosophy book
+			if (Application::IsKeyPressed('A') && !roll)
+			{
+				//if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+				//	!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+				//	pressedD == true)
+				//{
+					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+					pressedD = false;
+					pressedA = true;
+					inmovement = true;
+
+					if (grab)
+					{
+						//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+						//{
+						//	ShortBox_PosX -= (float)(movespeed * dt);
+						//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						//}
+						//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+						//{
+						//	TallBox_PosX -= (float)(movespeed * dt);
+						//	meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						//}
+					}
+				//}
+			}
+
+			if (Application::IsKeyPressed('D') && !roll)
+			{
+				//if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+				//	!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
+				//	|| pressedA == true)
+				//{
+					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+					pressedA = false;
+					pressedD = true;
+					inmovement = true;
+
+					if (grab)
+					{
+						//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+						//{
+						//	ShortBox_PosX += (float)(movespeed * dt);
+						//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						//}
+						//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+						//{
+						//	TallBox_PosX += (float)(movespeed * dt);
+						//	meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						//}
+					}
+				//}
+			}
+
+			if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
+			{
+				bufferTime_Jump = elapsedTime + 0.6f;
+				bufferTime_JumpUp = elapsedTime + 0.3f;
+			}
+			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
+			{
+				bufferTime_attack = elapsedTime + 1.f;
+
+				for (unsigned int numEnemy = 1; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+				{
+					if ((EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox))
+						EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-50);
+				}
+			}
+
+			if (Application::IsKeyPressed('F') && !block && !roll)
+				bufferTime_grab = elapsedTime + 0.15f;
+
+			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
+				bufferTime_block = elapsedTime + 0.2f;
+
+			if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
+			{
+				bufferTime_roll = elapsedTime + 0.8f;
+				bufferTime_iframeroll = elapsedTime + 0.35f;
+			}
+
+			/* mutant */
+
+			for (unsigned int numEnemy = 1; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+			{
+				if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+				{
+					if (elapsedTime > bufferTime_attack_M)
+					{
+						EnemyManager::get_instance()->EnemyList[numEnemy]->attack(1, EnemyManager::get_instance()->EnemyList[numEnemy]->position_m, EnemyManager::get_instance()->EnemyList[numEnemy]->direction_m, dt, block);
+						bufferTime_attack_M = elapsedTime + 2.f;
+					}
+				}
+			}
+		}
+
+	}
+	if (bufferTime_JumpUp > elapsedTime)
 		injump = true;
 	else
-		injump = false;*/
+		injump = false;
 
 	if (bufferTime_attack > elapsedTime)
 	{
@@ -389,57 +688,89 @@ void StudioProject2Scene2::Update(double dt)
 		et[0] += dt;
 	}
 	else
-	{
 		attack = false;
+
+	if (bufferTime_roll > elapsedTime)
+	{
+		roll = true;
+		et[7] += dt;
+
+		if (pressedA/* && !trigger &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
+			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+		else if (pressedD/* && !trigger &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
+			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	}
+	else
+		roll = false;
+
+	if (bufferTime_block > elapsedTime)
+	{
+		block = true;
+		et[8] += dt;
+	}
+	else
+		block = false;
 
 	if (bufferTime_grab > elapsedTime)
 	{
 		grab = true;
-		et[1] += dt;
+		et[9] += dt;
 	}
 	else
-	{
 		grab = false;
-	}
 
-	if (inmovement)
+	if (block || grab)
+		movespeed = 17.f;
+	else
+		movespeed = 30.f;
+
+	if (inmovement && !holdanims())
 		et[6] += dt;
 	else
 		et[6] = 0;
 
-	et[20] += dt;		// This is for me to see if the idleanim is running at all
+	if (hmvec[0].get_near())
+	{
+		et[10] = 0;
+		et[11] += dt;
+	}
+	else
+	{
+		et[10] += dt;
+		et[11] = 0;
+	}
 
-	//if (!trigger)
-	//{
-	//	if (injump == false)
-	//	{
-	//		if (/*!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&*/
-	//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
-	//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox) &&
-	//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOOR]->MeshBBox) &&
-	//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) /*&&
-	//																								  !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
-	//		{
-	//			if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) &&
-	//				PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
-	//				(PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
-	//				PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
-	//			{
-	//				 do jack shit
-	//			}
-	//			else
-	//			{
-	//				bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
-	//				PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
-	//	}
-	//}
+	et[20] += dt;
+
+	if (!trigger)
+	{
+		if (injump == false)
+		{
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox))
+			{
+				//if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) &&
+				//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
+				//	(PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
+				//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
+				//{
+				//	// do jack shit
+				//}
+				//else
+				{
+					bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
+					PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
+				}
+			}
+		}
+		else
+		{
+			PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
+		}
+	}
 
 	//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER_SLOPE]->MeshBBox))
 	//{
@@ -447,52 +778,110 @@ void StudioProject2Scene2::Update(double dt)
 	//	trigger = true;
 	//}
 
-	//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-	//{
-	//	PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
-	//}
-
-	//PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
-
-	//for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
-	//{
-	//	for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-	//	{
-	//		PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
-
-	//		EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
-
-	//		meshList[GEO_TESTBBOX]->MeshBBox.loadBB("OBJ//Scene1//Box_Short.obj");
-	//	}
-	//}
-
-	//meshList[GEO_MUTANT_TORSO]->MeshBBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG
-	/*--------------------------------------------------------*/
-
-
-
-	/*---------Triggers------*/
-	/*if (bufferTime_trigger_slope > elapsedTime && trigger == true)
+	for (unsigned int numEnemy = 1; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
 	{
-		if (elapsedTime < (bufferTime_trigger_slope - 10.99f))
-			PlayerClass::get_instance()->position_a.y = -3.f;
-		PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
-		PlayerClass::get_instance()->position_a.y -= (float)(3.25f * dt);
-		if (elapsedTime >(bufferTime_trigger_slope - 10.8f))
+		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_action() == 1)
 		{
-			PlayerClass::get_instance()->position_a.y -= (float)(10.f * dt);
+			et[20] = 0;
+			et[21] = 0;
+			et[22] += dt;
+			et[23] = 0;
+
+			if (elapsedTime + 1.5f < bufferTime_attack_M)
+			{
+				et[20] = 0;
+				et[22] += dt;
+			}
+			else
+			{
+				et[22] = 0;
+				et[20] += dt;
+			}
 		}
-		if (elapsedTime > (bufferTime_trigger_slope - 8.f))
+		else if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_action() == 2)
 		{
-			PlayerClass::get_instance()->position_a.y -= (float)(12.5f * dt);
+			et[21] = 0;
+			et[22] = 0;
+			if ((elapsedTime + 0.5f < bufferTime_attack_M) && (elapsedTime + 1.5f > bufferTime_attack_M))
+			{
+				et[23] = 0;
+				et[20] += dt;
+			}
+			else
+			{
+				et[20] = 0;
+				et[23] += dt;
+			}
+		}
+		else
+		{
+			et[20] = 0;
+			et[21] += dt;
+			et[22] = 0;
+			et[23] = 0;
 		}
 	}
-	else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
-		trigger = false;*/
+
+	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+
+	for (unsigned int numenemy = 1; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
+		{
+			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+			{
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+			}
+		}
+	}
+
+	for (unsigned int numEnemy = 1; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+			EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	}
+	/*--------------------------------------------------------*/
+
+	/*---------Triggers------*/
+	//if (bufferTime_trigger_slope > elapsedTime && trigger == true)
+	//{
+	//	if (elapsedTime < (bufferTime_trigger_slope - 10.99f))
+	//		PlayerClass::get_instance()->position_a.y = -3.f;
+	//	PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+	//	PlayerClass::get_instance()->position_a.y -= (float)(3.25f * dt);
+	//	if (elapsedTime >(bufferTime_trigger_slope - 10.8f))
+	//	{
+	//		PlayerClass::get_instance()->position_a.y -= (float)(10.f * dt);
+	//	}
+	//	if (elapsedTime > (bufferTime_trigger_slope - 8.f))
+	//	{
+	//		PlayerClass::get_instance()->position_a.y -= (float)(12.5f * dt);
+	//	}
+	//}
+	//else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
+	//	trigger = false;
 	/*--------------------------------------*/
 	TextInteraction();
 	LightInteraction();
 
+	/*--------------Updates the Full Mutant Kill Count--------*/
+	for (unsigned int numEnemy = 1; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() == 0)
+		{
+			PlayerClass::get_instance()->fm_Killed++;
+			EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-1);
+		}
+	}
+	/*-------------------------------------------------------*/
+
+	/*---------Change Scene------*/
+	//if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0)))
+	//{
+	//	SceneManager::getInstance()->Location = "Inner City";
+	//	SceneManager::getInstance()->changeScene(new LoadingScreen());
+	//}
 	if (PlayerClass::get_instance()->get_health() <= 0)
 	{
 		SceneManager::getInstance()->changeScene(new DeathScreen());
@@ -529,7 +918,7 @@ void StudioProject2Scene2::Render()
 	unsigned int num_anim;
 	for (num_anim = 0; num_anim < 10;)
 	{
-		if (et[num_anim] <= 0)
+		if (et[num_anim] <= 0.f)
 			num_anim++;
 		else
 			break;
@@ -538,103 +927,243 @@ void StudioProject2Scene2::Render()
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);					// This was a mistake tbh
-	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// I should have put the scale in init
-	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);								// too late for that now
+	PlayerClass::get_instance()->PlayerHitBox.scale(1.1f, 4.5f, 1.f);
+	PlayerClass::get_instance()->PlayerHitBox.translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);
+	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);
 	modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
 
 	// add in grab animation later
 
-	modelStack.PushMatrix();
-	AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
-
-	RenderMesh(meshList[GEO_ALEXIS_HEAD], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
-
-	RenderMesh(meshList[GEO_ALEXIS_LEFTARM], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
-
-	RenderMesh(meshList[GEO_ALEXIS_BODY], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
-
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
-
-	RenderMesh(meshList[GEO_ALEXIS_CROTCH], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
-
-	RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], false);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
-
-	RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], false);
-	modelStack.PopMatrix();
-
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();							// render collision box
-	modelStack.Translate(PlayerClass::get_instance()->position_a.x, (PlayerClass::get_instance()->position_a.y + 7.9f), PlayerClass::get_instance()->position_a.z);	// i need this
-	modelStack.Scale(1.1f, 4.5f, 1.f);					// if you remove it bad things will happen
-	RenderMesh(meshList[GEO_BBOX], false);				// remove this later when showing actual shit of course
-	modelStack.PopMatrix();								// :ok_hand:
-	//// for some reason I needed to flip translate and scale here to fit with the actual hitbox
-	//modelStack.PushMatrix();
-	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMESHIT]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
-	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
-	/*-----------------------------------------------*/
-	/*-------------Projectile-------------------------*/
-	modelStack.PushMatrix();
-	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	if (num_anim == 7 || num_anim == 8 || num_anim == 9)
 	{
-		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
+		RenderMesh(meshList[GEO_ALEXUS_CROTCH], true);
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
+		RenderMesh(meshList[GEO_ALEXUS_BODY], true);
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
+		RenderMesh(meshList[GEO_ALEXUS_HEAD], true);
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
+		RenderMesh(meshList[GEO_ALEXUS_LEFT4ARM], true);
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface24");//ARM WITH SWORD
+		RenderMesh(meshList[GEO_ALEXUS_LEFTARM], true);
+
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
+		RenderMesh(meshList[GEO_ALEXUS_RIGHT4ARM], true);
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface30");//LEFTARM
+		RenderMesh(meshList[GEO_ALEXUS_RIGHTARM], true);
+
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
+		RenderMesh(meshList[GEO_ALEXUS_LEFTTHIGH], true);
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface10");//RIGHT LEG
+		RenderMesh(meshList[GEO_ALEXUS_LEFTLEG], true);
+
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
+		RenderMesh(meshList[GEO_ALEXUS_RIGHTTHIGH], true);
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface12");//LEFTLEG
+		RenderMesh(meshList[GEO_ALEXUS_RIGHTLEG], true);
+
+		modelStack.PopMatrix();
+		modelStack.PopMatrix();
+
+		modelStack.PopMatrix();
+	}
+	else
+	{
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface9"); // HEAD
+		RenderMesh(meshList[GEO_ALEXIS_HEAD], true);
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere17");//ARM WITH SWORD
+		RenderMesh(meshList[GEO_ALEXIS_LEFTARM], true);
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "polySurface32");//BODY
+		RenderMesh(meshList[GEO_ALEXIS_BODY], true);
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere14");//LEFTARM
+		RenderMesh(meshList[GEO_ALEXIS_RIGHTARM], true);
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pCylinder15");//crotch
+		RenderMesh(meshList[GEO_ALEXIS_CROTCH], true);
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere9");//RIGHT LEG
+		RenderMesh(meshList[GEO_ALEXIS_LEFTLEG], true);
+
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		AnimCheck(num_anim, &modelStack, &et[num_anim], "pSphere10");//LEFTLEG
+		RenderMesh(meshList[GEO_ALEXIS_RIGHTLEG], true);
+
+		modelStack.PopMatrix();
+	}
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(PlayerClass::get_instance()->position_a.x,
+		(PlayerClass::get_instance()->position_a.y + 7.9f), // render collision box
+		PlayerClass::get_instance()->position_a.z);		 // i need this
+	modelStack.Scale(1.1f, 4.5f, 1.f);										 // if you remove it bad things will happen
+	RenderMesh(meshList[GEO_BBOX], false);									 // remove this later when showing actual shit of course
+	modelStack.PopMatrix();												 	 // :ok_hand:
+	// for some reason I needed to flip translate and scale here to fit with the actual hitbox
+
+	//modelStack.PushMatrix();								// why did i even render this?
+	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
+	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
+
+	//modelStack.PushMatrix();
+	//RenderMesh(meshList[GEO_TESTBBOX], false);
+	//modelStack.PopMatrix();
+
+	/*-----------------Mutants (Fuglymon)---------------------*/
+	unsigned int num_anim_mutant;
+	for (num_anim_mutant = 20; num_anim_mutant <= 30;)
+	{
+		if (et[num_anim_mutant] <= 0.f)
+			num_anim_mutant++;
+		else
+			break;
+	}
+
+	for (unsigned int numenemy = 1; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 		{
-			meshList[GEO_TESTBBOX]->MeshBBox.translate(EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.x,
-				(EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.y + 10.f),
-				EnemyManager::get_instance()->EnemyList[0]->spit_[0]->position_.z);
-			RenderMesh(meshList[GEO_TESTBBOX], false);			// remove this later when showing actual shit of course
+			RenderProjectiles();
+			RenderMutant(num_anim_mutant);
 		}
 	}
-	modelStack.PopMatrix();
-	/*------------------------------------------------*/
-	/*-----------------Mutants (Fuglymon)---------------------*/
-	//RenderProjectiles();
+	/*-------------------------------------------------------*/
 
-	//RenderMutant();
+	unsigned int num_anim_hmutant;
+	for (num_anim_hmutant = 10; num_anim_hmutant < 20;)
+	{
+		if (et[num_anim_hmutant] <= 0.f)
+			num_anim_hmutant++;
+		else
+			break;
+	}
+
+	/*---------------Half Mutant & Human---------------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(hmvec[0].position_hm.x, hmvec[0].position_hm.y, hmvec[0].position_hm.z);
+	modelStack.Rotate(hmvec[0].hm_LookingDirection, 0, 1, 0);
+	modelStack.Scale(hmvec[0].size_hm.x, hmvec[0].size_hm.y, hmvec[0].size_hm.z);
+
+	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "body");
+	RenderMesh(meshList[GEO_HM_BODY], true);
+
+	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "Head");
+	RenderMesh(meshList[GEO_HM_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "RightArm");
+	RenderMesh(meshList[GEO_HM_RIGHTARM], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "LeftArm");
+	RenderMesh(meshList[GEO_HM_LEFTARM], true);
+
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "LeftLeg");
+	RenderMesh(meshList[GEO_HM_LEFTLEG], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_H_Mutant(num_anim_hmutant, &modelStack, &et[num_anim_hmutant], "RightLeg");
+	RenderMesh(meshList[GEO_HM_RIGHTLEG], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	// human
+	modelStack.PushMatrix();
+	modelStack.Translate(hmvec[0].position_hm.x, hmvec[0].position_hm.y, hmvec[0].position_hm.z);
+	modelStack.Rotate(hmvec[0].hm_LookingDirection, 0, 1, 0);
+	modelStack.Scale(hmvec[0].size_human.x, hmvec[0].size_human.y, hmvec[0].size_human.z);
+	RenderMesh(meshList[GEO_HUMAN], true);
+	modelStack.PopMatrix();
 	/*-------------------------------------------------------*/
 
 	/*--------------------Environmental Objects--------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -5, 0);
-	RenderMesh(meshList[GEO_FLOORBBOX], false);
+	RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
 	RenderMesh(meshList[GEO_SCENE2], true);
 	modelStack.PopMatrix();
 
 	/*-------------------------------------------------------*/
+	/*-----------------Skybox-------------------*/
+	//modelStack.PushMatrix();
+	//modelStack.Translate(450, 80, -200);
+	//modelStack.Scale(1600, 675, 1);
+	//RenderMesh(meshList[GEO_SKYBOX], false);
+	//modelStack.PopMatrix();
+	/*------------------------------------------*/
 
 	/*-----------------Environmental Light Rendering------*/
 	RenderLightStands();
 	/*----------------------------------------------------*/
+
 	/*----Textbox Rendering--------*/
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
 	/*-----------------------------*/
+
 	/*------------------HUD-------------------------------------------------*/
 	/*----Half mutant count--------*/
 	RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 5, 0.5, 8, 8, 0);
@@ -644,6 +1173,7 @@ void StudioProject2Scene2::Render()
 	RenderMeshOnScreen(meshList[GEO_FULL_COUNT], 7, 0.5, 8, 8, 0);
 	RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 4, 16.3, -9);
 	/*-----------------------------*/
+
 	/*----Heart Rendering----------*/
 	float positionXscreen = 2;
 	float positionYscreen = 28.5;
@@ -657,6 +1187,8 @@ void StudioProject2Scene2::Render()
 		positionXscreen += 2;
 	}
 	/*-----------------------------*/
+
+
 	/*---------------Text log Rendering--------*/
 	RenderTextInteractions();
 	/*-----------------------------------------*/
@@ -667,7 +1199,12 @@ void StudioProject2Scene2::Render()
 
 bool StudioProject2Scene2::otheranims()
 {
-	return (attack || trigger || grab);
+	return (attack /*|| trigger*/);
+}
+
+bool StudioProject2Scene2::holdanims()
+{
+	return (roll || grab || block);
 }
 
 void StudioProject2Scene2::Exit()
@@ -683,117 +1220,120 @@ void StudioProject2Scene2::Exit()
 
 void StudioProject2Scene2::RenderProjectiles()
 {
-//	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
-//	{
-//		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-//		{
-//			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) || EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
-//			{
-//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->~Projectile();
-//			}
-//			else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox))
-//			{
-//				// take damage
-//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->~Projectile();
-//			}
-//			else
-//			{
-//				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] == nullptr)
-//					break;
-//				modelStack.PushMatrix();
-//				modelStack.Translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-//					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
-//				RenderMesh(meshList[GEO_SPIT], false);
-//				modelStack.PopMatrix();
-//			}
-//
-//			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-//				(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
-//		}
-//	}
+	for (unsigned int numenemy = 1; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		{
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+			{
+				modelStack.PushMatrix();
+				modelStack.Translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+				RenderMesh(meshList[GEO_SPIT], false);
+				modelStack.PopMatrix();
+			}
+		}
+	}
 }
 
-void StudioProject2Scene2::RenderMutant()
+void StudioProject2Scene2::RenderMutant(unsigned int num_anim_mutant)
 {
-//	modelStack.PushMatrix();
-//	EnemyManager* enemies = EnemyManager::get_instance();
-//
-//	modelStack.Translate(EnemyManager::get_instance()->EnemyList[0]->position_m.x,
-//		EnemyManager::get_instance()->EnemyList[0]->position_m.y,
-//		EnemyManager::get_instance()->EnemyList[0]->position_m.z);
-//
-//	if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == -1)
-//		modelStack.Rotate(180, 0, 1, 0);
-//	else if (EnemyManager::get_instance()->EnemyList[0]->direction_m.x == 1)
-//		modelStack.Rotate(0, 0, 1, 0);
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_Head");
-//
-//	RenderMesh(meshList[GEO_MUTANT_HEAD], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftArm");
-//
-//	RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftFeet");
-//
-//	RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftThigh");
-//
-//	RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_LeftUpperarm");
-//
-//	RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_Neck");
-//
-//	RenderMesh(meshList[GEO_MUTANT_NECK], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_RightArm");
-//
-//	RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_RightFeet");
-//
-//	RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_RightThigh");
-//
-//	RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_RightUpperarm");
-//
-//	RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PushMatrix();
-//	IdleAnim_M(&modelStack, &et[20], "Mutant_Torso");
-//
-//	RenderMesh(meshList[GEO_MUTANT_TORSO], true);
-//	modelStack.PopMatrix();
-//
-//	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+
+	for (unsigned int numenemy = 1; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		EnemyManager::get_instance()->EnemyList[numenemy]->EnemyHitBox.scale(4.f, 2.1f, 1.f);
+
+		EnemyManager::get_instance()->EnemyList[numenemy]->EnemyHitBox.translate(EnemyManager::get_instance()->EnemyList[numenemy]->position_m.x,
+			EnemyManager::get_instance()->EnemyList[numenemy]->position_m.y,
+			EnemyManager::get_instance()->EnemyList[numenemy]->position_m.z);
+
+		modelStack.Translate(EnemyManager::get_instance()->EnemyList[numenemy]->position_m.x,
+			EnemyManager::get_instance()->EnemyList[numenemy]->position_m.y,
+			EnemyManager::get_instance()->EnemyList[numenemy]->position_m.z);
+
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->direction_m.x == -1)
+			modelStack.Rotate(180, 0, 1, 0);
+		else if (EnemyManager::get_instance()->EnemyList[numenemy]->direction_m.x == 1)
+			modelStack.Rotate(0, 0, 1, 0);
+	}
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_Torso");
+	RenderMesh(meshList[GEO_MUTANT_TORSO], true);
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_Neck");
+	RenderMesh(meshList[GEO_MUTANT_NECK], true);
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_Head");
+	RenderMesh(meshList[GEO_MUTANT_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	for (unsigned int numenemy = 1; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->direction_m.x == -1)
+			modelStack.Rotate(-180, 0, 1, 0);
+	}
+
+	AnimCheck_Mutant(20, &modelStack, &et[20], "Mutant_Head");
+	modelStack.Translate(-2, 5, 0);
+	RenderMesh(meshList[GEO_M_RHEART], false);
+	modelStack.Translate(3, 0, 0);
+	if (EnemyManager::get_instance()->EnemyList[0]->get_health() == 100)
+		RenderMesh(meshList[GEO_M_RHEART], false);
+	else
+		RenderMesh(meshList[GEO_M_BHEART], false);
+
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftUpperarm");
+	RenderMesh(meshList[GEO_MUTANT_LEFTUPPERARM], true);
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftArm");
+	RenderMesh(meshList[GEO_MUTANT_LEFTARM], true);
+
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightUpperarm");
+	RenderMesh(meshList[GEO_MUTANT_RIGHTUPPERARM], true);
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightArm");
+	RenderMesh(meshList[GEO_MUTANT_RIGHTARM], true);
+
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftThigh");
+	RenderMesh(meshList[GEO_MUTANT_LEFTTHIGH], true);
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_LeftFeet");
+	RenderMesh(meshList[GEO_MUTANT_LEFTFEET], true);
+
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightThigh");
+	RenderMesh(meshList[GEO_MUTANT_RIGHTTHIGH], true);
+
+	modelStack.PushMatrix();
+	AnimCheck_Mutant(num_anim_mutant, &modelStack, &et[num_anim_mutant], "Mutant_RightFeet");
+	RenderMesh(meshList[GEO_MUTANT_RIGHTFEET], true);
+
+	modelStack.PopMatrix(); // staircase ayy
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
 }
