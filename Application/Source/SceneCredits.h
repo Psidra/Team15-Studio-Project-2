@@ -1,8 +1,7 @@
-#ifndef DeathScreen_H
-#define DeathScreen_H
+#ifndef SceneCredits_H
+#define SceneCredits_H
 #include <string>
 #include "Scene.h"
-#include "SceneManager.h"
 #include "Camera2.h"
 #include "Camera3.h"
 #include "Mesh.h"
@@ -10,11 +9,11 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-class DeathScreen : public Scene
+class SceneCredits : public Scene
 {
 public:
-	DeathScreen();
-	~DeathScreen();
+	SceneCredits();
+	~SceneCredits();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -24,10 +23,8 @@ public:
 
 	enum GEOMETRY_TYPE
 	{
-		GEO_DEATHSCREEN,
+		GEO_IMAGE,
 		GEO_TEXT,
-		GEO_HALF_COUNT,
-		GEO_FULL_COUNT,
 		NUM_GEOMETRY,
 	};
 
@@ -71,16 +68,23 @@ private:
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
+	double elapsedTime;
+	double bufferTime_credits;
+	double bufferTime_marcus;
+	double bufferTime_esther;
+	double bufferTime_wafieqa;
+
+	float marcus;
+	float edward;
+	float esther;
+	float wafieqa;
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
 
 	std::string fps;
-	std::string hMutantSaved;
-	std::string fMutantKilled;
-	std::string timer;
-	std::string deathLocation;
+
 	/*double elapsedTime;
 	double bufferTime;
 	bool buttonpressed;*/

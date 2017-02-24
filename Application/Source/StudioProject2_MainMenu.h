@@ -20,7 +20,6 @@ public:
 	virtual void Render();
 	virtual void RenderMesh(Mesh *mesh, bool enableLight);
 	virtual void Exit();
-	virtual void text();
 
 	enum GEOMETRY_TYPE
 	{
@@ -70,7 +69,6 @@ private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 
-	void RenderSkybox();
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);

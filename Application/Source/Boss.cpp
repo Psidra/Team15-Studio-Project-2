@@ -55,7 +55,7 @@ void Boss::dmgOvertime(double timeElapsed)
 
 void Boss::bossHealthUI()
 {
-	if (boss_health > 0)
+	if (boss_health >= 0)
 	{
 		bossLife.heartCounter = boss_health / 10;
 

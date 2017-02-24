@@ -1,8 +1,7 @@
-#ifndef DeathScreen_H
-#define DeathScreen_H
+#ifndef SelectionScreen_H
+#define SelectionScreen_H
 #include <string>
 #include "Scene.h"
-#include "SceneManager.h"
 #include "Camera2.h"
 #include "Camera3.h"
 #include "Mesh.h"
@@ -10,11 +9,11 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-class DeathScreen : public Scene
+class SelectionScreen : public Scene
 {
 public:
-	DeathScreen();
-	~DeathScreen();
+	SelectionScreen();
+	~SelectionScreen();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -24,10 +23,8 @@ public:
 
 	enum GEOMETRY_TYPE
 	{
-		GEO_DEATHSCREEN,
+		GEO_IMAGE,
 		GEO_TEXT,
-		GEO_HALF_COUNT,
-		GEO_FULL_COUNT,
 		NUM_GEOMETRY,
 	};
 
@@ -77,10 +74,7 @@ private:
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
 
 	std::string fps;
-	std::string hMutantSaved;
-	std::string fMutantKilled;
-	std::string timer;
-	std::string deathLocation;
+
 	/*double elapsedTime;
 	double bufferTime;
 	bool buttonpressed;*/

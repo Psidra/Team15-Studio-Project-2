@@ -1,5 +1,5 @@
-#ifndef DeathScreen_H
-#define DeathScreen_H
+#ifndef VictoryScreen_H
+#define VictoryScreen_H
 #include <string>
 #include "Scene.h"
 #include "SceneManager.h"
@@ -10,11 +10,11 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-class DeathScreen : public Scene
+class VictoryScreen : public Scene
 {
 public:
-	DeathScreen();
-	~DeathScreen();
+	VictoryScreen();
+	~VictoryScreen();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -24,7 +24,7 @@ public:
 
 	enum GEOMETRY_TYPE
 	{
-		GEO_DEATHSCREEN,
+		GEO_VICTORYSCREEN,
 		GEO_TEXT,
 		GEO_HALF_COUNT,
 		GEO_FULL_COUNT,
