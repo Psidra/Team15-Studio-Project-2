@@ -764,7 +764,7 @@ void StudioProject2Scene1::Render()
 	unsigned int num_anim;
 	for (num_anim = 0; num_anim < 30;)
 	{
-		if (et[num_anim] == 0.f)
+		if (et[num_anim] <= 0.f)
 			num_anim++;
 		else
 			break;
