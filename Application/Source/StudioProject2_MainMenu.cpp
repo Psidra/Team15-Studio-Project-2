@@ -1,5 +1,6 @@
 #include "StudioProject2_MainMenu.h"
-#include "StudioProject2_Scene1.h"
+#include "LoadingScreen.h"
+#include "SelectionScreen.h"
 #include "EnemyClassManager.h"
 #include "DeathScreen.h"
 #include "SceneBoss.h"
@@ -106,36 +107,14 @@ void StudioProject2MainMenu::Update(double dt)
 	fps = "FPS:" + std::to_string(framespersec);
 	/*----------------------------------------------------------*/
 
-	if (Application::IsKeyPressed(VK_1))
-		glEnable(GL_CULL_FACE);
-
-	if (Application::IsKeyPressed(VK_2))
-		glDisable(GL_CULL_FACE);
-
-	if (Application::IsKeyPressed(VK_3))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	if (Application::IsKeyPressed(VK_4))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	//float LSPEED = 10.f;
-	//if (Application::IsKeyPressed('I'))
-	//	light[0].position.z -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('K'))
-	//	light[0].position.z += (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('J'))
-	//	light[0].position.x -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('L'))
-	//	light[0].position.x += (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('O'))
-	//	light[0].position.y -= (float)(LSPEED * dt);
-	//if (Application::IsKeyPressed('P'))
-	//	light[0].position.y += (float)(LSPEED * dt);
-
 	if (Application::IsKeyPressed(VK_RETURN))
 	{
-		SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
 		SceneManager::getInstance()->Location = "Secluded Forest";
+		SceneManager::getInstance()->changeScene(new LoadingScreen());
+	}
+	if (Application::IsKeyPressed(VK_SPACE))
+	{
+		SceneManager::getInstance()->changeScene(new SelectionScreen());
 	}
 	if (Application::IsKeyPressed('T'))
 	{
@@ -149,11 +128,6 @@ void StudioProject2MainMenu::Update(double dt)
 	
 
 
-}
-
-void StudioProject2MainMenu::text()
-{
-	//fill in when necessary
 }
 
 void StudioProject2MainMenu::Render()
@@ -171,12 +145,13 @@ void StudioProject2MainMenu::Render()
 		camera.up.x, camera.up.y, camera.up.z);
 
 	modelStack.LoadIdentity();
-
+	
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Start Game", Color(1, 1, 1), 2, 11, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -6);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space> to Select a Level", Color(1, 1, 1), 2, 11, -6);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -7);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
@@ -223,11 +198,6 @@ void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-}
-
-void StudioProject2MainMenu::RenderSkybox()
-{
-	// Person in charge of implementing skybox, pls type the codes (rotate,transform,scale) here
 }
 
 void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color color)

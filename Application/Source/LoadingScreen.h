@@ -1,8 +1,7 @@
-#ifndef DeathScreen_H
-#define DeathScreen_H
+#ifndef LoadingScreen_H
+#define LoadingScreen_H
 #include <string>
 #include "Scene.h"
-#include "SceneManager.h"
 #include "Camera2.h"
 #include "Camera3.h"
 #include "Mesh.h"
@@ -10,11 +9,11 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-class DeathScreen : public Scene
+class LoadingScreen : public Scene
 {
 public:
-	DeathScreen();
-	~DeathScreen();
+	LoadingScreen();
+	~LoadingScreen();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -24,10 +23,8 @@ public:
 
 	enum GEOMETRY_TYPE
 	{
-		GEO_DEATHSCREEN,
+		GEO_LOADINGSCREEN,
 		GEO_TEXT,
-		GEO_HALF_COUNT,
-		GEO_FULL_COUNT,
 		NUM_GEOMETRY,
 	};
 
@@ -71,16 +68,15 @@ private:
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
+	double elapsedTime;
+	double bufferTime_Load;
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
 
 	std::string fps;
-	std::string hMutantSaved;
-	std::string fMutantKilled;
-	std::string timer;
-	std::string deathLocation;
+	std::string loadLocation;
 	/*double elapsedTime;
 	double bufferTime;
 	bool buttonpressed;*/
