@@ -1,6 +1,6 @@
 #include "PlayerClass.h"
 #include "Application.h"
-
+#include "GLFW\glfw3.h"
 PlayerClass* PlayerClass::instance;
 
 unsigned int PlayerClass::get_health()
@@ -71,15 +71,36 @@ bool PlayerClass::isDead()
 
 void PlayerClass::facingDirection()
 {
-	if (Application::IsKeyPressed('A') && Application::IsKeyPressed('D'))
+	int Connected = glfwJoystickPresent(GLFW_JOYSTICK_1);
+
+	if (Connected == 1)
 	{
+		int buttonCount;
+		const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
+		if (Application::IsKeyPressed('A') && Application::IsKeyPressed('D'))
+		{
+		}
+		else
+		{
+			if (((Application::IsKeyPressed('A') || GLFW_PRESS == xbox[13]) && a_LookingDirection == 90) ||
+				((Application::IsKeyPressed('D') || GLFW_PRESS == xbox[11]) && a_LookingDirection == -90))
+			{
+				a_LookingDirection *= -1;
+			}
+		}
 	}
 	else
 	{
-		if ((Application::IsKeyPressed('A') && a_LookingDirection == 90) ||
-			(Application::IsKeyPressed('D') && a_LookingDirection == -90))
+		if (Application::IsKeyPressed('A') && Application::IsKeyPressed('D'))
 		{
-			a_LookingDirection *= -1;
+		}
+		else
+		{
+			if ((Application::IsKeyPressed('A') && a_LookingDirection == 90) ||
+				(Application::IsKeyPressed('D') && a_LookingDirection == -90))
+			{
+				a_LookingDirection *= -1;
+			}
 		}
 	}
 }

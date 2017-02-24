@@ -2,6 +2,7 @@
 #include "LoadingScreen.h"
 #include "DeathScreen.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -482,105 +483,211 @@ void StudioProject2Scene1::Update(double dt)
 	}
 
 	// !PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox)
+	int Connected = glfwJoystickPresent(GLFW_JOYSTICK_1);
 
-	if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
-	{									// *I hope.
-		inmovement = false;				// so many if statements I could write a philosophy book
-		if (Application::IsKeyPressed('A') && !roll)
-		{
-			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
-				pressedD == true)
+	if (Connected == 1)
+	{
+		int xboxButtonCount;
+		const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxButtonCount);
+		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+		{									// *I hope.
+			inmovement = false;				// so many if statements I could write a philosophy book
+			if ((GLFW_PRESS == xbox[13] || Application::IsKeyPressed('A')) && !roll)
 			{
-				PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
-				pressedD = false;
-				pressedA = true;
-				inmovement = true;
-
-				if (grab)
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+					pressedD == true)
 				{
-					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+					pressedD = false;
+					pressedA = true;
+					inmovement = true;
+
+					if (grab)
 					{
-						ShortBox_PosX -= (float)(movespeed * dt);
-						meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-					}
-					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-					{
-						TallBox_PosX -= (float)(movespeed * dt);
-						meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+						{
+							ShortBox_PosX -= (float)(movespeed * dt);
+							meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						}
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+						{
+							TallBox_PosX -= (float)(movespeed * dt);
+							meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						}
 					}
 				}
 			}
-		}
 
-		if (Application::IsKeyPressed('D') && !roll)
-		{
-			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
-				|| pressedA == true)
+			if (GLFW_PRESS == xbox[11] || Application::IsKeyPressed('D') && !roll)
 			{
-				PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
-				pressedA = false;
-				pressedD = true;
-				inmovement = true;
-
-				if (grab)
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
+					|| pressedA == true)
 				{
-					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+					pressedA = false;
+					pressedD = true;
+					inmovement = true;
+
+					if (grab)
 					{
-						ShortBox_PosX += (float)(movespeed * dt);
-						meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-						meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-					}
-					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-					{
-						TallBox_PosX += (float)(movespeed * dt);
-						meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-						meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+						{
+							ShortBox_PosX += (float)(movespeed * dt);
+							meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						}
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+						{
+							TallBox_PosX += (float)(movespeed * dt);
+							meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						}
 					}
 				}
 			}
-		}
 
-		if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
-		{
-			bufferTime_Jump = elapsedTime + 0.6f;
-			bufferTime_JumpUp = elapsedTime + 0.3f;
-		}
-		if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
-		{
-			bufferTime_attack = elapsedTime + 1.f;
-
-			if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
-				EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
-		}
-
-		if (Application::IsKeyPressed('F') && !block && !roll)
-			bufferTime_grab = elapsedTime + 0.15f;
-
-		if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
-			bufferTime_block = elapsedTime + 0.2f;
-
-		if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
-		{
-			bufferTime_roll = elapsedTime + 0.8f;
-			bufferTime_iframeroll = elapsedTime + 0.35f;
-		}
-
-		/* mutant */
-
-		if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
-		{
-			if (elapsedTime > bufferTime_attack_M)
+			if ((GLFW_PRESS == xbox[0] || Application::IsKeyPressed('W')) && elapsedTime > bufferTime_Jump)
 			{
-				EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-				bufferTime_attack_M = elapsedTime + 2.f;
+				bufferTime_Jump = elapsedTime + 0.6f;
+				bufferTime_JumpUp = elapsedTime + 0.3f;
+			}
+			if ((GLFW_PRESS == xbox[2] || Application::IsKeyPressed(VK_LBUTTON)) && !attack && !injump && !holdanims())
+			{
+				bufferTime_attack = elapsedTime + 1.f;
+
+				if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
+					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
+			}
+
+			if ((GLFW_PRESS == xbox[5] || Application::IsKeyPressed('F')) && !block && !roll)
+				bufferTime_grab = elapsedTime + 0.15f;
+
+			if ((GLFW_PRESS == xbox[3] || Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
+				bufferTime_block = elapsedTime + 0.2f;
+
+			if ((GLFW_PRESS == xbox[1] || Application::IsKeyPressed(VK_RBUTTON)) && !holdanims())
+			{
+				bufferTime_roll = elapsedTime + 0.8f;
+				bufferTime_iframeroll = elapsedTime + 0.35f;
+			}
+
+			/* mutant */
+
+			if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
+			{
+				if (elapsedTime > bufferTime_attack_M)
+				{
+					EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
+					bufferTime_attack_M = elapsedTime + 2.f;
+				}
 			}
 		}
 	}
+	else
+	{
+		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+		{									// *I hope.
+			inmovement = false;				// so many if statements I could write a philosophy book
+			if (Application::IsKeyPressed('A') && !roll)
+			{
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+					pressedD == true)
+				{
+					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+					pressedD = false;
+					pressedA = true;
+					inmovement = true;
 
+					if (grab)
+					{
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+						{
+							ShortBox_PosX -= (float)(movespeed * dt);
+							meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						}
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
+						{
+							TallBox_PosX -= (float)(movespeed * dt);
+							meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						}
+					}
+				}
+			}
+
+			if (Application::IsKeyPressed('D') && !roll)
+			{
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
+					|| pressedA == true)
+				{
+					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+					pressedA = false;
+					pressedD = true;
+					inmovement = true;
+
+					if (grab)
+					{
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
+						{
+							ShortBox_PosX += (float)(movespeed * dt);
+							meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						}
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
+						{
+							TallBox_PosX += (float)(movespeed * dt);
+							meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						}
+					}
+				}
+			}
+
+			if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
+			{
+				bufferTime_Jump = elapsedTime + 0.6f;
+				bufferTime_JumpUp = elapsedTime + 0.3f;
+			}
+			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
+			{
+				bufferTime_attack = elapsedTime + 1.f;
+
+				if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
+					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
+			}
+
+			if (Application::IsKeyPressed('F') && !block && !roll)
+				bufferTime_grab = elapsedTime + 0.15f;
+
+			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
+				bufferTime_block = elapsedTime + 0.2f;
+
+			if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
+			{
+				bufferTime_roll = elapsedTime + 0.8f;
+				bufferTime_iframeroll = elapsedTime + 0.35f;
+			}
+
+			/* mutant */
+
+			if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
+			{
+				if (elapsedTime > bufferTime_attack_M)
+				{
+					EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
+					bufferTime_attack_M = elapsedTime + 2.f;
+				}
+			}
+		}
+
+	}
 	if (bufferTime_JumpUp > elapsedTime)
 		injump = true;
 	else

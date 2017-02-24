@@ -403,7 +403,7 @@ void StudioProject2Scene2::Update(double dt)
 		grab = false;
 	}
 
-	if (inmovement && !holdanims())
+	if (inmovement)
 		et[6] += dt;
 	else
 		et[6] = 0;
@@ -796,9 +796,4 @@ void StudioProject2Scene2::RenderMutant()
 //	modelStack.PopMatrix();
 //
 //	modelStack.PopMatrix();
-}
-
-bool StudioProject2Scene2::holdanims()
-{
-	return (roll || grab || block);
 }
