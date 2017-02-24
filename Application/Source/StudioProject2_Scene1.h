@@ -26,7 +26,7 @@ public:
 	virtual bool otheranims();
 	virtual bool holdanims();
 	virtual void RenderProjectiles();
-	virtual void RenderMutant();
+	virtual void RenderMutant(unsigned int num_anim_mutant);
 
 	enum GEOMETRY_TYPE
 	{
@@ -203,7 +203,9 @@ private:
 
 	Mutant:
 	20 = idle
-	21 = attack
+	21 = walk
+	22 = attack
+	23 = spit
 	*/
 	/*------------------------------------------------------------*/
 
@@ -234,7 +236,6 @@ private:
 	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
 
 	double bufferTime_attack_M;
-
 };
 
 #endif 

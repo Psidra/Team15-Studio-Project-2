@@ -143,3 +143,13 @@ int EnemyClass::get_health()
 {
 	return health;
 }
+
+unsigned int EnemyClass::get_action()
+{
+	if (meleeAtkRange)
+		return 1;
+	else if (projectileThrowRange)
+		return 2;
+	else
+		return 0;
+}

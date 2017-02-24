@@ -21,6 +21,7 @@ public:
 	void restartLevel();
 	int get_health();
 	void proj_update();
+	unsigned int get_action();
 
 	std::vector<Projectile*> spit_;
 
