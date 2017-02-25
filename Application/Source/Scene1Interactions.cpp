@@ -1,5 +1,6 @@
 #include "StudioProject2_Scene1.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -58,211 +59,427 @@ void StudioProject2Scene1::LightInteraction()
 
 void StudioProject2Scene1::TextInteraction()
 {
-	/*-----------------------Text Interaction----------------*/
-	// Whenever press Enter is needed to continue [message or interaction]
-	if (pEnter == true)
-		pressEnterTS = 2;
+	
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
+	{
+		int xboxButtonsCount;
+		const unsigned char *xboxcontroller = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxButtonsCount);
+		/*-----------------------Text Interaction----------------*/
+		// Whenever press Enter is needed to continue [message or interaction]
+		if (pEnter == true)
+			pressEnterTS = 2;
+		else
+			pressEnterTS = 0;
+
+		/*-------------------Spawn Text--------*/
+		if (PlayerClass::get_instance()->position_a.x < -17.f || PlayerClass::get_instance()->position_a.x > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
+		{
+			spawnTS = 0;
+		}
+		/*-------------------------------------*/
+
+		/*-----------Syringe Text-------------*/
+		if (PlayerClass::get_instance()->position_a.x > 10.f && PlayerClass::get_instance()->position_a.x < 20.f && textOccured == 0)
+		{	// Make syringe text appear once only when near syringe
+			syringeTriggedText = true;
+			pEnter = true;
+			textOccured = 1;
+		}
+
+		if (syringeTriggedText == true)
+			syringeTriggedTS = 2;
+		else
+			syringeTriggedTS = 0;
+
+		if (syringeTriggedText == true && nexttext == true)
+		{
+			syringeSizeX = 0.1f;
+			syringeSizeY = 0.1f;
+			syringeSizeZ = 0.1f;
+			syringeTriggedText = false;
+			pEnter = false;
+			nexttext = false;
+		}
+		/*--------------------------------------*/
+
+		/*------------Box Text--------------------*/
+		if (PlayerClass::get_instance()->position_a.x > 450.f && PlayerClass::get_instance()->position_a.x < 500.f && textOccured == 1) //When near box, text appears
+		{
+			textOccured = 2;
+			nexttext = false;
+			pEnter = true;
+			boxTriggedText = true;
+
+		}
+
+
+		if (boxTriggedText == true)
+			boxTriggedTS = 2;
+		else
+			boxTriggedTS = 0;
+
+		if ((GLFW_PRESS == xboxcontroller[7] || Application::IsKeyPressed(VK_RETURN)) && (bufferTime_text < elapsedTime))
+		{
+			bufferTime_text = elapsedTime + 0.1f;
+			nexttext = true;
+		}
+
+		if (boxTriggedText == true && nexttext == true)
+		{
+			boxTriggedText = false;
+			boxTriggedText_Two = true;
+			nexttext = false;
+		}
+
+		if (boxTriggedText_Two == true)
+			boxTriggedTS_two = 2;
+		else
+			boxTriggedTS_two = 0;
+
+		if (boxTriggedText_Two == true && nexttext == true)
+		{
+			pEnter = false;
+			boxTriggedText_Two = false;
+			nexttext = false;
+		}
+		/*----------------------------------------------*/
+
+		if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccured == 2)
+		{
+			hmTriggeredText = true;
+			pEnter = true;
+			textOccured = 3;
+		}
+
+		if (hmTriggeredText == true)
+			hmTriggedTS = 2;
+		else
+			hmTriggedTS = 0;
+
+		if (hmTriggeredText == true && nexttext == true)
+		{
+			hmTriggeredText = false;
+			hm_to_alexis = true;
+			nexttext = false;
+		}
+
+		if (hm_to_alexis == true)
+			hm_to_alexisTS = 2;
+		else
+			hm_to_alexisTS = 0;
+
+
+		if (hm_to_alexis == true && nexttext == true)
+		{
+			hm_to_alexis = false;
+			alexis_to_hm = true;
+			nexttext = false;
+		}
+
+		if (alexis_to_hm == true)
+			alexis_to_hmTS = 2;
+		else
+			alexis_to_hmTS = 0;
+
+		if (alexis_to_hm == true && nexttext == true)
+		{
+			alexis_to_hm = false;
+			pEnter = false;
+			nexttext = false;
+		}
+		/*----------------------------------------------------*/
+
+		if (alexis_beside_hm == true)
+			alexis_beside_hmTS = 2;
+		else
+			alexis_beside_hmTS = 0;
+
+		if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 3 && textOccured == 3)
+		{
+			alexis_beside_hm = true;
+			pEnter = true;
+			textOccured = 4;
+		}
+
+		if (alexis_beside_hm == true && nexttext == true)
+		{
+			pEnter = false;
+			alexis_beside_hm = false;
+			nexttext = false;
+		}
+
+		if (postProjectileThrownText == true)
+			postProjectileThrownTS = 2;
+		else
+			postProjectileThrownTS = 0;
+
+		if (EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 60
+			&& textOccured == 4)
+		{
+			postProjectileThrownText = true;
+			pEnter = true;
+			textOccured = 5;
+		}
+
+		if (postProjectileThrownText == true && nexttext == true)
+		{
+			pEnter = false;
+			postProjectileThrownText = false;
+			nexttext = false;
+		}
+
+		if (fm_triggedText == true)
+			fm_triggedTS = 2;
+		else
+			fm_triggedTS = 0;
+
+		if (textOccured == 5 && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
+		{
+			fm_triggedText = true;
+			pEnter = true;
+			textOccured = 6;
+		}
+
+		if (alexisText == true)
+			alexisTS = 2;
+		else
+			alexisTS = 0;
+
+		if (fm_triggedText == true && nexttext == true)
+		{
+			fm_triggedText = false;
+			alexisText = true;
+			nexttext = false;
+		}
+
+		if (guideText == true)
+			guideTS = 2;
+		else
+			guideTS = 0;
+
+		if (alexisText == true && nexttext == true)
+		{
+			alexisText = false;
+			guideText = true;
+			nexttext = false;
+		}
+
+		if (guideText == true && nexttext == true)
+		{
+			pEnter = false;
+			guideText = false;
+			nexttext = false;
+		}
+		/*-------------------------------------------------------------------*/
+	}
 	else
-		pressEnterTS = 0;
-
-	/*-------------------Spawn Text--------*/
-	if (PlayerClass::get_instance()->position_a.x < -17.f || PlayerClass::get_instance()->position_a.x > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
 	{
-		spawnTS = 0;
+		/*-----------------------Text Interaction----------------*/
+		// Whenever press Enter is needed to continue [message or interaction]
+		if (pEnter == true)
+			pressEnterTS = 2;
+		else
+			pressEnterTS = 0;
+
+		/*-------------------Spawn Text--------*/
+		if (PlayerClass::get_instance()->position_a.x < -17.f || PlayerClass::get_instance()->position_a.x > -8.f) //Moving away from the initial Spawn Point will make Spawn Message disappear
+		{
+			spawnTS = 0;
+		}
+		/*-------------------------------------*/
+
+		/*-----------Syringe Text-------------*/
+		if (PlayerClass::get_instance()->position_a.x > 10.f && PlayerClass::get_instance()->position_a.x < 20.f && textOccured == 0)
+		{	// Make syringe text appear once only when near syringe
+			syringeTriggedText = true;
+			pEnter = true;
+			textOccured = 1;
+		}
+
+		if (syringeTriggedText == true)
+			syringeTriggedTS = 2;
+		else
+			syringeTriggedTS = 0;
+
+		if (syringeTriggedText == true && nexttext == true)
+		{
+			syringeSizeX = 0.1f;
+			syringeSizeY = 0.1f;
+			syringeSizeZ = 0.1f;
+			syringeTriggedText = false;
+			pEnter = false;
+			nexttext = false;
+		}
+		/*--------------------------------------*/
+
+		/*------------Box Text--------------------*/
+		if (PlayerClass::get_instance()->position_a.x > 450.f && PlayerClass::get_instance()->position_a.x < 500.f && textOccured == 1) //When near box, text appears
+		{
+			textOccured = 2;
+			nexttext = false;
+			pEnter = true;
+			boxTriggedText = true;
+
+		}
+
+
+		if (boxTriggedText == true)
+			boxTriggedTS = 2;
+		else
+			boxTriggedTS = 0;
+
+		if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_text < elapsedTime))
+		{
+			bufferTime_text = elapsedTime + 0.1f;
+			nexttext = true;
+		}
+
+		if (boxTriggedText == true && nexttext == true)
+		{
+			boxTriggedText = false;
+			boxTriggedText_Two = true;
+			nexttext = false;
+		}
+
+		if (boxTriggedText_Two == true)
+			boxTriggedTS_two = 2;
+		else
+			boxTriggedTS_two = 0;
+
+		if (boxTriggedText_Two == true && nexttext == true)
+		{
+			pEnter = false;
+			boxTriggedText_Two = false;
+			nexttext = false;
+		}
+		/*----------------------------------------------*/
+
+		if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccured == 2)
+		{
+			hmTriggeredText = true;
+			pEnter = true;
+			textOccured = 3;
+		}
+
+		if (hmTriggeredText == true)
+			hmTriggedTS = 2;
+		else
+			hmTriggedTS = 0;
+
+		if (hmTriggeredText == true && nexttext == true)
+		{
+			hmTriggeredText = false;
+			hm_to_alexis = true;
+			nexttext = false;
+		}
+
+		if (hm_to_alexis == true)
+			hm_to_alexisTS = 2;
+		else
+			hm_to_alexisTS = 0;
+
+
+		if (hm_to_alexis == true && nexttext == true)
+		{
+			hm_to_alexis = false;
+			alexis_to_hm = true;
+			nexttext = false;
+		}
+
+		if (alexis_to_hm == true)
+			alexis_to_hmTS = 2;
+		else
+			alexis_to_hmTS = 0;
+
+		if (alexis_to_hm == true && nexttext == true)
+		{
+			alexis_to_hm = false;
+			pEnter = false;
+			nexttext = false;
+		}
+		/*----------------------------------------------------*/
+
+		if (alexis_beside_hm == true)
+			alexis_beside_hmTS = 2;
+		else
+			alexis_beside_hmTS = 0;
+
+		if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 3 && textOccured == 3)
+		{
+			alexis_beside_hm = true;
+			pEnter = true;
+			textOccured = 4;
+		}
+
+		if (alexis_beside_hm == true && nexttext == true)
+		{
+			pEnter = false;
+			alexis_beside_hm = false;
+			nexttext = false;
+		}
+
+		if (postProjectileThrownText == true)
+			postProjectileThrownTS = 2;
+		else
+			postProjectileThrownTS = 0;
+
+		if (EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 60
+			&& textOccured == 4)
+		{
+			postProjectileThrownText = true;
+			pEnter = true;
+			textOccured = 5;
+		}
+
+		if (postProjectileThrownText == true && nexttext == true)
+		{
+			pEnter = false;
+			postProjectileThrownText = false;
+			nexttext = false;
+		}
+
+		if (fm_triggedText == true)
+			fm_triggedTS = 2;
+		else
+			fm_triggedTS = 0;
+
+		if (textOccured == 5 && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
+		{
+			fm_triggedText = true;
+			pEnter = true;
+			textOccured = 6;
+		}
+
+		if (alexisText == true)
+			alexisTS = 2;
+		else
+			alexisTS = 0;
+
+		if (fm_triggedText == true && nexttext == true)
+		{
+			fm_triggedText = false;
+			alexisText = true;
+			nexttext = false;
+		}
+
+		if (guideText == true)
+			guideTS = 2;
+		else
+			guideTS = 0;
+
+		if (alexisText == true && nexttext == true)
+		{
+			alexisText = false;
+			guideText = true;
+			nexttext = false;
+		}
+
+		if (guideText == true && nexttext == true)
+		{
+			pEnter = false;
+			guideText = false;
+			nexttext = false;
+		}
+		/*-------------------------------------------------------------------*/
 	}
-	/*-------------------------------------*/
-
-	/*-----------Syringe Text-------------*/
-	if (PlayerClass::get_instance()->position_a.x > 10.f && PlayerClass::get_instance()->position_a.x < 20.f && textOccured == 0)
-	{	// Make syringe text appear once only when near syringe
-		syringeTriggedText = true;
-		pEnter = true;
-		textOccured = 1;
-	}
-
-	if (syringeTriggedText == true)
-		syringeTriggedTS = 2;
-	else
-		syringeTriggedTS = 0;
-
-	if (syringeTriggedText == true && nexttext == true)
-	{
-		syringeSizeX = 0.1f;
-		syringeSizeY = 0.1f;
-		syringeSizeZ = 0.1f;
-		syringeTriggedText = false;
-		pEnter = false;
-		nexttext = false;
-	}
-	/*--------------------------------------*/
-
-	/*------------Box Text--------------------*/
-	if (PlayerClass::get_instance()->position_a.x > 450.f && PlayerClass::get_instance()->position_a.x < 500.f && textOccured == 1) //When near box, text appears
-	{
-		textOccured = 2; 
-		nexttext = false;
-		pEnter = true;
-		boxTriggedText = true;
-
-	}
-
-
-	if (boxTriggedText == true)
-		boxTriggedTS = 2;
-	else
-		boxTriggedTS = 0;
-
-	if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_text < elapsedTime))
-	{
-		bufferTime_text = elapsedTime + 0.1f;
-		nexttext = true;
-	}
-
-	if (boxTriggedText == true && nexttext == true)
-	{
-		boxTriggedText = false;
-		boxTriggedText_Two = true;
-		nexttext = false;
-	}
-
-	if (boxTriggedText_Two == true)
-		boxTriggedTS_two = 2;
-	else
-		boxTriggedTS_two = 0;
-
-	if (boxTriggedText_Two == true && nexttext == true)
-	{
-		pEnter = false;
-		boxTriggedText_Two = false;
-		nexttext = false;
-	}
-	/*----------------------------------------------*/
-
-	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccured == 2)
-	{
-		hmTriggeredText = true;
-		pEnter = true;
-		textOccured = 3;
-	}
-
-	if (hmTriggeredText == true)
-		hmTriggedTS = 2;
-	else
-		hmTriggedTS = 0;
-
-	if (hmTriggeredText == true && nexttext == true)
-	{
-		hmTriggeredText = false;
-		hm_to_alexis = true;
-		nexttext = false;
-	}
-
-	if (hm_to_alexis == true)
-		hm_to_alexisTS = 2;
-	else
-		hm_to_alexisTS = 0;
-
-
-	if (hm_to_alexis == true && nexttext == true)
-	{
-		hm_to_alexis = false;
-		alexis_to_hm = true;
-		nexttext = false;
-	}
-
-	if (alexis_to_hm == true)
-		alexis_to_hmTS = 2;
-	else
-		alexis_to_hmTS = 0;
-
-	if (alexis_to_hm == true && nexttext == true)
-	{
-		alexis_to_hm = false;
-		pEnter = false;
-		nexttext = false;
-	}
-	/*----------------------------------------------------*/
-
-	if (alexis_beside_hm == true)
-		alexis_beside_hmTS = 2;
-	else
-		alexis_beside_hmTS = 0;
-
-	if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 3 && textOccured == 3)
-	{
-		alexis_beside_hm = true;
-		pEnter = true;
-		textOccured = 4;  
-	}
-
-	if (alexis_beside_hm == true && nexttext == true)
-	{
-		pEnter = false;
-		alexis_beside_hm = false;
-		nexttext = false;
-	}
-
-	if (postProjectileThrownText == true)
-		postProjectileThrownTS = 2;
-	else
-		postProjectileThrownTS = 0;
-
-	if (EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 60
-		&& textOccured == 4) 
-	{  
-		postProjectileThrownText = true;
-		pEnter = true;
-		textOccured = 5; 
-	}
-
-	if (postProjectileThrownText == true && nexttext == true)
-	{
-		pEnter = false;
-		postProjectileThrownText = false;
-		nexttext = false;
-	}
-
-	if (fm_triggedText == true)
-		fm_triggedTS = 2;
-	else
-		fm_triggedTS = 0;
-
-	if (textOccured == 5 && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
-	{
-		fm_triggedText = true;
-		pEnter = true;
-		textOccured = 6;
-	}
-
-	if (alexisText == true)
-		alexisTS = 2;
-	else
-		alexisTS = 0;
-
-	if (fm_triggedText == true && nexttext == true)
-	{
-		fm_triggedText = false;
-		alexisText = true;
-		nexttext = false;
-	}
-
-	if (guideText == true)
-		guideTS = 2;
-	else
-		guideTS = 0;
-
-	if (alexisText == true && nexttext == true)
-	{
-		alexisText = false;
-		guideText = true;
-		nexttext = false;
-	}
-
-	if (guideText == true && nexttext == true)
-	{
-		pEnter = false;
-		guideText = false;
-		nexttext = false;
-	}
-	/*-------------------------------------------------------------------*/
 }
