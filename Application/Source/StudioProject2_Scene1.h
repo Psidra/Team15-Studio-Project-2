@@ -232,6 +232,8 @@ private:
 	double bufferTime_Jump;
 	double bufferTime_attack;
 	double bufferTime_text;
+	double bufferTime_textlog;
+	double bufferTime_fmAlexisText;
 	double bufferTime_Enter;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it

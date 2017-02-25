@@ -59,7 +59,7 @@ void StudioProject2Scene1::LightInteraction()
 
 void StudioProject2Scene1::TextInteraction()
 {
-	
+
 	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
 		int xboxButtonsCount;
@@ -91,7 +91,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			syringeTriggedTS = 0;
 
-		if (syringeTriggedText == true && nexttext == true)
+		if (syringeTriggedText == true && (nexttext == true || boxTriggedText == true))
 		{
 			syringeSizeX = 0.1f;
 			syringeSizeY = 0.1f;
@@ -106,6 +106,7 @@ void StudioProject2Scene1::TextInteraction()
 		if (PlayerClass::get_instance()->position_a.x > 450.f && PlayerClass::get_instance()->position_a.x < 500.f && textOccured == 1) //When near box, text appears
 		{
 			textOccured = 2;
+			bufferTime_text = elapsedTime + 5.f;
 			nexttext = false;
 			pEnter = true;
 			boxTriggedText = true;
@@ -118,13 +119,13 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			boxTriggedTS = 0;
 
-		if ((GLFW_PRESS == xboxcontroller[7] || Application::IsKeyPressed(VK_RETURN)) && (bufferTime_text < elapsedTime))
+		if ((GLFW_PRESS == xboxcontroller[7] || Application::IsKeyPressed(VK_RETURN)) && (bufferTime_Enter < elapsedTime))
 		{
-			bufferTime_text = elapsedTime + 0.1f;
+			bufferTime_Enter = elapsedTime + 0.1f;
 			nexttext = true;
 		}
 
-		if (boxTriggedText == true && nexttext == true)
+		if (boxTriggedText == true && (nexttext == true || elapsedTime > bufferTime_text))
 		{
 			boxTriggedText = false;
 			boxTriggedText_Two = true;
@@ -136,7 +137,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			boxTriggedTS_two = 0;
 
-		if (boxTriggedText_Two == true && nexttext == true)
+		if (boxTriggedText_Two == true && (nexttext == true || hmTriggeredText == true))
 		{
 			pEnter = false;
 			boxTriggedText_Two = false;
@@ -147,6 +148,7 @@ void StudioProject2Scene1::TextInteraction()
 		if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccured == 2)
 		{
 			hmTriggeredText = true;
+			bufferTime_textlog = elapsedTime + 5.f;
 			pEnter = true;
 			textOccured = 3;
 		}
@@ -156,7 +158,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			hmTriggedTS = 0;
 
-		if (hmTriggeredText == true && nexttext == true)
+		if (hmTriggeredText == true && (nexttext == true || bufferTime_textlog < elapsedTime))
 		{
 			hmTriggeredText = false;
 			hm_to_alexis = true;
@@ -169,7 +171,7 @@ void StudioProject2Scene1::TextInteraction()
 			hm_to_alexisTS = 0;
 
 
-		if (hm_to_alexis == true && nexttext == true)
+		if (hm_to_alexis == true && (nexttext == true || elapsedTime > bufferTime_textlog + 5.f))
 		{
 			hm_to_alexis = false;
 			alexis_to_hm = true;
@@ -181,7 +183,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			alexis_to_hmTS = 0;
 
-		if (alexis_to_hm == true && nexttext == true)
+		if (alexis_to_hm == true && (nexttext == true || alexis_beside_hm == true))
 		{
 			alexis_to_hm = false;
 			pEnter = false;
@@ -201,7 +203,7 @@ void StudioProject2Scene1::TextInteraction()
 			textOccured = 4;
 		}
 
-		if (alexis_beside_hm == true && nexttext == true)
+		if (alexis_beside_hm == true && (nexttext == true || postProjectileThrownText == true))
 		{
 			pEnter = false;
 			alexis_beside_hm = false;
@@ -221,7 +223,7 @@ void StudioProject2Scene1::TextInteraction()
 			textOccured = 5;
 		}
 
-		if (postProjectileThrownText == true && nexttext == true)
+		if (postProjectileThrownText == true && (nexttext == true || fm_triggedText == true))
 		{
 			pEnter = false;
 			postProjectileThrownText = false;
@@ -236,6 +238,7 @@ void StudioProject2Scene1::TextInteraction()
 		if (textOccured == 5 && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
 		{
 			fm_triggedText = true;
+			bufferTime_fmAlexisText = elapsedTime + 5.f;
 			pEnter = true;
 			textOccured = 6;
 		}
@@ -245,7 +248,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			alexisTS = 0;
 
-		if (fm_triggedText == true && nexttext == true)
+		if (fm_triggedText == true && (nexttext == true || elapsedTime > bufferTime_fmAlexisText))
 		{
 			fm_triggedText = false;
 			alexisText = true;
@@ -257,14 +260,14 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			guideTS = 0;
 
-		if (alexisText == true && nexttext == true)
+		if (alexisText == true && (nexttext == true || elapsedTime > bufferTime_fmAlexisText + 5.f))
 		{
 			alexisText = false;
 			guideText = true;
 			nexttext = false;
 		}
 
-		if (guideText == true && nexttext == true)
+		if (guideText == true && (nexttext == true || elapsedTime > bufferTime_fmAlexisText + 10.f))
 		{
 			pEnter = false;
 			guideText = false;
@@ -301,7 +304,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			syringeTriggedTS = 0;
 
-		if (syringeTriggedText == true && nexttext == true)
+		if (syringeTriggedText == true && (nexttext == true || boxTriggedText == true))
 		{
 			syringeSizeX = 0.1f;
 			syringeSizeY = 0.1f;
@@ -316,6 +319,7 @@ void StudioProject2Scene1::TextInteraction()
 		if (PlayerClass::get_instance()->position_a.x > 450.f && PlayerClass::get_instance()->position_a.x < 500.f && textOccured == 1) //When near box, text appears
 		{
 			textOccured = 2;
+			bufferTime_text = elapsedTime + 5.f;
 			nexttext = false;
 			pEnter = true;
 			boxTriggedText = true;
@@ -328,13 +332,13 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			boxTriggedTS = 0;
 
-		if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_text < elapsedTime))
+		if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_Enter < elapsedTime))
 		{
-			bufferTime_text = elapsedTime + 0.1f;
+			bufferTime_Enter = elapsedTime + 0.1f;
 			nexttext = true;
 		}
 
-		if (boxTriggedText == true && nexttext == true)
+		if (boxTriggedText == true && (nexttext == true || elapsedTime > bufferTime_text))
 		{
 			boxTriggedText = false;
 			boxTriggedText_Two = true;
@@ -346,7 +350,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			boxTriggedTS_two = 0;
 
-		if (boxTriggedText_Two == true && nexttext == true)
+		if (boxTriggedText_Two == true && (nexttext == true || hmTriggeredText == true))
 		{
 			pEnter = false;
 			boxTriggedText_Two = false;
@@ -357,6 +361,7 @@ void StudioProject2Scene1::TextInteraction()
 		if (hmvec[0].position_hm.x - PlayerClass::get_instance()->position_a.x < 30 && textOccured == 2)
 		{
 			hmTriggeredText = true;
+			bufferTime_textlog = elapsedTime + 5.f;
 			pEnter = true;
 			textOccured = 3;
 		}
@@ -366,7 +371,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			hmTriggedTS = 0;
 
-		if (hmTriggeredText == true && nexttext == true)
+		if (hmTriggeredText == true && (nexttext == true || bufferTime_textlog < elapsedTime))
 		{
 			hmTriggeredText = false;
 			hm_to_alexis = true;
@@ -379,7 +384,7 @@ void StudioProject2Scene1::TextInteraction()
 			hm_to_alexisTS = 0;
 
 
-		if (hm_to_alexis == true && nexttext == true)
+		if (hm_to_alexis == true && (nexttext == true || elapsedTime > bufferTime_textlog + 5.f))
 		{
 			hm_to_alexis = false;
 			alexis_to_hm = true;
@@ -391,7 +396,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			alexis_to_hmTS = 0;
 
-		if (alexis_to_hm == true && nexttext == true)
+		if (alexis_to_hm == true && (nexttext == true || alexis_beside_hm == true))
 		{
 			alexis_to_hm = false;
 			pEnter = false;
@@ -411,7 +416,7 @@ void StudioProject2Scene1::TextInteraction()
 			textOccured = 4;
 		}
 
-		if (alexis_beside_hm == true && nexttext == true)
+		if (alexis_beside_hm == true && (nexttext == true || postProjectileThrownText == true))
 		{
 			pEnter = false;
 			alexis_beside_hm = false;
@@ -431,7 +436,7 @@ void StudioProject2Scene1::TextInteraction()
 			textOccured = 5;
 		}
 
-		if (postProjectileThrownText == true && nexttext == true)
+		if (postProjectileThrownText == true && (nexttext == true || fm_triggedText == true))
 		{
 			pEnter = false;
 			postProjectileThrownText = false;
@@ -446,6 +451,7 @@ void StudioProject2Scene1::TextInteraction()
 		if (textOccured == 5 && EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 40)
 		{
 			fm_triggedText = true;
+			bufferTime_fmAlexisText = elapsedTime + 5.f;
 			pEnter = true;
 			textOccured = 6;
 		}
@@ -455,7 +461,7 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			alexisTS = 0;
 
-		if (fm_triggedText == true && nexttext == true)
+		if (fm_triggedText == true && (nexttext == true || elapsedTime > bufferTime_fmAlexisText))
 		{
 			fm_triggedText = false;
 			alexisText = true;
@@ -467,14 +473,14 @@ void StudioProject2Scene1::TextInteraction()
 		else
 			guideTS = 0;
 
-		if (alexisText == true && nexttext == true)
+		if (alexisText == true && (nexttext == true || elapsedTime > bufferTime_fmAlexisText + 5.f))
 		{
 			alexisText = false;
 			guideText = true;
 			nexttext = false;
 		}
 
-		if (guideText == true && nexttext == true)
+		if (guideText == true && (nexttext == true || elapsedTime > bufferTime_fmAlexisText + 10.f))
 		{
 			pEnter = false;
 			guideText = false;
