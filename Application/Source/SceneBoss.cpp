@@ -225,6 +225,7 @@ void SceneBoss::Update(double dt)
 	Boss::get_instance()->stateManager();
 	Boss::get_instance()->dmgOvertime(elapsedTime);
 	Boss::get_instance()->burrowTeleportation(elapsedTime);
+	//Boss::get_instance()->spinAttack(elapsedTime, false);
 	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
