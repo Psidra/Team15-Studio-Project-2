@@ -1,3 +1,4 @@
+#include "Boss.h"
 #include "PlayerClass.h"
 #include "Application.h"
 #include <time.h>
@@ -46,7 +47,7 @@ void Boss::dmgOvertime(double timeElapsed)
 	{
 		if (PlayerClass::get_instance()->get_health() > 20 && timeElapsed > bufferTime_DoT) // 20% hp of player
 		{
-			PlayerClass::get_instance()->healthSystem(true);
+			PlayerClass::get_instance()->healthSystem(true, false); // to make it -10 health every 7 second
 			bufferTime_DoT = timeElapsed + 7.f;
 		}
 	}
@@ -221,7 +222,7 @@ void Boss::spinAttack(double timeElapsed , bool block)
 			spinningDuration = timeElapsed + 5.f;
 			if (EnemyHitBox.collide(PlayerClass::get_instance()->PlayerHitBox))
 			{
-				PlayerClass::get_instance()->healthSystem(block);
+				PlayerClass::get_instance()->healthSystem(block, true);
 			}
 
 			if (timeElapsed > spinningDuration) // every spin is 5 seconds

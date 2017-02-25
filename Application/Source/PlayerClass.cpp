@@ -105,9 +105,9 @@ void PlayerClass::facingDirection()
 	}
 }
 
-void PlayerClass::healthSystem(bool Block)
+void PlayerClass::healthSystem(bool Block, bool bossTagged)
 {
-	if (bossFight == false) // for regular scene
+	if (!bossTagged)
 	{
 		if (Block)
 			this->_health -= 10;
@@ -119,7 +119,7 @@ void PlayerClass::healthSystem(bool Block)
 		if (Block)
 			this->_health -= 20;
 		else
-			this->_health -= 30;
+			this->_health -= 40;
 	}
 }
 
@@ -255,5 +255,14 @@ void PlayerClass::spellUI(double timeElapsed)
 	{
 		spellHUD.projShieldNotReady = 0.f;
 		spellHUD.projShieldReady = 5.f;
+	}
+}
+
+void PlayerClass::healthRegeneration(double timeElapsed)
+{
+	if (_health < 100 && bufferTime_healthRegen < timeElapsed)
+	{
+		_health += 10;
+		bufferTime_healthRegen = timeElapsed + 20.f; // Regenerate 1 heart every 20 seconds
 	}
 }

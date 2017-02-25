@@ -75,7 +75,7 @@ void EnemyClass::attack(unsigned int projType, Vector3 pos, Vector3 dir, double 
 	else if (this->meleeAtkRange)
 	{
 		if (this->EnemyHitBox.collide(PlayerClass::get_instance()->PlayerHitBox)) // can't roll dodge this I think
-			PlayerClass::get_instance()->healthSystem(block);
+			PlayerClass::get_instance()->healthSystem(block, false);
 	}
 	else
 	{

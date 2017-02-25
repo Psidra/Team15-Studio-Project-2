@@ -22,14 +22,15 @@ public:
 	void manaSystem();
 	void init();
 	void facingDirection();
-	void healthSystem(bool Block);
+	void healthSystem(bool Block , bool bossTagged);
+	void healthRegeneration(double timeElapsed);
 	void bossFightFacingDirection();
 	void timeSpent(float dt);
 	void restartLevel();
 	void restartGame();
 	void spells(double timeElapsed);
 	void spellUI(double timeElapsed);
-
+	
 	struct PlayerLife
 	{
 		float a_heart[10];
@@ -58,13 +59,15 @@ public:
 	int hm_Saved;
 	int fm_Killed;
 	double timeSpend;
+
 private:
 	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f)
-	, energyProjShield(50), energyLaser(100) , bossFight(false) {};
+	, energyProjShield(50), energyLaser(100) {};
 	static PlayerClass* instance;
 
 	double bufferTime_Laser;
 	double bufferTime_ProjShield;
+	double bufferTime_healthRegen;
 	unsigned int energyProjShield;
 	unsigned int energyLaser;
 	unsigned int _health;
@@ -74,7 +77,6 @@ private:
 	int energyStorage;
 	unsigned int _energy;
 	bool isDead();
-	bool bossFight;
 };
 
 #endif //PLAYERCLASS_H

@@ -414,7 +414,7 @@ void StudioProject2Scene2::Update(double dt)
 					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
 						(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
 					{
-						PlayerClass::get_instance()->healthSystem(block);
+						PlayerClass::get_instance()->healthSystem(block, false);
 						bufferTime_iframe = elapsedTime + 0.3f;
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 					}
