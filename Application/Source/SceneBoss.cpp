@@ -191,8 +191,8 @@ void SceneBoss::Init()
 	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
 	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 0));
 	/*---------------Spells----------*/
-	meshList[GEO_LASER] = MeshBuilder::GenerateQuad("lasericon", Color(1, 1, 1));
-	meshList[GEO_LASER]->textureID = LoadTGA("Image//laser.tga");
+	meshList[GEO_LASER_ICON] = MeshBuilder::GenerateQuad("lasericon", Color(1, 1, 1));
+	meshList[GEO_LASER_ICON]->textureID = LoadTGA("Image//laser.tga");
 	meshList[GEO_LASER_CD] = MeshBuilder::GenerateQuad("laserCDicon", Color(1, 1, 1));
 	meshList[GEO_LASER_CD]->textureID = LoadTGA("Image//laser_cooldown.tga");
 	meshList[GEO_PROJSHIELD] = MeshBuilder::GenerateQuad("projshieldicon", Color(1, 1, 1));
@@ -201,7 +201,8 @@ void SceneBoss::Init()
 	meshList[GEO_PROJSHIELD_CD]->textureID = LoadTGA("Image//hardlight_cooldown.tga");
 	/*-------------------------------*/
 
-	meshList[GEO_BOSS] = MeshBuilder::GenerateCube("makeshiftboss", Color(1, 0, 0));
+	meshList[GEO_BOSS] = MeshBuilder::GenerateCube("makeshiftboss", Color(0, 1, 0));
+	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
 	/*--------------------------------------------------------------------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -220,11 +221,12 @@ void SceneBoss::Update(double dt)
 	elapsedTime += dt;
 
 	/*--------Boss Functions--------------*/
-	Boss::get_instance()->bossHealthSystem();
+	Boss::get_instance()->bossHealthSystem(elapsedTime);
 	Boss::get_instance()->bossHealthUI();
 	Boss::get_instance()->stateManager();
 	Boss::get_instance()->dmgOvertime(elapsedTime);
 	Boss::get_instance()->burrowTeleportation(elapsedTime);
+	Boss::get_instance()->tailAttack(elapsedTime, block);
 	//Boss::get_instance()->spinAttack(elapsedTime, false);
 	/*------------------------------------*/
 
@@ -264,8 +266,14 @@ void SceneBoss::Update(double dt)
 	PlayerClass::get_instance()->manaUI();
 	PlayerClass::get_instance()->timeSpent(dt);
 	PlayerClass::get_instance()->bossFightFacingDirection();
-	PlayerClass::get_instance()->spells(elapsedTime);
 	PlayerClass::get_instance()->spellUI(elapsedTime);
+	
+
+	if (Boss::get_instance()->magicImmunity == false)
+	{
+		PlayerClass::get_instance()->laserBeam(elapsedTime);
+		//PlayerClass::get_instance()->projectileShield(elapsedTime);
+	}
 	/*-----------------------------------------*/
 	if (!otheranims() || holdanims())
 	{
@@ -434,7 +442,12 @@ void SceneBoss::Render()
 	modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
 
 	// add in grab animation later
-
+	modelStack.PushMatrix();
+	modelStack.Translate(PlayerClass::get_instance()->laserTranslate.x, PlayerClass::get_instance()->laserTranslate.y, PlayerClass::get_instance()->laserTranslate.z);
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Scale(PlayerClass::get_instance()->laserSize.x, PlayerClass::get_instance()->laserSize.y, PlayerClass::get_instance()->laserSize.z);
+	RenderMesh(meshList[GEO_LASER], false);
+	modelStack.PopMatrix();
 	if (num_anim != 7)
 	{
 		modelStack.PushMatrix();
@@ -619,7 +632,7 @@ void SceneBoss::Render()
 	}
 	/*-----------------------------*/
 	/*------Spell HUD-----*/
-	RenderMeshOnScreen(meshList[GEO_LASER], 10, 0.5,
+	RenderMeshOnScreen(meshList[GEO_LASER_ICON], 10, 0.5,
 		PlayerClass::get_instance()->spellHUD.laserReady, PlayerClass::get_instance()->spellHUD.laserReady, 0);
 	RenderMeshOnScreen(meshList[GEO_LASER_CD], 10, 0.5,
 		PlayerClass::get_instance()->spellHUD.laserNotReady, PlayerClass::get_instance()->spellHUD.laserNotReady, 0);

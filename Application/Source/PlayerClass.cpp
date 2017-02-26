@@ -1,5 +1,6 @@
 #include "PlayerClass.h"
 #include "Application.h"
+#include "Boss.h"
 #include "GLFW\glfw3.h"
 PlayerClass* PlayerClass::instance;
 
@@ -181,9 +182,8 @@ void PlayerClass::manaUI()
 }
 
 
-void PlayerClass::manaSystem()
+void PlayerClass::energySystem(double timeElapsed)
 {
-
 }
 
 void PlayerClass::timeSpent(float dt)
@@ -215,27 +215,44 @@ void PlayerClass::restartGame()
 	fm_Killed = 0;
 }
 
-void PlayerClass::spells(double timeElapsed)
+void PlayerClass::laserBeam(double timeElapsed)
 {
-	if (_energy > 0)
+	if (Application::IsKeyPressed('Q') && timeElapsed > bufferTime_Laser && _energy >= energyLaser) // Laser Beam
 	{
-		if (Application::IsKeyPressed('Q') && timeElapsed > bufferTime_Laser) // Laser Beam
-		{
-			_energy -= energyLaser;
+			laserActive = true;
 			bufferTime_Laser = timeElapsed + 10.f;
-		}
+			_energy -= energyLaser;
 
-		if (Application::IsKeyPressed('R') && timeElapsed > bufferTime_ProjShield) // Projectile Shield
-		{
-			_energy -= energyProjShield;
-			bufferTime_ProjShield = timeElapsed + 7.f; 
-		}
 	}
+
+		if (laserActive == true)
+		{
+			laserSize.x = 1;
+			laserSize.y = 100;
+			laserSize.z = 1;
+			laserTranslate.x = 0;
+			laserTranslate.y = 3;
+			laserTranslate.z = 53;
+
+			if (timeElapsed > bufferTime_Laser - 9)
+			{
+				laserActive = false;
+			}
+		}
+		else
+		{
+			laserSize.x = 0.1;
+			laserSize.y = 0.1;
+			laserSize.z = 0.1;
+			laserTranslate.x = 0;
+			laserTranslate.y = 0;
+			laserTranslate.z = 0;
+		}
 }
 
 void PlayerClass::spellUI(double timeElapsed)
 {
-	if (_energy < energyLaser || timeElapsed < bufferTime_Laser) // not enough energy or in cooldown
+	if (_energy < energyLaser || timeElapsed < bufferTime_Laser || Boss::get_instance()->magicImmunity == true) // not enough energy or in cooldown or when boss magic immune in effect
 	{
 		spellHUD.laserNotReady = 5.f;
 		spellHUD.laserReady = 0.f;
@@ -246,7 +263,7 @@ void PlayerClass::spellUI(double timeElapsed)
 		spellHUD.laserReady = 5.f;
 	}
 
-	if (_energy < energyProjShield || timeElapsed < bufferTime_ProjShield)
+	if (_energy < energyProjShield || timeElapsed < bufferTime_ProjShield || Boss::get_instance()->magicImmunity == true)
 	{
 		spellHUD.projShieldNotReady = 5.f;
 		spellHUD.projShieldReady = 0.f;
@@ -265,4 +282,9 @@ void PlayerClass::healthRegeneration(double timeElapsed)
 		_health += 10;
 		bufferTime_healthRegen = timeElapsed + 20.f; // Regenerate 1 heart every 20 seconds
 	}
+}
+
+void PlayerClass::projectileShield(double timeElapsed)
+{
+
 }

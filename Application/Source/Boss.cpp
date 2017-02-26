@@ -78,7 +78,7 @@ void Boss::bossHealthUI()
 	}
 }
 
-void Boss::bossHealthSystem()
+void Boss::bossHealthSystem(double timeElapsed)
 {
 	if (Application::IsKeyPressed('V'))
 	{
@@ -253,3 +253,4 @@ void Boss::tailAttack(double timeElapsed, bool block)
 		}
 	}
 }
+

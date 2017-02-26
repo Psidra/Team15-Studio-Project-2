@@ -24,7 +24,7 @@ public:
 
 	void bossInit();
 	void bossHealthUI();
-	void bossHealthSystem();
+	void bossHealthSystem(double timeElapsed);
 	void facingDirection();
 	void stateManager();
 	void dmgOvertime(double timeElapsed);
@@ -34,6 +34,7 @@ public:
 	unsigned int get_health();
 	BossLife bossLife;
 	Tail* Boss_Tail; // great now tail doesn't even look like a word anymore, thanks semanic satiation
+	bool magicImmunity;
 
 private:
 	Boss(): boss_health(300), boss_lookingDirection(90) {};
@@ -43,6 +44,7 @@ private:
 	unsigned int boss_health;
 	int boss_lookingDirection;
 	double bufferTime_DoT;
+	double bufferTime_atk;
 	double cooldown_Burrow;
 	double cooldown_Spin;
 	double spinningDuration;
@@ -52,7 +54,6 @@ private:
 	bool spin;
 	bool burrow;
 	bool DmgOverTime;
-	bool magicImmunity;
 	/*------------------------*/
 	
 	/*----For preventing continuous update--*/
