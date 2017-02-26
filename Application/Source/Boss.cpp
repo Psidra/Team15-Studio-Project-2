@@ -236,7 +236,20 @@ void Boss::spinAttack(double timeElapsed , bool block)
 
 void Boss::tailAttack(double timeElapsed, bool block)
 {
-	//if (timeElapsed > )
-	this->Boss_Tail->stalk();
-	this->Boss_Tail->strike();
+	if (tailAtk && !burrowing && !spinning)
+	{
+		tailattacking = true;
+
+		if ((timeElapsed > bufferTime_tail) && (timeElapsed < bufferTime_tail + 3.f))			  // stalk for 3 seconds
+			this->Boss_Tail->stalk();
+		else if ((timeElapsed > bufferTime_tail + 3.5f) && (timeElapsed < bufferTime_tail + 6.f)) // 0.5 seconds of no movement, "locking on". strike for 2.5 seconds.
+			this->Boss_Tail->strike(block);
+		else if ((timeElapsed > bufferTime_tail + 6.f) && (timeElapsed < bufferTime_tail + 7.5f)) // 1.5s of retracting back into the ground.
+			this->Boss_Tail->retract(block);
+		else																					  // (timeElapsed > bufferTime_tail + 7.5f)
+		{
+			bufferTime_tail = timeElapsed + 1.f;												  // 1 second cd before cycling back again to stalk, strike, retract.
+			tailattacking = false;
+		}
+	}
 }

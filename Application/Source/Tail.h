@@ -15,8 +15,8 @@ public:
 	}
 
 	void stalk();
-	void lockon();
-	void strike();
+	void strike(bool block);
+	void retract(bool block);
 
 	BoundingBox TailHitBox;
 	Vector3 position_t;

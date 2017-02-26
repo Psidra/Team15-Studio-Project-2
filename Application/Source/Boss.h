@@ -46,6 +46,7 @@ private:
 	double cooldown_Burrow;
 	double cooldown_Spin;
 	double spinningDuration;
+	double bufferTime_tail;
 	/*-----For State Control---*/
 	bool tailAtk; 
 	bool spin;
