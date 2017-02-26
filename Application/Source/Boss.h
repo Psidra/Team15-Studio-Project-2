@@ -3,6 +3,7 @@
 
 #include "EnemyClass.h"
 #include "PlayerClass.h"
+#include "Tail.h"
 
 class Boss : public EnemyClass
 {
@@ -32,6 +33,7 @@ public:
 	void tailAttack(double timeElapsed, bool block);
 	unsigned int get_health();
 	BossLife bossLife;
+	Tail* Boss_Tail; // great now tail doesn't even look like a word anymore, thanks semanic satiation
 
 private:
 	Boss(): boss_health(300), boss_lookingDirection(90) {};

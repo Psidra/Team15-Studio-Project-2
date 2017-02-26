@@ -117,6 +117,7 @@
     <ClCompile Include="Source\StudioProject2_MainMenu.cpp" />
     <ClCompile Include="Source\StudioProject2_Scene1.cpp" />
     <ClCompile Include="Source\StudioProject2_Scene2.cpp" />
+    <ClCompile Include="Source\Tail.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
     <ClCompile Include="Source\VictoryScreen.cpp" />
   </ItemGroup>
@@ -153,6 +154,7 @@
     <ClInclude Include="Source\StudioProject2_MainMenu.h" />
     <ClInclude Include="Source\StudioProject2_Scene1.h" />
     <ClInclude Include="Source\StudioProject2_Scene2.h" />
+    <ClInclude Include="Source\Tail.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VictoryScreen.h" />

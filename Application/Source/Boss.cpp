@@ -236,5 +236,7 @@ void Boss::spinAttack(double timeElapsed , bool block)
 
 void Boss::tailAttack(double timeElapsed, bool block)
 {
-
+	//if (timeElapsed > )
+	this->Boss_Tail->stalk();
+	this->Boss_Tail->strike();
 }
