@@ -68,8 +68,14 @@ void AnimCheck_Mutant(unsigned int num_anim, MS* modelStack, double* timeElapsed
 }
 
 // Boss
-
 // oh god no
+void AnimCheck_Boss(unsigned int num_anim, MS* modelStack, double* timeElapsed, const std::string& dagNode)
+{
+	double zero = 0;
+	switch (num_anim) {
+
+	}
+}
 
 //shit bat anim
 void Batanim(bool batfly, MS* modelStack, double* timeElapsed, const std::string& dagNode)
