@@ -1,11 +1,6 @@
 #include "StudioProject2_MainMenu.h"
 #include "ControlScreen.h"
 #include "LoadingScreen.h"
-#include "SelectionScreen.h"
-#include "VictoryScreen.h"
-#include "EnemyClassManager.h"
-#include "DeathScreen.h"
-#include "SceneBoss.h"
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
 #include "Mtx44.h"
@@ -15,7 +10,6 @@
 #include "shader.hpp"
 #include "LoadTGA.h"
 #include "Camera.h"
-#include "SceneCredits.h"
 #include "SceneManager.h"
 
 #define VK_1 0x31
@@ -24,15 +18,15 @@
 #define VK_4 0x34
 
 
-StudioProject2MainMenu::StudioProject2MainMenu()
+ControlScreen::ControlScreen()
 {
 }
 
-StudioProject2MainMenu::~StudioProject2MainMenu()
+ControlScreen::~ControlScreen()
 {
 }
 
-void StudioProject2MainMenu::Init()
+void ControlScreen::Init()
 {
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -82,8 +76,12 @@ void StudioProject2MainMenu::Init()
 		meshList[i] = NULL;
 
 	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
-	
+
 	/*--------------------------Image Loading--------------------------------------*/
+	meshList[GEO_XBOX] = MeshBuilder::GenerateQuad("xboxcontrols", Color(1, 1, 1));
+	meshList[GEO_XBOX]->textureID = LoadTGA("Image//xboxcontrols.tga");
+	meshList[GEO_KEYBOARD] = MeshBuilder::GenerateQuad("keyboardcontrols", Color(1, 1, 1));
+	meshList[GEO_KEYBOARD]->textureID = LoadTGA("Image//keyboardcontrol.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -92,7 +90,12 @@ void StudioProject2MainMenu::Init()
 	/*------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
+	xBoxScreen = true;
+	xBoxSizeX = 1.f;
+	xBoxSizeY = 1.f;
 
+	keyBoardSizeX = 0.1f;
+	keyBoardSizeY = 0.1f;
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -101,10 +104,10 @@ void StudioProject2MainMenu::Init()
 
 }
 
-void StudioProject2MainMenu::Update(double dt)
+void ControlScreen::Update(double dt)
 {
 	int framespersec = 1 / dt;
-	//elapsedTime += dt;
+	elapsedTime += dt;
 	camera.Update(dt);
 
 	/*-----------Updates the FPS to be stated on screen---------*/
@@ -115,72 +118,64 @@ void StudioProject2MainMenu::Update(double dt)
 	{
 		int xbox360;
 		const unsigned char *xbox360controls = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox360);
+		
 		if (Application::IsKeyPressed(VK_RETURN) || GLFW_PRESS == xbox360controls[7])
 		{
-			SceneManager::getInstance()->Location = "Secluded Forest";
-			SceneManager::getInstance()->changeScene(new LoadingScreen());
+			if (xBoxScreen == true && elapsedTime > bufferTime_Press)
+			{
+				xBoxScreen = false;
+				bufferTime_Press = elapsedTime + 1.f;
+			}
+			else if (xBoxScreen == false && elapsedTime > bufferTime_Press)
+			{
+				xBoxScreen = true;
+				bufferTime_Press = elapsedTime + 1.f;
+			}
 		}
-		if (Application::IsKeyPressed(VK_SPACE) || GLFW_PRESS == xbox360controls[0])
+		if (Application::IsKeyPressed(VK_BACK) || GLFW_PRESS == xbox360controls[6])
 		{
-			SceneManager::getInstance()->changeScene(new SelectionScreen());
-		}
-		if (Application::IsKeyPressed(VK_TAB) || GLFW_PRESS == xbox360controls[6])
-		{
-			SceneManager::getInstance()->changeScene(new ControlScreen());
-		}
-		if (Application::IsKeyPressed('T'))
-		{
-			SceneManager::getInstance()->changeScene(new SceneBoss());
-		}
-		if (Application::IsKeyPressed('Y'))
-		{
-			SceneManager::getInstance()->changeScene(new DeathScreen());
-		}
-		if (Application::IsKeyPressed('M'))
-		{
-			SceneManager::getInstance()->changeScene(new VictoryScreen());
-		}
-		if (Application::IsKeyPressed('N'))
-		{
-			SceneManager::getInstance()->changeScene(new SceneCredits());
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
 		}
 	}
 	else
 	{
 		if (Application::IsKeyPressed(VK_RETURN))
 		{
-			SceneManager::getInstance()->Location = "Secluded Forest";
-			SceneManager::getInstance()->changeScene(new LoadingScreen());
+			if (xBoxScreen == true && elapsedTime > bufferTime_Press)
+			{
+				xBoxScreen = false;
+				bufferTime_Press = elapsedTime + 1.f;
+			}
+			else if (xBoxScreen == false && elapsedTime > bufferTime_Press)
+			{
+				xBoxScreen = true;
+				bufferTime_Press = elapsedTime + 1.f;
+			}
 		}
-		if (Application::IsKeyPressed(VK_SPACE))
+		if (Application::IsKeyPressed(VK_BACK))
 		{
-			SceneManager::getInstance()->changeScene(new SelectionScreen());
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
 		}
-		if (Application::IsKeyPressed(VK_TAB))
-		{
-			SceneManager::getInstance()->changeScene(new ControlScreen());
-		}
-		if (Application::IsKeyPressed('T'))
-		{
-			SceneManager::getInstance()->changeScene(new SceneBoss());
-		}
-		if (Application::IsKeyPressed('Y'))
-		{
-			SceneManager::getInstance()->changeScene(new DeathScreen());
-		}
-		if (Application::IsKeyPressed('M'))
-		{
-			SceneManager::getInstance()->changeScene(new VictoryScreen());
-		}
-		if (Application::IsKeyPressed('N'))
-		{
-			SceneManager::getInstance()->changeScene(new SceneCredits());
-		}
+		
 	}
 
+	if (xBoxScreen == true)
+	{
+		xBoxSizeX = 0.1f;
+		xBoxSizeY = 0.1f;
+		keyBoardSizeX = 80.f;
+		keyBoardSizeY = 60.f;
+	}
+	else
+	{
+		keyBoardSizeX = 0.1f;
+		keyBoardSizeY = 0.1f;
+		xBoxSizeX = 80.f;
+		xBoxSizeY = 60.f;
+	}
 }
 
-void StudioProject2MainMenu::Render()
+void ControlScreen::Render()
 {
 	// Render VBO here
 	Mtx44 MVP;
@@ -195,18 +190,16 @@ void StudioProject2MainMenu::Render()
 		camera.up.x, camera.up.y, camera.up.z);
 
 	modelStack.LoadIdentity();
-	
+
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
-	
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter>/<Start> to Start Game", Color(1, 1, 1), 2, 6, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space>/<A> to Select a Level", Color(1, 1, 1), 2, 6, -6);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Tab>/<Back> to see controls", Color(1, 1, 1), 2, 6, -7);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 6, -8);
+
+	RenderMeshOnScreen(meshList[GEO_XBOX], 0, 0, xBoxSizeX, xBoxSizeY, 0);
+	RenderMeshOnScreen(meshList[GEO_KEYBOARD], 0, 0, keyBoardSizeX, keyBoardSizeY, 0);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 
-void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
+void ControlScreen::RenderMesh(Mesh *mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 
@@ -251,7 +244,7 @@ void StudioProject2MainMenu::RenderMesh(Mesh *mesh, bool enableLight)
 	}
 }
 
-void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color color)
+void ControlScreen::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -278,7 +271,7 @@ void StudioProject2MainMenu::RenderText(Mesh* mesh, std::string text, Color colo
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
+void ControlScreen::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check
 		return;
@@ -321,7 +314,7 @@ void StudioProject2MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Co
 
 }
 
-void StudioProject2MainMenu::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
+void ControlScreen::RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position)
 {
 	glDisable(GL_DEPTH_TEST);
 	Mtx44 ortho;
@@ -345,7 +338,7 @@ void StudioProject2MainMenu::RenderMeshOnScreen(Mesh* mesh, int x, int y, int si
 	glEnable(GL_DEPTH_TEST);
 }
 
-void StudioProject2MainMenu::Exit()
+void ControlScreen::Exit()
 {
 	// Cleanup VBO here
 	for (int i = 0; i < NUM_GEOMETRY; ++i)

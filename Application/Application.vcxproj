@@ -90,6 +90,7 @@
     <ClCompile Include="Source\Camera2.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\Camera4_SideScroller.cpp" />
+    <ClCompile Include="Source\ControlScreen.cpp" />
     <ClCompile Include="Source\DeathScreen.cpp" />
     <ClCompile Include="Source\EnemyClass.cpp" />
     <ClCompile Include="Source\EnemyClassManager.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Source\Camera2.h" />
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Camera4_SideScroller.h" />
+    <ClInclude Include="Source\ControlScreen.h" />
     <ClInclude Include="Source\DeathScreen.h" />
     <ClInclude Include="Source\EnemyClass.h" />
     <ClInclude Include="Source\EnemyClassManager.h" />
