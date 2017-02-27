@@ -14,12 +14,12 @@ public:
 			return instance;
 	}
 
-	unsigned int get_health();
-	unsigned int get_energy();
+	int get_health();
+	int get_energy();
 
 	void healthUI();
 	void manaUI();
-	void manaSystem();
+	void energySystem(double timeElapsed);
 	void init();
 	void facingDirection();
 	void healthSystem(bool Block , bool bossTagged);
@@ -28,7 +28,8 @@ public:
 	void timeSpent(float dt);
 	void restartLevel();
 	void restartGame();
-	void spells(double timeElapsed);
+	void projectileShield(double timeElapsed);
+	void laserBeam(double timeElapsed);
 	void spellUI(double timeElapsed);
 	
 	struct PlayerLife
@@ -53,6 +54,8 @@ public:
 
 	BoundingBox PlayerHitBox;
 	Vector3 position_a;
+	Vector3 laserSize;
+	Vector3 laserTranslate;
 	PlayerLife Hearts;
 	SpellHUD spellHUD;
 	int a_LookingDirection;
@@ -62,7 +65,7 @@ public:
 
 private:
 	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f)
-	, energyProjShield(50), energyLaser(100) {};
+	, energyProjShield(50), energyLaser(100), laserActive(false), projSheildActive(false) {};
 	static PlayerClass* instance;
 
 	double bufferTime_Laser;
@@ -77,6 +80,8 @@ private:
 	int energyStorage;
 	unsigned int _energy;
 	bool isDead();
+	bool laserActive;
+	bool projSheildActive;
 };
 
 #endif //PLAYERCLASS_H

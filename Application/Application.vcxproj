@@ -90,6 +90,7 @@
     <ClCompile Include="Source\Camera2.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\Camera4_SideScroller.cpp" />
+    <ClCompile Include="Source\ControlScreen.cpp" />
     <ClCompile Include="Source\DeathScreen.cpp" />
     <ClCompile Include="Source\EnemyClass.cpp" />
     <ClCompile Include="Source\EnemyClassManager.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Source\StudioProject2_MainMenu.cpp" />
     <ClCompile Include="Source\StudioProject2_Scene1.cpp" />
     <ClCompile Include="Source\StudioProject2_Scene2.cpp" />
+    <ClCompile Include="Source\Tail.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
     <ClCompile Include="Source\VictoryScreen.cpp" />
   </ItemGroup>
@@ -129,6 +131,7 @@
     <ClInclude Include="Source\Camera2.h" />
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Camera4_SideScroller.h" />
+    <ClInclude Include="Source\ControlScreen.h" />
     <ClInclude Include="Source\DeathScreen.h" />
     <ClInclude Include="Source\EnemyClass.h" />
     <ClInclude Include="Source\EnemyClassManager.h" />
@@ -153,6 +156,7 @@
     <ClInclude Include="Source\StudioProject2_MainMenu.h" />
     <ClInclude Include="Source\StudioProject2_Scene1.h" />
     <ClInclude Include="Source\StudioProject2_Scene2.h" />
+    <ClInclude Include="Source\Tail.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\VictoryScreen.h" />

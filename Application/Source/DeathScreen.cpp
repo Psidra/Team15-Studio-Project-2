@@ -4,6 +4,7 @@
 #include "DeathScreen.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "EnemyClassManager.h"
@@ -118,25 +119,54 @@ void DeathScreen::Update(double dt)
 	deathLocation = "Location:" + SceneManager::getInstance()->Location;
 	/*----------------------------------------------------------*/
 
-	if (Application::IsKeyPressed(VK_RETURN))
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
-		EnemyManager::get_instance()->EnemyList[0]->restartLevel();
-		PlayerClass::get_instance()->timeSpend = 0.0f;
-		SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
-	}
-	if (Application::IsKeyPressed(VK_SPACE))
-	{
-		if (SceneManager::getInstance()->Location == "Secluded Forest")
+		int xbox;
+		const unsigned char *xboxs = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+		if (Application::IsKeyPressed(VK_RETURN) || GLFW_PRESS == xboxs[7])
 		{
-			PlayerClass::get_instance()->restartLevel();
-			PlayerClass::get_instance()->timeSpend = 0.0f;
 			EnemyManager::get_instance()->EnemyList[0]->restartLevel();
-			SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
+			PlayerClass::get_instance()->timeSpend = 0.0f;
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
 		}
-		if (SceneManager::getInstance()->Location == "Inner City")
+		if (Application::IsKeyPressed(VK_SPACE) || GLFW_PRESS == xboxs[0])
 		{
-			PlayerClass::get_instance()->restartLevel();
-			SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+			if (SceneManager::getInstance()->Location == "Secluded Forest")
+			{
+				PlayerClass::get_instance()->restartLevel();
+				PlayerClass::get_instance()->timeSpend = 0.0f;
+				EnemyManager::get_instance()->EnemyList[0]->restartLevel();
+				SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
+			}
+			if (SceneManager::getInstance()->Location == "Inner City")
+			{
+				PlayerClass::get_instance()->restartLevel();
+				SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+			}
+		}
+	}
+	else
+	{
+		if (Application::IsKeyPressed(VK_RETURN))
+		{
+			EnemyManager::get_instance()->EnemyList[0]->restartLevel();
+			PlayerClass::get_instance()->timeSpend = 0.0f;
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
+		}
+		if (Application::IsKeyPressed(VK_SPACE))
+		{
+			if (SceneManager::getInstance()->Location == "Secluded Forest")
+			{
+				PlayerClass::get_instance()->restartLevel();
+				PlayerClass::get_instance()->timeSpend = 0.0f;
+				EnemyManager::get_instance()->EnemyList[0]->restartLevel();
+				SceneManager::getInstance()->changeScene(new StudioProject2Scene1());
+			}
+			if (SceneManager::getInstance()->Location == "Inner City")
+			{
+				PlayerClass::get_instance()->restartLevel();
+				SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+			}
 		}
 	}
 }
@@ -167,8 +197,8 @@ void DeathScreen::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 3, 12, -6.8);
 	RenderTextOnScreen(meshList[GEO_TEXT], timer, Color(1, 1, 1), 3, 9.2, -4);
 	RenderTextOnScreen(meshList[GEO_TEXT], deathLocation, Color(1, 1, 1), 3, 6.5, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space> to Restart the Level", Color(1, 1, 1), 2, 9, -8);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Return to Main Menu", Color(1, 1, 1), 2, 9, -7);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space>/<A> to Restart the Level", Color(1, 1, 1), 2, 9, -8);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter>/<Start> to Return to Main Menu", Color(1, 1, 1), 2, 9, -7);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 9, -9);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }

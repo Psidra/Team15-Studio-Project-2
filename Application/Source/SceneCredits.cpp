@@ -1,6 +1,7 @@
 #include "StudioProject2_MainMenu.h"
 #include "SceneCredits.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -111,11 +112,22 @@ void SceneCredits::Update(double dt)
 	fps = "FPS:" + std::to_string(framespersec);
 	/*----------------------------------------------------------*/
 
-	if (Application::IsKeyPressed(VK_RETURN) || elapsedTime > bufferTime_credits)
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
-		SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
+		int xbox;
+		const unsigned char *xboxs = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+		if (GLFW_PRESS == xboxs[0] || Application::IsKeyPressed(VK_RETURN) || elapsedTime > bufferTime_credits)
+		{
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
+		}
 	}
-	
+	else
+	{
+		if (Application::IsKeyPressed(VK_RETURN) || elapsedTime > bufferTime_credits)
+		{
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
+		}
+	}
 	if (elapsedTime > bufferTime_marcus)
 	{
 		edward = 0.f;
@@ -160,7 +172,7 @@ void SceneCredits::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "Esther C Tan", Color(1, 1, 1), esther, 16, 4);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Programmer/Artist/Animator", Color(1, 1, 1), wafieqa, 11, 5);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Wafieqa AZ", Color(1, 1, 1), wafieqa, 16, 4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Skip", Color(1, 1, 1), 2, 11, -7);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter>/<A> to Skip", Color(1, 1, 1), 2, 11, -7);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -8);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
