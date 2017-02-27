@@ -23,7 +23,7 @@ void EnemyClass::update(double dt)
 			this->spit_[projectiles]->init_proj(this->position_m.x - PlayerClass::get_instance()->position_a.x);
 		}
 
-		this->proj_update();
+		this->proj_update(false);
 	}
 }
 
@@ -117,31 +117,42 @@ void EnemyClass::detection()
 	}
 }
 
-void EnemyClass::proj_update()
+void EnemyClass::proj_update(bool boss)
 {
 	for (unsigned int projectiles = 0; projectiles < this->spit_.size(); projectiles++)
 	{
-		if (this->spit_[projectiles]->projType_ == 1)
+		if (boss)
 		{
-			this->spit_[projectiles]->edit_passed_angle();
-			this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
+			if (this->spit_[projectiles]->projType_ == 1)
+			{
+				this->spit_[projectiles]->edit_passed_angle();
+				this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
+			}
+			if (this->spit_[projectiles]->projType_ == 2)
+			{
+				this->spit_[projectiles]->edit_passed_angle();
+				this->spit_[projectiles]->direction_.y = -sin(this->spit_[projectiles]->get_passed_angle());
+			}
+			if (this->spit_[projectiles]->projType_ == 3)
+			{
+				this->spit_[projectiles]->direction_.y = 0;
+			}
+			if (this->spit_[projectiles]->projType_ == 4)
+			{
+				this->spit_[projectiles]->boss_edit_passed_angle();
+				this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());
+			}
 		}
-		if (this->spit_[projectiles]->projType_ == 2)
+		else
 		{
-			this->spit_[projectiles]->edit_passed_angle();
-			this->spit_[projectiles]->direction_.y = -sin(this->spit_[projectiles]->get_passed_angle());
-		}
-		if (this->spit_[projectiles]->projType_ == 3)
-		{
-			this->spit_[projectiles]->direction_.y = 0;
-		}
-		if (this->spit_[projectiles]->projType_ == 4)
-		{
-			this->spit_[projectiles]->boss_edit_passed_angle();
-			this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());
-		}
+			if (this->spit_[projectiles]->projType_ == 1)
+			{
+				this->spit_[projectiles]->edit_passed_angle();
+				this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
+			}
 
-		this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
+			this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
+		}
 	}
 }
 

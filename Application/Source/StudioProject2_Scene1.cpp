@@ -604,17 +604,9 @@ void StudioProject2Scene1::Update(double dt)
 			{
 				if (elapsedTime > bufferTime_attack_M)
 				{
-					//EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					//bufferTime_attack_M = elapsedTime + 2.f;
+					EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
 
-
-					//EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					//EnemyManager::get_instance()->EnemyList[0]->attack(2, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					//EnemyManager::get_instance()->EnemyList[0]->attack(3, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					EnemyManager::get_instance()->EnemyList[0]->attack(4, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-
-					bufferTime_attack_M = elapsedTime + 0.1f;
-
+					bufferTime_attack_M = elapsedTime + 2.f;
 				}
 			}
 		}
@@ -713,15 +705,9 @@ void StudioProject2Scene1::Update(double dt)
 			{
 				if (elapsedTime > bufferTime_attack_M)
 				{
-					//EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					//bufferTime_attack_M = elapsedTime + 2.f;
+					EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
 
-
-					//EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					//EnemyManager::get_instance()->EnemyList[0]->attack(2, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-					EnemyManager::get_instance()->EnemyList[0]->attack(3, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-
-					bufferTime_attack_M = elapsedTime + 0.1f;
+					bufferTime_attack_M = elapsedTime + 2.f;
 				}
 			}
 		}

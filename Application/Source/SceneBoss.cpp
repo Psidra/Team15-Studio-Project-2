@@ -269,8 +269,8 @@ void SceneBoss::Update(double dt)
 
 	/*--------Boss Functions--------------*/
 	Boss::get_instance()->update(elapsedTime, block); // so much neater \:D/
-	Boss::get_instance()->proj_attack(Boss::get_instance()->position_m, Boss::get_instance()->direction_m, elapsedTime);
-	Boss::get_instance()->proj_update();
+	Boss::get_instance()->proj_attack(Boss::get_instance()->position_m + Vector3(0, -5.f, 0), Boss::get_instance()->direction_m, elapsedTime);
+	Boss::get_instance()->proj_update(true);
 	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
