@@ -15,6 +15,7 @@ unsigned int Boss::get_health()
 void Boss::bossInit()
 {
 	get_instance()->position_m = Vector3(0, 5, 0);
+	this->EnemyHitBox.setto(get_instance()->position_m.x, get_instance()->position_m.y, get_instance()->position_m.z);
 	spin = false;
 	tailAtk = false;
 	burrow = false;
@@ -217,21 +218,21 @@ void Boss::spinAttack(double timeElapsed , bool block)
 {
 	if (spin)
 	{
-		if (timeElapsed > cooldown_Spin && !burrowing
-			&& !tailattacking && !spinning)
+		if (!burrowing && !tailattacking && spinningDuration > timeElapsed)
 		{
 			spinning = true;
-			spinningDuration = timeElapsed + 5.f;
-			if (EnemyHitBox.collide(PlayerClass::get_instance()->PlayerHitBox))
+			if (PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox) && (timeElapsed > bufferTime_iframe))
 			{
+				bufferTime_iframe = timeElapsed + 1.f;
 				PlayerClass::get_instance()->healthSystem(block, true);
 			}
+		}
 
-			if (timeElapsed > spinningDuration) // every spin is 5 seconds
-			{
-				spinning = false;
-				cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
-			}
+		if (timeElapsed > cooldown_Spin)
+		{
+			spinning = false;
+			cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
+			spinningDuration = timeElapsed + 5.f;
 		}
 	}
 }
