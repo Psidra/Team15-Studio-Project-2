@@ -6,13 +6,8 @@
 class Tail
 {
 public:
-	static Tail* get_instance()
-	{
-		if (!instance)
-			instance = new Tail();
-		else
-			return instance;
-	}
+	Tail() : position_t(0, -10, 0) {};
+	~Tail() {};
 
 	void stalk();
 	void strike(bool block);
@@ -22,8 +17,6 @@ public:
 	Vector3 position_t;
 
 private:
-	Tail() {};
-	static Tail* instance;
 
 };
 

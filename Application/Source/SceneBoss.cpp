@@ -123,6 +123,9 @@ void SceneBoss::Init()
 	meshList[GEO_MUTANT_RIGHTUPPERARM]->textureID = LoadTGA("Image//Mutant_Texture.tga");
 	meshList[GEO_MUTANT_TORSO] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
+
+	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+
 	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
 	/*-------------------------------------------------------------*/
 	/*--------------------------Character Loading----------------------------------*/
@@ -201,7 +204,45 @@ void SceneBoss::Init()
 	meshList[GEO_PROJSHIELD_CD]->textureID = LoadTGA("Image//hardlight_cooldown.tga");
 	/*-------------------------------*/
 
-	meshList[GEO_BOSS] = MeshBuilder::GenerateCube("makeshiftboss", Color(0, 1, 0));
+
+	meshList[GEO_BOSS_LARM] = MeshBuilder::GenerateOBJ("Boss_LeftArm", "OBJ//Boss//Boss_LeftArm.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_LJAW] = MeshBuilder::GenerateOBJ("Boss_LeftJaw", "OBJ//Boss//Boss_LeftJaw.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_LUARM] = MeshBuilder::GenerateOBJ("Boss_LeftUpperarm", "OBJ//Boss//Boss_LeftUpperarm.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_MHEAD] = MeshBuilder::GenerateOBJ("Boss_MainHead", "OBJ//Boss//Boss_MainHead.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_MJAW] = MeshBuilder::GenerateOBJ("Boss_MainJaw", "OBJ//Boss//Boss_MainJaw.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_NECK] = MeshBuilder::GenerateOBJ("Boss_Neck", "OBJ//Boss//Boss_Neck.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_RARM] = MeshBuilder::GenerateOBJ("Boss_RightArm", "OBJ//Boss//Boss_RightArm.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_RJAW] = MeshBuilder::GenerateOBJ("Boss_RightJaw", "OBJ//Boss//Boss_RightJaw.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_RUARM] = MeshBuilder::GenerateOBJ("Boss_RightUpperarm", "OBJ//Boss//Boss_RightUpperarm.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_SEG1] = MeshBuilder::GenerateOBJ("Boss_Segment1", "OBJ//Boss//Boss_Segment1.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_SEG2] = MeshBuilder::GenerateOBJ("Boss_Segment2", "OBJ//Boss//Boss_Segment2.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_SEG3] = MeshBuilder::GenerateOBJ("Boss_Segment3", "OBJ//Boss//Boss_Segment3.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_SEG4] = MeshBuilder::GenerateOBJ("Boss_Segment4", "OBJ//Boss//Boss_Segment4.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_SEG5] = MeshBuilder::GenerateOBJ("Boss_Segment5", "OBJ//Boss//Boss_Segment5.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_SEG6] = MeshBuilder::GenerateOBJ("Boss_Segment6", "OBJ//Boss//Boss_Segment6.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+	meshList[GEO_BOSS_TORSO] = MeshBuilder::GenerateOBJ("Boss_Torso", "OBJ//Boss//Boss_Torso.obj");
+	meshList[GEO_BOSS_LARM]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
+
+	meshList[GEO_BOSS_INDICATOR] = MeshBuilder::GenerateOBJ("Boss_Mutant_Range", "OBJ//Boss//Boss_Mutant_Range.obj");
+	meshList[GEO_SPIKE] = MeshBuilder::GenerateOBJ("Boss_Spike", "OBJ//Boss//Boss_Spike.obj");
+
+	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
+
 	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
 	/*--------------------------------------------------------------------------------*/
 	Mtx44 projection;
@@ -367,8 +408,72 @@ void SceneBoss::Update(double dt)
 		}
 	}
 
+	et[10] += dt;
+
+	//if (Boss::get_instance()->get_action() == 1)
+	//{
+	//	et[10] = 0;
+	//	et[11] += dt;
+	//	et[12] = 0;
+	//	et[13] = 0;
+	//	et[14] = 0;
+	//	et[15] = 0;
+	//}
+	//else
+	//{
+	//	et[10] += dt;
+	//	et[11] = 0;
+	//	et[12] = 0;
+	//	et[13] = 0;
+	//	et[14] = 0;
+	//	et[15] = 0;
+	//}
+
+	//if (EnemyManager::get_instance()->EnemyList[0]->get_action() == 1)
+	//{
+	//	et[20] = 0;
+	//	et[21] = 0;
+	//	et[22] += dt;
+	//	et[23] = 0;
+
+	//	if (elapsedTime + 1.5f < bufferTime_attack_M)
+	//	{
+	//		et[20] = 0;
+	//		et[22] += dt;
+	//	}
+	//	else
+	//	{
+	//		et[22] = 0;
+	//		et[20] += dt;
+	//	}
+	//}
+	//else if (EnemyManager::get_instance()->EnemyList[0]->get_action() == 2)
+	//{
+	//	et[21] = 0;
+	//	et[22] = 0;
+	//	if ((elapsedTime + 0.5f < bufferTime_attack_M) && (elapsedTime + 1.5f > bufferTime_attack_M))
+	//	{
+	//		et[23] = 0;
+	//		et[20] += dt;
+	//	}
+	//	else
+	//	{
+	//		et[20] = 0;
+	//		et[23] += dt;
+	//	}
+	//}
+	//else
+	//{
+	//	et[20] = 0;
+	//	et[21] += dt;
+	//	et[22] = 0;
+	//	et[23] = 0;
+	//}
+
 	//EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj"); // THIS SNEAKY ASS LINE OF CODE RUINED COLLISION FOR THE PAST HOUR OMG.
 	// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
+
+	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
@@ -579,11 +684,96 @@ void SceneBoss::Render()
 
 	/*------Boss-----*/
 	modelStack.PushMatrix();
-	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y,
-		Boss::get_instance()->position_m.z);
-	modelStack.Scale(10, 10, 10);
-	RenderMesh(meshList[GEO_BOSS], false);
+
+	Boss::get_instance()->EnemyHitBox.translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
+
+	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
+
+		modelStack.PushMatrix();
+		AnimCheck_Boss(0, &modelStack, &et[10], "Boss_Torso");
+		RenderMesh(meshList[GEO_BOSS_TORSO], true);
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_LJAW], true);
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_RJAW], true);
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_NECK], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_MHEAD], true);
+
+					modelStack.PushMatrix();
+					RenderMesh(meshList[GEO_BOSS_MJAW], true);
+
+					modelStack.PopMatrix();
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_LUARM], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_LARM], true);
+
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_RUARM], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_RARM], true);
+
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_SEG1], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_SEG2], true);
+
+					modelStack.PushMatrix();
+					RenderMesh(meshList[GEO_BOSS_SEG3], true);
+
+						modelStack.PushMatrix();
+						RenderMesh(meshList[GEO_BOSS_SEG4], true);
+
+							modelStack.PushMatrix();
+							RenderMesh(meshList[GEO_BOSS_SEG5], true);
+
+								modelStack.PushMatrix();
+								RenderMesh(meshList[GEO_BOSS_SEG6], true);
+
+								modelStack.PopMatrix();
+							modelStack.PopMatrix();
+						modelStack.PopMatrix();
+					modelStack.PopMatrix();
+				modelStack.PopMatrix(); // whee
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
 	modelStack.PopMatrix();
+
+	if (Boss::get_instance()->get_action() == 3)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, PlayerClass::get_instance()->position_a.y + 2.5f, Boss::get_instance()->Boss_Tail.position_t.z);
+		modelStack.Scale(0.1f, 0.1f, 0.1f);
+		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, Boss::get_instance()->Boss_Tail.position_t.y, Boss::get_instance()->Boss_Tail.position_t.z);
+		modelStack.Scale(0.5f, 0.5f, 0.5f);
+		RenderMesh(meshList[GEO_SPIKE], true);
+		modelStack.PopMatrix();
+	}
+
 	/*---------------*/
 
 	/*-----------------Skybox-------------------*/

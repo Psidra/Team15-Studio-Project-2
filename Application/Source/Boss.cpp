@@ -1,6 +1,7 @@
 #include "Boss.h"
 #include "PlayerClass.h"
 #include "Application.h"
+#include "ProjectileBuilder.h"
 #include <time.h>
 #include <stdlib.h>
 
@@ -24,6 +25,7 @@ void Boss::bossInit()
 	tailattacking = false;
 	burrowing = false;
 	spinning = false;
+	projattacking = false;
 }
 
 void Boss::stateManager()
@@ -241,12 +243,12 @@ void Boss::tailAttack(double timeElapsed, bool block)
 		tailattacking = true;
 
 		if ((timeElapsed > bufferTime_tail) && (timeElapsed < bufferTime_tail + 3.f))			  // stalk for 3 seconds
-			this->Boss_Tail->stalk();
+			this->Boss_Tail.stalk();
 		else if ((timeElapsed > bufferTime_tail + 3.5f) && (timeElapsed < bufferTime_tail + 6.f)) // 0.5 seconds of no movement, "locking on". strike for 2.5 seconds.
-			this->Boss_Tail->strike(block);
+			this->Boss_Tail.strike(block);
 		else if ((timeElapsed > bufferTime_tail + 6.f) && (timeElapsed < bufferTime_tail + 7.5f)) // 1.5s of retracting back into the ground.
-			this->Boss_Tail->retract(block);
-		else																					  // (timeElapsed > bufferTime_tail + 7.5f)
+			this->Boss_Tail.retract(block);
+		else if	(timeElapsed > bufferTime_tail + 7.5f)
 		{
 			bufferTime_tail = timeElapsed + 1.f;												  // 1 second cd before cycling back again to stalk, strike, retract.
 			tailattacking = false;
@@ -254,3 +256,55 @@ void Boss::tailAttack(double timeElapsed, bool block)
 	}
 }
 
+void Boss::proj_attack(unsigned int projType, Vector3 pos, Vector3 dir, double elapsedTime)
+{
+	//if (bufferTime_attackpattern > elapsedTime)
+	//{
+	//if (!burrowing && !spinning && !tailattacking)
+	//{
+	//		if (attack_pattern == 1)
+	//		{
+	//			for (unsigned int loop = 0; loop < 10; loop++)
+	//			{
+	//				this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
+	//			}
+
+	//			bufferTime_attackpattern = 0;
+	//			projattacking = false;
+	//		}
+	//		else if (attack_pattern == 2)
+	//		{
+	//			for (unsigned int loop = 0; loop < 10; loop++)
+	//			{
+	//				this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
+	//			}
+	//		}
+	//	}
+	//	else
+	//	{
+	//		srand(time(NULL));
+	//		attack_pattern = rand() % 3 + 1; // if we even have time for 3 different patterns
+
+	//		bufferTime_attackpattern = elapsedTime + 8.f;
+	//		projattacking = true;
+	//	}
+	//}
+	//else
+	//{
+	//	projattacking = false;
+	//}s
+}
+
+unsigned int Boss::get_action()
+{
+	if (burrowing)
+		return 1;
+	else if (spinning)
+		return 2;
+	else if (tailattacking)
+		return 3;
+	else if (projattacking)
+		return 4;
+	else
+		return 0;
+}
