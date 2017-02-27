@@ -51,6 +51,7 @@ void resize_callback(GLFWwindow* window, int w, int h)
 
 void Application::Init()
 {
+	srand(time(NULL));
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
 

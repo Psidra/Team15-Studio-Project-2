@@ -271,9 +271,10 @@ void SceneBoss::Update(double dt)
 	Boss::get_instance()->bossHealthUI();
 	Boss::get_instance()->stateManager();
 	Boss::get_instance()->dmgOvertime(elapsedTime);
-	Boss::get_instance()->burrowTeleportation(elapsedTime);
-	Boss::get_instance()->tailAttack(elapsedTime, block);
-	Boss::get_instance()->spinAttack(elapsedTime, false);
+	Boss::get_instance()->boss_attack(elapsedTime, block);
+	//Boss::get_instance()->burrowTeleportation(elapsedTime);
+	//Boss::get_instance()->tailAttack(elapsedTime, block);
+	//Boss::get_instance()->spinAttack(elapsedTime, false);
 	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
@@ -769,7 +770,7 @@ void SceneBoss::Render()
 	{
 		modelStack.PushMatrix();
 		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, PlayerClass::get_instance()->position_a.y + 2.5f, Boss::get_instance()->Boss_Tail.position_t.z);
-		modelStack.Scale(0.1f, 0.1f, 0.1f);
+		modelStack.Scale(0.1f, 1.f, 0.1f);
 		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
 		modelStack.PopMatrix();
 
@@ -777,6 +778,14 @@ void SceneBoss::Render()
 		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, Boss::get_instance()->Boss_Tail.position_t.y, Boss::get_instance()->Boss_Tail.position_t.z);
 		modelStack.Scale(0.5f, 0.5f, 0.5f);
 		RenderMesh(meshList[GEO_SPIKE], true);
+		modelStack.PopMatrix();
+	}
+	else if (Boss::get_instance()->get_action() == 2)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y + 2.5f, Boss::get_instance()->position_m.z);
+		modelStack.Scale(0.2f, 1.f, 0.2f);
+		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
 		modelStack.PopMatrix();
 	}
 

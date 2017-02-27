@@ -10,8 +10,8 @@ public:
 	{
 		if (!instance)
 			instance = new PlayerClass();
-		else
-			return instance;
+
+		return instance;
 	}
 
 	int get_health();

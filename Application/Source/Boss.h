@@ -12,8 +12,8 @@ public:
 	{
 		if (!instance)
 			instance = new Boss();
-		else
-			return instance;
+
+		return instance;
 	}
 
 	struct BossLife
@@ -35,6 +35,7 @@ public:
 	unsigned int get_action();
 	void proj_attack(unsigned int projType, Vector3 pos, Vector3 dir, double elapsedTime);
 	unsigned int get_pattern();
+	void boss_attack(double elapsedTime, bool block);
 
 	BossLife bossLife;
 	Tail Boss_Tail; // great now tail doesn't even look like a word anymore, thanks semanic satiation
@@ -56,6 +57,8 @@ private:
 	double bufferTime_tail;
 	double bufferTime_attackpattern;
 	double bufferTime_iframe;
+	double bufferTime_attackchoice;
+	unsigned int attackchoice;
 	/*-----For State Control---*/
 	bool tailAtk; 
 	bool spin;

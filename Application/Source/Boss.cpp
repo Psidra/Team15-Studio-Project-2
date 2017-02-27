@@ -99,7 +99,6 @@ void Boss::burrowTeleportation(double timeElapsed)
 {
 	int burrowDirection = 0;
 	int burrowRange = 0;
-	srand(time(NULL));
 	
 	if (burrow && timeElapsed > cooldown_Burrow && // 15 second cooldown
 		!tailattacking && !spinning && !burrowing) // multiple actions should not happen at the same time and also burrowing not occured yet
@@ -220,7 +219,6 @@ void Boss::spinAttack(double timeElapsed , bool block)
 	{
 		if (!burrowing && !tailattacking && spinningDuration > timeElapsed)
 		{
-			spinning = true;
 			if (PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox) && (timeElapsed > bufferTime_iframe))
 			{
 				bufferTime_iframe = timeElapsed + 1.f;
@@ -230,7 +228,6 @@ void Boss::spinAttack(double timeElapsed , bool block)
 
 		if (timeElapsed > cooldown_Spin)
 		{
-			spinning = false;
 			cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
 			spinningDuration = timeElapsed + 5.f;
 		}
@@ -241,8 +238,6 @@ void Boss::tailAttack(double timeElapsed, bool block)
 {
 	if (tailAtk && !burrowing && !spinning)
 	{
-		tailattacking = true;
-
 		if ((timeElapsed > bufferTime_tail) && (timeElapsed < bufferTime_tail + 3.f))			  // stalk for 3 seconds
 			this->Boss_Tail.stalk();
 		else if ((timeElapsed > bufferTime_tail + 3.5f) && (timeElapsed < bufferTime_tail + 6.f)) // 0.5 seconds of no movement, "locking on". strike for 2.5 seconds.
@@ -250,50 +245,24 @@ void Boss::tailAttack(double timeElapsed, bool block)
 		else if ((timeElapsed > bufferTime_tail + 6.f) && (timeElapsed < bufferTime_tail + 7.5f)) // 1.5s of retracting back into the ground.
 			this->Boss_Tail.retract(block);
 		else if	(timeElapsed > bufferTime_tail + 7.5f)
-		{
 			bufferTime_tail = timeElapsed + 1.f;												  // 1 second cd before cycling back again to stalk, strike, retract.
-			tailattacking = false;
-		}
 	}
 }
 
 void Boss::proj_attack(unsigned int projType, Vector3 pos, Vector3 dir, double elapsedTime)
 {
-	//if (bufferTime_attackpattern > elapsedTime)
-	//{
-	//if (!burrowing && !spinning && !tailattacking)
-	//{
-	//		if (attack_pattern == 1)
-	//		{
-	//			for (unsigned int loop = 0; loop < 10; loop++)
-	//			{
-	//				this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
-	//			}
-
-	//			bufferTime_attackpattern = 0;
-	//			projattacking = false;
-	//		}
-	//		else if (attack_pattern == 2)
-	//		{
-	//			for (unsigned int loop = 0; loop < 10; loop++)
-	//			{
-	//				this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		srand(time(NULL));
-	//		attack_pattern = rand() % 3 + 1; // if we even have time for 3 different patterns
-
-	//		bufferTime_attackpattern = elapsedTime + 8.f;
-	//		projattacking = true;
-	//	}
-	//}
-	//else
-	//{
-	//	projattacking = false;
-	//}s
+	if (attackchoice == 1)
+	{
+		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
+	}
+	else if (attackchoice == 2)
+	{
+		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
+	}
+	else if (attackchoice == 3)
+	{
+		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
+	}
 }
 
 unsigned int Boss::get_action()
@@ -308,4 +277,51 @@ unsigned int Boss::get_action()
 		return 4;
 	else
 		return 0;
+}
+
+void Boss::boss_attack(double elapsedTime, bool block)
+{
+	int random_choice = rand() % 3 + 1;
+
+	if (elapsedTime > bufferTime_attackchoice)
+	{
+		tailattacking = false;
+		spinning = false;
+		burrowing = false;
+
+		if (random_choice == 1)
+		{
+			tailattacking = true;
+			bufferTime_attackchoice = elapsedTime + 8.f;
+		}
+		else if (random_choice == 2)
+		{
+			spinning = true;
+			bufferTime_attackchoice = elapsedTime + 8.5f;
+		}
+		else if (random_choice == 3)
+		{
+			bufferTime_attackchoice = elapsedTime + 15.f;
+		}
+
+		attackchoice = random_choice;
+	}
+	else
+	{
+		if (attackchoice == 1)
+		{
+			std::cout << "tail" << std::endl;
+			this->tailAttack(elapsedTime, true);
+		}
+		else if (attackchoice == 2)
+		{
+			std::cout << "spin" << std::endl;
+			this->spinAttack(elapsedTime, false);
+		}
+		else if (attackchoice == 3)
+		{
+			std::cout << "burrow" << std::endl;
+			this->burrowTeleportation(elapsedTime);
+		}
+	}
 }
