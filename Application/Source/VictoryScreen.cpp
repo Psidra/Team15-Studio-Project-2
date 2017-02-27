@@ -4,6 +4,7 @@
 #include "PlayerClass.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "EnemyClassManager.h"
@@ -113,11 +114,22 @@ void VictoryScreen::Update(double dt)
 	timer = std::to_string(PlayerClass::get_instance()->timeSpend) + "s";
 	/*----------------------------------------------------------*/
 
-	if (Application::IsKeyPressed(VK_RETURN))
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
-		SceneManager::getInstance()->changeScene(new SceneCredits());
+		int xbox;
+		const unsigned char *xboxs = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+		if (Application::IsKeyPressed(VK_RETURN) || GLFW_PRESS == xboxs[0])
+		{
+			SceneManager::getInstance()->changeScene(new SceneCredits());
+		}
 	}
-	
+	else
+	{
+		if (Application::IsKeyPressed(VK_RETURN))
+		{
+			SceneManager::getInstance()->changeScene(new SceneCredits());
+		}
+	}
 }
 
 void VictoryScreen::Render()

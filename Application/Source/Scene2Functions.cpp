@@ -12,7 +12,7 @@
 
 void StudioProject2Scene2::LoadLight()
 {
-	/*light[0].type = Light::LIGHT_POINT;
+	light[0].type = Light::LIGHT_POINT;
 	light[0].position.Set(-80, 10, -10); 
 	light[0].color.Set(0.251, 0.878, 0.816);
 	light[0].power = 5;
@@ -54,7 +54,7 @@ void StudioProject2Scene2::LoadLight()
 	glUniform1f(m_parameters[U_LIGHT1_KQ], light[1].kQ);
 	glUniform1f(m_parameters[U_LIGHT1_COSCUTOFF], light[1].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
-	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);*/
+	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
 }
 
 void StudioProject2Scene2::RenderMesh(Mesh *mesh, bool enableLight)
@@ -198,6 +198,16 @@ void StudioProject2Scene2::RenderMeshOnScreen(Mesh* mesh, int x, int y, int size
 
 void StudioProject2Scene2::RenderLightStands()
 {
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(2, 9, -20);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
 }
 
 void StudioProject2Scene2::RenderTrees()
