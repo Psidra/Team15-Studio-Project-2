@@ -176,6 +176,8 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_TRUMPTOWER]->MeshBBox.loadBB("OBJ//Scene2//TrumpTower.obj");
 	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
 
+	meshList[GEO_FLOORBBOX]->MeshBBox.scale(3.f, 1.f, 2.f);
+
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
@@ -1142,8 +1144,8 @@ void StudioProject2Scene2::Render()
 	/*--------------------Environmental Objects--------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -5, 0);
-	RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
 	RenderMesh(meshList[GEO_SCENE2], true);
+	//RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
 	modelStack.PopMatrix();
 
 	/*-------------------------------------------------------*/
