@@ -121,8 +121,25 @@ void EnemyClass::proj_update()
 {
 	for (unsigned int projectiles = 0; projectiles < this->spit_.size(); projectiles++)
 	{
-		this->spit_[projectiles]->edit_passed_angle();
-		this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
+		if (this->spit_[projectiles]->projType_ == 1)
+		{
+			this->spit_[projectiles]->edit_passed_angle();
+			this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
+		}
+		if (this->spit_[projectiles]->projType_ == 2)
+		{
+			this->spit_[projectiles]->edit_passed_angle();
+			this->spit_[projectiles]->direction_.y = -sin(this->spit_[projectiles]->get_passed_angle());
+		}
+		if (this->spit_[projectiles]->projType_ == 3)
+		{
+			this->spit_[projectiles]->direction_.y = 0;
+		}
+		if (this->spit_[projectiles]->projType_ == 4)
+		{
+			this->spit_[projectiles]->boss_edit_passed_angle();
+			this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());
+		}
 
 		this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
 	}

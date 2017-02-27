@@ -126,7 +126,8 @@ void SceneBoss::Init()
 
 	//enemy hitbox here and all
 
-	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
+	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Mutant_Projectile.obj");
+	meshList[GEO_SPIT]->textureID = LoadTGA("Image//Mutant_Projectile_Texture.tga");
 	/*-------------------------------------------------------------*/
 	/*--------------------------Character Loading----------------------------------*/
 	meshList[GEO_ALEXIS_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Character//facehair.obj");
@@ -267,42 +268,60 @@ void SceneBoss::Update(double dt)
 	elapsedTime += dt;
 
 	/*--------Boss Functions--------------*/
-	Boss::get_instance()->bossHealthSystem(elapsedTime);
-	Boss::get_instance()->bossHealthUI();
-	Boss::get_instance()->stateManager();
-	Boss::get_instance()->dmgOvertime(elapsedTime);
-	Boss::get_instance()->boss_attack(elapsedTime, block);
-	//Boss::get_instance()->burrowTeleportation(elapsedTime);
-	//Boss::get_instance()->tailAttack(elapsedTime, block);
-	//Boss::get_instance()->spinAttack(elapsedTime, false);
+	Boss::get_instance()->update(elapsedTime, block); // so much neater \:D/
+	Boss::get_instance()->proj_attack(Boss::get_instance()->position_m, Boss::get_instance()->direction_m, elapsedTime);
+	Boss::get_instance()->proj_update();
 	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
 	//EnemyManager::get_instance()->EnemyList[0]->update(dt);
 
-	//// I spent 10 years trying to fix projectile because I wanted to avoid using erase.
-	//// Erase won today. Erase, me, 1:0. Shit.
 
+	for (unsigned int projectiles = 0; projectiles < Boss::get_instance()->spit_.size(); projectiles++)
+	{
+		if (Boss::get_instance()->spit_[projectiles] != nullptr)
+		{
+			Boss::get_instance()->spit_[projectiles]->projHitBox_.translate(Boss::get_instance()->spit_[projectiles]->position_.x,
+				(Boss::get_instance()->spit_[projectiles]->position_.y + 10.f),
+				Boss::get_instance()->spit_[projectiles]->position_.z);
+
+			if (/*Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(meshList[GEO_WALLS]->MeshBBox) ||*/ Boss::get_instance()->spit_[projectiles]->displacement() > 100.f)
+			{
+				Boss::get_instance()->spit_.erase(Boss::get_instance()->spit_.begin() + projectiles);
+			}
+			if (Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) && (elapsedTime > bufferTime_iframeroll) && (elapsedTime > bufferTime_hitiframe))
+			{
+				PlayerClass::get_instance()->healthSystem(block, true);
+				bufferTime_hitiframe = elapsedTime + 0.3f;
+				Boss::get_instance()->spit_.erase(Boss::get_instance()->spit_.begin() + projectiles);
+			}
+		}
+	}
 	//for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
 	//{
-	//	for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+	//	if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 	//	{
-	//		if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+	//		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 	//		{
-	//			EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-	//				(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+	//			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+	//			{
+	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+	//					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
 
-	//			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) || EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
-	//			{
-	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
-	//			}
-	//			else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
-	//				(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
-	//			{
-	//				PlayerClass::get_instance()->healthSystem(block);
-	//				bufferTime_iframe = elapsedTime + 0.3f;
-	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+	//				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMP]->MeshBBox) ||
+	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOOR]->MeshBBox) ||
+	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+	//				{
+	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+	//				}
+	//				else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
+	//					(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
+	//				{
+	//					PlayerClass::get_instance()->healthSystem(block, false);
+	//					bufferTime_iframe = elapsedTime + 0.3f;
+	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+	//				}
 	//			}
 	//		}
 	//	}
@@ -405,13 +424,22 @@ void SceneBoss::Update(double dt)
 
 	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
 
-	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	//for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	//{
+	//	if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
+	//	{
+	//		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+	//		{
+	//			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+	//		}
+	//	}
+	//}
+
+	for (unsigned int projectiles = 0; projectiles < Boss::get_instance()->spit_.size(); projectiles++)
 	{
-		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
-		}
+		if (Boss::get_instance()->spit_[projectiles] != nullptr)
+			Boss::get_instance()->spit_[projectiles]->projHitBox_.loadBB("OBJ//Mutant_Projectile.obj");
 	}
 
 	et[10] += dt;
@@ -978,21 +1006,18 @@ void SceneBoss::RenderMutant()
 
 void SceneBoss::RenderProjectiles()
 {
-	/*for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	for (unsigned int projectiles = 0; projectiles < Boss::get_instance()->spit_.size(); projectiles++)
 	{
-		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+		if (Boss::get_instance()->spit_[projectiles] != nullptr)
 		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-			{
-				modelStack.PushMatrix();
-				modelStack.Translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
-				RenderMesh(meshList[GEO_SPIT], false);
-				modelStack.PopMatrix();
-			}
+			modelStack.PushMatrix();
+			modelStack.Translate(Boss::get_instance()->spit_[projectiles]->position_.x,
+				Boss::get_instance()->spit_[projectiles]->position_.y + 3.f,
+				Boss::get_instance()->spit_[projectiles]->position_.z);
+			RenderMesh(meshList[GEO_SPIT], false);
+			modelStack.PopMatrix();
 		}
-	}*/
+	}
 }
 
 void SceneBoss::Exit()

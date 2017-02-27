@@ -16,7 +16,7 @@ void Boss::bossInit()
 {
 	get_instance()->position_m = Vector3(0, 5, 0);
 	this->EnemyHitBox.setto(get_instance()->position_m.x, get_instance()->position_m.y, get_instance()->position_m.z);
-	spin = false;
+	spin = true;
 	tailAtk = false;
 	burrow = false;
 	DmgOverTime = false;
@@ -31,8 +31,6 @@ void Boss::bossInit()
 
 void Boss::stateManager()
 {
-	if (boss_health < (75 * 0.01 * 300)) // 75% hp  [75/100 * 300] note: Multiply is cheaper than divide
-		spin = true;
 	if (boss_health < (50 * 0.01 * 300)) // 50% hp
 		tailAtk = true;
 	if (boss_health < (25 * 0.01 * 300)) // 25% hp
@@ -213,24 +211,21 @@ void Boss::burrowTeleportation(double timeElapsed)
 	}
 }
 
-void Boss::spinAttack(double timeElapsed , bool block)
+void Boss::spinAttack(double timeElapsed, bool block)
 {
-	if (spin)
+	if (!burrowing && !tailattacking && spinningDuration > timeElapsed)
 	{
-		if (!burrowing && !tailattacking && spinningDuration > timeElapsed)
+		if (PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox) && (timeElapsed > bufferTime_iframe))
 		{
-			if (PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox) && (timeElapsed > bufferTime_iframe))
-			{
-				bufferTime_iframe = timeElapsed + 1.f;
-				PlayerClass::get_instance()->healthSystem(block, true);
-			}
+			bufferTime_iframe = timeElapsed + 1.f;
+			PlayerClass::get_instance()->healthSystem(block, true);
 		}
+	}
 
-		if (timeElapsed > cooldown_Spin)
-		{
-			cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
-			spinningDuration = timeElapsed + 5.f;
-		}
+	if (timeElapsed > cooldown_Spin)
+	{
+		cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
+		spinningDuration = timeElapsed + 5.f;
 	}
 }
 
@@ -249,19 +244,61 @@ void Boss::tailAttack(double timeElapsed, bool block)
 	}
 }
 
-void Boss::proj_attack(unsigned int projType, Vector3 pos, Vector3 dir, double elapsedTime)
+void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 {
-	if (attackchoice == 1)
+	if (elapsedTime > bufferTime_projduration)
 	{
-		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
-	}
-	else if (attackchoice == 2)
-	{
-		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
-	}
-	else if (attackchoice == 3)
-	{
-		this->spit_.push_back(projectileBuilder::GenerateProjectile(projType, pos, dir));
+		if (attackchoice == 1)
+		{
+			for (direction_p = -0.3f; direction_p < 0.3f; direction_p += 0.025f)
+			{
+				if (direction_m.z >= 0.5)
+					this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(direction_p, 0, direction_p))));
+				else
+					this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(direction_p, 0, 0))));
+			}
+
+			bufferTime_projduration = elapsedTime + 5.f;
+		}
+		else if (attackchoice == 2)
+		{
+			for (direction_p = (-0.3f + offset); direction_p < (0.3f + offset); direction_p += 0.055f)
+			{
+				if (direction_m.x >= 0.5)
+				{
+					if (direction_m.z > -0.5 && direction_m.z < 0.5f)
+						this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(0, 0, direction_p))));
+					else if (direction_m.z <= -0.5)
+						this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(direction_p, 0, direction_p))));
+					else
+						this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(direction_p, 0, -direction_p))));
+				}
+				else if (direction_m.x <= -0.5)
+				{
+					if (direction_m.z > -0.5f && direction_m.z < 0.5f)
+						this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(0, 0, direction_p))));
+					else if (direction_m.z <= -0.5)
+						this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(direction_p, 0, -direction_p))));
+					else
+						this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(direction_p, 0, direction_p))));
+				}
+				else
+					this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(direction_p, 0, 0))));
+			}
+
+			if (offset == 0.f)
+				offset = 0.025f;
+			else if (offset == 0.025f)
+				offset = 0.f;
+
+			bufferTime_projduration = elapsedTime + 1.5f;
+		}
+		else if (attackchoice == 3)
+		{
+			this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, dir));
+
+			bufferTime_projduration = elapsedTime + 0.1f;
+		}
 	}
 }
 
@@ -273,15 +310,18 @@ unsigned int Boss::get_action()
 		return 2;
 	else if (tailattacking)
 		return 3;
-	else if (projattacking)
-		return 4;
 	else
 		return 0;
 }
 
 void Boss::boss_attack(double elapsedTime, bool block)
 {
-	int random_choice = rand() % 3 + 1;
+	if (burrow)
+		random_choice = rand() % 3 + 1; // praise RNGesus
+	else if (tailAtk)
+		random_choice = rand() % 2 + 1;
+	else
+		random_choice = 2; // "random" Kappa
 
 	if (elapsedTime > bufferTime_attackchoice)
 	{
@@ -324,4 +364,19 @@ void Boss::boss_attack(double elapsedTime, bool block)
 			this->burrowTeleportation(elapsedTime);
 		}
 	}
+}
+
+void Boss::facingDirection()
+{
+	this->direction_m = (PlayerClass::get_instance()->position_a - this->position_m).Normalized();
+}
+
+void Boss::update(double timeElapsed, bool block)
+{
+	this->bossHealthSystem(timeElapsed);
+	this->bossHealthUI();
+	this->stateManager();
+	this->dmgOvertime(timeElapsed);
+	this->facingDirection();
+	this->boss_attack(timeElapsed, block);
 }
