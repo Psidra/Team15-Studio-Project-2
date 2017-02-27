@@ -173,3 +173,58 @@ void Camera4::Update(double dt, float posx, float posy)
 		}
 	}
 }*/
+
+void Camera4::UpdateUnlockedCam(double dt)
+{
+	if (Application::IsKeyPressed(VK_RIGHT))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+
+		position += right * (float)(50 * dt);
+
+		if (position.x > 805)
+			position.x--;
+
+		target = position + view;
+	}
+
+	if (Application::IsKeyPressed(VK_LEFT))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+
+		position -= right * (float)(50 * dt);
+
+		if (position.x < -80)
+			position.x++;
+
+		target = position + view;
+	}
+	if (Application::IsKeyPressed(VK_UP))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+		position += up * (float)(50 * dt);
+
+		if (position.y > 60)
+			position.y--;
+		
+		target = position + view;
+	}
+	if (Application::IsKeyPressed(VK_DOWN))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+		position -= up * (float)(50 * dt);
+
+		if (position.y < -245)
+			position.y++;
+
+		target = position + view;
+	}
+}

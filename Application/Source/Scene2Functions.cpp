@@ -77,6 +77,7 @@ void StudioProject2Scene2::LoadLight()
 	glUniform1f(m_parameters[U_LIGHT2_COSCUTOFF], light[2].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT2_COSINNER], light[2].cosInner);
 	glUniform1f(m_parameters[U_LIGHT2_EXPONENT], light[2].exponent);
+
 }
 
 void StudioProject2Scene2::RenderMesh(Mesh *mesh, bool enableLight)
@@ -222,6 +223,7 @@ void StudioProject2Scene2::RenderLightStands()
 {
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	modelStack.Translate(-80, 8, -20);
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_LIGHTSTAND], true);
@@ -289,6 +291,9 @@ void StudioProject2Scene2::RenderLightStands()
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.Translate(852, 8, -20);
+
+	modelStack.Translate(2, 9, -20);
+
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_LIGHTSTAND], true);
 	modelStack.PushMatrix();

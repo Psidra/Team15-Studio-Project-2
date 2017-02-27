@@ -204,6 +204,7 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_FLOORBBOX]->MeshBBox.scale(3, 1, 2);
 	meshList[GEO_FLOORBBOX]->MeshBBox.translate(0, -4, 0);
 
+
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
@@ -1172,6 +1173,7 @@ void StudioProject2Scene2::Render()
 	/*--------------------Environmental Objects--------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -5, 0);
+
 	//RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
 	RenderMesh(meshList[GEO_SCENE2], true);
 	modelStack.PopMatrix();

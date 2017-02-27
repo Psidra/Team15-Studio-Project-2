@@ -51,6 +51,7 @@ void resize_callback(GLFWwindow* window, int w, int h)
 
 void Application::Init()
 {
+	srand(time(NULL));
 	//Set the error callback
 	glfwSetErrorCallback(error_callback);
 
@@ -66,7 +67,6 @@ void Application::Init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); //Request a specific OpenGL version
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
-
 
 	//Create a window and create its OpenGL context
 	m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);

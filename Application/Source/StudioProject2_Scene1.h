@@ -129,6 +129,7 @@ private:
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
+	bool Unlock;
 
 	void LoadLight();
 	void LoadCharacter();
@@ -241,7 +242,7 @@ private:
 	double bufferTime_block;			// OLD SPICE ODOUR BODY BLOCKER BLOCKS BACTERIA AND SMELL FOR UP TO 24 HOURS
 	double bufferTime_roll;
 	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
-
+	double bufferTime_Unlock;
 	double bufferTime_attack_M;
 };
 

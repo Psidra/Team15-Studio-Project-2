@@ -12,8 +12,8 @@ public:
 	{
 		if (!instance)
 			instance = new Boss();
-		else
-			return instance;
+
+		return instance;
 	}
 
 	struct BossLife
@@ -24,7 +24,7 @@ public:
 
 	void bossInit();
 	void bossHealthUI();
-	void bossHealthSystem();
+	void bossHealthSystem(double timeElapsed);
 	void facingDirection();
 	void stateManager();
 	void dmgOvertime(double timeElapsed);
@@ -32,8 +32,14 @@ public:
 	void spinAttack(double timeElapsed, bool block);
 	void tailAttack(double timeElapsed, bool block);
 	unsigned int get_health();
+	unsigned int get_action();
+	void proj_attack(unsigned int projType, Vector3 pos, Vector3 dir, double elapsedTime);
+	unsigned int get_pattern();
+	void boss_attack(double elapsedTime, bool block);
+
 	BossLife bossLife;
-	Tail* Boss_Tail; // great now tail doesn't even look like a word anymore, thanks semanic satiation
+	Tail Boss_Tail; // great now tail doesn't even look like a word anymore, thanks semanic satiation
+	bool magicImmunity;
 
 private:
 	Boss(): boss_health(300), boss_lookingDirection(90) {};
@@ -42,16 +48,22 @@ private:
 	static Boss* instance;
 	unsigned int boss_health;
 	int boss_lookingDirection;
+	unsigned int attack_pattern;
 	double bufferTime_DoT;
+	double bufferTime_atk;
 	double cooldown_Burrow;
 	double cooldown_Spin;
 	double spinningDuration;
+	double bufferTime_tail;
+	double bufferTime_attackpattern;
+	double bufferTime_iframe;
+	double bufferTime_attackchoice;
+	unsigned int attackchoice;
 	/*-----For State Control---*/
 	bool tailAtk; 
 	bool spin;
 	bool burrow;
 	bool DmgOverTime;
-	bool magicImmunity;
 	/*------------------------*/
 	
 	/*----For preventing continuous update--*/
@@ -63,6 +75,7 @@ private:
 	bool spinning;
 	bool burrowing;
 	bool tailattacking;
+	bool projattacking;
 };
 
 #endif

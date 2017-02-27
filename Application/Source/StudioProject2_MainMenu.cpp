@@ -1,4 +1,5 @@
 #include "StudioProject2_MainMenu.h"
+#include "ControlScreen.h"
 #include "LoadingScreen.h"
 #include "SelectionScreen.h"
 #include "VictoryScreen.h"
@@ -6,6 +7,7 @@
 #include "DeathScreen.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -109,33 +111,72 @@ void StudioProject2MainMenu::Update(double dt)
 	fps = "FPS:" + std::to_string(framespersec);
 	/*----------------------------------------------------------*/
 
-	if (Application::IsKeyPressed(VK_RETURN))
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
-		SceneManager::getInstance()->Location = "Secluded Forest";
-		SceneManager::getInstance()->changeScene(new LoadingScreen());
+		int xbox360;
+		const unsigned char *xbox360controls = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox360);
+		if (Application::IsKeyPressed(VK_RETURN) || GLFW_PRESS == xbox360controls[7])
+		{
+			SceneManager::getInstance()->Location = "Secluded Forest";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
+		if (Application::IsKeyPressed(VK_SPACE) || GLFW_PRESS == xbox360controls[0])
+		{
+			SceneManager::getInstance()->changeScene(new SelectionScreen());
+		}
+		if (Application::IsKeyPressed(VK_TAB) || GLFW_PRESS == xbox360controls[6])
+		{
+			SceneManager::getInstance()->changeScene(new ControlScreen());
+		}
+		if (Application::IsKeyPressed('T'))
+		{
+			SceneManager::getInstance()->changeScene(new SceneBoss());
+		}
+		if (Application::IsKeyPressed('Y'))
+		{
+			SceneManager::getInstance()->changeScene(new DeathScreen());
+		}
+		if (Application::IsKeyPressed('M'))
+		{
+			SceneManager::getInstance()->changeScene(new VictoryScreen());
+		}
+		if (Application::IsKeyPressed('N'))
+		{
+			SceneManager::getInstance()->changeScene(new SceneCredits());
+		}
 	}
-	if (Application::IsKeyPressed(VK_SPACE))
+	else
 	{
-		SceneManager::getInstance()->changeScene(new SelectionScreen());
+		if (Application::IsKeyPressed(VK_RETURN))
+		{
+			SceneManager::getInstance()->Location = "Secluded Forest";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
+		if (Application::IsKeyPressed(VK_SPACE))
+		{
+			SceneManager::getInstance()->changeScene(new SelectionScreen());
+		}
+		if (Application::IsKeyPressed(VK_TAB))
+		{
+			SceneManager::getInstance()->changeScene(new ControlScreen());
+		}
+		if (Application::IsKeyPressed('T'))
+		{
+			SceneManager::getInstance()->changeScene(new SceneBoss());
+		}
+		if (Application::IsKeyPressed('Y'))
+		{
+			SceneManager::getInstance()->changeScene(new DeathScreen());
+		}
+		if (Application::IsKeyPressed('M'))
+		{
+			SceneManager::getInstance()->changeScene(new VictoryScreen());
+		}
+		if (Application::IsKeyPressed('N'))
+		{
+			SceneManager::getInstance()->changeScene(new SceneCredits());
+		}
 	}
-	if (Application::IsKeyPressed('T'))
-	{
-		SceneManager::getInstance()->changeScene(new SceneBoss());
-	}
-	if (Application::IsKeyPressed('Y'))
-	{
-		SceneManager::getInstance()->changeScene(new DeathScreen());
-	}
-	if (Application::IsKeyPressed('M'))
-	{
-		SceneManager::getInstance()->changeScene(new VictoryScreen());
-	}
-	if (Application::IsKeyPressed('N'))
-	{
-		SceneManager::getInstance()->changeScene(new SceneCredits());
-	}
-	
-
 
 }
 
@@ -158,9 +199,10 @@ void StudioProject2MainMenu::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to Start Game", Color(1, 1, 1), 2, 11, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space> to Select a Level", Color(1, 1, 1), 2, 11, -6);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 11, -7);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter>/<Start> to Start Game", Color(1, 1, 1), 2, 6, -5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space>/<A> to Select a Level", Color(1, 1, 1), 2, 6, -6);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Tab>/<Back> to see controls", Color(1, 1, 1), 2, 6, -7);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 6, -8);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }
 

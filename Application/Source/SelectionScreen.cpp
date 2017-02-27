@@ -5,6 +5,7 @@
 #include "DeathScreen.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -108,26 +109,52 @@ void SelectionScreen::Update(double dt)
 	/*----------------------------------------------------------*/
 	
 
-	if (Application::IsKeyPressed(VK_BACK))
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
-		SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
+		int xbox;
+		const unsigned char *xboxCon = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+		if (Application::IsKeyPressed(VK_BACK) || GLFW_PRESS == xboxCon[1])
+		{
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
+		}
+		if (Application::IsKeyPressed(VK_1) || GLFW_PRESS == xboxCon[0])
+		{
+			SceneManager::getInstance()->Location = "Secluded Forest";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
+		if (Application::IsKeyPressed(VK_2) || GLFW_PRESS == xboxCon[2])
+		{
+			SceneManager::getInstance()->Location = "Inner City";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
+		if (Application::IsKeyPressed(VK_3) || GLFW_PRESS == xboxCon[3])
+		{
+			SceneManager::getInstance()->Location = "Cavern of Truth";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
 	}
-	if (Application::IsKeyPressed(VK_1))
+	else
 	{
-		SceneManager::getInstance()->Location = "Secluded Forest";
-		SceneManager::getInstance()->changeScene(new LoadingScreen());
+		if (Application::IsKeyPressed(VK_BACK))
+		{
+			SceneManager::getInstance()->changeScene(new StudioProject2MainMenu());
+		}
+		if (Application::IsKeyPressed(VK_1))
+		{
+			SceneManager::getInstance()->Location = "Secluded Forest";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
+		if (Application::IsKeyPressed(VK_2))
+		{
+			SceneManager::getInstance()->Location = "Inner City";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
+		if (Application::IsKeyPressed(VK_3))
+		{
+			SceneManager::getInstance()->Location = "Cavern of Truth";
+			SceneManager::getInstance()->changeScene(new LoadingScreen());
+		}
 	}
-	if (Application::IsKeyPressed(VK_2))
-	{
-		SceneManager::getInstance()->Location = "Inner City";
-		SceneManager::getInstance()->changeScene(new LoadingScreen());
-	}
-	if (Application::IsKeyPressed(VK_3))
-	{
-		SceneManager::getInstance()->Location = "Cavern of Truth";
-		SceneManager::getInstance()->changeScene(new LoadingScreen());
-	}
-
 
 
 
@@ -152,10 +179,10 @@ void SelectionScreen::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Backspace> to Return to Main Menu", Color(1, 1, 1), 2, 7, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <1> to select 'Secluded Forest'", Color(1, 1, 1), 2, 7, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <2> to select 'Inner City'", Color(1, 1, 1), 2, 7, -6);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press <3> to select 'Cavern of Truth'", Color(1, 1, 1), 2, 7, -7);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Backspace>/<B> to Return to Main Menu", Color(1, 1, 1), 2, 5, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <1>/<A> to select 'Secluded Forest'", Color(1, 1, 1), 2, 5, -5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <2>/<X> to select 'Inner City'", Color(1, 1, 1), 2, 5, -6);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <3>/<Y> to select 'Cavern of Truth'", Color(1, 1, 1), 2, 5, -7);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Esc> to Exit Game", Color(1, 1, 1), 2, 7, -8);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
 }

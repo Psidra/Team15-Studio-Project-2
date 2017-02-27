@@ -26,7 +26,7 @@ public:
 	void scale(float x, float y, float z);
 	bool collide(BoundingBox &b);
 	bool higherthan(BoundingBox &b);
-	//void setto(float x, float y, float z);
+	void setto(float x, float y, float z);
 };
 
 #endif // !BOUNDINGBOX_H
