@@ -49,7 +49,7 @@ public:
 
 		//Environmental Objects
 		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE, GEO_SCENE2,
-		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL,
+		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL, GEO_DEBRIS1, GEO_DEBRISn,
 
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
@@ -106,6 +106,18 @@ public:
 		U_LIGHT1_COSINNER,
 		U_LIGHT1_EXPONENT,
 
+		U_LIGHT2_POSITION,
+		U_LIGHT2_COLOR,
+		U_LIGHT2_POWER,
+		U_LIGHT2_KC,
+		U_LIGHT2_KL,
+		U_LIGHT2_KQ,
+		U_LIGHT2_TYPE,
+		U_LIGHT2_SPOTDIRECTION,
+		U_LIGHT2_COSCUTOFF,
+		U_LIGHT2_COSINNER,
+		U_LIGHT2_EXPONENT,
+
 		U_LIGHTENABLED,
 		U_NUMLIGHTS,
 
@@ -121,7 +133,7 @@ private:
 	Mesh* meshList[NUM_GEOMETRY];
 	//Camera2 camera;
 	Camera4 camera;
-	Light light[2];
+	Light light[3];
 	MS modelStack, viewStack, projectionStack;
 	std::vector<HalfMutant> hmvec;
 	unsigned m_vertexArrayID;
@@ -135,7 +147,7 @@ private:
 	
 	void LightInteraction();
 	void TextInteraction();
-	void RenderTrees();
+	void RenderDebri();
 	void RenderLightStands();
 	void RenderTextInteractions();
 
@@ -153,7 +165,7 @@ private:
 	bool trigger;
 	bool grab;
 	bool block;
-	bool roll;
+	bool roll = false;
 
 	double et[30];
 	/*  Alexis:

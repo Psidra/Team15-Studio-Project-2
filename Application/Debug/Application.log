@@ -1,9 +1,252 @@
-﻿Build started 2/21/2017 1:37:38 PM.
-     1>Project "C:\Users\163637H\Desktop\SP2\Application\Application.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         Application.vcxproj -> C:\Users\163637H\Desktop\SP2\Debug\Application.exe
-     1>Done Building Project "C:\Users\163637H\Desktop\SP2\Application\Application.vcxproj" (Build target(s)).
+﻿Build started 2/27/2017 12:46:22 AM.
+     1>Project "C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\Application\Application.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\\glew\include" /I"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\\glfw\include" /I"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\\Common\Source" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Animations.cpp Source\Application.cpp Source\Boss.cpp Source\BoundingBox.cpp Source\Camera.cpp Source\Camera2.cpp Source\Camera3.cpp Source\Camera4_SideScroller.cpp Source\DeathScreen.cpp Source\EnemyClass.cpp Source\EnemyClassManager.cpp Source\HalfMutant.cpp Source\LoadATOM.cpp Source\LoadingScreen.cpp Source\LoadOBJ.cpp Source\LoadTGA.cpp Source\main.cpp Source\Mesh.cpp Source\MeshBuilder.cpp Source\PlayerClass.cpp Source\Projectile.cpp Source\ProjectileBulder.cpp Source\Scene1Interactions.cpp Source\Scene1Functions.cpp Source\Scene2Functions.cpp Source\Scene2Interactions.cpp Source\SceneBoss.cpp Source\SceneBossFunctions.cpp Source\SceneCredits.cpp Source\SceneManager.cpp Source\SelectionScreen.cpp Source\shader.cpp Source\StudioProject2_MainMenu.cpp Source\StudioProject2_Scene1.cpp Source\StudioProject2_Scene2.cpp Source\Tail.cpp Source\Utility.cpp Source\VictoryScreen.cpp
+         VictoryScreen.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\victoryscreen.cpp(105): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\victoryscreen.cpp(144): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\victoryscreen.cpp(278): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Utility.cpp
+         Tail.cpp
+         StudioProject2_Scene2.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(43): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(380): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(428): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(933): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1097): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1136): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1169): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1170): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1173): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1174): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1183): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene2.cpp(1185): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+         StudioProject2_Scene1.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(43): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(400): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(449): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(947): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1108): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1147): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1177): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1183): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1190): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1197): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1294): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1295): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1298): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1299): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1308): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_scene1.cpp(1310): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+         StudioProject2_MainMenu.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_mainmenu.cpp(104): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\studioproject2_mainmenu.cpp(295): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         shader.cpp
+         SelectionScreen.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\selectionscreen.cpp(102): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\selectionscreen.cpp(291): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         SceneManager.cpp
+         SceneCredits.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scenecredits.cpp(106): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scenecredits.cpp(296): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         SceneBossFunctions.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scenebossfunctions.cpp(26): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         SceneBoss.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(36): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(190): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(219): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(265): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(434): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(593): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(593): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(595): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(595): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(604): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(606): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(616): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(623): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(623): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(625): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(625): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(628): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(628): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(630): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\sceneboss.cpp(630): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+         Scene2Interactions.cpp
+         Scene2Functions.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene2functions.cpp(188): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Scene1Functions.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(17): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(39): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(188): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(378): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(379): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(380): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(381): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(382): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(383): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(384): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(385): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(386): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(387): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(388): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(389): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(390): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(391): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(392): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(393): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(394): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(395): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(396): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\scene1functions.cpp(398): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Scene1Interactions.cpp
+     1>c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY' : macro redefinition
+                 c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\glfw\include\glfw\glfw3.h(92) : see previous definition of 'APIENTRY'
+         ProjectileBulder.cpp
+         Projectile.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\projectile.cpp(8): warning C4244: 'return' : conversion from 'float' to 'unsigned int', possible loss of data
+         PlayerClass.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(135): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(137): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(139): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(141): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(143): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(145): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(147): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.cpp(149): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+         MeshBuilder.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\meshbuilder.cpp(521): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\meshbuilder.cpp(528): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\meshbuilder.cpp(532): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\meshbuilder.cpp(538): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\meshbuilder.cpp(540): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\meshbuilder.cpp(549): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\meshbuilder.cpp(554): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\projectilebulder.cpp(11): warning C4715: 'projectileBuilder::GenerateProjectile' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\enemyclassmanager.h(16): warning C4715: 'EnemyManager::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\boss.h(17): warning C4715: 'Boss::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\enemyclassmanager.h(16): warning C4715: 'EnemyManager::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\enemyclassmanager.h(16): warning C4715: 'EnemyManager::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\enemyclassmanager.h(16): warning C4715: 'EnemyManager::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+         Compiling...
+         Mesh.cpp
+         main.cpp
+         LoadTGA.cpp
+         LoadOBJ.cpp
+         LoadingScreen.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\loadingscreen.cpp(106): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\loadingscreen.cpp(284): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\loadingscreen.cpp(310): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         LoadATOM.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\loadatom.cpp(224): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(195) : see declaration of 'strncpy'
+         HalfMutant.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(18): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(30): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(32): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(45): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(47): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(53): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(71): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\halfmutant.cpp(82): warning C4305: 'argument' : truncation from 'double' to 'float'
+         EnemyClassManager.cpp
+         EnemyClass.cpp
+         DeathScreen.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\deathscreen.cpp(109): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\deathscreen.cpp(166): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\deathscreen.cpp(167): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\deathscreen.cpp(168): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\deathscreen.cpp(304): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+         Camera4_SideScroller.cpp
+     1>c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY' : macro redefinition
+                 c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\glfw\include\glfw\glfw3.h(92) : see previous definition of 'APIENTRY'
+         Camera3.cpp
+     1>c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY' : macro redefinition
+                 c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\glfw\include\glfw\glfw3.h(92) : see previous definition of 'APIENTRY'
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(157): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(161): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(183): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(194): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(198): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(220): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(303): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(313): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(323): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera3.cpp(333): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Camera2.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera2.cpp(73): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera2.cpp(81): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera2.cpp(89): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera2.cpp(97): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera2.cpp(105): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera2.cpp(110): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+         Camera.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera.cpp(62): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera.cpp(65): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera.cpp(68): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\camera.cpp(71): warning C4244: '+=' : conversion from 'double' to 'float', possible loss of data
+         BoundingBox.cpp
+         Boss.cpp
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\boss.cpp(99): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+         Application.cpp
+         Animations.cpp
+         Generating Code...
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\boss.h(17): warning C4715: 'Boss::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\enemyclassmanager.h(16): warning C4715: 'EnemyManager::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+     1>c:\users\wafieqa\desktop\wafie's lair\sch\studio project 2\studioproject2\application\source\playerclass.h(15): warning C4715: 'PlayerClass::get_instance' : not all control paths return a value
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\Debug\Application.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\\glew\lib" /LIBPATH:"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\\glfw\lib-msvc120" /LIBPATH:"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\Debug" glew32.lib glfw3.lib opengl32.lib winmm.lib Common.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\Debug\Application.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\Debug\Application.lib" /MACHINE:X86 Debug\Animations.obj
+         Debug\Application.obj
+         Debug\Boss.obj
+         Debug\BoundingBox.obj
+         Debug\Camera.obj
+         Debug\Camera2.obj
+         Debug\Camera3.obj
+         Debug\Camera4_SideScroller.obj
+         Debug\DeathScreen.obj
+         Debug\EnemyClass.obj
+         Debug\EnemyClassManager.obj
+         Debug\HalfMutant.obj
+         Debug\LoadATOM.obj
+         Debug\LoadingScreen.obj
+         Debug\LoadOBJ.obj
+         Debug\LoadTGA.obj
+         Debug\main.obj
+         Debug\Mesh.obj
+         Debug\MeshBuilder.obj
+         Debug\PlayerClass.obj
+         Debug\Projectile.obj
+         Debug\ProjectileBulder.obj
+         Debug\Scene1Interactions.obj
+         Debug\Scene1Functions.obj
+         Debug\Scene2Functions.obj
+         Debug\Scene2Interactions.obj
+         Debug\SceneBoss.obj
+         Debug\SceneBossFunctions.obj
+         Debug\SceneCredits.obj
+         Debug\SceneManager.obj
+         Debug\SelectionScreen.obj
+         Debug\shader.obj
+         Debug\StudioProject2_MainMenu.obj
+         Debug\StudioProject2_Scene1.obj
+         Debug\StudioProject2_Scene2.obj
+         Debug\Tail.obj
+         Debug\Utility.obj
+         Debug\VictoryScreen.obj
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+         Application.vcxproj -> C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\Debug\Application.exe
+     1>Done Building Project "C:\Users\Wafieqa\Desktop\wafie's lair\sch\Studio Project 2\studioproject2\Application\Application.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.06
+Time Elapsed 00:01:26.82
