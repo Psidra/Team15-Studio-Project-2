@@ -14,8 +14,8 @@ public:
 			return instance;
 	}
 
-	unsigned int get_health();
-	unsigned int get_energy();
+	int get_health();
+	int get_energy();
 
 	void healthUI();
 	void manaUI();

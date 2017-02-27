@@ -55,6 +55,7 @@ private:
 	double spinningDuration;
 	double bufferTime_tail;
 	double bufferTime_attackpattern;
+	double bufferTime_iframe;
 	/*-----For State Control---*/
 	bool tailAtk; 
 	bool spin;

@@ -124,7 +124,7 @@ void SceneBoss::Init()
 	meshList[GEO_MUTANT_TORSO] = MeshBuilder::GenerateOBJ("aLeftLeg", "OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 	meshList[GEO_MUTANT_TORSO]->textureID = LoadTGA("Image//Mutant_Texture.tga");
 
-	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	//enemy hitbox here and all
 
 	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Scene1//Box_Short.obj"); //box short placeholder for spit projectile
 	/*-------------------------------------------------------------*/
@@ -241,9 +241,14 @@ void SceneBoss::Init()
 	meshList[GEO_BOSS_INDICATOR] = MeshBuilder::GenerateOBJ("Boss_Mutant_Range", "OBJ//Boss//Boss_Mutant_Range.obj");
 	meshList[GEO_SPIKE] = MeshBuilder::GenerateOBJ("Boss_Spike", "OBJ//Boss//Boss_Spike.obj");
 
+	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
+	Boss::get_instance()->EnemyHitBox.scale(3.f, 3.f, 3.f);
+
 	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
 
 	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
+
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", Boss::get_instance()->EnemyHitBox.max_, Boss::get_instance()->EnemyHitBox.min_);
 	/*--------------------------------------------------------------------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
@@ -268,7 +273,7 @@ void SceneBoss::Update(double dt)
 	Boss::get_instance()->dmgOvertime(elapsedTime);
 	Boss::get_instance()->burrowTeleportation(elapsedTime);
 	Boss::get_instance()->tailAttack(elapsedTime, block);
-	//Boss::get_instance()->spinAttack(elapsedTime, false);
+	Boss::get_instance()->spinAttack(elapsedTime, false);
 	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
@@ -474,6 +479,7 @@ void SceneBoss::Update(double dt)
 	// I UNCOMMENTED IT AND OPENED PANDORA'S BOX, WISH ME LUCK.
 
 	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
+	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
 
 	/*-----------Updates the FPS to be stated on screen---------*/
 	fps = "FPS:" + std::to_string(framespersec);
@@ -775,6 +781,11 @@ void SceneBoss::Render()
 	}
 
 	/*---------------*/
+
+	modelStack.PushMatrix();
+	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
+	RenderMesh(meshList[GEO_TESTBBOX], false);
+	modelStack.PopMatrix();
 
 	/*-----------------Skybox-------------------*/
 	/*modelStack.PushMatrix();
