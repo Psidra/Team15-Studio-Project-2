@@ -9,237 +9,297 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\Camera_functions">
+      <UniqueIdentifier>{0397f3bb-d8dc-4916-9cb0-7d7624e2c98c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Load_functions">
+      <UniqueIdentifier>{8d6f3f59-e928-405f-a8a6-0dd5431d644f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Collision">
+      <UniqueIdentifier>{605f0533-50ba-4081-ada1-f064e9e980bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Animations">
+      <UniqueIdentifier>{3df37896-edca-44df-890a-d24d1f0ee1ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application_files">
+      <UniqueIdentifier>{1ad5d3be-09ce-4678-98b9-99044e3aea6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene_files">
+      <UniqueIdentifier>{f76a8f20-660b-4bf9-b9fe-faa514b8cc8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene_files\Enemy">
+      <UniqueIdentifier>{2da6a098-0f98-4cf8-993f-00d2ce3c77f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene_files\Player">
+      <UniqueIdentifier>{e6b1a0de-4460-4457-acc7-991d6824d8ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene_files\Scene_interactions">
+      <UniqueIdentifier>{cfd2b331-3a2e-4d8b-a7af-4708b323c866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene_files\Scene_functions">
+      <UniqueIdentifier>{df378118-cea3-4478-89ce-5d4b289050cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{82496dbb-efe5-4456-b5f8-92467d631e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Load_functions">
+      <UniqueIdentifier>{f46218ed-b717-4d7a-9bbc-069d71e40e16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Animations">
+      <UniqueIdentifier>{08e11b97-cfba-4288-beec-88f4018f6ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{02cbef8e-e55f-4919-bf52-a8311aceaf86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{4caa0044-a61f-44c8-9a90-d133b56f3abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Enemy">
+      <UniqueIdentifier>{461cb486-cde6-459a-87eb-c3f49467094c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Player">
+      <UniqueIdentifier>{5c033f28-a31e-4754-9e2e-71a33ed53a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\interactions">
+      <UniqueIdentifier>{d381a96c-41c4-4379-b8e6-2a0ba138bb66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\functions">
+      <UniqueIdentifier>{f84dd090-e4ab-478b-b566-ba307f8cebd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collision">
+      <UniqueIdentifier>{5ed72de7-3941-460a-8f3e-cefde41d26b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MeshBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LoadTGA.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LoadOBJ.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StudioProject2_Scene1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StudioProject2_MainMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera4_SideScroller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlayerClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\BoundingBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LoadATOM.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Animations.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene1Interactions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene1Functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ProjectileBulder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Projectile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\EnemyClassManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Boss.cpp">
+      <Filter>Source Files\Scene_files\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Source\EnemyClass.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene_files\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\StudioProject2_Scene2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2Functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2Interactions.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\EnemyClassManager.cpp">
+      <Filter>Source Files\Scene_files\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Source\HalfMutant.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene_files\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneBoss.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\Projectile.cpp">
+      <Filter>Source Files\Scene_files\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneBossFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Boss.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\DeathScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SelectionScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LoadingScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\VictoryScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SceneCredits.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Source\ProjectileBulder.cpp">
+      <Filter>Source Files\Scene_files\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Source\Tail.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene_files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene1Functions.cpp">
+      <Filter>Source Files\Scene_files\Scene_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2Functions.cpp">
+      <Filter>Source Files\Scene_files\Scene_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneBossFunctions.cpp">
+      <Filter>Source Files\Scene_files\Scene_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Source Files\Scene_files\Scene_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerClass.cpp">
+      <Filter>Source Files\Scene_files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene1Interactions.cpp">
+      <Filter>Source Files\Scene_files\Scene_interactions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2Interactions.cpp">
+      <Filter>Source Files\Scene_files\Scene_interactions</Filter>
     </ClCompile>
     <ClCompile Include="Source\ControlScreen.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DeathScreen.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadingScreen.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneBoss.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneCredits.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SelectionScreen.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StudioProject2_MainMenu.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StudioProject2_Scene1.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StudioProject2_Scene2.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\VictoryScreen.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Source Files\Camera_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera2.cpp">
+      <Filter>Source Files\Camera_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera3.cpp">
+      <Filter>Source Files\Camera_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera4_SideScroller.cpp">
+      <Filter>Source Files\Camera_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadATOM.cpp">
+      <Filter>Source Files\Load_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadOBJ.cpp">
+      <Filter>Source Files\Load_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadTGA.cpp">
+      <Filter>Source Files\Load_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BoundingBox.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files\Application_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Source Files\Application_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshBuilder.cpp">
+      <Filter>Source Files\Application_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\shader.cpp">
+      <Filter>Source Files\Application_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utility.cpp">
+      <Filter>Source Files\Application_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animations.cpp">
+      <Filter>Source Files\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>Source Files\Application_files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\shader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MeshBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Vertex.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LoadTGA.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LoadOBJ.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StudioProject2_Scene1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StudioProject2_MainMenu.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Camera4_SideScroller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\BoundingBox.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\LoadATOM.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ProjectileBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Projectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EnemyClassManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EnemyClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\StudioProject2_Scene2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\HalfMutant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneBoss.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Boss.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DeathScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SelectionScreen.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Load_functions</Filter>
     </ClInclude>
     <ClInclude Include="Source\LoadingScreen.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Load_functions</Filter>
     </ClInclude>
-    <ClInclude Include="Source\VictoryScreen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\LoadOBJ.h">
+      <Filter>Header Files\Load_functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadTGA.h">
+      <Filter>Header Files\Load_functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animations.h">
+      <Filter>Header Files\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\shader.hpp">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utility.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneBoss.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneCredits.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Tail.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\SceneManager.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SelectionScreen.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StudioProject2_MainMenu.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StudioProject2_Scene1.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StudioProject2_Scene2.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HalfMutant.h">
+      <Filter>Header Files\Scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyClass.h">
+      <Filter>Header Files\Scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnemyClassManager.h">
+      <Filter>Header Files\Scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerClass.h">
+      <Filter>Header Files\Scene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Boss.h">
+      <Filter>Header Files\Scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile.h">
+      <Filter>Header Files\Scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ProjectileBuilder.h">
+      <Filter>Header Files\Scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\VictoryScreen.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\ControlScreen.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshBuilder.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DeathScreen.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tail.h">
+      <Filter>Header Files\Scene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BoundingBox.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vertex.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
