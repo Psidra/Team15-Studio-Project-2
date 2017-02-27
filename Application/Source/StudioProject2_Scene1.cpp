@@ -366,6 +366,7 @@ void StudioProject2Scene1::Init()
 	syringeSizeX = 1.f;
 	syringeSizeY = 1.f;
 	syringeSizeZ = 1.f;
+	Unlock = false;
 
 	/*-----Character--------*/
 	pressedA = false;
@@ -399,7 +400,29 @@ void StudioProject2Scene1::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
+
+	if (Application::IsKeyPressed('Y'))
+	{
+		if (Unlock == false && elapsedTime > bufferTime_Unlock)
+		{
+			Unlock = true;
+			bufferTime_Unlock = elapsedTime + 0.5f;
+		}
+		else if (Unlock == true && elapsedTime > bufferTime_Unlock)
+		{
+			Unlock = false;
+			bufferTime_Unlock = elapsedTime + 0.5f;
+		}
+	}
+
+	if (Unlock == false)
+	{
+		camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
+	}
+	else
+	{
+		camera.UpdateUnlockedCam(dt);
+	}
 
 	/*-------Half Mutant Functions------------*/
 	hmvec[0].movement(dt);
@@ -484,9 +507,8 @@ void StudioProject2Scene1::Update(double dt)
 	}
 
 	// !PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox)
-	int Connected = glfwJoystickPresent(GLFW_JOYSTICK_1);
 
-	if (Connected == 1)
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
 		int xboxButtonCount;
 		const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxButtonCount);
