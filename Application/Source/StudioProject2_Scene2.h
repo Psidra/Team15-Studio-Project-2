@@ -148,8 +148,10 @@ private:
 	void LightInteraction();
 	void TextInteraction();
 	void RenderDebri();
+	void RenderDebri2();
 	void RenderLightStands();
 	void RenderTextInteractions();
+	void RenderObjects();
 
 	/*--------------------Text Variables--------------------------*/
 	bool pEnter;
