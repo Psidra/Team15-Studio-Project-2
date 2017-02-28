@@ -194,6 +194,12 @@
     <ClCompile Include="Source\SceneBossNewFunctions.cpp">
       <Filter>Source Files\Scene_files\Scene_functions</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StudioProject2_Scene3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3Functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera.h">
@@ -309,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="Source\StudioProject2_SceneBoss.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StudioProject2_Scene3.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

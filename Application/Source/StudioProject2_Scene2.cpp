@@ -1179,6 +1179,9 @@ void StudioProject2Scene2::Render()
 	modelStack.PopMatrix();
 
 	RenderDebri();
+	RenderDebri2();
+
+	RenderObjects();
 	/*-------------------------------------------------------*/
 	/*-----------------Skybox-------------------*/
 	modelStack.PushMatrix();

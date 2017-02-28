@@ -1,5 +1,5 @@
-#ifndef StudioProject2Scene2_H
-#define StudioProject2Scene2_H
+#ifndef StudioProject2Scene3_H
+#define StudioProject2Scene3_H
 #include <string>
 #include <vector>
 #include "Scene.h"
@@ -10,13 +10,12 @@
 #include "MeshBuilder.h"
 #include "MatrixStack.h"
 #include "Light.h"
-#include "HalfMutant.h"
 
-class StudioProject2Scene2 : public Scene
+class StudioProject2Scene3 : public Scene
 {
 public:
-	StudioProject2Scene2();
-	~StudioProject2Scene2();
+	StudioProject2Scene3();
+	~StudioProject2Scene3();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -26,7 +25,8 @@ public:
 	virtual bool otheranims();
 	virtual bool holdanims();
 	virtual void RenderProjectiles();
-	virtual void RenderMutant(unsigned int num_anim_mutant);
+	virtual void RenderMutant();
+	double et[30];
 
 	enum GEOMETRY_TYPE
 	{
@@ -37,38 +37,30 @@ public:
 		GEO_TESTBBOX,
 
 		//skybox
-		GEO_SKYBOX,
+		GEO_SKYBOX, GEO_GROUND, GEO_SKYBOX3, GEO_GROUND3,
 
 		//main character (Alexis)
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM,
-		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG,
+		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG, GEO_LASER,
 		//main character stunt doobl (Alexus) :^)
 		GEO_ALEXUS_HEAD, GEO_ALEXUS_BODY, GEO_ALEXUS_RIGHT4ARM, GEO_ALEXUS_LEFT4ARM,
 		GEO_ALEXUS_CROTCH, GEO_ALEXUS_RIGHTTHIGH, GEO_ALEXUS_LEFTTHIGH,
 		GEO_ALEXUS_RIGHTARM, GEO_ALEXUS_LEFTARM, GEO_ALEXUS_RIGHTLEG, GEO_ALEXUS_LEFTLEG,
-
-		//Environmental Objects
-		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE, GEO_SCENE2,
-		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL, GEO_DEBRIS1, GEO_DEBRISn,
-
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
 		GEO_MUTANT_LEFTUPPERARM, GEO_MUTANT_NECK, GEO_MUTANT_RIGHTARM, GEO_MUTANT_RIGHTFEET,
 		GEO_MUTANT_RIGHTTHIGH, GEO_MUTANT_RIGHTUPPERARM, GEO_MUTANT_TORSO, GEO_SPIT,
-
-		// half mutant & npc
-		GEO_HUMAN, GEO_HM_HEAD, GEO_HM_BODY, GEO_HM_LEFTARM,
-		GEO_HM_RIGHTARM, GEO_HM_LEFTLEG, GEO_HM_RIGHTLEG,
-
-		//UI Objects
-		GEO_ALEXIS_LIFE, GEO_BLANKHEART, GEO_FULL_COUNT, GEO_HALF_COUNT,
-		GEO_TEXTBOX, GEO_TEXT,
-
-		//Mutant Health
 		GEO_M_RHEART, GEO_M_BHEART,
+		//UI Objects
+		GEO_BLANKHEART, GEO_ALEXIS_LIFE, GEO_BOSSLIFE, GEO_ENERGY, GEO_BLANKENERGY,
+		GEO_TEXT, GEO_LASER_CD, GEO_LASER_ICON, GEO_PROJSHIELD_CD, GEO_PROJSHIELD,
+		//Boss
+		GEO_BOSS_LARM, GEO_BOSS_LJAW, GEO_BOSS_LUARM, GEO_BOSS_MHEAD, GEO_BOSS_MJAW,
+		GEO_BOSS_NECK, GEO_BOSS_RARM, GEO_BOSS_RJAW, GEO_BOSS_RUARM, GEO_BOSS_SEG1,
+		GEO_BOSS_SEG2, GEO_BOSS_SEG3, GEO_BOSS_SEG4, GEO_BOSS_SEG5, GEO_BOSS_SEG6,
+		GEO_BOSS_TORSO,
 
-		//Triggers
-		GEO_TRIGGER_SLOPE,
+		GEO_BOSS_INDICATOR, GEO_SPIKE,
 
 		NUM_GEOMETRY,
 	};
@@ -94,30 +86,6 @@ public:
 		U_LIGHT0_COSINNER,
 		U_LIGHT0_EXPONENT,
 
-		U_LIGHT1_POSITION,
-		U_LIGHT1_COLOR,
-		U_LIGHT1_POWER,
-		U_LIGHT1_KC,
-		U_LIGHT1_KL,
-		U_LIGHT1_KQ,
-		U_LIGHT1_TYPE,
-		U_LIGHT1_SPOTDIRECTION,
-		U_LIGHT1_COSCUTOFF,
-		U_LIGHT1_COSINNER,
-		U_LIGHT1_EXPONENT,
-
-		U_LIGHT2_POSITION,
-		U_LIGHT2_COLOR,
-		U_LIGHT2_POWER,
-		U_LIGHT2_KC,
-		U_LIGHT2_KL,
-		U_LIGHT2_KQ,
-		U_LIGHT2_TYPE,
-		U_LIGHT2_SPOTDIRECTION,
-		U_LIGHT2_COSCUTOFF,
-		U_LIGHT2_COSINNER,
-		U_LIGHT2_EXPONENT,
-
 		U_LIGHTENABLED,
 		U_NUMLIGHTS,
 
@@ -133,9 +101,8 @@ private:
 	Mesh* meshList[NUM_GEOMETRY];
 	//Camera2 camera;
 	Camera4 camera;
-	Light light[3];
+	Light light[1];
 	MS modelStack, viewStack, projectionStack;
-	std::vector<HalfMutant> hmvec;
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
@@ -144,14 +111,8 @@ private:
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderMeshOnScreen(Mesh* mesh, int x, int y, int sizex, int sizey, int position);
-	
-	void LightInteraction();
-	void TextInteraction();
-	void RenderDebri();
-	void RenderDebri2();
+
 	void RenderLightStands();
-	void RenderTextInteractions();
-	void RenderObjects();
 
 	/*--------------------Text Variables--------------------------*/
 	bool pEnter;
@@ -161,55 +122,19 @@ private:
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
 	bool pressedD;
 	bool pressedA;
-	bool inmovement;
-	bool injump;
 	bool attack;
-	bool trigger;
-	bool grab;
 	bool block;
-	bool roll = false;
-
-	double et[30];
-	/*  Alexis:
-	0 = attack
-	6 = walk
-	7 = roll
-	8 = block
-	9 = grab
-
-	Half-Mutant:
-
-	Mutant:
-	20 = idle
-	21 = walk
-	22 = attack
-	23 = spit
-	*/
+	bool roll;
 	/*------------------------------------------------------------*/
 
-	float ShortBox_PosX;
-	float TallBox_PosX;
-
-	float movespeed;
-
 	std::string fps;
-	std::string hMutantSaved;
-	std::string fMutantKilled;
 
 	// TIME
 	double elapsedTime;
-	double bufferTime_JumpUp;
-	double bufferTime_Jump;
 	double bufferTime_attack;
-	double bufferTime_text;
-	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
-	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
-	double bufferTime_iframe;			// iframe is for damage taken
-	double bufferTime_block;			// OLD SPICE ODOUR BODY BLOCKER BLOCKS BACTERIA AND SMELL FOR UP TO 24 HOURS
 	double bufferTime_roll;
-	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
-
-	double bufferTime_attack_M;
+	double bufferTime_block;
+	double bufferTime_iframeroll;
 };
 
 #endif 

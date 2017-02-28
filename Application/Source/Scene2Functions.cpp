@@ -291,9 +291,6 @@ void StudioProject2Scene2::RenderLightStands()
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	modelStack.Translate(852, 8, -20);
-
-	modelStack.Translate(2, 9, -20);
-
 	modelStack.Scale(3, 3, 3);
 	RenderMesh(meshList[GEO_LIGHTSTAND], true);
 	modelStack.PushMatrix();
@@ -318,13 +315,188 @@ void StudioProject2Scene2::RenderDebri()
 		RenderMesh(meshList[GEO_DEBRISn], true);
 		modelStack.PopMatrix();
 
+		modelStack.PushMatrix();
+		modelStack.Translate(-140, 8, 70);
+		modelStack.Scale(1.5, 1.5, 2);
+		modelStack.Rotate(-45, 1, 0, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(130, 8, -50);
+		modelStack.Scale(1, 1, 1);
+		modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(150, 8, -60);
+		modelStack.Rotate(50, 1, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(30, 8, -50);
+		modelStack.Scale(1.5, 1.7, 1);
+		modelStack.Rotate(45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(-20, 8, -50);
+		modelStack.Scale(1.5, 2.5, 1.5);
+		modelStack.Rotate(-45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(60, 8, -50);
+		modelStack.Scale(1.5, 1.5, 1);
+		modelStack.Rotate(45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(80, 8, -50);
+		modelStack.Scale(1.5, 1.5, 1);
+		modelStack.Rotate(45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(20, 6, 50);
+		modelStack.Scale(0.5, 0.4, 0.5);
+		modelStack.Rotate(45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(60, 5, 50);
+		modelStack.Scale(0.3, 0.3, 0.3);
+		modelStack.Rotate(45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(100, 5, 90);
+		modelStack.Scale(0.7, 0.7, 0.7);
+		//modelStack.Rotate(90, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(-30, 6, 50);
+		modelStack.Scale(0.5, 0.4, 0.5);
+		modelStack.Rotate(-45, 1, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
 	modelStack.PushMatrix();
-	modelStack.Translate(-140, 8, 70);
-	modelStack.Scale(1.5, 1.5, 2);
-	modelStack.Rotate(-45, 1, 0, 0);
+	modelStack.Translate(230, 6, -80);
+	modelStack.Scale(1.6, 1.6, 1.6);
+	//modelStack.Rotate(-45, 1, 1, 0);
+	RenderMesh(meshList[GEO_DEBRISn], true);
+	modelStack.Translate(50, 0, 0);
 	RenderMesh(meshList[GEO_DEBRISn], true);
 	modelStack.PopMatrix();
-	
+		
+		modelStack.PushMatrix();
+		modelStack.Translate(240, 6, -50);
+		modelStack.Scale(1.6, 1.6, 1.6);
+		modelStack.Rotate(-45, 1, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();		
+
+		modelStack.PushMatrix();
+		modelStack.Translate(220, 5, 80);
+		modelStack.Scale(0.6, 0.5, 0.6);
+		modelStack.Rotate(-45, 1, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+		
+		modelStack.PushMatrix();
+		modelStack.Translate(300, 6, 80);
+		modelStack.Scale(1, 0.6, 1);
+		modelStack.Rotate(-45, 1, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(350, 6, -70);
+	modelStack.Scale(1, 2, 1);
+	modelStack.Rotate(-45, 1, 1, 0);
+	RenderMesh(meshList[GEO_DEBRISn], true);
+	modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(420, 6, -40);
+		modelStack.Scale(1, 1.5, 1);
+		modelStack.Rotate(-45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(580, 6, -40);
+		modelStack.Scale(1, 1.5, 1);
+		modelStack.Rotate(-45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.Translate(-50, 0, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(420, 6, 80);
+		modelStack.Scale(0.7, 0.4, 0.6);
+		modelStack.Rotate(-45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.Translate(-100, 0, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(320, 6, 80);
+		modelStack.Scale(0.7, 0.4, 0.6);
+		modelStack.Rotate(-45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+}
+
+void StudioProject2Scene2::RenderDebri2()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(720, 6, -80);
+	modelStack.Scale(2, 2, 2);
+	//modelStack.Rotate(-45, 0, 1, 0);
+	RenderMesh(meshList[GEO_DEBRISn], true);
+	modelStack.Translate(30, 0, 10);
+	modelStack.Scale(2, 2, 2);
+	RenderMesh(meshList[GEO_CLUSTERTREE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(520, 6, 80);
+	modelStack.Scale(0.7, 0.4, 0.6);
+	modelStack.Rotate(-45, 0, 1, 0);
+	RenderMesh(meshList[GEO_DEBRISn], true);
+	modelStack.PopMatrix();
+}
+
+void StudioProject2Scene2::RenderObjects()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(20, 19, 20);
+	RenderMesh(meshList[GEO_SHELTEROBJ], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(650, 7, -50);
+	RenderMesh(meshList[GEO_TRUMPTOWER], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(570, 7, 20);
+	RenderMesh(meshList[GEO_TRUMPWALL], true);
+	modelStack.PopMatrix();
 }
 
 void StudioProject2Scene2::RenderTextInteractions()
