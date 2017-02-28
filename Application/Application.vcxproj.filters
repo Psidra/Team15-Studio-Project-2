@@ -182,6 +182,12 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source Files\Application_files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StudioProject2_SceneBoss.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneBossNewFunctions.cpp">
+      <Filter>Source Files\Scene_files\Scene_functions</Filter>
+    </ClCompile>
     <ClCompile Include="Source\StudioProject2_Scene3.cpp">
       <Filter>Source Files\Scene_files</Filter>
     </ClCompile>
@@ -303,6 +309,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vertex.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StudioProject2_SceneBoss.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\StudioProject2_Scene3.h">
       <Filter>Header Files\Scene</Filter>

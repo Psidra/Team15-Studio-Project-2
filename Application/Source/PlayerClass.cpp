@@ -182,8 +182,10 @@ void PlayerClass::manaUI()
 }
 
 
-void PlayerClass::energySystem(double timeElapsed)
+void PlayerClass::energySystem()
 {
+	if (this->_energy < 100)
+		this->_energy += 10;
 }
 
 void PlayerClass::timeSpent(float dt)

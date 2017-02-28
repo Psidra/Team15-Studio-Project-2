@@ -1,6 +1,7 @@
 #include "StudioProject2_MainMenu.h"
 #include "StudioProject2_Scene1.h"
 #include "StudioProject2_Scene2.h"
+#include "StudioProject2_SceneBoss.h"
 #include "DeathScreen.h"
 #include "SceneBoss.h"
 #include "GL\glew.h"
@@ -166,6 +167,11 @@ void DeathScreen::Update(double dt)
 			{
 				PlayerClass::get_instance()->restartLevel();
 				SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
+			}
+			if (SceneManager::getInstance()->Location == "Cave of Truth")
+			{
+				PlayerClass::get_instance()->restartLevel();
+				SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
 			}
 		}
 	}
