@@ -117,7 +117,12 @@ void StudioProject2SceneBoss::Init()
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------Environment Objects Loading---------------------------------*/
+	//		GEO_ENVIRONMENT, GEO_GROUND, GEO,LEFTWALL, GEO,RIGHTWALL,
+	meshList[GEO_ENVIRONMENT] = MeshBuilder::GenerateOBJ("Environment", "OBJ//SceneBoss//Bossscene.obj");
+	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossfloorbb.obj");
 
+	meshList[GEO_ENVIRONMENT]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene.obj");
+	meshList[GEO_GROUND]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb.obj");
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -504,7 +509,7 @@ void StudioProject2SceneBoss::Update(double dt)
 			inmovement = false;				// so many if statements I could write a philosophy book
 			if (Application::IsKeyPressed('A') && !roll)
 			{
-				if (pressedD == true)
+				//if (pressedD == true)
 				{
 					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
 					pressedD = false;
@@ -515,7 +520,7 @@ void StudioProject2SceneBoss::Update(double dt)
 
 			if (Application::IsKeyPressed('D') && !roll)
 			{
-				if (pressedA == true)
+				//if (pressedA == true)
 				{
 					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
 					pressedA = false;
@@ -606,34 +611,25 @@ void StudioProject2SceneBoss::Update(double dt)
 
 	et[20] += dt;
 
-	//if (!trigger)
-	//{
-	//	if (injump == false)
-	//	{
-	//		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
-	//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox) &&
-	//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOOR]->MeshBBox) &&
-	//			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox))
-	//		{
-	//			if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) &&
-	//				PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
-	//				(PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
-	//				PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
-	//			{
-	//				// do jack shit
-	//			}
-	//			else
-	//			{
-	//				bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
-	//				PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
-	//	}
-	//}
+	if (injump == false)
+	{
+		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_GROUND]->MeshBBox))
+		{
+			//if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) && // If doing platforms look at this
+			//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
+			//	(PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
+			//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
+			//{
+			//	// do jack shit
+			//}
+			bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
+			PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
+		}
+	}
+	else
+	{
+		PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
+	}
 
 	//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER_SLOPE]->MeshBBox))
 	//{
@@ -895,6 +891,14 @@ void StudioProject2SceneBoss::Render()
 	//modelStack.PushMatrix();
 	//RenderMesh(meshList[GEO_TESTBBOX], false);
 	//modelStack.PopMatrix();
+
+	/*--------------------Environment------------------------*/
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_ENVIRONMENT], true);
+	modelStack.PopMatrix();
+
+	/*-------------------------------------------------------*/
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
 	unsigned int num_anim_mutant;
