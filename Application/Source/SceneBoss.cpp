@@ -333,7 +333,7 @@ void SceneBoss::Update(double dt)
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->manaUI();
 	PlayerClass::get_instance()->timeSpent(dt);
-	PlayerClass::get_instance()->bossFightFacingDirection();
+	//PlayerClass::get_instance()->bossFightFacingDirection();
 	PlayerClass::get_instance()->spellUI(elapsedTime);
 	
 

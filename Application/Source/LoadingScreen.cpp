@@ -1,7 +1,7 @@
 #include "StudioProject2_MainMenu.h"
 #include "StudioProject2_Scene1.h"
 #include "StudioProject2_Scene2.h"
-#include "StudioProject2_Scene3.h"
+#include "StudioProject2_SceneBoss.h"
 #include "LoadingScreen.h"
 #include "EnemyClassManager.h"
 #include "DeathScreen.h"
@@ -119,9 +119,7 @@ void LoadingScreen::Update(double dt)
 	if (SceneManager::getInstance()->Location == "Inner City" && elapsedTime > bufferTime_Load)
 		SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
 	if (SceneManager::getInstance()->Location == "Cavern of Truth" && elapsedTime > bufferTime_Load)
-		SceneManager::getInstance()->changeScene(new StudioProject2Scene3());
-	if (SceneManager::getInstance()->Location == "Inner Cavern" && elapsedTime > bufferTime_Load)
-		SceneManager::getInstance()->changeScene(new SceneBoss());
+		SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
 	
 
 

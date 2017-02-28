@@ -229,12 +229,12 @@ void PlayerClass::laserBeam(double timeElapsed)
 
 		if (laserActive == true)
 		{
-			laserSize.x = 1;
-			laserSize.y = 100;
+			laserSize.x = 50;
+			laserSize.y = 1;
 			laserSize.z = 1;
+			laserTranslate.z = 52;
+			laserTranslate.y = 5;
 			laserTranslate.x = 0;
-			laserTranslate.y = 3;
-			laserTranslate.z = 53;
 
 			if (timeElapsed > bufferTime_Laser - 9)
 			{
@@ -246,9 +246,9 @@ void PlayerClass::laserBeam(double timeElapsed)
 			laserSize.x = 0.1;
 			laserSize.y = 0.1;
 			laserSize.z = 0.1;
-			laserTranslate.x = 0;
-			laserTranslate.y = 0;
 			laserTranslate.z = 0;
+			laserTranslate.y = 5;
+			laserTranslate.x = 0;
 		}
 }
 
