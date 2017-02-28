@@ -1,5 +1,5 @@
-#ifndef SceneBoss_H
-#define SceneBoss_H
+#ifndef StudioProject2Scene3_H
+#define StudioProject2Scene3_H
 #include <string>
 #include <vector>
 #include "Scene.h"
@@ -11,11 +11,11 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-class SceneBoss : public Scene
+class StudioProject2Scene3 : public Scene
 {
 public:
-	SceneBoss();
-	~SceneBoss();
+	StudioProject2Scene3();
+	~StudioProject2Scene3();
 
 	virtual void Init();
 	virtual void Update(double dt);
@@ -37,7 +37,7 @@ public:
 		GEO_TESTBBOX,
 
 		//skybox
-		GEO_SKYBOX, GEO_GROUND,
+		GEO_SKYBOX, GEO_GROUND, GEO_SKYBOX3, GEO_GROUND3,
 
 		//main character (Alexis)
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM,
@@ -135,7 +135,6 @@ private:
 	double bufferTime_roll;
 	double bufferTime_block;
 	double bufferTime_iframeroll;
-	double bufferTime_hitiframe;
 };
 
 #endif 

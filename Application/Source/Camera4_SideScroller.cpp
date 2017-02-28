@@ -75,6 +75,18 @@ void Camera4::Update(double dt, float posx, float posy)
 	position.y = posy;
 	target = position + view;
 }
+
+void Camera4::UpdateTopdown(double dt, float posx, float posz)
+{
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = (view.Cross(up)).Normalized();
+
+	position.x = posx;
+	position.z = posz;
+	target = position + view;
+}
+
+
 	// rat movement
 
 	/*if (MouseControl == true)

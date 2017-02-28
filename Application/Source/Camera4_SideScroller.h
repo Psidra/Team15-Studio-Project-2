@@ -23,6 +23,7 @@ public:
 	void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	void Reset();
 	void Update(double dt, float posx, float posy);
+	void UpdateTopdown(double dt, float posx, float posz);
 	void UpdateUnlockedCam(double dt);
 
 	int bounds;

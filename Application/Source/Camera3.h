@@ -17,8 +17,8 @@ public:
 	double MouseY = 0;
 
 	double offsetX = 0;
-	double offsetY = 0;
-	float sens = 7;
+	double offsetY = 0; //HELLO DARKNESS MY OLD FRIEND 
+	float sens = 7; //IVE COME TO SEE U AGAIN
 
 	void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	void Reset();
