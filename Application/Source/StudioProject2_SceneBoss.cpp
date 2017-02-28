@@ -40,7 +40,6 @@ void StudioProject2SceneBoss::Init()
 
 	//EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	PlayerClass::get_instance()->position_a = Vector3(-15.f, 0.f, 0.f);
-	PlayerClass::get_instance()->restartLevel();
 	PlayerClass::get_instance()->healthUI();
 	/*-------------------------------------------------------------------------------*/
 	// Init VBO here
@@ -203,10 +202,10 @@ void StudioProject2SceneBoss::Init()
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------HUD Loading---------------------------------------*/
-	//meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
-	//meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
-	//meshList[GEO_FULL_COUNT] = MeshBuilder::GenerateQuad("hudfull", Color(1, 1, 1));
-	//meshList[GEO_FULL_COUNT]->textureID = LoadTGA("Image//fullhud.tga");
+	meshList[GEO_HALF_COUNT] = MeshBuilder::GenerateQuad("hudhalf", Color(1, 1, 1));
+	meshList[GEO_HALF_COUNT]->textureID = LoadTGA("Image//halfhud.tga");
+	meshList[GEO_FULL_COUNT] = MeshBuilder::GenerateQuad("hudfull", Color(1, 1, 1));
+	meshList[GEO_FULL_COUNT]->textureID = LoadTGA("Image//fullhud.tga");
 
 	/*-------------------------Loading Alexis Health----------------------------------*/
 	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
@@ -474,8 +473,8 @@ void StudioProject2SceneBoss::Update(double dt)
 			{
 				bufferTime_attack = elapsedTime + 1.f;
 
-				if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
-					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
+			/*	if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
+					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);*/
 			}
 
 			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !roll)
@@ -847,11 +846,11 @@ void StudioProject2SceneBoss::Render()
 			break;
 	}
 
-	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
+	/*if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 	{
 		RenderProjectiles();
 		RenderMutant(num_anim_mutant);
-	}
+	}*/
 	/*-------------------------------------------------------*/
 
 	/*-----------------Skybox-------------------*/
@@ -900,7 +899,7 @@ void StudioProject2SceneBoss::Render()
 	RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
-	RenderTextOnScreen(meshList[GEO_TEXT], "SECLUDED FOREST", Color(0, 1, 0), 2.5, 1.5, -8.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "CAVE OF TRUTH", Color(0, 1, 0), 2.5, 1.5, -8.5);
 	/*----------------------------------------------------------------------------------*/
 }
 

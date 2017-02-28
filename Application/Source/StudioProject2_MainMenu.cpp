@@ -1,4 +1,5 @@
 #include "StudioProject2_MainMenu.h"
+#include "StudioProject2_SceneBoss.h"
 #include "ControlScreen.h"
 #include "LoadingScreen.h"
 #include "SelectionScreen.h"
@@ -162,7 +163,7 @@ void StudioProject2MainMenu::Update(double dt)
 		}
 		if (Application::IsKeyPressed('T'))
 		{
-			SceneManager::getInstance()->changeScene(new SceneBoss());
+			SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
 		}
 		if (Application::IsKeyPressed('Y'))
 		{
