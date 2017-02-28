@@ -489,13 +489,25 @@ void StudioProject2Scene2::RenderObjects()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(650, 7, -50);
+	modelStack.Translate(650, -20, -50);
 	RenderMesh(meshList[GEO_TRUMPTOWER], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(570, 7, 20);
+	modelStack.Translate(570, -20, 20);
 	RenderMesh(meshList[GEO_TRUMPWALL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(510, 0, 10);
+	modelStack.Rotate(-39, 0, 0, 1); //initial = -20, slanted fully = -39
+	RenderMesh(meshList[GEO_LAMPPOST], true);
+	RenderMesh(meshList[GEO_ROPE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(480, 8, 15);
+	RenderMesh(meshList[GEO_MOVEBOX], true);
 	modelStack.PopMatrix();
 }
 

@@ -164,7 +164,7 @@ void StudioProject2Scene2::Init()
 
 	/*-----------------------------Skybox Loading----------------------------------*/
 	meshList[GEO_SKYBOX] = MeshBuilder::GenerateQuad("skybox", Color(1, 1, 1));
-	meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//SkyBG.tga");
+	meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//CityBG.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------Environment Objects Loading---------------------------------*/
@@ -183,6 +183,11 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_SHELTEROBJ] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//ShelterObject.obj");
 	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpTower.obj");
 	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpWall.obj");
+
+	meshList[GEO_LAMPPOST] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Lamp_post.obj");
+	meshList[GEO_MOVEBOX] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//MoveableBox.obj");
+	meshList[GEO_ROPE] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Rope.obj");
+
 
 	//	modelStack.Translate(-130, 8, 0);
 	// modelStack.Scale(2, 2.5, 2.5);
@@ -610,6 +615,7 @@ void StudioProject2Scene2::Update(double dt)
 					pressedD == true)
 				{
 					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+
 					pressedD = false;
 					pressedA = true;
 					inmovement = true;
@@ -630,6 +636,17 @@ void StudioProject2Scene2::Update(double dt)
 						//}
 					}
 				}
+				
+				/*if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+				{
+					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+					PlayerClass::get_instance()->position_a.y -= (float)(15.f * dt); // change this 15 accordingly to the tilt and rotation of light
+
+					pressedD = false;
+					pressedA = true;
+					inmovement = true;
+				}
+				*/
 			}
 
 			if (Application::IsKeyPressed('D') && !roll)
@@ -658,6 +675,15 @@ void StudioProject2Scene2::Update(double dt)
 						//}
 					}
 				}
+				/*if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+				{
+					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+					PlayerClass::get_instance()->position_a.y += (float)(15.f * dt); // change this 15 accordingly to the tilt and rotation of light
+
+					pressedD = true;
+					pressedA = false;
+					inmovement = true;
+				}*/
 			}
 
 			if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
@@ -752,7 +778,7 @@ void StudioProject2Scene2::Update(double dt)
 	if (block || grab)
 		movespeed = 17.f;
 	else
-		movespeed = 30.f;
+		movespeed = 150.f; 
 
 	if (inmovement && !holdanims())
 		et[6] += dt;
@@ -1173,7 +1199,6 @@ void StudioProject2Scene2::Render()
 	/*--------------------Environmental Objects--------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -5, 0);
-
 	//RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
 	RenderMesh(meshList[GEO_SCENE2], true);
 	modelStack.PopMatrix();
@@ -1185,8 +1210,8 @@ void StudioProject2Scene2::Render()
 	/*-------------------------------------------------------*/
 	/*-----------------Skybox-------------------*/
 	modelStack.PushMatrix();
-	modelStack.Translate(1, 200, -300);
-	modelStack.Scale(2300, 800, 500);
+	modelStack.Translate(350, 130, -300);
+	modelStack.Scale(1500, 300, 1);
 	RenderMesh(meshList[GEO_SKYBOX], false);
 	modelStack.PopMatrix();
 	/*------------------------------------------*/
@@ -1195,7 +1220,7 @@ void StudioProject2Scene2::Render()
 	RenderLightStands();
 	/*----------------------------------------------------*/
 
-	/*----Textbox Rendering--------*/
+	/*----Textbox Rendering--------*/ 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
 	/*-----------------------------*/
