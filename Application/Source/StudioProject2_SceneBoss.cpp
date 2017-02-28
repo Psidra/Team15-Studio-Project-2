@@ -41,6 +41,10 @@ void StudioProject2SceneBoss::Init()
 	//EnemyManager::get_instance()->spawnEnemy(Vector3(750.f, -252.2f, 0.f));
 	PlayerClass::get_instance()->position_a = Vector3(-15.f, 0.f, 0.f);
 	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->manaUI();
+
+	Boss::get_instance()->bossHealthUI();
+	Boss::get_instance()->bossInit();
 	/*-------------------------------------------------------------------------------*/
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -208,6 +212,20 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_ALEXUS_LEFTTHIGH]->textureID = LoadTGA("Image//shoetext.tga");
 
 	/*-----------------------------------------------------------------------------*/
+	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
+	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
+	meshList[GEO_BLANKENERGY] = MeshBuilder::GenerateQuad("blankenergy", Color(0, 0, 0));
+	/*---------------Spells----------*/
+	meshList[GEO_LASER_ICON] = MeshBuilder::GenerateQuad("lasericon", Color(1, 1, 1));
+	meshList[GEO_LASER_ICON]->textureID = LoadTGA("Image//laser.tga");
+	meshList[GEO_LASER_CD] = MeshBuilder::GenerateQuad("laserCDicon", Color(1, 1, 1));
+	meshList[GEO_LASER_CD]->textureID = LoadTGA("Image//laser_cooldown.tga");
+	meshList[GEO_PROJSHIELD] = MeshBuilder::GenerateQuad("projshieldicon", Color(1, 1, 1));
+	meshList[GEO_PROJSHIELD]->textureID = LoadTGA("Image//hardlight.tga");
+	meshList[GEO_PROJSHIELD_CD] = MeshBuilder::GenerateQuad("projshieldCDicon", Color(1, 1, 1));
+	meshList[GEO_PROJSHIELD_CD]->textureID = LoadTGA("Image//hardlight_cooldown.tga");
+	/*-------------------------------*/
+	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
 
 	/*--------------------------Text Loading---------------------------------------*/
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
@@ -344,6 +362,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 
+	// Lock/Unlock Camera
 	if (Application::IsKeyPressed('Y'))
 	{
 		if (Unlock == false && elapsedTime > bufferTime_Unlock)
@@ -366,6 +385,21 @@ void StudioProject2SceneBoss::Update(double dt)
 	{
 		camera.UpdateUnlockedCam(dt);
 	}
+
+	/*----Player Functions-----*/
+	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->manaUI();
+	PlayerClass::get_instance()->timeSpent(dt);
+	PlayerClass::get_instance()->spellUI(elapsedTime);
+	if (!trigger && !otheranims() && !holdanims())
+		PlayerClass::get_instance()->facingDirection();
+
+	if (Boss::get_instance()->magicImmunity == false)
+	{
+		PlayerClass::get_instance()->laserBeam(elapsedTime);
+		//PlayerClass::get_instance()->projectileShield(elapsedTime);
+	}
+	/*------------------------*/
 
 	/*-------AI Functions---------------*/
 
@@ -402,14 +436,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	//	}
 	//}
 
-	/*-------Player Functions------------------*/
-	PlayerClass::get_instance()->healthUI();
-	PlayerClass::get_instance()->healthRegeneration(elapsedTime);
-	PlayerClass::get_instance()->timeSpent(dt);
-	if (!trigger && !otheranims() && !holdanims())
-		PlayerClass::get_instance()->facingDirection();
 
-	/*-----------------------------------------*/
 
 	/*-----------HUD UPDATES---------*/
 	fps = "FPS:" + std::to_string(framespersec);
@@ -770,6 +797,12 @@ void StudioProject2SceneBoss::Render()
 	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);
 	modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
 
+	modelStack.PushMatrix();
+	modelStack.Translate(PlayerClass::get_instance()->laserTranslate.x, PlayerClass::get_instance()->laserTranslate.y, PlayerClass::get_instance()->laserTranslate.z);
+	modelStack.Rotate(90, 0, 1, 0);
+	modelStack.Scale(PlayerClass::get_instance()->laserSize.x, PlayerClass::get_instance()->laserSize.y, PlayerClass::get_instance()->laserSize.z);
+	RenderMesh(meshList[GEO_LASER], false);
+	modelStack.PopMatrix();
 	// add in grab animation later
 
 	if (num_anim == 7 || num_anim == 8 || num_anim == 9)
@@ -944,14 +977,24 @@ void StudioProject2SceneBoss::Render()
 
 	/*------------------HUD-------------------------------------------------*/
 	/*----Half mutant count--------*/
-	//RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 5, 0.5, 8, 8, 0);
-	//RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 4, 12.3, -9);
-	///*-----------------------------*/
-	///*----Full mutant count--------*/
-	//RenderMeshOnScreen(meshList[GEO_FULL_COUNT], 7, 0.5, 8, 8, 0);
-	//RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 4, 16.3, -9);
+	RenderMeshOnScreen(meshList[GEO_HALF_COUNT], 5, 0.5, 8, 8, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], hMutantSaved, Color(1, 1, 1), 4, 12.3, -9);
 	/*-----------------------------*/
+	/*----Full mutant count--------*/
+	RenderMeshOnScreen(meshList[GEO_FULL_COUNT], 7, 0.5, 8, 8, 0);
+	RenderTextOnScreen(meshList[GEO_TEXT], fMutantKilled, Color(1, 1, 1), 4, 16.3, -9);
+	/*-----------------------------*/
+	/*------Spell HUD-----*/
+	RenderMeshOnScreen(meshList[GEO_LASER_ICON], 10, 10,
+		PlayerClass::get_instance()->spellHUD.laserReady, PlayerClass::get_instance()->spellHUD.laserReady, 0);
+	RenderMeshOnScreen(meshList[GEO_LASER_CD], 10, 10,
+		PlayerClass::get_instance()->spellHUD.laserNotReady, PlayerClass::get_instance()->spellHUD.laserNotReady, 0);
 
+	RenderMeshOnScreen(meshList[GEO_PROJSHIELD], 12, 10,
+		PlayerClass::get_instance()->spellHUD.projShieldReady, PlayerClass::get_instance()->spellHUD.projShieldReady, 0);
+	RenderMeshOnScreen(meshList[GEO_PROJSHIELD_CD], 12, 10,
+		PlayerClass::get_instance()->spellHUD.projShieldNotReady, PlayerClass::get_instance()->spellHUD.projShieldNotReady, 0);
+	/*--------------------*/
 	/*----Heart Rendering----------*/
 	float positionXscreen = 2;
 	float positionYscreen = 28.5;
@@ -965,13 +1008,34 @@ void StudioProject2SceneBoss::Render()
 		positionXscreen += 2;
 	}
 	/*-----------------------------*/
+	float energyX = 7;
+	for (int i = 0; i < 10; i++)
+	{
+		RenderMeshOnScreen(meshList[GEO_ENERGY], energyX, 27,
+			PlayerClass::get_instance()->Hearts.a_energy[i], PlayerClass::get_instance()->Hearts.a_energy[i], 0);
+		RenderMeshOnScreen(meshList[GEO_BLANKENERGY], energyX, 27,
+			PlayerClass::get_instance()->Hearts.a_blankenergy[i], PlayerClass::get_instance()->Hearts.a_blankenergy[i], 0);
 
+		energyX += 1;
+	}
+	/*--------Boss Life Rendering---*/
+	float posXscreen = 6;
+	for (int i = 0; i < 30; i++)
+	{
+		RenderMeshOnScreen(meshList[GEO_BOSSLIFE], posXscreen, 25,
+			Boss::get_instance()->bossLife.boss_heart[i], Boss::get_instance()->bossLife.boss_heart[i], 0);
+
+		posXscreen += 0.5;
+	}
+	/*-----------------------------*/
 
 	/*---------------Text log Rendering--------*/
 	RenderTextInteractions();
 	/*-----------------------------------------*/
+	RenderTextOnScreen(meshList[GEO_TEXT], "ENERGY", Color(0, 0, 1), 2, 3, 17.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "BOSS", Color(1, 1, 0), 2, 3, 15.5);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
-	RenderTextOnScreen(meshList[GEO_TEXT], "CAVE OF TRUTH", Color(0, 1, 0), 2.5, 1.5, -8.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "CAVE OF TRUTH", Color(0, 0, 1), 2.5, 1.5, -8.5);
 	/*----------------------------------------------------------------------------------*/
 }
 
