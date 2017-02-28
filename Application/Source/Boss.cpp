@@ -14,9 +14,9 @@ unsigned int Boss::get_health()
 
 void Boss::bossInit()
 {
-	get_instance()->position_m = Vector3(0, 5, 0);
+	get_instance()->position_m = Vector3(0, 10, 0);
 	this->EnemyHitBox.setto(get_instance()->position_m.x, get_instance()->position_m.y, get_instance()->position_m.z);
-	spin = true;
+	spin = false;
 	tailAtk = false;
 	burrow = false;
 	DmgOverTime = false;
@@ -39,6 +39,8 @@ void Boss::bossInit()
 
 void Boss::stateManager()
 {
+	if (boss_health < (75 * 0.01 * 300))
+		spin = true;
 	if (boss_health < (50 * 0.01 * 300)) // 50% hp
 		tailAtk = true;
 	if (boss_health < (25 * 0.01 * 300)) // 25% hp
@@ -112,7 +114,7 @@ void Boss::burrowTeleportation(double timeElapsed)
 		}
 		if (burrowDir == true) 
 		{
-			burrowDirection = rand() % 4 + 1; // to decide the direction of boss teleporting
+			burrowDirection = rand() % 2 + 1; // to decide the direction of boss teleporting
 			burrowDir = false; // to prevent continuous update of burrowDirection
 		}
 
@@ -162,52 +164,6 @@ void Boss::burrowTeleportation(double timeElapsed)
 			cooldown_Burrow = timeElapsed + 15.f;
 			burrowing = false;
  		}
-		else if (burrowDirection == 3 && position_m.z < 50)
-		{
-			position_m.z += burrowRange;
-
-			/*-------To prevent boss teleportation position to overlapse with the char position---*/
-			if (position_m.z < PlayerClass::get_instance()->position_a.z + 6 &&
-				position_m.z > PlayerClass::get_instance()->position_a.z - 1)
-			{
-				position_m.z = PlayerClass::get_instance()->position_a.z + 8;
-			}
-			else if (position_m.z > PlayerClass::get_instance()->position_a.z - 6 &&
-				position_m.z < PlayerClass::get_instance()->position_a.z)
-			{
-				position_m.z = PlayerClass::get_instance()->position_a.z - 8;
-			}
-			/*------------------------------------------------------------------------------------*/
-
-			if (position_m.z > 65)
-				position_m.z = 55;
-
-			cooldown_Burrow = timeElapsed + 15.f;
-			burrowing = false;
-		}
-		else if (burrowDirection == 4 && position_m.z > -50)
-		{
-			position_m.z -= burrowRange;
-
-			/*-------To prevent boss teleportation position to overlapse with the char position---*/
-			if (position_m.z < PlayerClass::get_instance()->position_a.z + 6 &&
-				position_m.z > PlayerClass::get_instance()->position_a.z - 1)
-			{
-				position_m.z = PlayerClass::get_instance()->position_a.z + 8;
-			}
-			else if (position_m.z > PlayerClass::get_instance()->position_a.z - 6 &&
-				position_m.z < PlayerClass::get_instance()->position_a.z)
-			{
-				position_m.z = PlayerClass::get_instance()->position_a.z - 8;
-			}
-			/*------------------------------------------------------------------------------------*/
-
-			if (position_m.z < -65)
-				position_m.z = -55;
-
-			cooldown_Burrow = timeElapsed + 15.f; // burrow happens every 15 second PROVIDED if it dun overlapse with another action
-			burrowing = false;
-		}
 	}
 }
 
