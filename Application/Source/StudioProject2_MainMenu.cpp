@@ -131,7 +131,7 @@ void StudioProject2MainMenu::Update(double dt)
 		}
 		if (Application::IsKeyPressed('T'))
 		{
-			SceneManager::getInstance()->changeScene(new SceneBoss());
+			SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
 		}
 		if (Application::IsKeyPressed('Y'))
 		{

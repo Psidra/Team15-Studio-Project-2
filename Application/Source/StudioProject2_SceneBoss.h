@@ -144,6 +144,8 @@ private:
 	int textOccured;
 	bool nexttext;
 
+	int plop = 0;
+
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple

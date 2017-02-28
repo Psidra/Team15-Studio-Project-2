@@ -126,15 +126,15 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossfloorbb_edit.obj");
 	meshList[GEO_LEFTWALL] = MeshBuilder::GenerateOBJ("LeftWall", "OBJ//SceneBoss//bossleftbb.obj");
 	meshList[GEO_RIGHTWALL] = MeshBuilder::GenerateOBJ("RightWall", "OBJ//SceneBoss//bossrightbb.obj");
-	meshList[GEO_PREVENT] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossprevent.obj"); // falling thing when trigger
-	meshList[GEO_TRIGGER] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bosstrigger.obj");
+	meshList[GEO_PREVENT] = MeshBuilder::GenerateOBJ("Prevent", "OBJ//Scene1//Box_Tall.obj"); // falling thing when trigger
+	meshList[GEO_TRIGGER] = MeshBuilder::GenerateOBJ("Triggered", "OBJ//SceneBoss//bosstrigger.obj");
 
-	meshList[GEO_ENVIRONMENT]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene_edit.obj");
 	meshList[GEO_GROUND]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");
-	meshList[GEO_LEFTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene_edit.obj");
-	meshList[GEO_RIGHTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");	
-	meshList[GEO_PREVENT]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene_edit.obj");
-	meshList[GEO_TRIGGER]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");
+	meshList[GEO_LEFTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossleftbb.obj");
+	meshList[GEO_RIGHTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossrightbb.obj");
+	meshList[GEO_TRIGGER]->MeshBBox.loadBB("OBJ//SceneBoss//bosstrigger.obj");
+
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_TRIGGER]->MeshBBox.max_, meshList[GEO_TRIGGER]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -392,7 +392,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	PlayerClass::get_instance()->timeSpent(dt);
 	PlayerClass::get_instance()->healthRegeneration(elapsedTime);
 	PlayerClass::get_instance()->spellUI(elapsedTime);
-	if (!trigger && !otheranims() && !holdanims())
+	if (!otheranims() && !holdanims())
 		PlayerClass::get_instance()->facingDirection();
 
 	if (Boss::get_instance()->magicImmunity == false)
@@ -482,28 +482,58 @@ void StudioProject2SceneBoss::Update(double dt)
 	{
 		int xboxButtonCount;
 		const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxButtonCount);
-		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+		if (elapsedTime > 1.1f) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
 		{									// *I hope.
 			inmovement = false;				// so many if statements I could write a philosophy book
 			if ((GLFW_PRESS == xbox[13] || Application::IsKeyPressed('A')) && !roll)
 			{
-				if (pressedD == true)
+				if (!trigger)
 				{
-					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
-					pressedD = false;
-					pressedA = true;
-					inmovement = true;
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox)
+						|| pressedD == true)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+						pressedD = false;
+						pressedA = true;
+						inmovement = true;
+					}
+				}
+				else
+				{
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						|| pressedD == true)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+						pressedD = false;
+						pressedA = true;
+						inmovement = true;
+					}
 				}
 			}
 
 			if (GLFW_PRESS == xbox[11] || Application::IsKeyPressed('D') && !roll)
 			{
-				if (pressedA == true)
+				if (!trigger)
 				{
-					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
-					pressedA = false;
-					pressedD = true;
-					inmovement = true;
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox)
+						|| pressedA == true)
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+						pressedA = false;
+						pressedD = true;
+						inmovement = true;
+					}
+				}
+				else
+				{
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						|| pressedA == true)
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+						pressedA = false;
+						pressedD = true;
+						inmovement = true;
+					}
 				}
 			}
 
@@ -549,28 +579,58 @@ void StudioProject2SceneBoss::Update(double dt)
 	}
 	else
 	{
-		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+		if (elapsedTime > 1.1f) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
 		{									// *I hope.
 			inmovement = false;				// so many if statements I could write a philosophy book
 			if (Application::IsKeyPressed('A') && !roll)
 			{
-				//if (pressedD == true)
+				if (!trigger)
 				{
-					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
-					pressedD = false;
-					pressedA = true;
-					inmovement = true;
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox)
+						|| pressedD == true)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+						pressedD = false;
+						pressedA = true;
+						inmovement = true;
+					}
+				}
+				else
+				{
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						|| pressedD == true)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+						pressedD = false;
+						pressedA = true;
+						inmovement = true;
+					}
 				}
 			}
 
 			if (Application::IsKeyPressed('D') && !roll)
 			{
-				//if (pressedA == true)
+				if (!trigger)
 				{
-					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
-					pressedA = false;
-					pressedD = true;
-					inmovement = true;
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox)
+						|| pressedA == true)
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+						pressedA = false;
+						pressedD = true;
+						inmovement = true;
+					}
+				}
+				else
+				{
+					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						|| pressedA == true)
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+						pressedA = false;
+						pressedD = true;
+						inmovement = true;
+					}
 				}
 			}
 
@@ -633,9 +693,9 @@ void StudioProject2SceneBoss::Update(double dt)
 		roll = true;
 		et[7] += dt;
 
-		if (pressedA)
+		if (pressedA && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox))
 			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
-		else if (pressedD)
+		else if (pressedD && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox))
 			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	}
 	else
@@ -680,6 +740,19 @@ void StudioProject2SceneBoss::Update(double dt)
 	{
 		PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
 	}
+
+	if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && !trigger) // This will only run once.
+	{
+		PlayerClass::get_instance()->position_a.x += (float)(69 * dt); // huehuehue I'm not 12 I swear
+		pressedA = false;
+		pressedD = false;
+		inmovement = false;
+		trigger = true;
+	}
+
+	if (trigger && plop < 50)
+		plop += 1;
+
 
 	//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER_SLOPE]->MeshBBox))
 	//{
@@ -944,14 +1017,20 @@ void StudioProject2SceneBoss::Render()
 	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
 	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
-	//modelStack.PushMatrix();
-	//RenderMesh(meshList[GEO_TESTBBOX], false);
-	//modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_TESTBBOX], false);
+	modelStack.PopMatrix();
 
 	/*--------------------Environment------------------------*/
 
 	modelStack.PushMatrix();
 	RenderMesh(meshList[GEO_ENVIRONMENT], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(113, 60 - plop, -100);
+	modelStack.Scale(1, 3, 1);
+	RenderMesh(meshList[GEO_PREVENT], false);
 	modelStack.PopMatrix();
 
 	/*-------------------------------------------------------*/
@@ -1056,7 +1135,7 @@ void StudioProject2SceneBoss::Render()
 
 bool StudioProject2SceneBoss::otheranims()
 {
-	return (attack || trigger);
+	return (attack);
 }
 
 bool StudioProject2SceneBoss::holdanims()
