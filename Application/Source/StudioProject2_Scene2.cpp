@@ -53,7 +53,7 @@ void StudioProject2Scene2::Init()
 	//	}
 	//}
 
-	PlayerClass::get_instance()->position_a = Vector3(-7.f, 10.f, 0.f);
+	PlayerClass::get_instance()->position_a = Vector3(-7.f, 10.f, 20.f);
 	PlayerClass::get_instance()->init();
 	/*--------------------------------------*/
 	/*--Hearts size (User Interface) Initialisation--------------*/
@@ -122,6 +122,18 @@ void StudioProject2Scene2::Init()
 	m_parameters[U_LIGHT1_COSINNER] = glGetUniformLocation(m_programID, "lights[1].cosInner");
 	m_parameters[U_LIGHT1_EXPONENT] = glGetUniformLocation(m_programID, "lights[1].exponent");
 
+	m_parameters[U_LIGHT2_POSITION] = glGetUniformLocation(m_programID, "lights[2].position_cameraspace");
+	m_parameters[U_LIGHT2_COLOR] = glGetUniformLocation(m_programID, "lights[2].color");
+	m_parameters[U_LIGHT2_POWER] = glGetUniformLocation(m_programID, "lights[2].power");
+	m_parameters[U_LIGHT2_KC] = glGetUniformLocation(m_programID, "lights[2].kC");
+	m_parameters[U_LIGHT2_KL] = glGetUniformLocation(m_programID, "lights[2].kL");
+	m_parameters[U_LIGHT2_KQ] = glGetUniformLocation(m_programID, "lights[2].kQ");
+	m_parameters[U_LIGHT2_TYPE] = glGetUniformLocation(m_programID, "lights[2].type");
+	m_parameters[U_LIGHT2_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[2].spotDirection");
+	m_parameters[U_LIGHT2_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[2].cosCutoff");
+	m_parameters[U_LIGHT2_COSINNER] = glGetUniformLocation(m_programID, "lights[2].cosInner");
+	m_parameters[U_LIGHT2_EXPONENT] = glGetUniformLocation(m_programID, "lights[2].exponent");
+
 	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
 	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); //in case you missed out practical 7
 	// Get a handle for our "colorTexture" uniform
@@ -151,7 +163,8 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1.f, 1.f, 1.f), 18, 36, 1.f);
 
 	/*-----------------------------Skybox Loading----------------------------------*/
-	
+	meshList[GEO_SKYBOX] = MeshBuilder::GenerateQuad("skybox", Color(1, 1, 1));
+	meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//SkyBG.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------Environment Objects Loading---------------------------------*/
@@ -171,10 +184,26 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpTower.obj");
 	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpWall.obj");
 
+	//	modelStack.Translate(-130, 8, 0);
+	// modelStack.Scale(2, 2.5, 2.5);
+
+	meshList[GEO_DEBRIS1] = MeshBuilder::GenerateOBJ("debris", "OBJ//Debri.obj");
+	meshList[GEO_DEBRIS1]->textureID = LoadTGA("Image//Debri_Texture.tga");
+	meshList[GEO_DEBRIS1]->MeshBBox.loadBB("OBJ//Debri.obj");
+	meshList[GEO_DEBRIS1]->MeshBBox.scale(1, 5, 1.5);
+	meshList[GEO_DEBRIS1]->MeshBBox.translate(-130, 8, 0);
+
+	meshList[GEO_DEBRISn] = MeshBuilder::GenerateOBJ("debris", "OBJ//Debri.obj");  //no collision debri
+	meshList[GEO_DEBRISn]->textureID = LoadTGA("Image//Debri_Texture.tga");
+
 	meshList[GEO_FLOORBBOX]->MeshBBox.loadBB("OBJ//Scene2//Scene2_BBox.obj");
 	meshList[GEO_SHELTEROBJ]->MeshBBox.loadBB("OBJ//Scene2//ShelterObject.obj");
 	meshList[GEO_TRUMPTOWER]->MeshBBox.loadBB("OBJ//Scene2//TrumpTower.obj");
 	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
+
+	meshList[GEO_FLOORBBOX]->MeshBBox.scale(3, 1, 2);
+	meshList[GEO_FLOORBBOX]->MeshBBox.translate(0, -4, 0);
+
 
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -297,7 +326,7 @@ void StudioProject2Scene2::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
-	//meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
+//	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_DEBRIS1]->MeshBBox.max_, meshList[GEO_DEBRIS1]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
 	/*-------------------------Loading Mutant Health----------------------------------*/
@@ -359,7 +388,7 @@ void StudioProject2Scene2::Init()
 	trigger = false;
 	grab = false;
 	block = false;
-	roll = false;
+	//roll = false;
 	/*----------------------*/
 	movespeed = 30.f;
 
@@ -371,7 +400,7 @@ void StudioProject2Scene2::Init()
 	/*----------------------Light Initialisation-----------------------------------*/
 	LoadLight();
 	// Make sure you pass uniform parameters after glUseProgram()
-	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
+	glUniform1i(m_parameters[U_NUMLIGHTS], 3);
 	/*-------------------------------------------------------------------------------*/
 }
 
@@ -576,11 +605,10 @@ void StudioProject2Scene2::Update(double dt)
 		{									// *I hope.
 			inmovement = false;				// so many if statements I could write a philosophy book
 			if (Application::IsKeyPressed('A') && !roll)
-			{
-				//if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				//	!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
-				//	pressedD == true)
-				//{
+			{ 
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) ||
+					pressedD == true)
+				{
 					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
 					pressedD = false;
 					pressedA = true;
@@ -601,15 +629,14 @@ void StudioProject2Scene2::Update(double dt)
 						//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
 						//}
 					}
-				//}
+				}
 			}
 
 			if (Application::IsKeyPressed('D') && !roll)
 			{
-				//if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-				//	!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
-				//	|| pressedA == true)
-				//{
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox)
+					|| pressedA == true)
+				{
 					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
 					pressedA = false;
 					pressedD = true;
@@ -630,12 +657,12 @@ void StudioProject2Scene2::Update(double dt)
 						//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
 						//}
 					}
-				//}
+				}
 			}
 
 			if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
 			{
-				bufferTime_Jump = elapsedTime + 0.6f;
+				bufferTime_Jump = elapsedTime + 0.5f;
 				bufferTime_JumpUp = elapsedTime + 0.3f;
 			}
 			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
@@ -695,13 +722,12 @@ void StudioProject2Scene2::Update(double dt)
 		roll = true;
 		et[7] += dt;
 
-		if (pressedA/* && !trigger &&
-			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
+		if (pressedA && 
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox))
+
 			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
-		else if (pressedD/* && !trigger &&
-			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)*/)
+		else if (pressedD && 
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox))
 			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
 	}
 	else
@@ -910,6 +936,9 @@ void StudioProject2Scene2::Render()
 	Position lightPosition1_cameraspace = viewStack.Top() * light[1].position;
 	glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition1_cameraspace.x);
 
+	Position lightPosition2_cameraspace = viewStack.Top() * light[2].position;
+	glUniform3fv(m_parameters[U_LIGHT2_POSITION], 1, &lightPosition2_cameraspace.x);
+
 	/*modelStack.PushMatrix();
 	modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
 	RenderMesh(meshList[GEO_LIGHTBALL], false);
@@ -1059,6 +1088,8 @@ void StudioProject2Scene2::Render()
 	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
 	//modelStack.PushMatrix();
+	//modelStack.Scale(2, 2.5, 2.5);
+	//modelStack.Translate(-130, 8, 0);
 	//RenderMesh(meshList[GEO_TESTBBOX], false);
 	//modelStack.PopMatrix();
 
@@ -1142,17 +1173,19 @@ void StudioProject2Scene2::Render()
 	/*--------------------Environmental Objects--------------*/
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -5, 0);
-	RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
+
+	//RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
 	RenderMesh(meshList[GEO_SCENE2], true);
 	modelStack.PopMatrix();
 
+	RenderDebri();
 	/*-------------------------------------------------------*/
 	/*-----------------Skybox-------------------*/
-	//modelStack.PushMatrix();
-	//modelStack.Translate(450, 80, -200);
-	//modelStack.Scale(1600, 675, 1);
-	//RenderMesh(meshList[GEO_SKYBOX], false);
-	//modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	modelStack.Translate(1, 200, -300);
+	modelStack.Scale(2300, 800, 500);
+	RenderMesh(meshList[GEO_SKYBOX], false);
+	modelStack.PopMatrix();
 	/*------------------------------------------*/
 
 	/*-----------------Environmental Light Rendering------*/

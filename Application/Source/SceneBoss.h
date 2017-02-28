@@ -135,6 +135,7 @@ private:
 	double bufferTime_roll;
 	double bufferTime_block;
 	double bufferTime_iframeroll;
+	double bufferTime_hitiframe;
 };
 
 #endif 

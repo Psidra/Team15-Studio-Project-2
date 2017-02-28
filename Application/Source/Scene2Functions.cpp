@@ -12,7 +12,7 @@
 
 void StudioProject2Scene2::LoadLight()
 {
-	/*light[0].type = Light::LIGHT_POINT;
+	light[0].type = Light::LIGHT_POINT;
 	light[0].position.Set(-80, 10, -10); 
 	light[0].color.Set(0.251, 0.878, 0.816);
 	light[0].power = 5;
@@ -54,7 +54,30 @@ void StudioProject2Scene2::LoadLight()
 	glUniform1f(m_parameters[U_LIGHT1_KQ], light[1].kQ);
 	glUniform1f(m_parameters[U_LIGHT1_COSCUTOFF], light[1].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
-	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);*/
+	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
+
+	light[2].type = Light::LIGHT_POINT;
+	light[2].position.Set(-20, 10, -5);
+	light[2].color.Set(0.251, 0.878, 0.816);
+	light[2].power = 1;
+	light[2].kC = 1.f;
+	light[2].kL = 0.01f;
+	light[2].kQ = 0.001f;
+	light[2].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[2].cosInner = cos(Math::DegreeToRadian(30));
+	light[2].exponent = 3.f;
+	light[2].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT2_TYPE], light[2].type);
+	glUniform3fv(m_parameters[U_LIGHT2_COLOR], 1, &light[2].color.r);
+	glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+	glUniform1f(m_parameters[U_LIGHT2_KC], light[2].kC);
+	glUniform1f(m_parameters[U_LIGHT2_KL], light[2].kL);
+	glUniform1f(m_parameters[U_LIGHT2_KQ], light[2].kQ);
+	glUniform1f(m_parameters[U_LIGHT2_COSCUTOFF], light[2].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT2_COSINNER], light[2].cosInner);
+	glUniform1f(m_parameters[U_LIGHT2_EXPONENT], light[2].exponent);
+
 }
 
 void StudioProject2Scene2::RenderMesh(Mesh *mesh, bool enableLight)
@@ -198,10 +221,110 @@ void StudioProject2Scene2::RenderMeshOnScreen(Mesh* mesh, int x, int y, int size
 
 void StudioProject2Scene2::RenderLightStands()
 {
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	modelStack.Translate(-80, 8, -20);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(85, 8, -20);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(205, 8, 45);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(300, 8, -50);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(480, 35, -20);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(676, 8, 55);
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	modelStack.Translate(852, 8, -20);
+
+	modelStack.Translate(2, 9, -20);
+
+	modelStack.Scale(3, 3, 3);
+	RenderMesh(meshList[GEO_LIGHTSTAND], true);
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	RenderMesh(meshList[GEO_LIGHTBULB], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
 }
 
-void StudioProject2Scene2::RenderTrees()
+void StudioProject2Scene2::RenderDebri()
 {
+	modelStack.PushMatrix();
+	modelStack.Translate(-130, 8, 0);
+	modelStack.Scale(2, 2.5, 2.5);
+	modelStack.Rotate(90, 0, 1, 0);
+	RenderMesh(meshList[GEO_DEBRIS1], true);
+	modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(-130, 8, 10);
+		modelStack.Scale(2, 3, 1);
+		modelStack.Rotate(45, 0, 1, 0);
+		RenderMesh(meshList[GEO_DEBRISn], true);
+		modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-140, 8, 70);
+	modelStack.Scale(1.5, 1.5, 2);
+	modelStack.Rotate(-45, 1, 0, 0);
+	RenderMesh(meshList[GEO_DEBRISn], true);
+	modelStack.PopMatrix();
+	
 }
 
 void StudioProject2Scene2::RenderTextInteractions()

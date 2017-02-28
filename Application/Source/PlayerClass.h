@@ -10,12 +10,12 @@ public:
 	{
 		if (!instance)
 			instance = new PlayerClass();
-		else
-			return instance;
+
+		return instance;
 	}
 
-	unsigned int get_health();
-	unsigned int get_energy();
+	int get_health();
+	int get_energy();
 
 	void healthUI();
 	void manaUI();

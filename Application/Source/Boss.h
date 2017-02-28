@@ -12,8 +12,8 @@ public:
 	{
 		if (!instance)
 			instance = new Boss();
-		else
-			return instance;
+
+		return instance;
 	}
 
 	struct BossLife
@@ -31,10 +31,12 @@ public:
 	void burrowTeleportation(double timeElapsed);
 	void spinAttack(double timeElapsed, bool block);
 	void tailAttack(double timeElapsed, bool block);
+	void update(double timeElapsed, bool block);
 	unsigned int get_health();
 	unsigned int get_action();
-	void proj_attack(unsigned int projType, Vector3 pos, Vector3 dir, double elapsedTime);
+	void proj_attack(Vector3 pos, Vector3 dir, double elapsedTime);
 	unsigned int get_pattern();
+	void boss_attack(double elapsedTime, bool block);
 
 	BossLife bossLife;
 	Tail Boss_Tail; // great now tail doesn't even look like a word anymore, thanks semanic satiation
@@ -55,12 +57,19 @@ private:
 	double spinningDuration;
 	double bufferTime_tail;
 	double bufferTime_attackpattern;
+	double bufferTime_iframe;
+	double bufferTime_attackchoice;
+	double bufferTime_projduration;
+	unsigned int attackchoice;
+	float direction_p;
+	float offset = 0.f;
 	/*-----For State Control---*/
 	bool tailAtk; 
 	bool spin;
 	bool burrow;
 	bool DmgOverTime;
 	/*------------------------*/
+	int random_choice;
 	
 	/*----For preventing continuous update--*/
 	bool burrowDir;

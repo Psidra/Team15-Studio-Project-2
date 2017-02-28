@@ -20,7 +20,7 @@ public:
 	void edit_health(int HP);
 	void restartLevel();
 	int get_health();
-	void proj_update();
+	void proj_update(bool boss);
 	unsigned int get_action();
 
 	std::vector<Projectile*> spit_;

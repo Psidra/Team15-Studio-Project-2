@@ -26,6 +26,7 @@ public:
 
 	void init_proj(float distbetweenthem);
 	void edit_passed_angle();
+	void boss_edit_passed_angle();
 	float get_passed_angle();
 
 private:

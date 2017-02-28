@@ -4,12 +4,12 @@
 #include "GLFW\glfw3.h"
 PlayerClass* PlayerClass::instance;
 
-unsigned int PlayerClass::get_health()
+int PlayerClass::get_health()
 {
 	return _health;
 }
 
-unsigned int PlayerClass::get_energy()
+int PlayerClass::get_energy()
 {
 	return _energy;
 }
