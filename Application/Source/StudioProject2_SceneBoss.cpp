@@ -121,12 +121,20 @@ void StudioProject2SceneBoss::Init()
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------Environment Objects Loading---------------------------------*/
-	//		GEO_ENVIRONMENT, GEO_GROUND, GEO,LEFTWALL, GEO,RIGHTWALL,
-	meshList[GEO_ENVIRONMENT] = MeshBuilder::GenerateOBJ("Environment", "OBJ//SceneBoss//Bossscene.obj");
-	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossfloorbb.obj");
+	// GEO_ENVIRONMENT, GEO_GROUND, GEO_LEFTWALL, GEO_RIGHTWALL, GEO_PREVENT, GEO_TRIGGER,
+	meshList[GEO_ENVIRONMENT] = MeshBuilder::GenerateOBJ("Environment", "OBJ//SceneBoss//Bossscene_edit.obj");
+	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossfloorbb_edit.obj");
+	meshList[GEO_LEFTWALL] = MeshBuilder::GenerateOBJ("LeftWall", "OBJ//SceneBoss//bossleftbb.obj");
+	meshList[GEO_RIGHTWALL] = MeshBuilder::GenerateOBJ("RightWall", "OBJ//SceneBoss//bossrightbb.obj");
+	meshList[GEO_PREVENT] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossprevent.obj"); // falling thing when trigger
+	meshList[GEO_TRIGGER] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bosstrigger.obj");
 
-	meshList[GEO_ENVIRONMENT]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene.obj");
-	meshList[GEO_GROUND]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb.obj");
+	meshList[GEO_ENVIRONMENT]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene_edit.obj");
+	meshList[GEO_GROUND]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");
+	meshList[GEO_LEFTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene_edit.obj");
+	meshList[GEO_RIGHTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");	
+	meshList[GEO_PREVENT]->MeshBBox.loadBB("OBJ//SceneBoss//Bossscene_edit.obj");
+	meshList[GEO_TRIGGER]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
