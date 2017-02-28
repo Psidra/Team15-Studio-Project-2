@@ -1,5 +1,6 @@
 #include "EnemyClass.h"
 #include "PlayerClass.h"
+#include "Boss.h"
 #include "Projectile.h"
 #include "ProjectileBuilder.h"
 
@@ -125,7 +126,7 @@ void EnemyClass::proj_update(bool boss)
 		{
 			if (this->spit_[projectiles]->projType_ == 1)
 			{
-				this->spit_[projectiles]->edit_passed_angle();
+				this->spit_[projectiles]->edit_passed_angle(); // boss_edit_passed_angle();
 				this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
 			}
 			if (this->spit_[projectiles]->projType_ == 2)
@@ -135,7 +136,22 @@ void EnemyClass::proj_update(bool boss)
 			}
 			if (this->spit_[projectiles]->projType_ == 3)
 			{
+				if (Boss::get_instance()->get_action() == 1)
+				{
+					Boss::get_instance()->spit_[projectiles]->projSpeed = 1.f;
+				}
+				else if (Boss::get_instance()->get_action() == 2)
+				{
+					Boss::get_instance()->spit_[projectiles]->projSpeed = 1.f;
+				}
+				else if (Boss::get_instance()->get_action() == 3)
+				{
+					Boss::get_instance()->spit_[projectiles]->projSpeed = 1.f;
+				}
+
 				this->spit_[projectiles]->direction_.y = 0;
+
+				this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
 			}
 			if (this->spit_[projectiles]->projType_ == 4)
 			{

@@ -24,7 +24,7 @@ public:
 
 	void bossInit();
 	void bossHealthUI();
-	void bossHealthSystem(double timeElapsed);
+	void bossHealthSystem();
 	void facingDirection();
 	void stateManager();
 	void dmgOvertime(double timeElapsed);
@@ -61,8 +61,11 @@ private:
 	double bufferTime_attackchoice;
 	double bufferTime_projduration;
 	unsigned int attackchoice;
-	float direction_p;
-	float offset = 0.f;
+	float direction_p_a, direction_p_b;
+	float offset;
+	int flip_a, flip_b;
+	float changedir;
+	double bufferTime_resetdir;
 	/*-----For State Control---*/
 	bool tailAtk; 
 	bool spin;

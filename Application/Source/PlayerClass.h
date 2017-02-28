@@ -19,7 +19,7 @@ public:
 
 	void healthUI();
 	void manaUI();
-	void energySystem(double timeElapsed);
+	void energySystem();
 	void init();
 	void facingDirection();
 	void healthSystem(bool Block , bool bossTagged);

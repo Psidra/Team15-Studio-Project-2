@@ -248,7 +248,9 @@ void SceneBoss::Init()
 	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
 
 	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
+	// make obj later
 
+	//meshList[GEO_TRIGGER_SLOPE]->MeshBBox.loadBB("OBJ//TriggerBox.obj");
 	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", Boss::get_instance()->EnemyHitBox.max_, Boss::get_instance()->EnemyHitBox.min_);
 	/*--------------------------------------------------------------------------------*/
 	Mtx44 projection;
@@ -285,7 +287,7 @@ void SceneBoss::Update(double dt)
 				(Boss::get_instance()->spit_[projectiles]->position_.y + 10.f),
 				Boss::get_instance()->spit_[projectiles]->position_.z);
 
-			if (/*Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(meshList[GEO_WALLS]->MeshBBox) ||*/ Boss::get_instance()->spit_[projectiles]->displacement() > 100.f)
+			if (/*Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(meshList[GEO_WALLS]->MeshBBox) ||*/ Boss::get_instance()->spit_[projectiles]->displacement() > 150.f)
 			{
 				Boss::get_instance()->spit_.erase(Boss::get_instance()->spit_.begin() + projectiles);
 			}
@@ -331,7 +333,7 @@ void SceneBoss::Update(double dt)
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->manaUI();
 	PlayerClass::get_instance()->timeSpent(dt);
-	PlayerClass::get_instance()->bossFightFacingDirection();
+	//PlayerClass::get_instance()->bossFightFacingDirection();
 	PlayerClass::get_instance()->spellUI(elapsedTime);
 	
 
@@ -383,8 +385,8 @@ void SceneBoss::Update(double dt)
 	{
 		bufferTime_attack = elapsedTime + 1.f;
 
-		//if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
-		//	EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
+		if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
+			Boss::get_instance()->bossHealthSystem();
 	}
 
 	if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !roll)
@@ -408,6 +410,19 @@ void SceneBoss::Update(double dt)
 	{
 		roll = true;
 		et[7] += dt;
+
+		if (PlayerClass::get_instance()->a_LookingDirection == 0)
+			PlayerClass::get_instance()->position_a.z += (float)(30.f * dt);
+
+		if (PlayerClass::get_instance()->a_LookingDirection == 90)
+			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+
+		if (PlayerClass::get_instance()->a_LookingDirection == 180)
+			PlayerClass::get_instance()->position_a.z -= (float)(15.f * dt);
+
+		if (PlayerClass::get_instance()->a_LookingDirection == -90)
+			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+
 	}
 	else
 		roll = false;

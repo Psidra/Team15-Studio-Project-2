@@ -21,12 +21,12 @@ void Projectile::init_proj(float distbetweenthem)									 // It's probably poss
 void Projectile::edit_passed_angle()
 {
 	float rate_of_change = (1/x_distance * 3.5f) * (-g * pow(cos((pi / 180) * init_angle), 2)); // jesus this was annoying to type
-	passed_angle += rate_of_change;															// rising cause A S T C, we're shooting from the other side.
+	passed_angle += rate_of_change;																// rising cause A S T C, we're shooting from the other side.
 }
 
 void Projectile::boss_edit_passed_angle()
 {
-	float rate_of_change = (1 / x_distance * 3.5f) * (-g * pow(cos((pi / 180) * init_angle), 2));
+	float rate_of_change = (1/x_distance * 3.5f) * (-g * pow(cos((pi / 180) * init_angle), 2));
 	passed_angle += rate_of_change;
 }
 
