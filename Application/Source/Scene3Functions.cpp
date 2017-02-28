@@ -200,6 +200,7 @@ void StudioProject2Scene3::RenderLightStands()
 {
 }
 
+
 //void StudioProject2Scene3::RenderTrees()
 //{
 //}

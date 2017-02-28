@@ -110,6 +110,7 @@
     <ClCompile Include="Source\Scene2Functions.cpp" />
     <ClCompile Include="Source\Scene2Interactions.cpp" />
     <ClCompile Include="Source\Scene3Functions.cpp" />
+    <ClCompile Include="Source\Scene3Interaction.cpp" />
     <ClCompile Include="Source\SceneBoss.cpp" />
     <ClCompile Include="Source\SceneBossFunctions.cpp" />
     <ClCompile Include="Source\SceneCredits.cpp" />

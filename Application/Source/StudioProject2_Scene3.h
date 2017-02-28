@@ -38,7 +38,6 @@ public:
 
 		//skybox
 		GEO_SKYBOX, GEO_GROUND, GEO_SKYBOX3, GEO_GROUND3,
-
 		//main character (Alexis)
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM,
 		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG, GEO_LASER,
@@ -54,6 +53,10 @@ public:
 		//UI Objects
 		GEO_BLANKHEART, GEO_ALEXIS_LIFE, GEO_BOSSLIFE, GEO_ENERGY, GEO_BLANKENERGY,
 		GEO_TEXT, GEO_LASER_CD, GEO_LASER_ICON, GEO_PROJSHIELD_CD, GEO_PROJSHIELD,
+		GEO_TEXTBOX,
+		//bound box
+		GEO_BACKCAVE, GEO_BIGLEFT, GEO_BIGRIGHT, GEO_FRONT, GEO_LEFTCAVE, GEO_RIGHTCAVE,
+		GEO_SMALLLEFT, GEO_SMALLRIGHT,
 		//Boss
 		GEO_BOSS_LARM, GEO_BOSS_LJAW, GEO_BOSS_LUARM, GEO_BOSS_MHEAD, GEO_BOSS_MJAW,
 		GEO_BOSS_NECK, GEO_BOSS_RARM, GEO_BOSS_RJAW, GEO_BOSS_RUARM, GEO_BOSS_SEG1,
@@ -107,6 +110,10 @@ private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 
+	void LightInteraction();
+	void TextInteraction();
+	void Renderbb();
+
 	void LoadLight();
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -122,12 +129,22 @@ private:
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
 	bool pressedD;
 	bool pressedA;
+	bool pressedW;
+	bool pressedS;
+	bool inmovement;
+	bool injump;
 	bool attack;
+	bool trigger;
+	bool grab;
 	bool block;
-	bool roll;
+	bool roll = false;
 	/*------------------------------------------------------------*/
 
+	float movespeed;
+
 	std::string fps;
+	std::string hMutantSaved;
+	std::string fMutantKilled;
 
 	// TIME
 	double elapsedTime;

@@ -33,7 +33,7 @@ void StudioProject2Scene3::Init()
 {
 	PlayerClass::get_instance();
 	PlayerClass::get_instance()->a_LookingDirection = -90.f;
-	PlayerClass::get_instance()->position_a = Vector3(50, 0, 0);
+	PlayerClass::get_instance()->position_a = Vector3(90, 0, -40);
 	/*-----------Hearts Initialisation-----*/
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->manaUI();
@@ -93,15 +93,18 @@ void StudioProject2Scene3::Init()
 	meshList[GEO_AXIS] = MeshBuilder::GenerateAxis("reference");
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1.f, 1.f, 1.f), 18, 36, 1.f);
 
-	/*-----------------------------Skybox Loading----------------------------------*/
-	//meshList[GEO_SKYBOX] = MeshBuilder::GenerateQuad("skybox", Color(1, 1, 1));
-	//meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//SkyBG.tga");
+	/*-----------------------------Skybox/ground Loading----------------------------------*/
+	meshList[GEO_SKYBOX3] = MeshBuilder::GenerateOBJ("skyboxscene3", "OBJ//Scene3//scene3skybox.obj");
+	meshList[GEO_SKYBOX3]->textureID = LoadTGA("Image//skyboxs3.tga");
 	meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1));
 
 	meshList[GEO_GROUND3] = MeshBuilder::GenerateOBJ("caveground", "OBJ//Scene3//scene3.obj");
 	meshList[GEO_GROUND3]->textureID = LoadTGA("Image//scene3.tga");
 	/*-----------------------------------------------------------------------------*/
-
+	
+	//Textbox
+	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
+	
 	/*--------------------------Mutants Loading------------------------------------*/
 	meshList[GEO_MUTANT_HEAD] = MeshBuilder::GenerateOBJ("aHead", "OBJ//Mutant_UpdatedOBJ//Mutant_Head.obj");
 	meshList[GEO_MUTANT_HEAD]->textureID = LoadTGA("Image//Mutant_Texture.tga");
@@ -177,15 +180,12 @@ void StudioProject2Scene3::Init()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//franklingothicheavy.tga");
 	/*-----------------------------------------------------------------------------*/
-
-
 	/*-------------------------Loading Mutant Health----------------------------------*/
 	meshList[GEO_M_RHEART] = MeshBuilder::GenerateOBJ("MutantHealthRed", "OBJ//M_HealthRed.obj");
 	meshList[GEO_M_RHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
 	meshList[GEO_M_BHEART] = MeshBuilder::GenerateOBJ("MutantHealthBlack", "OBJ//M_HealthBlack.obj");
 	meshList[GEO_M_BHEART]->textureID = LoadTGA("Image//Mutant_Health.tga");
 	/*--------------------------------------------------------------------------------*/
-
 	/*------------------------------HUD Loading -------------------------------------*/
 	/*-------------------------Loading Alexis Health--------------------*/
 	meshList[GEO_BLANKHEART] = MeshBuilder::GenerateQuad("blankheart", Color(1, 1, 1));
@@ -205,19 +205,50 @@ void StudioProject2Scene3::Init()
 	meshList[GEO_PROJSHIELD_CD] = MeshBuilder::GenerateQuad("projshieldCDicon", Color(1, 1, 1));
 	meshList[GEO_PROJSHIELD_CD]->textureID = LoadTGA("Image//hardlight_cooldown.tga");
 	/*-------------------------------*/
-
-
 	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
 	/*--------------------------------------------------------------------------------*/
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 2000.f);
 	projectionStack.LoadMatrix(projection);
-
 	/*----------------------Light Initialisation-----------------------------------*/
 	LoadLight();
 	// Make sure you pass uniform parameters after glUseProgram()
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1);
  	/*-------------------------------------------------------------------------------*/
+	/*-----------------------------------Bound box-----------------------------------*/
+	meshList[GEO_BACKCAVE] = MeshBuilder::GenerateOBJ("GEO_BACKCAVE", "OBJ//Scene3//bbscene3//backcave.obj");
+	meshList[GEO_BACKCAVE]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//backcave.obj");
+
+	meshList[GEO_BIGLEFT] = MeshBuilder::GenerateOBJ("GEO_BIGLEFT","OBJ//Scene3//bbscene3//bigleft.obj");
+	meshList[GEO_BIGLEFT]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//bigleft.obj");
+
+	meshList[GEO_BIGRIGHT] = MeshBuilder::GenerateOBJ("GEO_BIGRIGHT", "OBJ//Scene3//bbscene3//bigRIGHT.obj");
+	meshList[GEO_BIGRIGHT]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//bigright.obj");
+	
+	meshList[GEO_FRONT] = MeshBuilder::GenerateOBJ("GEO_FRONT", "OBJ//Scene3//bbscene3//front.obj");
+	meshList[GEO_FRONT]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//front.obj");
+	
+	//meshList[GEO_LEFTCAVE]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//leftcave.obj");
+	
+	meshList[GEO_RIGHTCAVE] = MeshBuilder::GenerateOBJ("GEO_RIGHTCAVE", "OBJ//Scene3//bbscene3//rightcave.obj");
+	//meshList[GEO_RIGHTCAVE]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//rightcave.obj");
+
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_RIGHTCAVE]->MeshBBox.max_, meshList[GEO_RIGHTCAVE]->MeshBBox.min_);
+
+	//meshList[GEO_SMALLLEFT]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//smallleft.obj");
+	
+	meshList[GEO_SMALLRIGHT] = MeshBuilder::GenerateOBJ("GEO_SMALLRIGHT", "OBJ//Scene3//bbscene3//smallright.obj");
+	meshList[GEO_SMALLRIGHT]->MeshBBox.loadBB("OBJ//Scene3//bbscene3//smallright.obj");
+	/*-------------------------------------------------------------------------------*/
+
+	pressedA = false;
+	pressedD = false;
+	pressedW = false;
+	pressedS = false;
+	inmovement = false;
+	attack = false;
+	block = false;
+	roll = false;
 }
 
 void StudioProject2Scene3::Update(double dt)
@@ -262,8 +293,15 @@ void StudioProject2Scene3::Update(double dt)
 	PlayerClass::get_instance()->manaUI();
 	PlayerClass::get_instance()->timeSpent(dt);
 	PlayerClass::get_instance()->spellUI(elapsedTime);
-
 	/*-----------------------------------------*/
+
+	/*-----------HUD UPDATES---------*/
+	//fps = "FPS:" + std::to_string(framespersec);
+	//fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
+	//hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
+	/*----------------------------------------------------------*/
+
+	/*----------------------------------------------------------*/
 	if (!otheranims() || holdanims())
 	{
 		for (unsigned i = 0; i < 6; i++)
@@ -286,19 +324,59 @@ void StudioProject2Scene3::Update(double dt)
 	{
 		if (Application::IsKeyPressed('W'))
 		{
-			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BACKCAVE]->MeshBBox)
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BIGLEFT]->MeshBBox)
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTCAVE]->MeshBBox)
+				|| pressedS == true)
+			{
+				pressedA = false;
+				pressedS = false;
+				pressedD = false;
+				pressedW = true;
+				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+			}
 		}
 		if (Application::IsKeyPressed('S'))
 		{
-			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BACKCAVE]->MeshBBox)
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BIGLEFT]->MeshBBox)
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTCAVE]->MeshBBox)
+				|| pressedW == true)
+			{
+				pressedA = false;
+				pressedS = true;
+				pressedD = false;
+				pressedW = false;
+				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+			}
 		}
 		if (Application::IsKeyPressed('A'))
 		{
-			PlayerClass::get_instance()->position_a.z += (float)(30.f * dt);
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BACKCAVE]->MeshBBox)
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BIGLEFT]->MeshBBox)
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTCAVE]->MeshBBox)
+				|| pressedD == true)
+			{
+				pressedA = true;
+				pressedS = false;
+				pressedD = false;
+				pressedW = false;
+				PlayerClass::get_instance()->position_a.z += (float)(30.f * dt);
+			}
 		}
 		if (Application::IsKeyPressed('D'))
 		{
-			PlayerClass::get_instance()->position_a.z -= (float)(30.f * dt);
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BACKCAVE]->MeshBBox) 
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BIGLEFT]->MeshBBox)
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTCAVE]->MeshBBox)
+				|| pressedA == true)
+			{
+				pressedA = false;
+				pressedS = false;
+				pressedD = true;
+				pressedW = false;
+				PlayerClass::get_instance()->position_a.z -= (float)(30.f * dt);
+			}
 		}
 	}
 
@@ -318,6 +396,7 @@ void StudioProject2Scene3::Update(double dt)
 		bufferTime_roll = elapsedTime + 0.8f;
 		bufferTime_iframeroll = elapsedTime + 0.35f;
 	}
+	/*-----------------------------------------------*/
 	/*-----------------------------------------------*/
 	if (bufferTime_attack > elapsedTime)
 	{
@@ -471,9 +550,13 @@ void StudioProject2Scene3::Render()
 	modelStack.PopMatrix();*/
 
 	modelStack.PushMatrix();
-	modelStack.Rotate(90, 0, 1, 0);
+	//modelStack.Rotate(90, 0, 1, 0);
 	//modelStack.Scale(130, 130, 130);
 	RenderMesh(meshList[GEO_GROUND3], false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_TESTBBOX], false);
 	modelStack.PopMatrix();
 
 	unsigned int num_anim;
@@ -629,14 +712,15 @@ void StudioProject2Scene3::Render()
 	RenderMutant();
 	/*-------------------------------------------------------*/
 
-	/*---------------*/
+	//-----------------------------RENDER BOUND BOX
+	Renderbb();
 
 	/*-----------------Skybox-------------------*/
-	/*modelStack.PushMatrix();
-	modelStack.Translate(450, 80, -200);
-	modelStack.Scale(1600, 675, 1);
-	RenderMesh(meshList[GEO_SKYBOX], false);
-	modelStack.PopMatrix();*/
+	//modelStack.PushMatrix();
+	////modelStack.Translate(450, 80, -200);
+	//modelStack.Scale(0.8, 0.8, 0.8);
+	//RenderMesh(meshList[GEO_SKYBOX3], false);
+	//modelStack.PopMatrix();
 	/*------------------------------------------*/
 
 	/*-----------------Environmental Light Rendering------*/
@@ -667,6 +751,11 @@ void StudioProject2Scene3::Render()
 	}
 	/*-----------------------------*
 
+	/*----Textbox Rendering--------*/
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	RenderMeshOnScreen(meshList[GEO_TEXTBOX], 0, 0, 100, 15, 0);
+	/*-----------------------------*/
+
 	/*------Spell HUD-----*/
 	RenderMeshOnScreen(meshList[GEO_LASER_ICON], 10, 0.5,
 		PlayerClass::get_instance()->spellHUD.laserReady, PlayerClass::get_instance()->spellHUD.laserReady, 0);
@@ -681,6 +770,7 @@ void StudioProject2Scene3::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "ENERGY", Color(0, 0, 1), 2, 3, 17.5);
 	/*------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
+
 }
 
 

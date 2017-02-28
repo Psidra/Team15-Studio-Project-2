@@ -60,12 +60,6 @@
     <Filter Include="Header Files\Scene\Player">
       <UniqueIdentifier>{5c033f28-a31e-4754-9e2e-71a33ed53a0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scene\interactions">
-      <UniqueIdentifier>{d381a96c-41c4-4379-b8e6-2a0ba138bb66}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene\functions">
-      <UniqueIdentifier>{f84dd090-e4ab-478b-b566-ba307f8cebd4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Collision">
       <UniqueIdentifier>{5ed72de7-3941-460a-8f3e-cefde41d26b9}</UniqueIdentifier>
     </Filter>
@@ -189,10 +183,13 @@
       <Filter>Source Files\Application_files</Filter>
     </ClCompile>
     <ClCompile Include="Source\StudioProject2_Scene3.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene_files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene3Functions.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Scene_files\Scene_functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3Interaction.cpp">
+      <Filter>Source Files\Scene_files\Scene_interactions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -308,7 +305,7 @@
       <Filter>Header Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\StudioProject2_Scene3.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
