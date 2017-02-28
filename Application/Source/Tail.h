@@ -12,9 +12,11 @@ public:
 	void stalk();
 	void strike(bool block);
 	void retract(bool block);
+	void set_direction();
 
 	BoundingBox TailHitBox;
 	Vector3 position_t;
+	Vector3 direction_t;
 
 private:
 

@@ -25,3 +25,8 @@ void Tail::retract(bool block)
 	if (PlayerClass::get_instance()->PlayerHitBox.collide(this->TailHitBox))
 		PlayerClass::get_instance()->healthSystem(block, true);
 }
+
+void Tail::set_direction()
+{
+	this->direction_t = (PlayerClass::get_instance()->position_a - this->direction_t).Normalized();
+}

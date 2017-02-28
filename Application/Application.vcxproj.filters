@@ -188,6 +188,12 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source Files\Application_files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StudioProject2_SceneBoss.cpp">
+      <Filter>Source Files\Scene_files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneBossNewFunctions.cpp">
+      <Filter>Source Files\Scene_files\Scene_functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Camera.h">
@@ -300,6 +306,9 @@
     </ClInclude>
     <ClInclude Include="Source\Vertex.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StudioProject2_SceneBoss.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
