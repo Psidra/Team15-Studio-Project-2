@@ -382,6 +382,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->manaUI();
 	PlayerClass::get_instance()->timeSpent(dt);
+	PlayerClass::get_instance()->healthRegeneration(elapsedTime);
 	PlayerClass::get_instance()->spellUI(elapsedTime);
 	if (!trigger && !otheranims() && !holdanims())
 		PlayerClass::get_instance()->facingDirection();
@@ -392,6 +393,12 @@ void StudioProject2SceneBoss::Update(double dt)
 		//PlayerClass::get_instance()->projectileShield(elapsedTime);
 	}
 	/*------------------------*/
+
+	/*-----Boss Functions--------*/
+	Boss::get_instance()->stateManager();
+	Boss::get_instance()->dmgOvertime(elapsedTime);
+	Boss::get_instance()->bossHealthUI();
+	/*---------------------------*/
 
 	/*-------AI Functions---------------*/
 
@@ -503,7 +510,10 @@ void StudioProject2SceneBoss::Update(double dt)
 
 				//if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
 				//	EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
-
+				
+				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
+						Boss::get_instance()->bossHealthSystem();
+				
 				// add on to this later
 			}
 
@@ -564,7 +574,12 @@ void StudioProject2SceneBoss::Update(double dt)
 			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
 			{
 				bufferTime_attack = elapsedTime + 1.f;
+				
+					
 
+				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
+					Boss::get_instance()->bossHealthSystem();
+				
 			/*	if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
 					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);*/
 			}

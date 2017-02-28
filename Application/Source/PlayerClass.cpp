@@ -219,14 +219,27 @@ void PlayerClass::restartGame()
 
 void PlayerClass::laserBeam(double timeElapsed)
 {
-	if (Application::IsKeyPressed('Q') && timeElapsed > bufferTime_Laser && _energy >= energyLaser) // Laser Beam
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
+		int xbox;
+		const unsigned char *xbox360 = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+		if ((GLFW_PRESS == xbox360[4] || Application::IsKeyPressed('Q')) && timeElapsed > bufferTime_Laser && _energy >= energyLaser) // Laser Beam
+		{
 			laserActive = true;
 			bufferTime_Laser = timeElapsed + 10.f;
 			_energy -= energyLaser;
 
+		}
 	}
-
+	else
+	{
+		if (Application::IsKeyPressed('Q') && timeElapsed > bufferTime_Laser && _energy >= energyLaser) // Laser Beam
+		{
+			laserActive = true;
+			bufferTime_Laser = timeElapsed + 10.f;
+			_energy -= energyLaser;
+		}
+	}
 		if (laserActive == true)
 		{
 			laserSize.x = 50;
