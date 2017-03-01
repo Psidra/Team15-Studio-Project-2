@@ -14,7 +14,7 @@ unsigned int Boss::get_health()
 
 void Boss::bossInit()
 {
-	get_instance()->position_m = Vector3(0, 10, 0);
+	get_instance()->position_m = Vector3(350, 3, -10);
 	this->EnemyHitBox.setto(get_instance()->position_m.x, get_instance()->position_m.y, get_instance()->position_m.z);
 	spin = false;
 	tailAtk = false;

@@ -134,7 +134,6 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_RIGHTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossrightbb.obj");
 	meshList[GEO_TRIGGER]->MeshBBox.loadBB("OBJ//SceneBoss//bosstrigger.obj");
 
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_TRIGGER]->MeshBBox.max_, meshList[GEO_TRIGGER]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -305,7 +304,8 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_SPIKE] = MeshBuilder::GenerateOBJ("Boss_Spike", "OBJ//Boss//Boss_Spike.obj");
 
 	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
-	Boss::get_instance()->EnemyHitBox.scale(3.f, 3.f, 3.f);
+
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", Boss::get_instance()->EnemyHitBox.max_, Boss::get_instance()->EnemyHitBox.min_);
 
 	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
 
@@ -314,7 +314,6 @@ void StudioProject2SceneBoss::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
-	//meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.max_, EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
 	/*-------------------------Loading Mutant Health----------------------------------*/
@@ -501,6 +500,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				else
 				{
 					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTWALL]->MeshBBox)
 						|| pressedD == true)
 					{
 						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
@@ -527,6 +527,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				else
 				{
 					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTWALL]->MeshBBox)
 						|| pressedA == true)
 					{
 						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
@@ -598,6 +599,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				else
 				{
 					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTWALL]->MeshBBox)
 						|| pressedD == true)
 					{
 						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
@@ -624,6 +626,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				else
 				{
 					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+						&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTWALL]->MeshBBox)
 						|| pressedA == true)
 					{
 						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
@@ -642,9 +645,7 @@ void StudioProject2SceneBoss::Update(double dt)
 			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
 			{
 				bufferTime_attack = elapsedTime + 1.f;
-				
-					
-
+			
 				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
 					Boss::get_instance()->bossHealthSystem();
 				
@@ -693,10 +694,20 @@ void StudioProject2SceneBoss::Update(double dt)
 		roll = true;
 		et[7] += dt;
 
-		if (pressedA && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox))
-			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
-		else if (pressedD && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox))
-			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+		if (pressedA && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox))
+		{
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && trigger)
+				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+			else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && !trigger)
+				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+		}
+		else if (pressedD && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox))
+		{
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && trigger)
+				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+			else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && !trigger)
+				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+		}
 	}
 	else
 		roll = false;
@@ -753,6 +764,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	if (trigger && plop < 50)
 		plop += 1;
 
+	et[10] += dt;
 
 	//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER_SLOPE]->MeshBBox))
 	//{
@@ -817,6 +829,9 @@ void StudioProject2SceneBoss::Update(double dt)
 
 	//if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
 	//	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+
+	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
+	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
 	/*--------------------------------------------------------*/
 
 	TextInteraction();
@@ -1017,7 +1032,112 @@ void StudioProject2SceneBoss::Render()
 	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
 	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
+	/*------Boss-----*/
 	modelStack.PushMatrix();
+
+	Boss::get_instance()->EnemyHitBox.scale(2.25f, 3.f, 3.f);
+	Boss::get_instance()->EnemyHitBox.translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, -10);
+
+	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, -70);
+
+		modelStack.PushMatrix();
+		AnimCheck_Boss(0, &modelStack, &et[10], "Boss_Torso");
+		RenderMesh(meshList[GEO_BOSS_TORSO], true);
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_LJAW], true);
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_RJAW], true);
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_NECK], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_MHEAD], true);
+
+					modelStack.PushMatrix();
+					RenderMesh(meshList[GEO_BOSS_MJAW], true);
+
+					modelStack.PopMatrix();
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_LUARM], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_LARM], true);
+
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_RUARM], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_RARM], true);
+
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+
+			modelStack.PushMatrix();
+			RenderMesh(meshList[GEO_BOSS_SEG1], true);
+
+				modelStack.PushMatrix();
+				RenderMesh(meshList[GEO_BOSS_SEG2], true);
+
+					modelStack.PushMatrix();
+					RenderMesh(meshList[GEO_BOSS_SEG3], true);
+
+						modelStack.PushMatrix();
+						RenderMesh(meshList[GEO_BOSS_SEG4], true);
+
+							modelStack.PushMatrix();
+							RenderMesh(meshList[GEO_BOSS_SEG5], true);
+
+								modelStack.PushMatrix();
+								RenderMesh(meshList[GEO_BOSS_SEG6], true);
+
+								modelStack.PopMatrix(); // do
+							modelStack.PopMatrix(); // ti
+						modelStack.PopMatrix(); // la
+					modelStack.PopMatrix(); // so
+				modelStack.PopMatrix(); // fa
+			modelStack.PopMatrix(); //mi
+		modelStack.PopMatrix(); // re
+	modelStack.PopMatrix(); // do
+
+	if (Boss::get_instance()->get_action() == 3)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, PlayerClass::get_instance()->position_a.y + 2.5f, Boss::get_instance()->Boss_Tail.position_t.z);
+		modelStack.Scale(0.1f, 1.f, 0.1f);
+		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, Boss::get_instance()->Boss_Tail.position_t.y, Boss::get_instance()->Boss_Tail.position_t.z);
+		modelStack.Scale(0.5f, 0.5f, 0.5f);
+		RenderMesh(meshList[GEO_SPIKE], true);
+		modelStack.PopMatrix();
+	}
+	else if (Boss::get_instance()->get_action() == 2)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y + 2.5f, Boss::get_instance()->position_m.z);
+		modelStack.Scale(0.2f, 1.f, 0.2f);
+		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
+		modelStack.PopMatrix();
+	}
+
+	/*---------------*/
+
+	modelStack.PushMatrix();
+	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
+	modelStack.Scale(2.25f, 3, 3);
 	RenderMesh(meshList[GEO_TESTBBOX], false);
 	modelStack.PopMatrix();
 
