@@ -50,7 +50,7 @@ public:
 		//Environmental Objects
 		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE, GEO_SCENE2,
 		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL, GEO_DEBRIS1, GEO_DEBRISn, GEO_LAMPPOST,
-		GEO_MOVEBOX, GEO_ROPE,
+		GEO_MOVEBOX, GEO_ROPE,GEO_MOVEBOXTEST,
 
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
@@ -160,14 +160,14 @@ private:
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
-	bool pressedD;
-	bool pressedA;
-	bool inmovement;
-	bool injump;
-	bool attack;
-	bool trigger;
-	bool grab;
-	bool block;
+	bool pressedD = false;
+	bool pressedA = false;
+	bool inmovement = false;
+	bool injump = false;
+	bool attack = false;
+	bool trigger = false;
+	bool grab = false;
+	bool block = false;
 	bool roll = false;
 
 	double et[30];
@@ -188,8 +188,8 @@ private:
 	*/
 	/*------------------------------------------------------------*/
 
-	float ShortBox_PosX;
-	float TallBox_PosX;
+	float MoveBox_PosX;
+	float MoveShelterObj_PosX;
 
 	float Lamppostrotate = -20.f;
 

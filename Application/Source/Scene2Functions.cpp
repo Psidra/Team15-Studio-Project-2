@@ -484,7 +484,7 @@ void StudioProject2Scene2::RenderDebri2()
 void StudioProject2Scene2::RenderObjects()
 {
 	modelStack.PushMatrix();
-	modelStack.Translate(20, 19, 20);
+	modelStack.Translate((20 + MoveShelterObj_PosX), 16, 20);
 	RenderMesh(meshList[GEO_SHELTEROBJ], true);
 	modelStack.PopMatrix();
 
@@ -500,13 +500,18 @@ void StudioProject2Scene2::RenderObjects()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(510, 0, 10);
-	modelStack.Rotate(-39, 0, 0, 1); //initial = -20, slanted fully = -39
+	modelStack.Rotate(Lamppostrotate, 0, 0, 1); //initial = -20, slanted fully = -39
 	RenderMesh(meshList[GEO_LAMPPOST], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(505, 7, 10);
+	modelStack.Rotate(-39, 0, 0, 1); 
 	RenderMesh(meshList[GEO_ROPE], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(480, 8, 15);
+	modelStack.Translate((480 + MoveBox_PosX), 8, 15);
 	RenderMesh(meshList[GEO_MOVEBOX], true);
 	modelStack.PopMatrix();
 }
