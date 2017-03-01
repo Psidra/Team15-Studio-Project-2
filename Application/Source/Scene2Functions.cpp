@@ -504,11 +504,14 @@ void StudioProject2Scene2::RenderObjects()
 	RenderMesh(meshList[GEO_LAMPPOST], true);
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(505, 7, 10);
-	modelStack.Rotate(-39, 0, 0, 1); 
-	RenderMesh(meshList[GEO_ROPE], true);
-	modelStack.PopMatrix();
+	if (Breakrope < 2)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(505, 7, 10);
+		modelStack.Rotate(-39, 0, 0, 1);
+		RenderMesh(meshList[GEO_ROPE], true);
+		modelStack.PopMatrix();
+	}
 
 	modelStack.PushMatrix();
 	modelStack.Translate((480 + MoveBox_PosX), 8, 15);
