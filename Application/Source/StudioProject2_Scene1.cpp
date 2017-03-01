@@ -917,6 +917,7 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		SceneManager::getInstance()->Location = "Inner City";
 		SceneManager::getInstance()->changeScene(new LoadingScreen());
+		delete EnemyManager::get_instance()->EnemyList[0];
 	}
 	if (PlayerClass::get_instance()->get_health() <= 0)
 	{

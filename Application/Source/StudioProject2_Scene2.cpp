@@ -178,15 +178,18 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_CLUSTERTREE]->textureID = LoadTGA("Image//tree.tga");
 
 	meshList[GEO_SCENE2] = MeshBuilder::GenerateOBJ("Environment", "OBJ//Scene2//Scene2_Environment.obj");
-	//meshList[GEO_SCENE2]->textureID = LoadTGA("Image//housetexture.tga");
+	meshList[GEO_SCENE2]->textureID = LoadTGA("Image//rocktex.tga");
 	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("SnipingTower", "OBJ//Scene2//TrumpTower.obj");
+	meshList[GEO_TRUMPTOWER]->textureID = LoadTGA("Image//Debri_Texture.tga");
 	meshList[GEO_TRUMPTOWER]->MeshBBox.loadBB("OBJ//Scene2//TrumpTower.obj");
 
 	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("Wall", "OBJ//Scene2//TrumpWall.obj");
+	meshList[GEO_TRUMPWALL]->textureID = LoadTGA("Image//brick.tga");
 	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
 	meshList[GEO_TRUMPWALL]->MeshBBox.translate(570, -20, 20);
 
 	meshList[GEO_LAMPPOST] = MeshBuilder::GenerateOBJ("Lamp post", "OBJ//Scene2//Lamp_post.obj");
+	meshList[GEO_LAMPPOST]->textureID = LoadTGA("Image//rust.tga");
 	meshList[GEO_LAMPPOST]->MeshBBox.loadBB("OBJ//Scene2//Lamp_post.obj");
 	meshList[GEO_LAMPTRIGGER] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj");
 	meshList[GEO_LAMPTRIGGER]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
@@ -218,10 +221,12 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_FLOORBBOX]->MeshBBox.translate(0, -4, 0);
 
 	meshList[GEO_SHELTEROBJ] = MeshBuilder::GenerateOBJ("Shelterobj", "OBJ//Scene2//ShelterObject.obj");
+	meshList[GEO_SHELTEROBJ]->textureID = LoadTGA("Image//woodtex.tga");
 	meshList[GEO_SHELTEROBJ]->MeshBBox.loadBB("OBJ//Scene2//ShelterObject.obj"); //main body of Shelter obj
 	meshList[GEO_SHELTEROBJ]->MeshBBox.translate(20, 16, 20);
 
 	meshList[GEO_MOVEBOX] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene2//MoveableBox.obj");
+	meshList[GEO_MOVEBOX]->textureID = LoadTGA("Image//woodtex.tga");
 	meshList[GEO_MOVEBOX]->MeshBBox.loadBB("OBJ//Scene2//MoveableBox.obj");
 	meshList[GEO_MOVEBOX]->MeshBBox.translate(480, 8, 10);
 	meshList[GEO_MOVEBOX]->MeshBBox.scale(1.f, 1.f, 2.f);
