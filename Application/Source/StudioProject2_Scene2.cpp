@@ -178,11 +178,13 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_CLUSTERTREE]->textureID = LoadTGA("Image//tree.tga");
 
 	meshList[GEO_SCENE2] = MeshBuilder::GenerateOBJ("Environment", "OBJ//Scene2//Scene2_Environment.obj");
-	//meshList[GEO_SCENE2]->textureID = LoadTGA("Image//housetexture.tga");
+	meshList[GEO_SCENE2]->textureID = LoadTGA("Image//rocktex.tga");
 	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("SnipingTower", "OBJ//Scene2//TrumpTower.obj");
+	meshList[GEO_TRUMPTOWER]->textureID = LoadTGA("Image//Debri_Texture.tga");
 	meshList[GEO_TRUMPTOWER]->MeshBBox.loadBB("OBJ//Scene2//TrumpTower.obj");
 
 	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("Wall", "OBJ//Scene2//TrumpWall.obj");
+	meshList[GEO_TRUMPWALL]->textureID = LoadTGA("Image//brick.tga");
 	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
 	meshList[GEO_TRUMPWALL]->MeshBBox.translate(570, -20, 20);
 
