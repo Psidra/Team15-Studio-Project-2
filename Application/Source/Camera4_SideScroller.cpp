@@ -240,3 +240,112 @@ void Camera4::UpdateUnlockedCam(double dt)
 		target = position + view;
 	}
 }
+
+void Camera4::UpdateUnlockedCam2(double dt)
+{
+	if (Application::IsKeyPressed(VK_RIGHT))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+
+		position += right * (float)(50 * dt);
+
+		if (position.x > 880)
+			position.x--;
+
+		target = position + view;
+	}
+
+	if (Application::IsKeyPressed(VK_LEFT))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+
+		position -= right * (float)(50 * dt);
+
+		if (position.x < -70)
+			position.x++;
+
+		target = position + view;
+	}
+	if (Application::IsKeyPressed(VK_UP))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+		position += up * (float)(50 * dt);
+
+		if (position.y > 100)
+			position.y--;
+
+		target = position + view;
+	}
+	if (Application::IsKeyPressed(VK_DOWN))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+		position -= up * (float)(50 * dt);
+
+		if (position.y < 10)
+			position.y++;
+
+		target = position + view;
+	}
+}
+
+void Camera4::UpdateUnlockedCam3(double dt)
+{
+	if (Application::IsKeyPressed(VK_RIGHT))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+
+		position += right * (float)(50 * dt);
+
+		if (position.x > 480)
+			position.x--;
+
+		target = position + view;
+	}
+
+	if (Application::IsKeyPressed(VK_LEFT))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+
+		position -= right * (float)(50 * dt);
+
+		if (position.x < -10)
+			position.x++;
+
+		target = position + view;
+	}
+	if (Application::IsKeyPressed(VK_UP))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+		position += up * (float)(50 * dt);
+		if (position.y > 100)
+			position.y--;
+
+		target = position + view;
+	}
+	if (Application::IsKeyPressed(VK_DOWN))
+	{
+		Vector3 view = (target - position).Normalized();
+		Vector3 right = view.Cross(up);
+
+		position -= up * (float)(50 * dt);
+
+		if (position.y < 3)
+			position.y++;
+
+		target = position + view;
+	}
+}

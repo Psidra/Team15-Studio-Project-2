@@ -309,9 +309,13 @@ void StudioProject2SceneBoss::Init()
 
 	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
 
-	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
+	meshList[GEO_LASER] = MeshBuilder::GenerateOBJ("laser", "OBJ//lazer.obj");
+	meshList[GEO_LASER]->textureID = LoadTGA("Image//lazer.tga");
+	meshList[GEO_LASER]->MeshBBox.loadBB("OBJ//lazer.obj");
 	// make obj later
-
+	meshList[GEO_SHIELD] = MeshBuilder::GenerateOBJ("proShield", "OBJ//Hardlightshield.obj");
+	meshList[GEO_SHIELD]->textureID = LoadTGA("Image//Hardlightshield.tga");
+	meshList[GEO_SHIELD]->MeshBBox.loadBB("OBJ//Hardlightshield.obj");
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
 	/*-----------------------------------------------------------------------------*/
@@ -385,7 +389,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	}
 	else
 	{
-		camera.UpdateUnlockedCam(dt);
+		camera.UpdateUnlockedCam3(dt);
 	}
 
 	/*----Player Functions-----*/
@@ -400,7 +404,16 @@ void StudioProject2SceneBoss::Update(double dt)
 	if (Boss::get_instance()->magicImmunity == false)
 	{
 		PlayerClass::get_instance()->laserBeam(elapsedTime);
-		//PlayerClass::get_instance()->projectileShield(elapsedTime);
+		PlayerClass::get_instance()->projectileShield(elapsedTime,dt);
+	}
+
+
+	if (PlayerClass::get_instance()->laserActive == true)
+	{
+		if (meshList[GEO_LASER]->MeshBBox.collide(Boss::get_instance()->EnemyHitBox))
+		{
+			Boss::get_instance()->bossHealthSystem(true);
+		}
 	}
 	/*------------------------*/
 
@@ -554,7 +567,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				//	EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
 				
 				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
-						Boss::get_instance()->bossHealthSystem();
+						Boss::get_instance()->bossHealthSystem(false);
 				
 				// add on to this later
 			}
@@ -650,7 +663,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				bufferTime_attack = elapsedTime + 1.f;
 			
 				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
-					Boss::get_instance()->bossHealthSystem();
+					Boss::get_instance()->bossHealthSystem(false);
 				
 			/*	if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
 					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);*/
@@ -911,8 +924,15 @@ void StudioProject2SceneBoss::Render()
 	modelStack.Scale(PlayerClass::get_instance()->laserSize.x, PlayerClass::get_instance()->laserSize.y, PlayerClass::get_instance()->laserSize.z);
 	RenderMesh(meshList[GEO_LASER], false);
 	modelStack.PopMatrix();
-	// add in grab animation later
 
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	modelStack.Scale(PlayerClass::get_instance()->ProjShieldSize.x, PlayerClass::get_instance()->ProjShieldSize.y, 
+		PlayerClass::get_instance()->ProjShieldSize.z);
+	RenderMesh(meshList[GEO_SHIELD], false);
+	modelStack.PopMatrix();
+	// add in grab animation later
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	if (num_anim == 7 || num_anim == 8 || num_anim == 9)
 	{
 		modelStack.PushMatrix();

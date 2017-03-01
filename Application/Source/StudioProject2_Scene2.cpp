@@ -393,6 +393,7 @@ void StudioProject2Scene2::Init()
 	trigger = false;
 	grab = false;
 	block = false;
+	Unlock = false;
 	//roll = false;
 	/*----------------------*/
 	movespeed = 30.f;
@@ -413,13 +414,34 @@ void StudioProject2Scene2::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
 
 	/*-------Half Mutant Functions------------*/
 	hmvec[0].movement(dt);
 	hmvec[0].transformation();
 	/*----------------------------------------*/
 
+	if (Application::IsKeyPressed('Y'))
+	{
+		if (Unlock == false && elapsedTime > bufferTime_Unlock)
+		{
+			Unlock = true;
+			bufferTime_Unlock = elapsedTime + 0.5f;
+		}
+		else if (Unlock == true && elapsedTime > bufferTime_Unlock)
+		{
+			Unlock = false;
+			bufferTime_Unlock = elapsedTime + 0.5f;
+		}
+	}
+
+	if (Unlock == false)
+	{
+		camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
+	}
+	else
+	{
+		camera.UpdateUnlockedCam2(dt);
+	}
 	/*-------AI Functions---------------*/
 
 	//EnemyManager::get_instance()->EnemyList[0]->update(dt);

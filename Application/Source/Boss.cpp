@@ -89,10 +89,17 @@ void Boss::bossHealthUI()
 	}
 }
 
-void Boss::bossHealthSystem()
+void Boss::bossHealthSystem(bool laser)
 {
-	this->boss_health -= 10;
-	PlayerClass::get_instance()->energySystem();
+	if (!laser)
+	{
+		this->boss_health -= 10;
+		PlayerClass::get_instance()->energySystem();
+	}
+	else
+	{
+		this->boss_health -= 30;
+	}
 }
 
 void Boss::burrowTeleportation(double timeElapsed)
