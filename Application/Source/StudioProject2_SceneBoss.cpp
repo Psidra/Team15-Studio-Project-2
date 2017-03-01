@@ -386,7 +386,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	}
 	else
 	{
-		camera.UpdateUnlockedCam(dt);
+		camera.UpdateUnlockedCam3(dt);
 	}
 
 	/*----Player Functions-----*/
