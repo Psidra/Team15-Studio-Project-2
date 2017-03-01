@@ -35,7 +35,7 @@ public:
 		GEO_QUAD,
 		GEO_BBOX,
 		GEO_TESTBBOX,
-
+		GEO_TESTBBOX2,
 		//skybox
 		GEO_SKYBOX,
 
@@ -50,7 +50,7 @@ public:
 		//Environmental Objects
 		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE, GEO_SCENE2,
 		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL, GEO_DEBRIS1, GEO_DEBRISn, GEO_LAMPPOST,
-		GEO_MOVEBOX, GEO_ROPE,GEO_MOVEBOXTEST,
+		GEO_MOVEBOX, GEO_ROPE,GEO_MOVEBOXTEST, GEO_LAMPTRIGGER,
 
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
@@ -192,6 +192,7 @@ private:
 	bool injump = false;
 	bool attack = false;
 	bool trigger = false;
+	bool ClimbLamp = false;
 	bool grab = false;
 	bool block = false;
 	bool roll = false;
@@ -217,6 +218,7 @@ private:
 	float MoveBox_PosX;
 	float MoveShelterObj_PosX;
 
+	unsigned int Breakrope = 0;
 	float Lamppostrotate = -20.f;
 
 	float movespeed;
