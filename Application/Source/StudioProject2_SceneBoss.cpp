@@ -1151,9 +1151,9 @@ void StudioProject2SceneBoss::Render()
 	modelStack.PushMatrix();
 
 	Boss::get_instance()->EnemyHitBox.scale(2.f, 3.f, 3.f);
-	Boss::get_instance()->EnemyHitBox.translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, -10);
+	Boss::get_instance()->EnemyHitBox.translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
 
-	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, 0);
+	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
 	modelStack.Rotate(-70, 0, 1, 0);
 
 		modelStack.PushMatrix();
@@ -1279,7 +1279,7 @@ void StudioProject2SceneBoss::Render()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(113, 60 - plop, -100);
+	modelStack.Translate(113, 60 - plop, 0);
 	modelStack.Scale(1, 3, 1);
 	RenderMesh(meshList[GEO_PREVENT], false);
 	modelStack.PopMatrix();
