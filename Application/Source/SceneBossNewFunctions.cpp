@@ -152,17 +152,52 @@ void StudioProject2SceneBoss::RenderText(Mesh* mesh, std::string text, Color col
 
 void StudioProject2SceneBoss::LightInteraction()
 {
+	//first light
 
+	if (PlayerClass::get_instance()->position_a.x < 20)
+	{
+		light[0].position.Set(-2, -1, 30);
+		light[1].power = 1;
+		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+	}
+	else if (PlayerClass::get_instance()->position_a.x > 24 && PlayerClass::get_instance()->position_a.x < 100)
+	{
+		light[0].position.Set(90, 4, 30);
+		light[1].power = 0;
+		glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+	}
+
+	else if (PlayerClass::get_instance()->position_a.x > 104 && PlayerClass::get_instance()->position_a.x < 220)
+	{
+		light[0].position.Set(182, 4, 30);
+		light[2].position.Set(272, 4, 30);
+		light[2].power = 2;
+		glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+		glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+
+	}
+	else if (PlayerClass::get_instance()->position_a.x > 225 && PlayerClass::get_instance()->position_a.x < 600)
+	{
+		light[0].position.Set(272, 4, 30);
+		light[2].power = 0;
+		//glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+	}
+	//else if (PlayerClass::get_instance()->position_a.x > 34 && PlayerClass::get_instance()->position_a.x < 40)
+	//{
+	//	light[1].position.Set(182, 4, 30);
+	//	light[2].power = 1;
+	//	glUniform1f(m_parameters[U_LIGHT1_POWER], light[2].power);
+	//}
 }
 
 void StudioProject2SceneBoss::RenderLightStands()
 {
 	glBlendFunc(GL_ONE, GL_ONE);
 	modelStack.PushMatrix();
-	modelStack.Translate(10, 1, -30);
+	modelStack.Translate(-2, -1, 30);
 	modelStack.Scale(3, 3, 3);
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		RenderMesh(meshList[GEO_LIGHT], true);
 
@@ -175,9 +210,9 @@ void StudioProject2SceneBoss::RenderLightStands()
 void StudioProject2SceneBoss::LoadLight()
 {
 	light[0].type = Light::LIGHT_POINT;
-	light[0].position.Set(10, 3, -30);
-	light[0].color.Set(1.000, 0.647, 0.100);
-	light[0].power = 5;
+	light[0].position.Set(-2, 4, 30);
+	light[0].color.Set(1.000, 0.947, 0.200);
+	light[0].power = 3;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -195,6 +230,50 @@ void StudioProject2SceneBoss::LoadLight()
 	glUniform1f(m_parameters[U_LIGHT0_COSCUTOFF], light[0].cosCutoff);
 	glUniform1f(m_parameters[U_LIGHT0_COSINNER], light[0].cosInner);
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
+
+	light[1].type = Light::LIGHT_POINT;
+	light[1].position.Set(50, 4, 30);
+	light[1].color.Set(1.000, 0.947, 0.200);
+	light[1].power = 1;
+	light[1].kC = 1.f;
+	light[1].kL = 0.01f;
+	light[1].kQ = 0.001f;
+	light[1].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[1].cosInner = cos(Math::DegreeToRadian(30));
+	light[1].exponent = 3.f;
+	light[1].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT1_TYPE], light[1].type);
+	glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &light[1].color.r);
+	glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+	glUniform1f(m_parameters[U_LIGHT1_KC], light[1].kC);
+	glUniform1f(m_parameters[U_LIGHT1_KL], light[1].kL);
+	glUniform1f(m_parameters[U_LIGHT1_KQ], light[1].kQ);
+	glUniform1f(m_parameters[U_LIGHT1_COSCUTOFF], light[1].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
+	glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
+
+	light[2].type = Light::LIGHT_POINT;
+	light[2].position.Set(-20, 10, -5);
+	light[2].color.Set(1.000, 0.947, 0.200);
+	light[2].power = 1;
+	light[2].kC = 1.f;
+	light[2].kL = 0.01f;
+	light[2].kQ = 0.001f;
+	light[2].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[2].cosInner = cos(Math::DegreeToRadian(30));
+	light[2].exponent = 3.f;
+	light[2].spotDirection.Set(0.f, 1.f, 0.f);
+
+	glUniform1i(m_parameters[U_LIGHT2_TYPE], light[2].type);
+	glUniform3fv(m_parameters[U_LIGHT2_COLOR], 1, &light[2].color.r);
+	glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+	glUniform1f(m_parameters[U_LIGHT2_KC], light[2].kC);
+	glUniform1f(m_parameters[U_LIGHT2_KL], light[2].kL);
+	glUniform1f(m_parameters[U_LIGHT2_KQ], light[2].kQ);
+	glUniform1f(m_parameters[U_LIGHT2_COSCUTOFF], light[2].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT2_COSINNER], light[2].cosInner);
+	glUniform1f(m_parameters[U_LIGHT2_EXPONENT], light[2].exponent);
 }
 
 void StudioProject2SceneBoss::TextInteraction()
