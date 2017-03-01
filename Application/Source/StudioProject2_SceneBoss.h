@@ -141,18 +141,6 @@ public:
 		U_LIGHT4_COSINNER,
 		U_LIGHT4_EXPONENT,
 
-		U_LIGHT5_POSITION,
-		U_LIGHT5_COLOR,
-		U_LIGHT5_POWER,
-		U_LIGHT5_KC,
-		U_LIGHT5_KL,
-		U_LIGHT5_KQ,
-		U_LIGHT5_TYPE,
-		U_LIGHT5_SPOTDIRECTION,
-		U_LIGHT5_COSCUTOFF,
-		U_LIGHT5_COSINNER,
-		U_LIGHT5_EXPONENT,
-
 		U_LIGHTENABLED,
 		U_NUMLIGHTS,
 
@@ -168,7 +156,7 @@ private:
 	Mesh* meshList[NUM_GEOMETRY];
 	//Camera2 camera;
 	Camera4 camera;
-	Light light[2];
+	Light light[5];
 	MS modelStack, viewStack, projectionStack;
 	unsigned m_vertexArrayID;
 	unsigned m_programID;
