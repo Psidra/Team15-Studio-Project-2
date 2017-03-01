@@ -194,7 +194,7 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_LAMPTRIGGER] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj");
 	meshList[GEO_LAMPTRIGGER]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
 	meshList[GEO_LAMPTRIGGER]->MeshBBox.scale(14.f, 12.f, 30.f);
-	meshList[GEO_LAMPTRIGGER]->MeshBBox.translate(545, 15, 10);
+	meshList[GEO_LAMPTRIGGER]->MeshBBox.translate(545, 10, 10);
 
 
 	meshList[GEO_ROPE] = MeshBuilder::GenerateOBJ("Rope", "OBJ//Scene2//Rope.obj");
@@ -653,7 +653,15 @@ void StudioProject2Scene2::Update(double dt)
 					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) ||
 					pressedD == true)
 				{
-					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
+						PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
+					}
+					else
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+					}
 
 					pressedD = false;
 					pressedA = true;
@@ -696,8 +704,8 @@ void StudioProject2Scene2::Update(double dt)
 				{
 					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
 					{
-						PlayerClass::get_instance()->position_a.x += (float)(15 * dt);
-						PlayerClass::get_instance()->position_a.y += (float)(15 * dt);
+						PlayerClass::get_instance()->position_a.x += (float)(13.5 * dt);		
+						PlayerClass::get_instance()->position_a.y += (float)(16.5 * dt);
 					}
 					else
 					{
@@ -858,7 +866,7 @@ void StudioProject2Scene2::Update(double dt)
 
 	et[20] += dt;
 
-	if (!ClimbLamp)
+	if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) || (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && !trigger && !ClimbLamp))
 	{
 		if (injump == false)
 		{
@@ -987,11 +995,11 @@ void StudioProject2Scene2::Update(double dt)
 	/*-------------------------------------------------------*/
 
 	/*---------Change Scene------*/
-	//if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0)))
-	//{
-	//	SceneManager::getInstance()->Location = "Inner City";
-	//	SceneManager::getInstance()->changeScene(new LoadingScreen());
-	//}
+	if ((PlayerClass::get_instance()->position_a.x > 860))
+	{
+		SceneManager::getInstance()->Location = "Cavern of Truth";
+		SceneManager::getInstance()->changeScene(new LoadingScreen());
+	}
 	if (PlayerClass::get_instance()->get_health() <= 0)
 	{
 		SceneManager::getInstance()->changeScene(new DeathScreen());

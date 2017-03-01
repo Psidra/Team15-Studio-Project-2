@@ -243,6 +243,7 @@ private:
 	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
 	double bufferTime_Unlock;
 	double bufferTime_attack_M;
+	double bufferTime_WalkLamp;
 };
 
 #endif 
