@@ -122,42 +122,41 @@ void EnemyClass::proj_update(bool boss)
 {
 	for (unsigned int projectiles = 0; projectiles < this->spit_.size(); projectiles++)
 	{
+		unsigned int fireworks = rand() % 10 + 1;
+
 		if (boss)
 		{
 			if (this->spit_[projectiles]->projType_ == 1)
 			{
-				this->spit_[projectiles]->edit_passed_angle(); // boss_edit_passed_angle();
+				if (this->spit_[projectiles]->displacement() < 17.f)
+					this->spit_[projectiles]->position_.y -= 2.f;
+
+				this->spit_[projectiles]->boss_edit_passed_angle(); // boss_edit_passed_angle();
 				this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());/*Math::RadianToDegree(sin(this->spit_[projectiles]->get_passed_angle()));*/
 			}
 			if (this->spit_[projectiles]->projType_ == 2)
 			{
-				this->spit_[projectiles]->edit_passed_angle();
+				if (this->spit_[projectiles]->displacement() < 17.f)
+					this->spit_[projectiles]->position_.y -= 1.f;
+
+				this->spit_[projectiles]->boss_edit_passed_angle();
 				this->spit_[projectiles]->direction_.y = -sin(this->spit_[projectiles]->get_passed_angle());
 			}
 			if (this->spit_[projectiles]->projType_ == 3)
 			{
-				if (Boss::get_instance()->get_action() == 1)
-				{
-					Boss::get_instance()->spit_[projectiles]->projSpeed = 1.f;
-				}
-				else if (Boss::get_instance()->get_action() == 2)
-				{
-					Boss::get_instance()->spit_[projectiles]->projSpeed = 1.f;
-				}
-				else if (Boss::get_instance()->get_action() == 3)
-				{
-					Boss::get_instance()->spit_[projectiles]->projSpeed = 1.f;
-				}
+				if (this->spit_[projectiles]->displacement() < 23.f)
+					this->spit_[projectiles]->position_.y -= 1.f;
 
 				this->spit_[projectiles]->direction_.y = 0;
-
-				this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
 			}
 			if (this->spit_[projectiles]->projType_ == 4)
 			{
-				this->spit_[projectiles]->boss_edit_passed_angle();
-				this->spit_[projectiles]->direction_.y = sin(this->spit_[projectiles]->get_passed_angle());
+				this->spit_[projectiles]->edit_passed_angle();
+				this->spit_[projectiles]->direction_.y = -tan(this->spit_[projectiles]->get_passed_angle());
+				this->spit_[projectiles]->projSpeed = 0.5f;
 			}
+
+			this->spit_[projectiles]->position_ += (this->spit_[projectiles]->direction_ * this->spit_[projectiles]->projSpeed);
 		}
 		else
 		{

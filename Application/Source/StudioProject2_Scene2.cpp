@@ -177,16 +177,22 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_CLUSTERTREE] = MeshBuilder::GenerateOBJ("clustertree", "OBJ//clustertree.obj");
 	meshList[GEO_CLUSTERTREE]->textureID = LoadTGA("Image//tree.tga");
 
-	meshList[GEO_SCENE2] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_Environment.obj");
+	meshList[GEO_SCENE2] = MeshBuilder::GenerateOBJ("Environment", "OBJ//Scene2//Scene2_Environment.obj");
 	//meshList[GEO_SCENE2]->textureID = LoadTGA("Image//housetexture.tga");
-	meshList[GEO_FLOORBBOX] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Scene2_BBox.obj");
-	meshList[GEO_SHELTEROBJ] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//ShelterObject.obj");
-	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpTower.obj");
-	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//TrumpWall.obj");
+	meshList[GEO_TRUMPTOWER] = MeshBuilder::GenerateOBJ("SnipingTower", "OBJ//Scene2//TrumpTower.obj");
+	meshList[GEO_TRUMPTOWER]->MeshBBox.loadBB("OBJ//Scene2//TrumpTower.obj");
 
-	meshList[GEO_LAMPPOST] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Lamp_post.obj");
-	meshList[GEO_MOVEBOX] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//MoveableBox.obj");
-	meshList[GEO_ROPE] = MeshBuilder::GenerateOBJ("house", "OBJ//Scene2//Rope.obj");
+	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("Wall", "OBJ//Scene2//TrumpWall.obj");
+	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
+	meshList[GEO_TRUMPWALL]->MeshBBox.translate(570, -20, 20);
+
+	meshList[GEO_LAMPPOST] = MeshBuilder::GenerateOBJ("Lamp post", "OBJ//Scene2//Lamp_post.obj");
+	meshList[GEO_LAMPPOST]->MeshBBox.loadBB("OBJ//Scene2//Lamp_post.obj");
+
+	meshList[GEO_ROPE] = MeshBuilder::GenerateOBJ("Rope", "OBJ//Scene2//Rope.obj");
+	meshList[GEO_ROPE]->MeshBBox.loadBB("OBJ//Scene2//Rope.obj");
+	meshList[GEO_ROPE]->MeshBBox.scale(0.1, 0.5, 2);
+	meshList[GEO_ROPE]->MeshBBox.translate(524, 27.5, 10);
 
 
 	//	modelStack.Translate(-130, 8, 0);
@@ -201,15 +207,23 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_DEBRISn] = MeshBuilder::GenerateOBJ("debris", "OBJ//Debri.obj");  //no collision debri
 	meshList[GEO_DEBRISn]->textureID = LoadTGA("Image//Debri_Texture.tga");
 
+	meshList[GEO_FLOORBBOX] = MeshBuilder::GenerateOBJ("Floor", "OBJ//Scene2//Scene2_BBox.obj");
 	meshList[GEO_FLOORBBOX]->MeshBBox.loadBB("OBJ//Scene2//Scene2_BBox.obj");
-	meshList[GEO_SHELTEROBJ]->MeshBBox.loadBB("OBJ//Scene2//ShelterObject.obj");
-	meshList[GEO_TRUMPTOWER]->MeshBBox.loadBB("OBJ//Scene2//TrumpTower.obj");
-	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
-
 	meshList[GEO_FLOORBBOX]->MeshBBox.scale(3, 1, 2);
 	meshList[GEO_FLOORBBOX]->MeshBBox.translate(0, -4, 0);
 
+	meshList[GEO_SHELTEROBJ] = MeshBuilder::GenerateOBJ("Shelterobj", "OBJ//Scene2//ShelterObject.obj");
+	meshList[GEO_SHELTEROBJ]->MeshBBox.loadBB("OBJ//Scene2//ShelterObject.obj"); //main body of Shelter obj
+	meshList[GEO_SHELTEROBJ]->MeshBBox.translate(20, 16, 20);
 
+	meshList[GEO_MOVEBOX] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene2//MoveableBox.obj");
+	meshList[GEO_MOVEBOX]->MeshBBox.loadBB("OBJ//Scene2//MoveableBox.obj");
+	meshList[GEO_MOVEBOX]->MeshBBox.translate(480, 8, 10);
+	meshList[GEO_MOVEBOX]->MeshBBox.scale(1.f, 1.f, 2.f);
+	meshList[GEO_MOVEBOXTEST] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene2//MoveableBox.obj");
+	meshList[GEO_MOVEBOXTEST]->MeshBBox.loadBB("OBJ//Scene2//MoveableBox.obj");
+	meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(480, 8, 10);
+	meshList[GEO_MOVEBOXTEST]->MeshBBox.scale(1.f, 1.05f, 2.f);
 	/*-----------------------------------------------------------------------------*/
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
 	/*--------------------------Mutants Loading------------------------------------*/
@@ -331,7 +345,7 @@ void StudioProject2Scene2::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
-//	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_DEBRIS1]->MeshBBox.max_, meshList[GEO_DEBRIS1]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_ROPE]->MeshBBox.max_, meshList[GEO_ROPE]->MeshBBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
 	/*-------------------------Loading Mutant Health----------------------------------*/
@@ -342,47 +356,38 @@ void StudioProject2Scene2::Init()
 	/*--------------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
-	//spawnTS = 2;
-	//pressEnterTS = 0;
+	 pEnter = false;
+	 nexttext = false;
+	 pressEnterTS = 0;
 
-	//syringeTriggedText = false;
-	//syringeTriggedTS = 0;
+	 preBattleText = false;
+	 preBattleTS = 0;
 
-	//boxTriggedText = false;
-	//boxTriggedTS = 0;
-	//boxTriggedText_Two = false;
-	//boxTriggedTS_two = 0;
+	 preBuildingText = false;
+	 preBuildingTS = 0;
 
-	//hmTriggeredText = false;
-	//hmTriggedTS = 0;
+	 cautionText = false;
+	 cautionTS = 0;
 
-	//hm_to_alexis = false;
-	//hm_to_alexisTS = 0;
+	 crateText = false;
+	 crateTS = 0;
 
-	//alexis_to_hm = false;
-	//alexis_to_hmTS = 0;
+	 surroundedText = false;
+	 surroundedTS = 0;
 
-	//alexis_beside_hm = false;
-	//alexis_beside_hmTS = 0;
+	 barbwireText = false;
+	 barbwireTS = 0;
 
-	//postProjectileThrownText = false;
-	//postProjectileThrownTS = 0;
+	 lamppostText = false;
+	 lamppostTS = 0;
 
-	//fm_triggedText = false;
-	//fm_triggedTS = 0;
-
-	//alexisText = false;
-	//alexisTS = 0;
-
-	//guideText = false;
-	//guideTS = 0;
-
-	//pEnter = false;
-	//textOccured = 0;
-	//nexttext = false;
+	 textOccur = 0;
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
+
+	MoveBox_PosX = 0.f;
+	MoveShelterObj_PosX = 0.f;
 	
 	/*-----Character--------*/
 	pressedA = false;
@@ -395,6 +400,7 @@ void StudioProject2Scene2::Init()
 	block = false;
 	Unlock = false;
 	//roll = false;
+
 	/*----------------------*/
 	movespeed = 30.f;
 
@@ -631,9 +637,10 @@ void StudioProject2Scene2::Update(double dt)
 		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
 		{									// *I hope.
 			inmovement = false;				// so many if statements I could write a philosophy book
-			if (Application::IsKeyPressed('A') && !roll)
+			if (Application::IsKeyPressed('A')  && !roll)
 			{ 
-				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) ||
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) ||
 					pressedD == true)
 				{
 					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
@@ -644,18 +651,18 @@ void StudioProject2Scene2::Update(double dt)
 
 					if (grab)
 					{
-						//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-						//{
-						//	ShortBox_PosX -= (float)(movespeed * dt);
-						//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-						//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-						//}
-						//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-						//{
-						//	TallBox_PosX -= (float)(movespeed * dt);
-						//	meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-						//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-						//}
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
+						{
+							MoveShelterObj_PosX -= (float)(movespeed * dt);
+							meshList[GEO_SHELTEROBJ]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+						}
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
+						{
+							MoveBox_PosX -= (float)(movespeed * dt);
+							meshList[GEO_MOVEBOX]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+
+						}
 					}
 				}
 				
@@ -673,7 +680,8 @@ void StudioProject2Scene2::Update(double dt)
 
 			if (Application::IsKeyPressed('D') && !roll)
 			{
-				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox)
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox)
 					|| pressedA == true)
 				{
 					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
@@ -683,18 +691,18 @@ void StudioProject2Scene2::Update(double dt)
 
 					if (grab)
 					{
-						//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
-						//{
-						//	ShortBox_PosX += (float)(movespeed * dt);
-						//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-						//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-						//}
-						//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-						//{
-						//	TallBox_PosX += (float)(movespeed * dt);
-						//	meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-						//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-						//}
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox) && !meshList[GEO_SHELTEROBJ]->MeshBBox.collide(meshList[GEO_MOVEBOX]->MeshBBox))
+						{
+							MoveShelterObj_PosX += (float)(movespeed * dt);
+							meshList[GEO_SHELTEROBJ]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						}
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
+						{
+							MoveBox_PosX += (float)(movespeed * dt);
+							meshList[GEO_MOVEBOX]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+
+						}
 					}
 				}
 				/*if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
@@ -826,14 +834,14 @@ void StudioProject2Scene2::Update(double dt)
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox))
 			{
-				//if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) &&
-				//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
-				//	(PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
-				//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
-				//{
-				//	// do jack shit
-				//}
-				//else
+				if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_MOVEBOX]->MeshBBox)) &&
+					(PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOXTEST]->MeshBBox))) /*||
+					(PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
+					PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))*/
+				{
+					// do jack shit
+				}
+				else
 				{
 					bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
 					PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
@@ -936,7 +944,7 @@ void StudioProject2Scene2::Update(double dt)
 	//else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
 	//	trigger = false;
 	/*--------------------------------------*/
-	TextInteraction();
+	//TextInteraction();
 	LightInteraction();
 
 	/*--------------Updates the Full Mutant Kill Count--------*/
@@ -1135,11 +1143,9 @@ void StudioProject2Scene2::Render()
 	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
 	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
-	//modelStack.PushMatrix();
-	//modelStack.Scale(2, 2.5, 2.5);
-	//modelStack.Translate(-130, 8, 0);
-	//RenderMesh(meshList[GEO_TESTBBOX], false);
-	//modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	RenderMesh(meshList[GEO_TESTBBOX], false);
+	modelStack.PopMatrix();
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
 	//unsigned int num_anim_mutant;
