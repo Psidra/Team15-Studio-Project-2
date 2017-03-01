@@ -1226,9 +1226,9 @@ dagNode {
     preInfinity constant;
     postInfinity constant;
     keys {
-      0 1 auto auto 1 0 0;
-      13 1 auto auto 1 0 0;
-      30 1 auto auto 1 0 0;
+      0 -1 auto auto 1 0 0;
+      13 -1 auto auto 1 0 0;
+      30 -1 auto auto 1 0 0;
     }
   }
 }
@@ -1321,7 +1321,7 @@ dagNode {
     postInfinity constant;
     keys {
       0 0 auto auto 1 0 0;
-      13 -10.048523 auto auto 1 0 0;
+      13 10.159511 auto auto 1 0 0;
       30 0 auto auto 1 0 0;
     }
   }

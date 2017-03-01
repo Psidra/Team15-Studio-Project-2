@@ -26,8 +26,13 @@ void Projectile::edit_passed_angle()
 
 void Projectile::boss_edit_passed_angle()
 {
-	float rate_of_change = (1/x_distance * 3.5f) * (-g * pow(cos((pi / 180) * init_angle), 2));
+	float rate_of_change = (1/x_distance * 5.25f) * (-g * pow(cos((pi / 180) * init_angle), 2));
+
+	if (this->projType_ == 4 && passed_angle >= (pi / 2))
+		passed_angle = 0.f;
+
 	passed_angle += rate_of_change;
+
 }
 
 

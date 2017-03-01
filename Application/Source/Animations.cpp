@@ -73,7 +73,12 @@ void AnimCheck_Boss(unsigned int num_anim, MS* modelStack, double* timeElapsed, 
 {
 	double zero = 0;
 	switch (num_anim) {
-
+	case 10:
+		LoadAtom("ATOM//Boss_Idle.atom", modelStack, timeElapsed, dagNode);
+		break;
+	default:
+		LoadAtom("ATOM//Boss_Idle.atom", modelStack, timeElapsed, dagNode);
+		break;
 	}
 }
 

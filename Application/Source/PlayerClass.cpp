@@ -219,14 +219,27 @@ void PlayerClass::restartGame()
 
 void PlayerClass::laserBeam(double timeElapsed)
 {
-	if (Application::IsKeyPressed('Q') && timeElapsed > bufferTime_Laser && _energy >= energyLaser) // Laser Beam
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
 	{
+		int xbox;
+		const unsigned char *xbox360 = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+		if ((GLFW_PRESS == xbox360[4] || Application::IsKeyPressed('Q')) && timeElapsed > bufferTime_Laser && _energy >= energyLaser) // Laser Beam
+		{
 			laserActive = true;
 			bufferTime_Laser = timeElapsed + 10.f;
 			_energy -= energyLaser;
 
+		}
 	}
-
+	else
+	{
+		if (Application::IsKeyPressed('Q') && timeElapsed > bufferTime_Laser && _energy >= energyLaser) // Laser Beam
+		{
+			laserActive = true;
+			bufferTime_Laser = timeElapsed + 10.f;
+			_energy -= energyLaser;
+		}
+	}
 		if (laserActive == true)
 		{
 			laserSize.x = 50;
@@ -286,7 +299,47 @@ void PlayerClass::healthRegeneration(double timeElapsed)
 	}
 }
 
-void PlayerClass::projectileShield(double timeElapsed)
+void PlayerClass::projectileShield(double timeElapsed, double dt)
 {
-
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
+	{
+		int xbox;
+		const unsigned char *xboxs = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+		if ((Application::IsKeyPressed('R') || GLFW_PRESS == xboxs[5])
+			&& bufferTime_ProjShield < timeElapsed && _energy >= energyProjShield)
+		{
+			projSheildActive = true;
+			_energy -= energyProjShield;
+			bufferTime_ProjShield = timeElapsed + 9.f;
+		}
+	}
+	else
+	{
+		if (Application::IsKeyPressed('R') && bufferTime_ProjShield < timeElapsed && _energy >= energyProjShield)
+		{
+			projSheildActive = true;
+			_energy -= energyProjShield;
+			bufferTime_ProjShield = timeElapsed + 9.f;
+		}
+	}
+	
+	if (projSheildActive == true)
+	{
+		if (ProjShieldSize.x < 20 && ProjShieldSize.y < 20 && ProjShieldSize.z < 20)
+		{
+			ProjShieldSize.x += (5.0f * dt);
+			ProjShieldSize.y += (5.0f * dt);
+			ProjShieldSize.z += (5.0f * dt);
+		}
+		else
+		{
+			projSheildActive = false;
+		}
+	}
+	else
+	{
+		ProjShieldSize.x = 0.1;
+		ProjShieldSize.y = 0.1;
+		ProjShieldSize.z = 0.1;
+	}
 }

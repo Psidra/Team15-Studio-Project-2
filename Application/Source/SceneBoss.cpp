@@ -386,7 +386,7 @@ void SceneBoss::Update(double dt)
 		bufferTime_attack = elapsedTime + 1.f;
 
 		if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
-			Boss::get_instance()->bossHealthSystem();
+			Boss::get_instance()->bossHealthSystem(false);
 	}
 
 	if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !roll)

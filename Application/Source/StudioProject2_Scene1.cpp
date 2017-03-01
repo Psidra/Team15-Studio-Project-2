@@ -324,7 +324,7 @@ void StudioProject2Scene1::Init()
 	pressEnterTS = 0;
 
 	syringeTriggedText = false;
-	syringeTriggedTS = 0;
+	syringeTriggedTS = 0; //scale 0 so that don't show
 
 	boxTriggedText = false;
 	boxTriggedTS = 0;

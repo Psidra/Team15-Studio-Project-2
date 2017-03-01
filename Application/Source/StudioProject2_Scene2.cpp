@@ -356,49 +356,51 @@ void StudioProject2Scene2::Init()
 	/*--------------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
-	//spawnTS = 2;
-	//pressEnterTS = 0;
+	 pEnter = false;
+	 nexttext = false;
+	 pressEnterTS = 0;
 
-	//syringeTriggedText = false;
-	//syringeTriggedTS = 0;
+	 preBattleText = false;
+	 preBattleTS = 0;
 
-	//boxTriggedText = false;
-	//boxTriggedTS = 0;
-	//boxTriggedText_Two = false;
-	//boxTriggedTS_two = 0;
+	 preBuildingText = false;
+	 preBuildingTS = 0;
 
-	//hmTriggeredText = false;
-	//hmTriggedTS = 0;
+	 cautionText = false;
+	 cautionTS = 0;
 
-	//hm_to_alexis = false;
-	//hm_to_alexisTS = 0;
+	 crateText = false;
+	 crateTS = 0;
 
-	//alexis_to_hm = false;
-	//alexis_to_hmTS = 0;
+	 surroundedText = false;
+	 surroundedTS = 0;
 
-	//alexis_beside_hm = false;
-	//alexis_beside_hmTS = 0;
+	 barbwireText = false;
+	 barbwireTS = 0;
 
-	//postProjectileThrownText = false;
-	//postProjectileThrownTS = 0;
+	 lamppostText = false;
+	 lamppostTS = 0;
 
-	//fm_triggedText = false;
-	//fm_triggedTS = 0;
-
-	//alexisText = false;
-	//alexisTS = 0;
-
-	//guideText = false;
-	//guideTS = 0;
-
-	//pEnter = false;
-	//textOccured = 0;
-	//nexttext = false;
+	 textOccur = 0;
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
+
 	MoveBox_PosX = 0.f;
 	MoveShelterObj_PosX = 0.f;
+	
+	/*-----Character--------*/
+	pressedA = false;
+	pressedD = false;
+	inmovement = false;
+	injump = false;
+	attack = false;
+	trigger = false;
+	grab = false;
+	block = false;
+	Unlock = false;
+	//roll = false;
+
 	/*----------------------*/
 	movespeed = 30.f;
 
@@ -418,13 +420,34 @@ void StudioProject2Scene2::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-	camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
 
 	/*-------Half Mutant Functions------------*/
 	hmvec[0].movement(dt);
 	hmvec[0].transformation();
 	/*----------------------------------------*/
 
+	if (Application::IsKeyPressed('Y'))
+	{
+		if (Unlock == false && elapsedTime > bufferTime_Unlock)
+		{
+			Unlock = true;
+			bufferTime_Unlock = elapsedTime + 0.5f;
+		}
+		else if (Unlock == true && elapsedTime > bufferTime_Unlock)
+		{
+			Unlock = false;
+			bufferTime_Unlock = elapsedTime + 0.5f;
+		}
+	}
+
+	if (Unlock == false)
+	{
+		camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
+	}
+	else
+	{
+		camera.UpdateUnlockedCam2(dt);
+	}
 	/*-------AI Functions---------------*/
 
 	//EnemyManager::get_instance()->EnemyList[0]->update(dt);
@@ -921,7 +944,7 @@ void StudioProject2Scene2::Update(double dt)
 	//else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
 	//	trigger = false;
 	/*--------------------------------------*/
-	TextInteraction();
+	//TextInteraction();
 	LightInteraction();
 
 	/*--------------Updates the Full Mutant Kill Count--------*/

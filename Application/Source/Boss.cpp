@@ -14,7 +14,7 @@ unsigned int Boss::get_health()
 
 void Boss::bossInit()
 {
-	get_instance()->position_m = Vector3(0, 10, 0);
+	get_instance()->position_m = Vector3(350, 3, -10);
 	this->EnemyHitBox.setto(get_instance()->position_m.x, get_instance()->position_m.y, get_instance()->position_m.z);
 	spin = false;
 	tailAtk = false;
@@ -89,10 +89,17 @@ void Boss::bossHealthUI()
 	}
 }
 
-void Boss::bossHealthSystem()
+void Boss::bossHealthSystem(bool laser)
 {
-	this->boss_health -= 10;
-	PlayerClass::get_instance()->energySystem();
+	if (!laser)
+	{
+		this->boss_health -= 10;
+		PlayerClass::get_instance()->energySystem();
+	}
+	else
+	{
+		this->boss_health -= 30;
+	}
 }
 
 void Boss::burrowTeleportation(double timeElapsed)
@@ -204,7 +211,7 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 {
 	if (elapsedTime > bufferTime_projduration)
 	{
-		if (attackchoice == 1)
+		if (attackchoice == 3)
 		{
 			if ((elapsedTime > bufferTime_tail + 3.5f) && (elapsedTime < bufferTime_tail + 7.5))
 			{
@@ -281,11 +288,26 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 				bufferTime_projduration = elapsedTime + 0.1f;
 			}
 		}
-		else if (attackchoice == 3)
+		else if (attackchoice == 4)
 		{
 			this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, dir));
 
 			bufferTime_projduration = elapsedTime + 0.1f;
+		}
+		else if (attackchoice == 1)
+		{
+			if (elapsedTime > bufferTime_projcd)
+			{
+				bufferTime_projcd = elapsedTime + 2.f;
+				projtype = rand() % 4 + 1;
+			}
+
+			if (bufferTime_projcd - 1.75f > elapsedTime)
+			{
+				this->spit_.push_back(projectileBuilder::GenerateProjectile(projtype, pos, dir));
+
+				bufferTime_projduration = elapsedTime + 0.05f;
+			}
 		}
 	}
 }
@@ -305,11 +327,13 @@ unsigned int Boss::get_action()
 void Boss::boss_attack(double elapsedTime, bool block)
 {
 	if (burrow)
-		random_choice = rand() % 3 + 1; // praise RNGesus
+		random_choice = rand() % 4 + 1; // praise RNGesus
 	else if (tailAtk)
+		random_choice = rand() % 3 + 1;
+	else if (spin)
 		random_choice = rand() % 2 + 1;
 	else
-		random_choice = 2; // "random" Kappa
+		random_choice = 1;
 
 	if (elapsedTime > bufferTime_attackchoice)
 	{
@@ -317,36 +341,51 @@ void Boss::boss_attack(double elapsedTime, bool block)
 		spinning = false;
 		burrowing = false;
 
-		if (random_choice == 1)
+		if (random_choice == 3)
 		{
 			tailattacking = true;
-			bufferTime_attackchoice = elapsedTime + 8.f;
+			bufferTime_attackchoice = elapsedTime + 12.f;
 		}
 		else if (random_choice == 2)
 		{
 			spinning = true;
-			bufferTime_attackchoice = elapsedTime + 8.5f;
+			bufferTime_attackchoice = elapsedTime + 12.5f;
 		}
-		else if (random_choice == 3)
+		else if (random_choice == 4)
 		{
 			bufferTime_attackchoice = elapsedTime + 15.f;
+		}
+		else if (random_choice == 1)
+		{
+			bufferTime_attackchoice = elapsedTime + 4.f;
 		}
 
 		attackchoice = random_choice;
 	}
 	else
 	{
+		if ((attackchoice == 2 || attackchoice == 3) && (elapsedTime > (bufferTime_attackchoice - 4.f)))
+		{
+			tailattacking = false;
+			spinning = false;
+			attackchoice = 1;
+		}
+
 		if (attackchoice == 1)
+		{
+			
+		}
+		else if (attackchoice == 2)
 		{
 			std::cout << "tail" << std::endl;
 			this->tailAttack(elapsedTime, true);
 		}
-		else if (attackchoice == 2)
+		else if (attackchoice == 3)
 		{
 			std::cout << "spin" << std::endl;
 			this->spinAttack(elapsedTime, false);
 		}
-		else if (attackchoice == 3)
+		else if (attackchoice == 4)
 		{
 			std::cout << "burrow" << std::endl;
 			this->burrowTeleportation(elapsedTime);
@@ -356,12 +395,10 @@ void Boss::boss_attack(double elapsedTime, bool block)
 
 void Boss::facingDirection()
 {
-	if (spinning)
-	{
-		//this->direction_m = (PlayerClass::get_instance()->position_a - this->position_m).Normalized();
-	}
-	else
-		this->direction_m = (PlayerClass::get_instance()->position_a - this->position_m).Normalized();
+	if ((this->position_m.x - PlayerClass::get_instance()->position_a.x) > 5)
+		this->direction_m.x = -1;
+	else if ((this->position_m.x - PlayerClass::get_instance()->position_a.x) < -5)
+		this->direction_m.x = 1;
 
 	this->Boss_Tail.set_direction();
 }
