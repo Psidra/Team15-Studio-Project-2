@@ -485,6 +485,7 @@ void StudioProject2Scene2::RenderObjects()
 {
 	modelStack.PushMatrix();
 	modelStack.Translate((20 + MoveShelterObj_PosX), 16, 20);
+	modelStack.Rotate(-45, 0, 1, 0);
 	RenderMesh(meshList[GEO_SHELTEROBJ], true);
 	modelStack.PopMatrix();
 

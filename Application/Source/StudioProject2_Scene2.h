@@ -197,7 +197,7 @@ private:
 	bool block = false;
 	bool roll = false;
 
-	double et[30];
+	double et[60];
 	/*  Alexis:
 	0 = attack
 	6 = walk
@@ -242,7 +242,6 @@ private:
 	double bufferTime_roll;
 	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
 	double bufferTime_Unlock;
-	double bufferTime_attack_M;
 	double bufferTime_WalkLamp;
 };
 
