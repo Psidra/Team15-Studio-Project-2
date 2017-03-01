@@ -60,7 +60,9 @@ private:
 	double bufferTime_iframe;
 	double bufferTime_attackchoice;
 	double bufferTime_projduration;
+	double bufferTime_projcd;
 	unsigned int attackchoice;
+	unsigned int projtype;
 	float direction_p_a, direction_p_b;
 	float offset;
 	int flip_a, flip_b;
