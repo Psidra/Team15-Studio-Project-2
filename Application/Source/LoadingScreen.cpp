@@ -84,6 +84,14 @@ void LoadingScreen::Init()
 	/*--------------------------Image Loading--------------------------------------*/
 	meshList[GEO_LOADINGSYRINGE] = MeshBuilder::GenerateQuad("loadingsyringe", Color(1, 1, 1));
 	meshList[GEO_LOADINGSYRINGE]->textureID = LoadTGA("Image//loadingsyringe.tga");
+
+	meshList[GEO_LOADINGSCREEN] = MeshBuilder::GenerateQuad("loadingscreen", Color(1, 1, 1));
+	if (SceneManager::getInstance()->Location == "Secluded Forest")
+		meshList[GEO_LOADINGSCREEN]->textureID = LoadTGA("Image//HillLoadingSc.tga");
+	else if (SceneManager::getInstance()->Location == "Inner City")
+		meshList[GEO_LOADINGSCREEN]->textureID = LoadTGA("Image//CityLoadingSc.tga");
+	else if (SceneManager::getInstance()->Location == "Cavern of Truth")
+		meshList[GEO_LOADINGSCREEN]->textureID = LoadTGA("Image//CaveLoadingSc.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -146,6 +154,7 @@ void LoadingScreen::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 
+	RenderMeshOnScreen(meshList[GEO_LOADINGSCREEN], 0, 0, 80, 60, 0);
 	RenderMeshOnScreen2(meshList[GEO_LOADINGSYRINGE], 5, 5, 15, 15, 0, rotatingAngle);
 	RenderTextOnScreen(meshList[GEO_TEXT], loadLocation, Color(1, 1, 1), 3, 4, -9);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
