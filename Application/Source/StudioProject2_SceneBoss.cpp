@@ -122,7 +122,8 @@ void StudioProject2SceneBoss::Init()
 
 	/*-----------------Environment Objects Loading---------------------------------*/
 	// GEO_ENVIRONMENT, GEO_GROUND, GEO_LEFTWALL, GEO_RIGHTWALL, GEO_PREVENT, GEO_TRIGGER,
-	meshList[GEO_ENVIRONMENT] = MeshBuilder::GenerateOBJ("Environment", "OBJ//SceneBoss//Bossscene_edit.obj");
+	meshList[GEO_ENVIRONMENT] = MeshBuilder::GenerateOBJ("Environment", "OBJ//SceneBoss//Bossscene.obj");
+	meshList[GEO_ENVIRONMENT]->textureID = LoadTGA("Image//scenebosstexture.tga");
 	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossfloorbb_edit.obj");
 	meshList[GEO_LEFTWALL] = MeshBuilder::GenerateOBJ("LeftWall", "OBJ//SceneBoss//bossleftbb.obj");
 	meshList[GEO_RIGHTWALL] = MeshBuilder::GenerateOBJ("RightWall", "OBJ//SceneBoss//bossrightbb.obj");
@@ -133,7 +134,8 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_LEFTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossleftbb.obj");
 	meshList[GEO_RIGHTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossrightbb.obj");
 	meshList[GEO_TRIGGER]->MeshBBox.loadBB("OBJ//SceneBoss//bosstrigger.obj");
-
+	meshList[GEO_LIGHT] = MeshBuilder::GenerateOBJ("light", "OBJ//SceneBoss//glowingsphere.obj");
+	meshList[GEO_LIGHT]->textureID = LoadTGA("Image//glowingsphere.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -850,9 +852,8 @@ void StudioProject2SceneBoss::Update(double dt)
 	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
 	/*--------------------------------------------------------*/
 
-	//text and light interaction
+	//text interaction
 	TextInteraction();
-	LightInteraction();
 
 	/*--------------Updates the Full Mutant Kill Count--------*/
 	//for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
@@ -1273,7 +1274,7 @@ void StudioProject2SceneBoss::Render()
 	RenderTextOnScreen(meshList[GEO_TEXT], "ENERGY", Color(0, 0, 1), 2, 3, 17.5);
 	RenderTextOnScreen(meshList[GEO_TEXT], "BOSS", Color(1, 1, 0), 2, 3, 15.5);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
-	RenderTextOnScreen(meshList[GEO_TEXT], "CAVE OF TRUTH", Color(0, 0, 1), 2.5, 1.5, -8.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "CAVERN OF TRUTH", Color(0, 0, 1), 2.5, 1.5, -8.5);
 	/*----------------------------------------------------------------------------------*/
 }
 

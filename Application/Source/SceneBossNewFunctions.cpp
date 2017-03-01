@@ -152,15 +152,23 @@ void StudioProject2SceneBoss::RenderText(Mesh* mesh, std::string text, Color col
 
 void StudioProject2SceneBoss::RenderLightStands()
 {
+	glBlendFunc(GL_ONE, GL_ONE);
+	modelStack.PushMatrix();
+	modelStack.Translate(10, 1, -30);
+	modelStack.Scale(3, 3, 3);
 
+	for (int i = 0; i < 6; i++)
+	{
+		RenderMesh(meshList[GEO_LIGHT], true);
+
+		modelStack.Translate(30, 0, 0);
+	}
+	modelStack.PopMatrix();
+	
+	
 }
 
 void StudioProject2SceneBoss::LoadLight()
-{
-
-}
-
-void StudioProject2SceneBoss::LightInteraction()
 {
 
 }
