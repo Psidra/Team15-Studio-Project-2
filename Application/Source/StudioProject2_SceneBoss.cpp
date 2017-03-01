@@ -324,8 +324,12 @@ void StudioProject2SceneBoss::Init()
 	/*--------------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
-	pEnter = false;
-	textOccured = 0;
+	bossTextsize = 2;
+	alexisTextsize = 0;
+	narTextsize = 0;
+	insTextsize = 0;
+	bufferTime_text = elapsedTime + 3.f;
+	pEnter = true;
 	nexttext = false;
 	/*----------------------------------------------------------------------------------*/
 
@@ -360,7 +364,6 @@ void StudioProject2SceneBoss::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-
 	// Lock/Unlock Camera
 	if (Application::IsKeyPressed('Y'))
 	{
@@ -834,7 +837,9 @@ void StudioProject2SceneBoss::Update(double dt)
 	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
 	/*--------------------------------------------------------*/
 
+	//text and light interaction
 	TextInteraction();
+	LightInteraction();
 
 	/*--------------Updates the Full Mutant Kill Count--------*/
 	//for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
@@ -1242,7 +1247,6 @@ void StudioProject2SceneBoss::Render()
 		posXscreen += 0.5;
 	}
 	/*-----------------------------*/
-
 	/*---------------Text log Rendering--------*/
 	RenderTextInteractions();
 	/*-----------------------------------------*/

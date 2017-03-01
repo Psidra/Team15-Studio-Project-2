@@ -138,14 +138,22 @@ private:
 	void RenderLightStands();
 	void RenderTextInteractions();
 
-	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
+	//-------------------------------------Text Variables--------------------------------------------
+	//text sizes (SceneBossNewFunctions)
+	int bossTextsize;
+	int alexisTextsize;
+	int narTextsize; //narrator (because text is written in second person)
+	int insTextsize; //instructions
+	int pressEnterTS; //size of the press enter at the bottom of the textbox
 
+	//when it appears
 	bool pEnter;
-	int textOccured;
 	bool nexttext;
 
-	int plop = 0;
+	//------------------------------------------------------------------------------------------------
 
+	/*----------------when the box falls (Edward's variable)------------------*/
+	int plop = 0;
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
@@ -188,8 +196,6 @@ private:
 	double bufferTime_Jump;
 	double bufferTime_attack;
 	double bufferTime_text;
-	double bufferTime_textlog;
-	double bufferTime_fmAlexisText;
 	double bufferTime_Enter;
 	double bufferTime_iframe;			// iframe is for damage taken
 	double bufferTime_block;			// OLD SPICE ODOUR BODY BLOCKER BLOCKS BACTERIA AND SMELL FOR UP TO 24 HOURS
