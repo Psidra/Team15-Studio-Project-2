@@ -188,8 +188,11 @@ void StudioProject2Scene2::Init()
 
 	meshList[GEO_LAMPPOST] = MeshBuilder::GenerateOBJ("Lamp post", "OBJ//Scene2//Lamp_post.obj");
 	meshList[GEO_LAMPPOST]->MeshBBox.loadBB("OBJ//Scene2//Lamp_post.obj");
-	meshList[GEO_LAMPTRIGGER] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene2//Lamp_post.obj");
-	meshList[GEO_LAMPTRIGGER]->MeshBBox.loadBB("OBJ//Scene2//Lamp_post.obj");
+	meshList[GEO_LAMPTRIGGER] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_LAMPTRIGGER]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_LAMPTRIGGER]->MeshBBox.scale(14.f, 12.f, 30.f);
+	meshList[GEO_LAMPTRIGGER]->MeshBBox.translate(545, 15, 10);
+
 
 	meshList[GEO_ROPE] = MeshBuilder::GenerateOBJ("Rope", "OBJ//Scene2//Rope.obj");
 	meshList[GEO_ROPE]->MeshBBox.loadBB("OBJ//Scene2//Rope.obj");
@@ -342,9 +345,7 @@ void StudioProject2Scene2::Init()
 	/*---------------------------------------------------------------------------------------------*/
 	
 	/*-----------------------------Trigger Check-----------------------------------*/
-	meshList[GEO_TRIGGER_SLOPE] = MeshBuilder::GenerateOBJ("Trigger_Slope", "OBJ//TriggerBox.obj");
-	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.loadBB("OBJ//TriggerBox.obj");
-	meshList[GEO_TRIGGER_SLOPE]->MeshBBox.translate(-12.f, 10.f, 0);
+
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------------------Checking BBox-----------------------------------*/
@@ -688,12 +689,15 @@ void StudioProject2Scene2::Update(double dt)
 					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox)
 					|| pressedA == true)
 				{
-					//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
-					//{
-					//PlayerClass::get_instance()->position_a.x += (float)(15 * dt);
-					//PlayerClass::get_instance()->position_a.y += (float)(15 * dt);
-					//}
-					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(15 * dt);
+						PlayerClass::get_instance()->position_a.y += (float)(15 * dt);
+					}
+					else
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+					}
 					pressedA = false;
 					pressedD = true;
 					inmovement = true;
@@ -714,15 +718,6 @@ void StudioProject2Scene2::Update(double dt)
 						}
 					}
 				}
-				/*if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
-				{
-					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
-					PlayerClass::get_instance()->position_a.y += (float)(15.f * dt); // change this 15 accordingly to the tilt and rotation of light
-
-					pressedD = true;
-					pressedA = false;
-					inmovement = true;
-				}*/
 			}
 
 			if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
@@ -745,7 +740,6 @@ void StudioProject2Scene2::Update(double dt)
 					Breakrope++;
 				}
 			}
-
 
 			if (Application::IsKeyPressed('F') && !block && !roll)
 				bufferTime_grab = elapsedTime + 0.15f;
@@ -859,7 +853,7 @@ void StudioProject2Scene2::Update(double dt)
 
 	et[20] += dt;
 
-	if (!trigger)
+	if (!ClimbLamp)
 	{
 		if (injump == false)
 		{
