@@ -87,6 +87,54 @@ void StudioProject2SceneBoss::Init()
 	m_parameters[U_LIGHT1_COSINNER] = glGetUniformLocation(m_programID, "lights[1].cosInner");
 	m_parameters[U_LIGHT1_EXPONENT] = glGetUniformLocation(m_programID, "lights[1].exponent");
 
+	m_parameters[U_LIGHT2_POSITION] = glGetUniformLocation(m_programID, "lights[2].position_cameraspace");
+	m_parameters[U_LIGHT2_COLOR] = glGetUniformLocation(m_programID, "lights[2].color");
+	m_parameters[U_LIGHT2_POWER] = glGetUniformLocation(m_programID, "lights[2].power");
+	m_parameters[U_LIGHT2_KC] = glGetUniformLocation(m_programID, "lights[2].kC");
+	m_parameters[U_LIGHT2_KL] = glGetUniformLocation(m_programID, "lights[2].kL");
+	m_parameters[U_LIGHT2_KQ] = glGetUniformLocation(m_programID, "lights[2].kQ");
+	m_parameters[U_LIGHT2_TYPE] = glGetUniformLocation(m_programID, "lights[2].type");
+	m_parameters[U_LIGHT2_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[2].spotDirection");
+	m_parameters[U_LIGHT2_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[2].cosCutoff");
+	m_parameters[U_LIGHT2_COSINNER] = glGetUniformLocation(m_programID, "lights[2].cosInner");
+	m_parameters[U_LIGHT2_EXPONENT] = glGetUniformLocation(m_programID, "lights[2].exponent");
+
+	m_parameters[U_LIGHT3_POSITION] = glGetUniformLocation(m_programID, "lights[3].position_cameraspace");
+	m_parameters[U_LIGHT3_COLOR] = glGetUniformLocation(m_programID, "lights[3].color");
+	m_parameters[U_LIGHT3_POWER] = glGetUniformLocation(m_programID, "lights[3].power");
+	m_parameters[U_LIGHT3_KC] = glGetUniformLocation(m_programID, "lights[3].kC");
+	m_parameters[U_LIGHT3_KL] = glGetUniformLocation(m_programID, "lights[3].kL");
+	m_parameters[U_LIGHT3_KQ] = glGetUniformLocation(m_programID, "lights[3].kQ");
+	m_parameters[U_LIGHT3_TYPE] = glGetUniformLocation(m_programID, "lights[3].type");
+	m_parameters[U_LIGHT3_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[3].spotDirection");
+	m_parameters[U_LIGHT3_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[3].cosCutoff");
+	m_parameters[U_LIGHT3_COSINNER] = glGetUniformLocation(m_programID, "lights[3].cosInner");
+	m_parameters[U_LIGHT3_EXPONENT] = glGetUniformLocation(m_programID, "lights[3].exponent");
+
+	m_parameters[U_LIGHT4_POSITION] = glGetUniformLocation(m_programID, "lights[4].position_cameraspace");
+	m_parameters[U_LIGHT4_COLOR] = glGetUniformLocation(m_programID, "lights[4].color");
+	m_parameters[U_LIGHT4_POWER] = glGetUniformLocation(m_programID, "lights[4].power");
+	m_parameters[U_LIGHT4_KC] = glGetUniformLocation(m_programID, "lights[4].kC");
+	m_parameters[U_LIGHT4_KL] = glGetUniformLocation(m_programID, "lights[4].kL");
+	m_parameters[U_LIGHT4_KQ] = glGetUniformLocation(m_programID, "lights[4].kQ");
+	m_parameters[U_LIGHT4_TYPE] = glGetUniformLocation(m_programID, "lights[4].type");
+	m_parameters[U_LIGHT4_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[4].spotDirection");
+	m_parameters[U_LIGHT4_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[4].cosCutoff");
+	m_parameters[U_LIGHT4_COSINNER] = glGetUniformLocation(m_programID, "lights[4].cosInner");
+	m_parameters[U_LIGHT4_EXPONENT] = glGetUniformLocation(m_programID, "lights[4].exponent");
+
+	m_parameters[U_LIGHT5_POSITION] = glGetUniformLocation(m_programID, "lights[5].position_cameraspace");
+	m_parameters[U_LIGHT5_COLOR] = glGetUniformLocation(m_programID, "lights[5].color");
+	m_parameters[U_LIGHT5_POWER] = glGetUniformLocation(m_programID, "lights[5].power");
+	m_parameters[U_LIGHT5_KC] = glGetUniformLocation(m_programID, "lights[5].kC");
+	m_parameters[U_LIGHT5_KL] = glGetUniformLocation(m_programID, "lights[5].kL");
+	m_parameters[U_LIGHT5_KQ] = glGetUniformLocation(m_programID, "lights[5].kQ");
+	m_parameters[U_LIGHT5_TYPE] = glGetUniformLocation(m_programID, "lights[5].type");
+	m_parameters[U_LIGHT5_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[5].spotDirection");
+	m_parameters[U_LIGHT5_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[5].cosCutoff");
+	m_parameters[U_LIGHT5_COSINNER] = glGetUniformLocation(m_programID, "lights[5].cosInner");
+	m_parameters[U_LIGHT5_EXPONENT] = glGetUniformLocation(m_programID, "lights[5].exponent");
+
 	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
 	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); //in case you missed out practical 7
 	// Get a handle for our "colorTexture" uniform
@@ -122,7 +170,14 @@ void StudioProject2SceneBoss::Init()
 
 	/*-----------------Environment Objects Loading---------------------------------*/
 	// GEO_ENVIRONMENT, GEO_GROUND, GEO_LEFTWALL, GEO_RIGHTWALL, GEO_PREVENT, GEO_TRIGGER,
-	meshList[GEO_ENVIRONMENT] = MeshBuilder::GenerateOBJ("Environment", "OBJ//SceneBoss//Bossscene_edit.obj");
+	
+	//Light
+	meshList[GEO_LIGHT] = MeshBuilder::GenerateOBJ("light", "OBJ//SceneBoss//glowingsphere.obj");
+	meshList[GEO_LIGHT]->textureID = LoadTGA("Image//glowingsphere.tga");
+	//-----
+
+	meshList[GEO_ENVIRONMENT] = MeshBuilder::GenerateOBJ("Environment", "OBJ//SceneBoss//Bossscene2.obj");
+	meshList[GEO_ENVIRONMENT]->textureID = LoadTGA("Image//scenebosstexture.tga");
 	meshList[GEO_GROUND] = MeshBuilder::GenerateOBJ("GroundCollision", "OBJ//SceneBoss//bossfloorbb_edit.obj");
 	meshList[GEO_LEFTWALL] = MeshBuilder::GenerateOBJ("LeftWall", "OBJ//SceneBoss//bossleftbb.obj");
 	meshList[GEO_RIGHTWALL] = MeshBuilder::GenerateOBJ("RightWall", "OBJ//SceneBoss//bossrightbb.obj");
@@ -133,7 +188,6 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_LEFTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossleftbb.obj");
 	meshList[GEO_RIGHTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossrightbb.obj");
 	meshList[GEO_TRIGGER]->MeshBBox.loadBB("OBJ//SceneBoss//bosstrigger.obj");
-
 	/*-----------------------------------------------------------------------------*/
 
 	meshList[GEO_TEXTBOX] = MeshBuilder::GenerateQuad("textbox", Color(0, 0, 0));
@@ -309,9 +363,13 @@ void StudioProject2SceneBoss::Init()
 
 	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
 
-	meshList[GEO_LASER] = MeshBuilder::GenerateCylinder("laser", Color(1, 0, 0));
+	meshList[GEO_LASER] = MeshBuilder::GenerateOBJ("laser", "OBJ//lazer.obj");
+	meshList[GEO_LASER]->textureID = LoadTGA("Image//lazer.tga");
+	meshList[GEO_LASER]->MeshBBox.loadBB("OBJ//lazer.obj");
 	// make obj later
-
+	meshList[GEO_SHIELD] = MeshBuilder::GenerateOBJ("proShield", "OBJ//Hardlightshield.obj");
+	meshList[GEO_SHIELD]->textureID = LoadTGA("Image//Hardlightshield.tga");
+	meshList[GEO_SHIELD]->MeshBBox.loadBB("OBJ//Hardlightshield.obj");
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
 	/*-----------------------------------------------------------------------------*/
@@ -324,8 +382,12 @@ void StudioProject2SceneBoss::Init()
 	/*--------------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
-	pEnter = false;
-	textOccured = 0;
+	bossTextsize = 2;
+	alexisTextsize = 0;
+	narTextsize = 0;
+	insTextsize = 0;
+	bufferTime_text = elapsedTime + 3.f;
+	pEnter = true;
 	nexttext = false;
 	/*----------------------------------------------------------------------------------*/
 
@@ -360,7 +422,6 @@ void StudioProject2SceneBoss::Update(double dt)
 {
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
-
 	// Lock/Unlock Camera
 	if (Application::IsKeyPressed('Y'))
 	{
@@ -393,7 +454,16 @@ void StudioProject2SceneBoss::Update(double dt)
 	if (!Boss::get_instance()->magicImmunity)
 	{
 		PlayerClass::get_instance()->laserBeam(elapsedTime);
-		//PlayerClass::get_instance()->projectileShield(elapsedTime);
+		PlayerClass::get_instance()->projectileShield(elapsedTime,dt);
+	}
+
+
+	if (PlayerClass::get_instance()->laserActive == true)
+	{
+		if (meshList[GEO_LASER]->MeshBBox.collide(Boss::get_instance()->EnemyHitBox))
+		{
+			Boss::get_instance()->bossHealthSystem(true);
+		}
 	}
 	/*------------------------*/
 
@@ -572,7 +642,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				//	EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
 				
 				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
-						Boss::get_instance()->bossHealthSystem();
+						Boss::get_instance()->bossHealthSystem(false);
 				
 				// add on to this later
 			}
@@ -668,7 +738,7 @@ void StudioProject2SceneBoss::Update(double dt)
 				bufferTime_attack = elapsedTime + 1.f;
 			
 				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
-					Boss::get_instance()->bossHealthSystem();
+					Boss::get_instance()->bossHealthSystem(false);
 				
 			/*	if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
 					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);*/
@@ -861,7 +931,9 @@ void StudioProject2SceneBoss::Update(double dt)
 	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
 	/*--------------------------------------------------------*/
 
+	//text&Light interaction
 	TextInteraction();
+	LightInteraction();
 
 	/*--------------Updates the Full Mutant Kill Count--------*/
 	//for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
@@ -933,8 +1005,15 @@ void StudioProject2SceneBoss::Render()
 	modelStack.Scale(PlayerClass::get_instance()->laserSize.x, PlayerClass::get_instance()->laserSize.y, PlayerClass::get_instance()->laserSize.z);
 	RenderMesh(meshList[GEO_LASER], false);
 	modelStack.PopMatrix();
-	// add in grab animation later
 
+	modelStack.PushMatrix();
+	glBlendFunc(GL_ONE, GL_ONE);
+	modelStack.Scale(PlayerClass::get_instance()->ProjShieldSize.x, PlayerClass::get_instance()->ProjShieldSize.y, 
+		PlayerClass::get_instance()->ProjShieldSize.z);
+	RenderMesh(meshList[GEO_SHIELD], false);
+	modelStack.PopMatrix();
+	// add in grab animation later
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	if (num_anim == 7 || num_anim == 8 || num_anim == 9)
 	{
 		modelStack.PushMatrix();
@@ -1296,14 +1375,13 @@ void StudioProject2SceneBoss::Render()
 		posXscreen += 0.5;
 	}
 	/*-----------------------------*/
-
 	/*---------------Text log Rendering--------*/
 	RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], "ENERGY", Color(0, 0, 1), 2, 3, 17.5);
 	RenderTextOnScreen(meshList[GEO_TEXT], "BOSS", Color(1, 1, 0), 2, 3, 15.5);
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
-	RenderTextOnScreen(meshList[GEO_TEXT], "CAVE OF TRUTH", Color(0, 0, 1), 2.5, 1.5, -8.5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "CAVERN OF TRUTH", Color(0, 0, 1), 2.5, 1.5, -8.5);
 	/*----------------------------------------------------------------------------------*/
 }
 

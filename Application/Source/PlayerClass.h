@@ -28,7 +28,7 @@ public:
 	void timeSpent(float dt);
 	void restartLevel();
 	void restartGame();
-	void projectileShield(double timeElapsed);
+	void projectileShield(double timeElapsed,double dt);
 	void laserBeam(double timeElapsed);
 	void spellUI(double timeElapsed);
 	
@@ -56,12 +56,15 @@ public:
 	Vector3 position_a;
 	Vector3 laserSize;
 	Vector3 laserTranslate;
+	Vector3 ProjShieldSize;
 	PlayerLife Hearts;
 	SpellHUD spellHUD;
 	int a_LookingDirection;
 	int hm_Saved;
 	int fm_Killed;
 	double timeSpend;
+	bool laserActive;
+	bool projSheildActive;
 
 private:
 	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f)
@@ -80,8 +83,6 @@ private:
 	int energyStorage;
 	unsigned int _energy;
 	bool isDead();
-	bool laserActive;
-	bool projSheildActive;
 };
 
 #endif //PLAYERCLASS_H

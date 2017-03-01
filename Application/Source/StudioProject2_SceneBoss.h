@@ -40,11 +40,11 @@ public:
 
 		//Environment
 		GEO_ENVIRONMENT, GEO_GROUND, GEO_LEFTWALL, GEO_RIGHTWALL, GEO_PREVENT,
-		GEO_TRIGGER,
+		GEO_TRIGGER, GEO_LIGHT,
 
 		//main character (Alexis)
 		GEO_ALEXIS_HEAD, GEO_ALEXIS_BODY, GEO_ALEXIS_RIGHTARM, GEO_ALEXIS_LEFTARM,
-		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG, GEO_LASER,
+		GEO_ALEXIS_CROTCH, GEO_ALEXIS_RIGHTLEG, GEO_ALEXIS_LEFTLEG, GEO_LASER, GEO_SHIELD,
 		//main character stunt doobl (Alexus) :^)
 		GEO_ALEXUS_HEAD, GEO_ALEXUS_BODY, GEO_ALEXUS_RIGHT4ARM, GEO_ALEXUS_LEFT4ARM,
 		GEO_ALEXUS_CROTCH, GEO_ALEXUS_RIGHTTHIGH, GEO_ALEXUS_LEFTTHIGH,
@@ -105,6 +105,54 @@ public:
 		U_LIGHT1_COSINNER,
 		U_LIGHT1_EXPONENT,
 
+		U_LIGHT2_POSITION,
+		U_LIGHT2_COLOR,
+		U_LIGHT2_POWER,
+		U_LIGHT2_KC,
+		U_LIGHT2_KL,
+		U_LIGHT2_KQ,
+		U_LIGHT2_TYPE,
+		U_LIGHT2_SPOTDIRECTION,
+		U_LIGHT2_COSCUTOFF,
+		U_LIGHT2_COSINNER,
+		U_LIGHT2_EXPONENT,
+
+		U_LIGHT3_POSITION,
+		U_LIGHT3_COLOR,
+		U_LIGHT3_POWER,
+		U_LIGHT3_KC,
+		U_LIGHT3_KL,
+		U_LIGHT3_KQ,
+		U_LIGHT3_TYPE,
+		U_LIGHT3_SPOTDIRECTION,
+		U_LIGHT3_COSCUTOFF,
+		U_LIGHT3_COSINNER,
+		U_LIGHT3_EXPONENT,
+
+		U_LIGHT4_POSITION,
+		U_LIGHT4_COLOR,
+		U_LIGHT4_POWER,
+		U_LIGHT4_KC,
+		U_LIGHT4_KL,
+		U_LIGHT4_KQ,
+		U_LIGHT4_TYPE,
+		U_LIGHT4_SPOTDIRECTION,
+		U_LIGHT4_COSCUTOFF,
+		U_LIGHT4_COSINNER,
+		U_LIGHT4_EXPONENT,
+
+		U_LIGHT5_POSITION,
+		U_LIGHT5_COLOR,
+		U_LIGHT5_POWER,
+		U_LIGHT5_KC,
+		U_LIGHT5_KL,
+		U_LIGHT5_KQ,
+		U_LIGHT5_TYPE,
+		U_LIGHT5_SPOTDIRECTION,
+		U_LIGHT5_COSCUTOFF,
+		U_LIGHT5_COSINNER,
+		U_LIGHT5_EXPONENT,
+
 		U_LIGHTENABLED,
 		U_NUMLIGHTS,
 
@@ -138,14 +186,22 @@ private:
 	void RenderLightStands();
 	void RenderTextInteractions();
 
-	// Naming Convention : Trigged == Triggered; TS == TextSize; hm == half-mutant; fm == full-mutant
+	//-------------------------------------Text Variables--------------------------------------------
+	//text sizes (SceneBossNewFunctions)
+	int bossTextsize;
+	int alexisTextsize;
+	int narTextsize; //narrator (because text is written in second person)
+	int insTextsize; //instructions
+	int pressEnterTS; //size of the press enter at the bottom of the textbox
 
+	//when it appears
 	bool pEnter;
-	int textOccured;
 	bool nexttext;
 
-	int plop = 0;
+	//------------------------------------------------------------------------------------------------
 
+	/*----------------when the box falls (Edward's variable)------------------*/
+	int plop = 0;
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
@@ -188,8 +244,6 @@ private:
 	double bufferTime_Jump;
 	double bufferTime_attack;
 	double bufferTime_text;
-	double bufferTime_textlog;
-	double bufferTime_fmAlexisText;
 	double bufferTime_Enter;
 	double bufferTime_iframe;			// iframe is for damage taken
 	double bufferTime_block;			// OLD SPICE ODOUR BODY BLOCKER BLOCKS BACTERIA AND SMELL FOR UP TO 24 HOURS

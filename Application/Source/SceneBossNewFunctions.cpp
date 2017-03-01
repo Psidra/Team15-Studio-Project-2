@@ -1,5 +1,6 @@
 #include "StudioProject2_SceneBoss.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -149,22 +150,153 @@ void StudioProject2SceneBoss::RenderText(Mesh* mesh, std::string text, Color col
 	glEnable(GL_DEPTH_TEST);
 }
 
+void StudioProject2SceneBoss::LightInteraction()
+{
+
+}
+
 void StudioProject2SceneBoss::RenderLightStands()
 {
+	glBlendFunc(GL_ONE, GL_ONE);
+	modelStack.PushMatrix();
+	modelStack.Translate(10, 1, -30);
+	modelStack.Scale(3, 3, 3);
+
+	for (int i = 0; i < 6; i++)
+	{
+		RenderMesh(meshList[GEO_LIGHT], true);
+
+		modelStack.Translate(30, 0, 0);
+	}
+	modelStack.PopMatrix();
 
 }
 
 void StudioProject2SceneBoss::LoadLight()
 {
+	light[0].type = Light::LIGHT_POINT;
+	light[0].position.Set(10, 3, -30);
+	light[0].color.Set(1.000, 0.647, 0.100);
+	light[0].power = 5;
+	light[0].kC = 1.f;
+	light[0].kL = 0.01f;
+	light[0].kQ = 0.001f;
+	light[0].cosCutoff = cos(Math::DegreeToRadian(45));
+	light[0].cosInner = cos(Math::DegreeToRadian(30));
+	light[0].exponent = 3.f;
+	light[0].spotDirection.Set(0.f, 1.f, 0.f);
 
+	glUniform1i(m_parameters[U_LIGHT0_TYPE], light[0].type);
+	glUniform3fv(m_parameters[U_LIGHT0_COLOR], 1, &light[0].color.r);
+	glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+	glUniform1f(m_parameters[U_LIGHT0_KC], light[0].kC);
+	glUniform1f(m_parameters[U_LIGHT0_KL], light[0].kL);
+	glUniform1f(m_parameters[U_LIGHT0_KQ], light[0].kQ);
+	glUniform1f(m_parameters[U_LIGHT0_COSCUTOFF], light[0].cosCutoff);
+	glUniform1f(m_parameters[U_LIGHT0_COSINNER], light[0].cosInner);
+	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 }
 
 void StudioProject2SceneBoss::TextInteraction()
 {
+	if (pEnter == true) //press enter to continue
+		pressEnterTS = 2;
+	else
+		pressEnterTS = 0;
 
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
+	{
+		int xbox;
+		const unsigned char * xboxs = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+
+		if ((GLFW_PRESS == xboxs[7] || Application::IsKeyPressed(VK_RETURN)) && (bufferTime_Enter < elapsedTime))
+		{
+			bufferTime_Enter = elapsedTime + 0.1f;
+			nexttext = true;
+		}
+
+		if ((elapsedTime > bufferTime_text || nexttext == true) && bossTextsize == 2)
+		{
+			bossTextsize = 0;
+			alexisTextsize = 2;
+			nexttext = false;
+		}
+
+		if ((elapsedTime > bufferTime_text + 3 || nexttext == true) && alexisTextsize == 2)
+		{
+			alexisTextsize = 0;
+			narTextsize = 2;
+			nexttext = false;
+		}
+
+		if ((elapsedTime > bufferTime_text + 6 || nexttext == true) && narTextsize == 2)
+		{
+			narTextsize = 0;
+			insTextsize = 2;
+			nexttext = false;
+		}
+
+		if (insTextsize == 2 && (elapsedTime > bufferTime_text + 9 || nexttext == true))
+		{
+			pEnter = false;
+			insTextsize = 0;
+			nexttext = false; 
+		}
+	}
+	else
+	{
+		if (Application::IsKeyPressed(VK_RETURN) && (bufferTime_Enter < elapsedTime))
+		{
+			bufferTime_Enter = elapsedTime + 0.1f;
+			nexttext = true;
+		}
+
+		if ((elapsedTime > bufferTime_text || nexttext == true) && bossTextsize == 2)
+		{
+			bossTextsize = 0;
+			alexisTextsize = 2;
+			nexttext = false;
+		}
+
+		if ((elapsedTime > bufferTime_text + 3 || nexttext == true) && alexisTextsize == 2)
+		{
+			alexisTextsize = 0;
+			narTextsize = 2;
+			nexttext = false;
+		}
+
+		if ((elapsedTime > bufferTime_text + 6 || nexttext == true) && narTextsize == 2)
+		{
+			narTextsize = 0;
+			insTextsize = 2;
+			nexttext = false;
+		}
+
+		if (insTextsize == 2 && (elapsedTime > bufferTime_text + 9 || nexttext == true))
+		{
+			pEnter = false;
+			insTextsize = 0;
+			nexttext = false;
+		}
+	}
+	
+
+
+
+	
 }
 
 void StudioProject2SceneBoss::RenderTextInteractions()
 {
+	//nar = narrator (since the text is in second person pov)
+	//ins = instruction (because....well, self-explanitory.)
 
+	RenderTextOnScreen(meshList[GEO_TEXT], "???: HHRRRRRRRNNNGG", Color(1, 1, 1), bossTextsize, 1, -3); //mesh,text,color,size,position
+	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis: I must be close to the Source.", Color(1, 1, 1), alexisTextsize, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "You inject some kind of serum into your body.", Color(1, 1, 1), narTextsize, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Power coursed through your veins. You're ready to fight.", Color(1, 1, 1), narTextsize, 1, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Q>/<LB> for Laser Attack", Color(1, 1, 1), insTextsize, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <R>/<RB> for Hard Light Shield", Color(1, 1, 1), insTextsize, 1, -4);
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to continue", Color(1, 1, 1), pressEnterTS, 1, -6);
 }

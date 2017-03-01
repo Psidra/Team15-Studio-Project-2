@@ -24,7 +24,7 @@ public:
 
 	void bossInit();
 	void bossHealthUI();
-	void bossHealthSystem();
+	void bossHealthSystem(bool laser);
 	void facingDirection();
 	void stateManager();
 	void dmgOvertime(double timeElapsed);

@@ -25,6 +25,8 @@ public:
 	void Update(double dt, float posx, float posy);
 	void UpdateTopdown(double dt, float posx, float posz);
 	void UpdateUnlockedCam(double dt);
+	void UpdateUnlockedCam2(double dt);
+	void UpdateUnlockedCam3(double dt);
 
 	int bounds;
 };
