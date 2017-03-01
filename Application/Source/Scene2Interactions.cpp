@@ -1,5 +1,6 @@
 #include "StudioProject2_Scene2.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -63,5 +64,133 @@ void StudioProject2Scene2::TextInteraction()
 	else
 		pressEnterTS = 0;
 
-	
+	if (preBattleText)
+		preBattleTS = 2;
+	else
+		preBattleTS = 0;
+
+	if (preBuildingText)
+		preBuildingTS = 2;
+	else
+		preBuildingTS = 0;
+
+	if (cautionText)
+		cautionTS = 2;
+	else
+		cautionTS = 0;
+
+	if (crateText)
+		crateTS = 2;
+	else
+		crateTS = 0;
+
+	if (surroundedText)
+		surroundedTS = 2;
+	else
+		surroundedTS = 0;
+
+	if (barbwireText)
+		barbwireTS = 2;
+	else
+		barbwireTS = 0;
+
+	if (lamppostText)
+		lamppostTS = 2;
+	else
+		lamppostTS = 0;
+
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
+	{
+		int xbox;
+		const unsigned char *xboxs = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xbox);
+
+		if ((GLFW_PRESS == xboxs[7] || Application::IsKeyPressed(VK_RETURN)) && (bufferTime_Enter < elapsedTime))
+		{
+			bufferTime_Enter = elapsedTime + 0.1f;
+			nexttext = true;
+		}
+
+		//if (/*first 3 enemy hp > 0*/
+		//	 /*distance between first mutant and char less than 70*/)
+		//{
+		//	preBattleText = true;
+		//	pEnter = true;
+		//}
+
+		if (preBattleText)
+		{
+			if (nexttext)
+			{
+				preBattleText = false;
+				nexttext = false;
+				pEnter = false;
+			}
+			else if (preBuildingText)
+				preBattleText = false;
+		}
+
+		//if (/*first 3 enemy hp < 0*/)
+		//{
+		//	bufferTime_preBuilding = elapsedTime + 4.f;
+		//	preBuildingText = true;
+		//	pEnter = true;
+		//}
+
+		if (preBuildingText && (elapsedTime > bufferTime_preBuilding || nexttext))
+		{
+			preBuildingText = false;
+			nexttext = false;
+			cautionText = true;
+		}
+		
+		if (cautionText && (elapsedTime > bufferTime_preBuilding + 4 || nexttext))
+		{
+			cautionText = false;
+			nexttext = false;
+			crateText = true;
+		}
+
+		if (crateText && (elapsedTime > bufferTime_preBuilding + 8 || nexttext))
+		{
+			crateText = false;
+			pEnter = false;
+			nexttext = false;
+		}
+		
+
+		//if (/*dist between har & building 3 mutants < 70*/
+		//	&& /*3 mutants hp > 0*/)
+		//{
+		//	surroundedText = true;
+		//	pEnter = true;
+		//}
+
+		//if (surroundedText && (nexttext || /*3 mutants hp < 0*/) )
+		//{
+		//	surroundedText = false;
+		//	pEnter = false;
+		//	nexttext = false;
+		//}
+
+		//if (/*lamppost hit count = 0 && char pos X > 490 */)
+		//{
+		//	barbwireText = true;
+		//	pEnter = true;
+		//	bufferTime_barbwire = elapsedTime + 4.f;
+		//}
+
+		if (barbwireText && (nexttext || elapsedTime > bufferTime_barbwire))
+		{
+			barbwireText = false;
+			lamppostText = true;
+			nexttext = false;
+		}
+
+		if (lamppostText && (nexttext || elapsedTime > bufferTime_barbwire + 4))
+		{
+			pEnter = false;
+			lamppostText = false;
+			nexttext = false;
+		}
+	}
 }

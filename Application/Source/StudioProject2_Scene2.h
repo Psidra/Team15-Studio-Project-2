@@ -156,8 +156,33 @@ private:
 
 	bool Unlock;
 	/*--------------------Text Variables--------------------------*/
+	// TS = text size
 	bool pEnter;
+	bool nexttext;
 	int pressEnterTS;
+
+	bool preBattleText;
+	int preBattleTS;
+
+	bool preBuildingText;
+	int preBuildingTS;
+
+	bool cautionText;
+	int cautionTS;
+
+	bool crateText;
+	int crateTS;
+
+	bool surroundedText;
+	int surroundedTS;
+
+	bool barbwireText;
+	int barbwireTS;
+
+	bool lamppostText;
+	int lamppostTS;
+
+	int textOccur; 
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
@@ -205,7 +230,9 @@ private:
 	double bufferTime_JumpUp;
 	double bufferTime_Jump;
 	double bufferTime_attack;
-	double bufferTime_text;
+	double bufferTime_preBuilding;
+	double bufferTime_barbwire;
+	double bufferTime_Enter;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
 	double bufferTime_iframe;			// iframe is for damage taken

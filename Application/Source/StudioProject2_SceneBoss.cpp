@@ -911,6 +911,13 @@ void StudioProject2SceneBoss::Render()
 			break;
 	}
 
+	/*-----------------Skybox-------------------*/
+	modelStack.PushMatrix();
+	modelStack.Translate(450, 80, -200);
+	modelStack.Scale(1600, 675, 1);
+	RenderMesh(meshList[GEO_SKYBOX], false);
+	modelStack.PopMatrix();
+	/*------------------------------------------*/
 	/*-----------------Main Character (Alexis)---------------------*/
 	modelStack.PushMatrix();
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1197,14 +1204,6 @@ void StudioProject2SceneBoss::Render()
 		RenderMutant(num_anim_mutant);
 	}*/
 	/*-------------------------------------------------------*/
-
-	/*-----------------Skybox-------------------*/
-	modelStack.PushMatrix();
-	modelStack.Translate(450, 80, -200);
-	modelStack.Scale(1600, 675, 1);
-	RenderMesh(meshList[GEO_SKYBOX], false);
-	modelStack.PopMatrix();
-	/*------------------------------------------*/
 
 	/*-----------------Environmental Light Rendering------*/
 	RenderLightStands();

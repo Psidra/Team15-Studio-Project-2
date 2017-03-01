@@ -342,44 +342,32 @@ void StudioProject2Scene2::Init()
 	/*--------------------------------------------------------------------------------*/
 
 	/*------------------------Initialising Text Variables-------------------------------*/
-	//spawnTS = 2;
-	//pressEnterTS = 0;
+	 pEnter = false;
+	 nexttext = false;
+	 pressEnterTS = 0;
 
-	//syringeTriggedText = false;
-	//syringeTriggedTS = 0;
+	 preBattleText = false;
+	 preBattleTS = 0;
 
-	//boxTriggedText = false;
-	//boxTriggedTS = 0;
-	//boxTriggedText_Two = false;
-	//boxTriggedTS_two = 0;
+	 preBuildingText = false;
+	 preBuildingTS = 0;
 
-	//hmTriggeredText = false;
-	//hmTriggedTS = 0;
+	 cautionText = false;
+	 cautionTS = 0;
 
-	//hm_to_alexis = false;
-	//hm_to_alexisTS = 0;
+	 crateText = false;
+	 crateTS = 0;
 
-	//alexis_to_hm = false;
-	//alexis_to_hmTS = 0;
+	 surroundedText = false;
+	 surroundedTS = 0;
 
-	//alexis_beside_hm = false;
-	//alexis_beside_hmTS = 0;
+	 barbwireText = false;
+	 barbwireTS = 0;
 
-	//postProjectileThrownText = false;
-	//postProjectileThrownTS = 0;
+	 lamppostText = false;
+	 lamppostTS = 0;
 
-	//fm_triggedText = false;
-	//fm_triggedTS = 0;
-
-	//alexisText = false;
-	//alexisTS = 0;
-
-	//guideText = false;
-	//guideTS = 0;
-
-	//pEnter = false;
-	//textOccured = 0;
-	//nexttext = false;
+	 textOccur = 0;
 	/*----------------------------------------------------------------------------------*/
 
 	/*---------------------------Initialising Variables---------------------------------*/
@@ -936,7 +924,7 @@ void StudioProject2Scene2::Update(double dt)
 	//else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
 	//	trigger = false;
 	/*--------------------------------------*/
-	TextInteraction();
+	//TextInteraction();
 	LightInteraction();
 
 	/*--------------Updates the Full Mutant Kill Count--------*/
