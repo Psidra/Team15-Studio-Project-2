@@ -530,12 +530,10 @@ void StudioProject2Scene2::RenderTextInteractions()
 	RenderTextOnScreen(meshList[GEO_TEXT], "myself from potential projectiles.", Color(1, 1, 1), crateTS, 6, -4);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis:Seems like I'm surrounded at all sides.", Color(1, 1, 1), surroundedTS, 1, -3);
 	RenderTextOnScreen(meshList[GEO_TEXT], "I've no choice but to fight the 3 enemies in front", Color(1, 1, 1), surroundedTS, 6, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis: This is barbwire. I won't be", Color(1, 1, 1), barbwireTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "able to just climb over it, unless", Color(1, 1, 1), barbwireTS, 11, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "I'm looking to come out in pieces", Color(1, 1, 1), barbwireTS, 11, -5);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis: This lamppost seems slanted", Color(1, 1, 1), lamppostTS, 1, -3);
-	RenderTextOnScreen(meshList[GEO_TEXT], "and about to fall. Maybe I can get", Color(1, 1, 1), lamppostTS, 11, -4);
-	RenderTextOnScreen(meshList[GEO_TEXT], "past the wall with that.", Color(1, 1, 1), lamppostTS, 11, -5);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis:This is barbwire. I won't be able to climb over", Color(1, 1, 1), barbwireTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "unless I'm looking to come out in pieces", Color(1, 1, 1), barbwireTS, 6, -4);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Alexis:This lamppost seems slanted and about to fall.", Color(1, 1, 1), lamppostTS, 1, -3);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Maybe I can get past the wall with that.", Color(1, 1, 1), lamppostTS, 6, -4);
 
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter> to continue", Color(1, 1, 1), pressEnterTS, 1, -6);
 }

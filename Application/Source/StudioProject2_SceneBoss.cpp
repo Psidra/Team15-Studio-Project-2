@@ -42,6 +42,7 @@ void StudioProject2SceneBoss::Init()
 	PlayerClass::get_instance()->position_a = Vector3(-15.f, 0.f, 0.f);
 	PlayerClass::get_instance()->healthUI();
 	PlayerClass::get_instance()->manaUI();
+	PlayerClass::get_instance()->init();
 
 	Boss::get_instance()->bossHealthUI();
 	Boss::get_instance()->bossInit();

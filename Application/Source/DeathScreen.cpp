@@ -144,6 +144,11 @@ void DeathScreen::Update(double dt)
 				PlayerClass::get_instance()->restartLevel();
 				SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
 			}
+			if (SceneManager::getInstance()->Location == "Cavern of Truth")
+			{
+				PlayerClass::get_instance()->restartLevel();
+				SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
+			}
 		}
 	}
 	else
@@ -168,7 +173,7 @@ void DeathScreen::Update(double dt)
 				PlayerClass::get_instance()->restartLevel();
 				SceneManager::getInstance()->changeScene(new StudioProject2Scene2());
 			}
-			if (SceneManager::getInstance()->Location == "Cave of Truth")
+			if (SceneManager::getInstance()->Location == "Cavern of Truth")
 			{
 				PlayerClass::get_instance()->restartLevel();
 				SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
