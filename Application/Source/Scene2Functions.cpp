@@ -495,7 +495,8 @@ void StudioProject2Scene2::RenderObjects()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(570, -20, 20);
+	modelStack.Translate(565, -20, 20);
+	modelStack.Scale(0.5, 1, 1);
 	RenderMesh(meshList[GEO_TRUMPWALL], true);
 	modelStack.PopMatrix();
 
@@ -518,6 +519,19 @@ void StudioProject2Scene2::RenderObjects()
 	modelStack.Translate((480 + MoveBox_PosX), 8, 15);
 	RenderMesh(meshList[GEO_MOVEBOX], true);
 	modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//RenderMesh(meshList[GEO_TESTBBOX], false);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//RenderMesh(meshList[GEO_TESTBBOX2], false);
+	//modelStack.PopMatrix();
+
+	//modelStack.PushMatrix();
+	//RenderMesh(meshList[GEO_TESTBBOX3], false);
+	//modelStack.PopMatrix();
+
 }
 
 void StudioProject2Scene2::RenderTextInteractions()

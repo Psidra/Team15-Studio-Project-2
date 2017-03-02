@@ -171,15 +171,28 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_TRUMPWALL] = MeshBuilder::GenerateOBJ("Wall", "OBJ//Scene2//TrumpWall.obj");
 	meshList[GEO_TRUMPWALL]->textureID = LoadTGA("Image//brick.tga");
 	meshList[GEO_TRUMPWALL]->MeshBBox.loadBB("OBJ//Scene2//TrumpWall.obj");
-	meshList[GEO_TRUMPWALL]->MeshBBox.translate(570, -20, 20);
+	meshList[GEO_TRUMPWALL]->MeshBBox.scale(1.f, 1.f, 1.f);
+	meshList[GEO_TRUMPWALL]->MeshBBox.translate(568, -25, 20);
 
 	meshList[GEO_LAMPPOST] = MeshBuilder::GenerateOBJ("Lamp post", "OBJ//Scene2//Lamp_post.obj");
 	meshList[GEO_LAMPPOST]->textureID = LoadTGA("Image//rust.tga");
 	meshList[GEO_LAMPPOST]->MeshBBox.loadBB("OBJ//Scene2//Lamp_post.obj");
 	meshList[GEO_LAMPTRIGGER] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj");
 	meshList[GEO_LAMPTRIGGER]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
-	meshList[GEO_LAMPTRIGGER]->MeshBBox.scale(14.f, 12.f, 30.f);
-	meshList[GEO_LAMPTRIGGER]->MeshBBox.translate(545, 10, 10);
+
+	meshList[GEO_LAMPTRIGGER]->MeshBBox.scale(12.4f, 15.f, 30.f);
+	meshList[GEO_LAMPTRIGGER]->MeshBBox.translate(541, -7, 10);
+	meshList[GEO_LAMPTRIGGER2] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_LAMPTRIGGER2]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_LAMPTRIGGER2]->MeshBBox.scale(3.5f, 1.3f, 30.f);
+	meshList[GEO_LAMPTRIGGER2]->MeshBBox.translate(576, 67.5f, 10);
+	meshList[GEO_LAMPTRIGGER3] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_LAMPTRIGGER3]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_LAMPTRIGGER3]->MeshBBox.scale(7.f, 3.f, 30.f);
+	meshList[GEO_LAMPTRIGGER3]->MeshBBox.translate(510, 20.f, 10);
+
+	/*meshList[GEO_LAMPTRIGGER]->MeshBBox.scale(14.f, 12.f, 30.f);
+	meshList[GEO_LAMPTRIGGER]->MeshBBox.translate(545, 10, 10);*/
 
 	meshList[GEO_BLOCK_ONE] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj"); // praise box_tall
 	meshList[GEO_BLOCK_ONE]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
@@ -347,7 +360,10 @@ void StudioProject2Scene2::Init()
 
 	/*-----------------------------Checking BBox-----------------------------------*/
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_LAMPTRIGGER]->MeshBBox.max_, meshList[GEO_LAMPTRIGGER]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_TRUMPWALL]->MeshBBox.max_, meshList[GEO_TRUMPWALL]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX2] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_LAMPTRIGGER]->MeshBBox.max_, meshList[GEO_LAMPTRIGGER]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX3] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_LAMPTRIGGER3]->MeshBBox.max_, meshList[GEO_LAMPTRIGGER3]->MeshBBox.min_);
+
 	/*-----------------------------------------------------------------------------*/
 
 	/*-------------------------Loading Mutant Health----------------------------------*/
@@ -435,6 +451,8 @@ void StudioProject2Scene2::Update(double dt)
 		bufferTime_Unlock = elapsedTime + 0.5f;
 	}
 
+
+	
 	if (!Unlock)
 		camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
 	else
@@ -547,8 +565,13 @@ void StudioProject2Scene2::Update(double dt)
 				{
 					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
 					{
-						PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
-						PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
+						PlayerClass::get_instance()->position_a.x -= (float)(13 * dt);
+						PlayerClass::get_instance()->position_a.y -= (float)(15 * dt);
+					}
+					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) && ClimbLamp)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(15 * dt);
+						PlayerClass::get_instance()->position_a.y += (float)(13.5 * dt);
 					}
 					else
 					{
@@ -717,13 +740,20 @@ void StudioProject2Scene2::Update(double dt)
 				{
 					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
 					{
-						PlayerClass::get_instance()->position_a.x += (float)(13.5 * dt);
-						PlayerClass::get_instance()->position_a.y += (float)(16.5 * dt);
+						PlayerClass::get_instance()->position_a.x += (float)(13 * dt);		
+						PlayerClass::get_instance()->position_a.y += (float)(15 * dt);
+					}
+					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) && ClimbLamp)
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(15 * dt);
+						PlayerClass::get_instance()->position_a.y -= (float)(13.5 * dt);
 					}
 					else
 					{
 						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
 					}
+					
+
 					pressedA = false;
 					pressedD = true;
 					inmovement = true;
@@ -746,11 +776,19 @@ void StudioProject2Scene2::Update(double dt)
 				}
 			}
 
-			if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
+			if ((PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER3]->MeshBBox)) && ClimbLamp)
 			{
-				bufferTime_Jump = elapsedTime + 0.5f;
-				bufferTime_JumpUp = elapsedTime + 0.3f;
+				
 			}
+			else
+			{
+				if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
+				{
+					bufferTime_Jump = elapsedTime + 0.5f;
+					bufferTime_JumpUp = elapsedTime + 0.3f;
+				}
+			}
+
 			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !holdanims())
 			{
 				bufferTime_attack = elapsedTime + 1.f;
@@ -793,6 +831,7 @@ void StudioProject2Scene2::Update(double dt)
 		}
 
 	}
+
 	if (bufferTime_JumpUp > elapsedTime)
 		injump = true;
 	else
@@ -842,7 +881,7 @@ void StudioProject2Scene2::Update(double dt)
 	if (block || grab)
 		movespeed = 17.f;
 	else
-		movespeed = 30.f;  // 30.f
+		movespeed = 30.f;
 
 	if (Breakrope >= 2)
 	{
@@ -878,7 +917,8 @@ void StudioProject2Scene2::Update(double dt)
 		et[11] = 0;
 	}
 
-	if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) || (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && !trigger && !ClimbLamp))
+	if ((!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox)))
+		|| (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && !ClimbLamp))
 	{
 		if (!injump)
 		{
@@ -1213,7 +1253,7 @@ void StudioProject2Scene2::Render()
 		(PlayerClass::get_instance()->position_a.y + 7.9f), // render collision box
 		PlayerClass::get_instance()->position_a.z);		 // i need this
 	modelStack.Scale(1.1f, 4.5f, 1.f);										 // if you remove it bad things will happen
-	RenderMesh(meshList[GEO_BBOX], false);									 // remove this later when showing actual shit of course
+	//RenderMesh(meshList[GEO_BBOX], false);									 // remove this later when showing actual shit of course
 	modelStack.PopMatrix();												 	 // :ok_hand:
 	// for some reason I needed to flip translate and scale here to fit with the actual hitbox
 
@@ -1221,9 +1261,7 @@ void StudioProject2Scene2::Render()
 	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
 	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
 
-	modelStack.PushMatrix();
-	RenderMesh(meshList[GEO_TESTBBOX], false);
-	modelStack.PopMatrix();
+
 
 	/*-----------------Mutants (Fuglymon)---------------------*/
 	unsigned int num_anim_mutant;
