@@ -32,6 +32,7 @@ public:
 	void laserBeam(double timeElapsed);
 	void spellUI(double timeElapsed);
 	unsigned int get_killedstorage();
+	double get_shielddur();
 	
 	struct PlayerLife
 	{
