@@ -337,7 +337,7 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_SHIELD]->textureID = LoadTGA("Image//Hardlightshield.tga");
 	meshList[GEO_SHIELD]->MeshBBox.loadBB("OBJ//Hardlightshield.obj");
 	/*-----------------------------Checking BBox-----------------------------------*/
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_SHIELD]->MeshBBox.max_, meshList[GEO_SHIELD]->MeshBBox.min_);
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", Boss::get_instance()->Boss_Tail.TailHitBox.max_, Boss::get_instance()->Boss_Tail.TailHitBox.min_);
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
@@ -847,8 +847,8 @@ void StudioProject2SceneBoss::Update(double dt)
 			Boss::get_instance()->spit_[projectiles]->projHitBox_.resetBB();
 	}
 
-	Boss::get_instance()->Boss_Tail.TailHitBox.resetBB();
 	Boss::get_instance()->EnemyHitBox.resetBB();
+	Boss::get_instance()->Boss_Tail.TailHitBox.resetBB();
 	/*--------------------------------------------------------*/
 
 	//text&Light interaction
@@ -926,12 +926,15 @@ void StudioProject2SceneBoss::Render()
 	modelStack.Translate(PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y, PlayerClass::get_instance()->position_a.z);
 	modelStack.Rotate(PlayerClass::get_instance()->a_LookingDirection, 0, 1, 0);
 
-	modelStack.PushMatrix();
-	modelStack.Translate(PlayerClass::get_instance()->laserTranslate.x, PlayerClass::get_instance()->laserTranslate.y, PlayerClass::get_instance()->laserTranslate.z);
-	modelStack.Rotate(90, 0, 1, 0);
-	modelStack.Scale(PlayerClass::get_instance()->laserSize.x, PlayerClass::get_instance()->laserSize.y, PlayerClass::get_instance()->laserSize.z);
-	RenderMesh(meshList[GEO_LASER], false);
-	modelStack.PopMatrix();
+	if (!Boss::get_instance()->magicImmunity)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(PlayerClass::get_instance()->laserTranslate.x, PlayerClass::get_instance()->laserTranslate.y, PlayerClass::get_instance()->laserTranslate.z);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Scale(PlayerClass::get_instance()->laserSize.x, PlayerClass::get_instance()->laserSize.y, PlayerClass::get_instance()->laserSize.z);
+		RenderMesh(meshList[GEO_LASER], false);
+		modelStack.PopMatrix();
+	}
 
 	modelStack.PushMatrix();
 	glBlendFunc(GL_ONE, GL_ONE);
@@ -1176,7 +1179,7 @@ void StudioProject2SceneBoss::Render()
 	if (Boss::get_instance()->get_action() == 3)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, PlayerClass::get_instance()->position_a.y + 2.5f, Boss::get_instance()->Boss_Tail.position_t.z);
+		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, 0.f, Boss::get_instance()->Boss_Tail.position_t.z);
 		modelStack.Rotate(90, 1, 0, 0);
 		modelStack.Scale(0.3f, 0.3f, 0.3f);
 		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
@@ -1184,7 +1187,7 @@ void StudioProject2SceneBoss::Render()
 
 		modelStack.PushMatrix();
 		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, Boss::get_instance()->Boss_Tail.position_t.y, Boss::get_instance()->Boss_Tail.position_t.z);
-		modelStack.Scale(3.f, 7.f, 3.f);
+		modelStack.Scale(1.f, 5.f, 1.f);
 		RenderMesh(meshList[GEO_SPIKE], true);
 		modelStack.PopMatrix();
 	}
@@ -1201,8 +1204,8 @@ void StudioProject2SceneBoss::Render()
 	/*---------------*/
 
 	modelStack.PushMatrix();
-	//modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
-	//modelStack.Scale(2.25f, 3, 3);
+	modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, Boss::get_instance()->Boss_Tail.position_t.y, Boss::get_instance()->Boss_Tail.position_t.z);
+	modelStack.Scale(1.f, 5.f, 1.f);
 	RenderMesh(meshList[GEO_TESTBBOX], false);
 	modelStack.PopMatrix();
 

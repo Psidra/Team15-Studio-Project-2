@@ -43,9 +43,7 @@ void Boss::stateManager()
 		spin = true;
 	if (boss_health < (50 * 0.01 * 300)) // 50% hp
 		tailAtk = true;
-	//if (boss_health < (25 * 0.01 * 300)) // 25% hp
-	//	burrow = true;
-	if (boss_health < (10 * 0.01 * 300)) // 10% hp
+	if (boss_health < (25 * 0.01 * 300)) // 25% hp
 	{
 		DmgOverTime = true;
 		magicImmunity = true;
@@ -202,7 +200,7 @@ void Boss::tailAttack(double timeElapsed, bool block)
 			this->Boss_Tail.strike(block);
 		else if ((timeElapsed > bufferTime_tail + 6.f) && (timeElapsed < bufferTime_tail + 7.5f)) // 1.5s of retracting back into the ground.
 			this->Boss_Tail.retract(block);
-		else if	(timeElapsed > bufferTime_tail + 7.5f)
+		else if (timeElapsed > bufferTime_tail + 7.5f)
 			bufferTime_tail = timeElapsed + 1.f;												  // 1 second cd before cycling back again to stalk, strike, retract.
 	}
 }
@@ -215,15 +213,10 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 		{
 			if ((elapsedTime > bufferTime_tail + 3.5f) && (elapsedTime < bufferTime_tail + 7.5))
 			{
-				for (direction_p_a = (-1.f + offset); direction_p_a < (1.f - offset); direction_p_a += 0.4f)
+				for (direction_p_a = -1.f; direction_p_a < 1.f; direction_p_a += 0.4f)
 				{
 					this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, (dir + Vector3(0, 0, direction_p_a))));
 				}
-
-				if (offset == 0.f)
-					offset = 0.2f;
-				else
-					offset = 0.f;
 
 				bufferTime_projduration = elapsedTime + 1.f;
 			}
@@ -268,12 +261,12 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 				bufferTime_projduration = elapsedTime + 0.1f;
 			}
 		}
-		else if (attackchoice == 4 && burrowing)
-		{
-			this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, dir));
+		//else if (attackchoice == 4 && burrowing)
+		//{
+		//	this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, dir));
 
-			bufferTime_projduration = elapsedTime + 0.1f;
-		}
+		//	bufferTime_projduration = elapsedTime + 0.1f;
+		//}
 		else if (attackchoice == 1)
 		{
 			if (elapsedTime > bufferTime_projcd)
