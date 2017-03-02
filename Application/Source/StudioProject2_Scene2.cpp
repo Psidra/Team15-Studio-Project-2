@@ -486,8 +486,8 @@ void StudioProject2Scene2::Update(double dt)
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMPWALL]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
 					{
-						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 						projectiles--;
 					}
 					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
@@ -495,8 +495,9 @@ void StudioProject2Scene2::Update(double dt)
 					{
 						PlayerClass::get_instance()->healthSystem(block, false);
 						bufferTime_iframe = elapsedTime + 0.3f;
-						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+
 						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 						projectiles--;
 					}
 				}
@@ -789,13 +790,10 @@ void StudioProject2Scene2::Update(double dt)
 			{
 				
 			}
-			else
+			else if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
 			{
-				if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
-				{
-					bufferTime_Jump = elapsedTime + 0.5f;
-					bufferTime_JumpUp = elapsedTime + 0.3f;
-				}
+				bufferTime_Jump = elapsedTime + 0.5f;
+				bufferTime_JumpUp = elapsedTime + 0.3f;
 			}
 
 			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !holdanims())
@@ -818,7 +816,13 @@ void StudioProject2Scene2::Update(double dt)
 			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
 				bufferTime_block = elapsedTime + 0.2f;
 
-			if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
+			if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) &&
+				(PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox)) &&
+				(PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER3]->MeshBBox) && ClimbLamp))
+			{
+
+			}
+			else if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
 			{
 				bufferTime_roll = elapsedTime + 0.8f;
 				bufferTime_iframeroll = elapsedTime + 0.35f;
@@ -996,7 +1000,7 @@ void StudioProject2Scene2::Update(double dt)
 			}
 		}
 	}
-	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	PlayerClass::get_instance()->PlayerHitBox.resetBB();
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 	{
@@ -1005,7 +1009,7 @@ void StudioProject2Scene2::Update(double dt)
 			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
 				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.resetBB();
 			}
 		}
 	}
@@ -1013,7 +1017,7 @@ void StudioProject2Scene2::Update(double dt)
 	for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
 	{
 		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
-			EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+			EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox.resetBB();
 	}
 	/*--------------------------------------------------------*/
 
@@ -1053,17 +1057,26 @@ void StudioProject2Scene2::Update(double dt)
 	if ((PlayerClass::get_instance()->fm_Killed - PlayerClass::get_instance()->get_killedstorage()) == 3 && EnemyManager::get_instance()->EnemyList.size() == 0)
 	{
 		for (unsigned int numenemy = 0; numenemy < 3; numenemy++)
+		{
 			EnemyManager::get_instance()->spawnEnemy(Vector3(250.f + (numenemy * 10.f), 10.f, 20.f));
+			EnemyManager::get_instance()->EnemyList[numenemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+		}
 	}
 	else if ((PlayerClass::get_instance()->fm_Killed - PlayerClass::get_instance()->get_killedstorage()) == 6 && EnemyManager::get_instance()->EnemyList.size() == 0)
 	{
 		for (unsigned int numenemy = 0; numenemy < 2; numenemy++)
+		{
 			EnemyManager::get_instance()->spawnEnemy(Vector3(400.f + (numenemy * 10.f), 10.f, 20.f));
+			EnemyManager::get_instance()->EnemyList[numenemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+		}
 	}
 	else if ((PlayerClass::get_instance()->fm_Killed - PlayerClass::get_instance()->get_killedstorage()) == 8 && EnemyManager::get_instance()->EnemyList.size() == 0)
 	{
 		for (unsigned int numenemy = 0; numenemy < 2; numenemy++)
+		{
 			EnemyManager::get_instance()->spawnEnemy(Vector3(640.f + (numenemy * 10.f), 10.f, 20.f));
+			EnemyManager::get_instance()->EnemyList[numenemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+		}
 	}
 	/*-------------------------------------------------------*/
 
@@ -1074,12 +1087,12 @@ void StudioProject2Scene2::Update(double dt)
 		{
 			for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 				delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 				projectiles--;
 			}
-			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
 			delete EnemyManager::get_instance()->EnemyList[numenemy];
+			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
 			numenemy--;
 		}
 
@@ -1354,7 +1367,7 @@ void StudioProject2Scene2::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -5, 0);
 	//RenderMesh(meshList[GEO_FLOORBBOX], false); // delete this later
-	RenderMesh(meshList[GEO_SCENE2], true);
+	RenderMesh(meshList[GEO_SCENE2], true);		  // I lied
 	modelStack.PopMatrix();
 
 	RenderDebri();

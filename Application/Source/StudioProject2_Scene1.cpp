@@ -440,8 +440,8 @@ void StudioProject2Scene1::Update(double dt)
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOOR]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
 					{
-						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 						projectiles--;
 					}
 					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
@@ -450,8 +450,8 @@ void StudioProject2Scene1::Update(double dt)
 						PlayerClass::get_instance()->healthSystem(block, false);
 						bufferTime_iframe = elapsedTime + 0.3f;
 
-						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 						projectiles--;
 					}
 				}
@@ -854,7 +854,7 @@ void StudioProject2Scene1::Update(double dt)
 	if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPTEST]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox))
 		PlayerClass::get_instance()->position_a.x += (float)(60.f * dt);
 
-	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	PlayerClass::get_instance()->PlayerHitBox.resetBB();
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 	{
@@ -863,13 +863,13 @@ void StudioProject2Scene1::Update(double dt)
 			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
 				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Mutant_Projectile.obj");
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.resetBB();
 			}
 		}
 	}
 
 	if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
-		EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+		EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.resetBB();
 	/*--------------------------------------------------------*/
 
 	/*---------Triggers------*/
@@ -912,12 +912,12 @@ void StudioProject2Scene1::Update(double dt)
 		{
 			for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 				delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
 				projectiles--;
 			}
-			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
 			delete EnemyManager::get_instance()->EnemyList[numenemy];
+			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
 			numenemy--;
 		}
 

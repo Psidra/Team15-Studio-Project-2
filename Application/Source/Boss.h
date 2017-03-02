@@ -38,6 +38,7 @@ public:
 	void proj_attack(Vector3 pos, Vector3 dir, double elapsedTime);
 	unsigned int get_pattern();
 	void boss_attack(double elapsedTime, bool block);
+	bool spin_delay_anim();
 
 	BossLife bossLife;
 	Tail Boss_Tail; // great now tail doesn't even look like a word anymore, thanks semanic satiation
