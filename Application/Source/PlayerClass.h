@@ -31,6 +31,7 @@ public:
 	void projectileShield(double timeElapsed,double dt);
 	void laserBeam(double timeElapsed);
 	void spellUI(double timeElapsed);
+	unsigned int get_killedstorage();
 	
 	struct PlayerLife
 	{
@@ -68,7 +69,7 @@ public:
 
 private:
 	PlayerClass(): _health(100), _energy(100), a_LookingDirection(90), hm_Saved(0), fm_Killed(0), timeSpend(0.0f)
-	, energyProjShield(50), energyLaser(100), laserActive(false), projSheildActive(false) {};
+	, energyProjShield(50), energyLaser(100), laserActive(false), projSheildActive(false), hmSavedStorage(0), fmKilledStorage(0) {};
 	static PlayerClass* instance;
 
 	double bufferTime_Laser;

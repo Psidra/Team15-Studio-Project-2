@@ -2,6 +2,7 @@
 #include "LoadingScreen.h"
 #include "DeathScreen.h"
 #include "GL\glew.h"
+#include "GLFW\glfw3.h"
 #include "Mtx44.h"
 #include "Application.h"
 #include "Vertex.h"
@@ -46,7 +47,7 @@ void StudioProject2Scene2::Init()
 	/*----Player & AI & Camera Variables----*/
 
 	for (unsigned int numenemy = 0; numenemy < 3; numenemy++)
-		EnemyManager::get_instance()->spawnEnemy(Vector3(100.f + (numenemy * 10.f), 10.f, 20.f)); // look ma! one line!
+		EnemyManager::get_instance()->spawnEnemy(Vector3(70.f + (numenemy * 10.f), 10.f, 20.f)); // look ma! one line!
 
 	//for (unsigned int numenemy = 1; numenemy < 4; numenemy++)
 	//{
@@ -56,7 +57,7 @@ void StudioProject2Scene2::Init()
 	//	}
 	//}
 
-	PlayerClass::get_instance()->position_a = Vector3(-7.f, 10.f, 20.f);
+	PlayerClass::get_instance()->position_a = Vector3(-15.f, 10.f, 20.f);
 	PlayerClass::get_instance()->init();
 	/*--------------------------------------*/
 	/*--Hearts size (User Interface) Initialisation--------------*/
@@ -199,6 +200,15 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_LAMPTRIGGER]->MeshBBox.scale(14.f, 12.f, 30.f);
 	meshList[GEO_LAMPTRIGGER]->MeshBBox.translate(545, 10, 10);
 
+	meshList[GEO_BLOCK_ONE] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj"); // praise box_tall
+	meshList[GEO_BLOCK_ONE]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_BLOCK_ONE]->MeshBBox.scale(1.f, 2.f, 1.f);
+	meshList[GEO_BLOCK_ONE]->MeshBBox.translate(125.f, 10.f, 20.f);
+
+	meshList[GEO_BLOCK_TWO] = MeshBuilder::GenerateOBJ("Box", "OBJ//Scene1//Box_Tall.obj"); // praise box_tall
+	meshList[GEO_BLOCK_TWO]->MeshBBox.loadBB("OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_BLOCK_TWO]->MeshBBox.scale(1.f, 2.f, 1.f);
+	meshList[GEO_BLOCK_TWO]->MeshBBox.translate(312.f, 10.f, 20.f);
 
 	meshList[GEO_ROPE] = MeshBuilder::GenerateOBJ("Rope", "OBJ//Scene2//Rope.obj");
 	meshList[GEO_ROPE]->MeshBBox.loadBB("OBJ//Scene2//Rope.obj");
@@ -432,582 +442,617 @@ void StudioProject2Scene2::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 
-	if (elapsedTime > 1.1f)
+
+	/*-------Half Mutant Functions------------*/
+	hmvec[0].movement(dt);
+	hmvec[0].transformation();
+	/*----------------------------------------*/
+
+	if (Application::IsKeyPressed('Y') && elapsedTime > bufferTime_Unlock)
 	{
+		Unlock = !Unlock;
+		bufferTime_Unlock = elapsedTime + 0.5f;
+	}
 
-		/*-------Half Mutant Functions------------*/
-		hmvec[0].movement(dt);
-		hmvec[0].transformation();
-		/*----------------------------------------*/
+	if (!Unlock)
+		camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
+	else
+		camera.UpdateUnlockedCam2(dt);
+	/*-------AI Functions---------------*/
 
-		if (Application::IsKeyPressed('Y') && elapsedTime > bufferTime_Unlock)
+	// I spent 10 years trying to fix projectile because I wanted to avoid using erase.
+	// Erase won today. Erase, me, 1:0. Shit.
+
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
+			EnemyManager::get_instance()->EnemyList[numenemy]->update(dt);
+	}
+
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
+	{
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
 		{
-			Unlock = !Unlock;
-			bufferTime_Unlock = elapsedTime + 0.5f;
-		}
-
-		if (!Unlock)
-			camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
-		else
-			camera.UpdateUnlockedCam2(dt);
-		/*-------AI Functions---------------*/
-
-		// I spent 10 years trying to fix projectile because I wanted to avoid using erase.
-		// Erase won today. Erase, me, 1:0. Shit.
-
-		for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
-		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
-				EnemyManager::get_instance()->EnemyList[numenemy]->update(dt);
-		}
-
-		for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
-		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
+			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
-				for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
 				{
-					if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-					{
-						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-							(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-							EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
+						(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
 
-						if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOORBBOX]->MeshBBox) ||
-							EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMPTOWER]->MeshBBox) ||
-							EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_SHELTEROBJ]->MeshBBox) ||
-							EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
-						{
-							EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
-						}
-						else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
-							(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
-						{
-							PlayerClass::get_instance()->healthSystem(block, false);
-							bufferTime_iframe = elapsedTime + 0.3f;
-							EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
-						}
+					if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOORBBOX]->MeshBBox) ||
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMPTOWER]->MeshBBox) ||
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_SHELTEROBJ]->MeshBBox) ||
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
+					{
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+						projectiles--;
+					}
+					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
+						(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
+					{
+						PlayerClass::get_instance()->healthSystem(block, false);
+						bufferTime_iframe = elapsedTime + 0.3f;
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+						projectiles--;
 					}
 				}
 			}
 		}
+	}
 
-		/*-------Player Functions------------------*/
-		PlayerClass::get_instance()->healthUI();
-		PlayerClass::get_instance()->timeSpent(dt);
-		if (!trigger && !otheranims() && !holdanims())
-			PlayerClass::get_instance()->facingDirection();
+	/*-------Player Functions------------------*/
+	PlayerClass::get_instance()->healthUI();
+	PlayerClass::get_instance()->timeSpent(dt);
+	if (!trigger && !otheranims() && !holdanims())
+		PlayerClass::get_instance()->facingDirection();
 
-		/*-----------------------------------------*/
+	/*-----------------------------------------*/
 
-		/*-----------HUD UPDATES---------*/
-		fps = "FPS:" + std::to_string(framespersec);
-		fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
-		hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
-		/*----------------------------------------------------------*/
+	/*-----------HUD UPDATES---------*/
+	fps = "FPS:" + std::to_string(framespersec);
+	testposx = "x: " + std::to_string(PlayerClass::get_instance()->position_a.x);
+	fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
+	hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
+	/*----------------------------------------------------------*/
 
-		if (Application::IsKeyPressed(VK_1))
-			glEnable(GL_CULL_FACE);
+	if (Application::IsKeyPressed(VK_1))
+		glEnable(GL_CULL_FACE);
 
-		if (Application::IsKeyPressed(VK_2))
-			glDisable(GL_CULL_FACE);
+	if (Application::IsKeyPressed(VK_2))
+		glDisable(GL_CULL_FACE);
 
-		if (Application::IsKeyPressed(VK_3))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if (Application::IsKeyPressed(VK_3))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		if (Application::IsKeyPressed(VK_4))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (Application::IsKeyPressed(VK_4))
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		/*------------------------------Collision Check------------------------------*/
-		if (!otheranims() || holdanims())
-		{
-			for (unsigned i = 0; i < 6; i++)
-				et[i] = 0;
-		}
-		if (!holdanims())
-		{
-			et[7] = 0;
-			et[8] = 0;
-			et[9] = 0;
-		}
+	/*------------------------------Collision Check------------------------------*/
+	if (!otheranims() || holdanims())
+	{
+		for (unsigned i = 0; i < 6; i++)
+			et[i] = 0;
+	}
+	if (!holdanims())
+	{
+		et[7] = 0;
+		et[8] = 0;
+		et[9] = 0;
+	}
 
-		//// !PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox)
-		//int Connected = glfwJoystickPresent(GLFW_JOYSTICK_1);
+	//// !PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox)
+	//int Connected = glfwJoystickPresent(GLFW_JOYSTICK_1);
 
-		//if (Connected == 1)
-		//{
-		//	int xboxButtonCount;
-		//	const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxButtonCount);
-		//	if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
-		//	{									// *I hope.
-		//		inmovement = false;				// so many if statements I could write a philosophy book
-		//		if ((GLFW_PRESS == xbox[13] || Application::IsKeyPressed('A')) && !roll)
-		//		{
-		//			if (/*!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-		//				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox) ||
-		//				*/pressedD == true)
-		//			{
-		//				PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
-		//				pressedD = false;
-		//				pressedA = true;
-		//				inmovement = true;
+	//if (Connected == 1)
+	//{
+	//	int xboxButtonCount;
+	//	const unsigned char *xbox = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &xboxButtonCount);
+	//	if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+	//	{									// *I hope.
+	//		inmovement = false;				// so many if statements I could write a philosophy book
+	//		if ((GLFW_PRESS == xbox[13] || Application::IsKeyPressed('A')) && !roll)
+	//		{
+	//			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+	//				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) ||
+	//				pressedD == true)
+	//			{
+	//				if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
+	//				{
+	//					PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
+	//					PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
+	//				}
+	//				else
+	//				{
+	//					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+	//				}
 
-		//				if (grab)
-		//				{
-		//					//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-		//					//{
-		//					//	ShortBox_PosX -= (float)(movespeed * dt);
-		//					//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-		//					//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-		//					//}
-		//					//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox))
-		//					//{
-		//					//	TallBox_PosX -= (float)(movespeed * dt);
-		//					//	meshList[GEO_BOX_TALL]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-		//					//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-		//					//}
-		//				}
-		//			}
-		//		}
+	//				pressedD = false;
+	//				pressedA = true;
+	//				inmovement = true;
 
-		//		if (GLFW_PRESS == xbox[11] || Application::IsKeyPressed('D') && !roll)
-		//		{
-		//			if (/*!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSELEFTWALL]->MeshBBox) &&
-		//				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMP]->MeshBBox)
-		//				||*/ pressedA == true)
-		//			{
-		//				PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
-		//				pressedA = false;
-		//				pressedD = true;
-		//				inmovement = true;
+	//				if (grab)
+	//				{
+	//					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
+	//					{
+	//						MoveShelterObj_PosX -= (float)(movespeed * dt);
+	//						meshList[GEO_SHELTEROBJ]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+	//					}
+	//					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
+	//					{
+	//						MoveBox_PosX -= (float)(movespeed * dt);
+	//						meshList[GEO_MOVEBOX]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+	//						meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
 
-		//				if (grab)
-		//				{
-		//					//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORT]->MeshBBox) && !meshList[GEO_BOX_SHORT]->MeshBBox.collide(meshList[GEO_BOX_TALL]->MeshBBox))
-		//					//{
-		//					//	ShortBox_PosX += (float)(movespeed * dt);
-		//					//	meshList[GEO_BOX_SHORT]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-		//					//	meshList[GEO_BOX_SHORTTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-		//					//}
-		//					//else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALL]->MeshBBox) && !meshList[GEO_BOX_TALL]->MeshBBox.collide(meshList[GEO_TRUMP]->MeshBBox))
-		//					//{
-		//					//	TallBox_PosX += (float)(movespeed * dt);
-		//					//	meshList[GEO_BOX_TALL]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-		//					//	meshList[GEO_BOX_TALLTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-		//					//}
-		//				}
-		//			}
-		//		}
+	//					}
+	//				}
+	//			}
+	//		}
 
-		//		if ((GLFW_PRESS == xbox[0] || Application::IsKeyPressed('W')) && elapsedTime > bufferTime_Jump)
-		//		{
-		//			bufferTime_Jump = elapsedTime + 0.6f;
-		//			bufferTime_JumpUp = elapsedTime + 0.3f;
-		//		}
-		//		if ((GLFW_PRESS == xbox[2] || Application::IsKeyPressed(VK_LBUTTON)) && !attack && !injump && !holdanims())
-		//		{
-		//			bufferTime_attack = elapsedTime + 1.f;
+	//		if (GLFW_PRESS == xbox[11] || Application::IsKeyPressed('D') && !roll)
+	//		{
+	//			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+	//				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox)
+	//				|| pressedA == true)
+	//			{
+	//				if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
+	//				{
+	//					PlayerClass::get_instance()->position_a.x += (float)(13.5 * dt);
+	//					PlayerClass::get_instance()->position_a.y += (float)(16.5 * dt);
+	//				}
+	//				else
+	//				{
+	//					PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+	//				}
+	//				pressedA = false;
+	//				pressedD = true;
+	//				inmovement = true;
 
-		//			if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
-		//				EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
-		//		}
+	//				if (grab)
+	//				{
+	//					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox) && !meshList[GEO_SHELTEROBJ]->MeshBBox.collide(meshList[GEO_MOVEBOX]->MeshBBox))
+	//					{
+	//						MoveShelterObj_PosX += (float)(movespeed * dt);
+	//						meshList[GEO_SHELTEROBJ]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+	//					}
+	//					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
+	//					{
+	//						MoveBox_PosX += (float)(movespeed * dt);
+	//						meshList[GEO_MOVEBOX]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+	//						meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
 
-		//		if ((GLFW_PRESS == xbox[5] || Application::IsKeyPressed('F')) && !block && !roll)
-		//			bufferTime_grab = elapsedTime + 0.15f;
+	//					}
+	//				}
+	//			}
+	//		}
 
-		//		if ((GLFW_PRESS == xbox[3] || Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
-		//			bufferTime_block = elapsedTime + 0.2f;
+	//		if ((GLFW_PRESS == xbox[0] || Application::IsKeyPressed('W')) && elapsedTime > bufferTime_Jump)
+	//		{
+	//			bufferTime_Jump = elapsedTime + 0.5f;
+	//			bufferTime_JumpUp = elapsedTime + 0.3f;
+	//		}
+	//		if ((GLFW_PRESS == xbox[2] || Application::IsKeyPressed(VK_LBUTTON)) && !attack && !holdanims())
+	//		{
+	//			bufferTime_attack = elapsedTime + 1.f;
 
-		//		if ((GLFW_PRESS == xbox[1] || Application::IsKeyPressed(VK_RBUTTON)) && !holdanims())
-		//		{
-		//			bufferTime_roll = elapsedTime + 0.8f;
-		//			bufferTime_iframeroll = elapsedTime + 0.35f;
-		//		}
+	//			for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	//			{
+	//				if ((EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox))
+	//					EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-50);
+	//			}
 
-		//		/* mutant */
+	//			if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_ROPE]->MeshBBox))
+	//				Breakrope++;
+	//		}
 
-		//		for (unsigned int numEnemy = 1; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
-		//		{
-		//			if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
-		//			{
-		//				if (elapsedTime > bufferTime_attack_M)
-		//				{
-		//					EnemyManager::get_instance()->EnemyList[numEnemy]->attack(1, EnemyManager::get_instance()->EnemyList[numEnemy]->position_m, EnemyManager::get_instance()->EnemyList[numEnemy]->direction_m, dt, block);
-		//					bufferTime_attack_M = elapsedTime + 2.f;
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
-		//else
-		{
-			if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
-			{									// *I hope.
-				inmovement = false;				// so many if statements I could write a philosophy book
-				if (Application::IsKeyPressed('A') && !roll)
+	//		if ((GLFW_PRESS == xbox[5] || Application::IsKeyPressed('F')) && !block && !roll)
+	//			bufferTime_grab = elapsedTime + 0.15f;
+
+	//		if ((GLFW_PRESS == xbox[3] || Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
+	//			bufferTime_block = elapsedTime + 0.2f;
+
+	//		if ((GLFW_PRESS == xbox[1] || Application::IsKeyPressed(VK_RBUTTON)) && !holdanims())
+	//		{
+	//			bufferTime_roll = elapsedTime + 0.8f;
+	//			bufferTime_iframeroll = elapsedTime + 0.35f;
+	//		}
+
+	//		/* mutant */
+
+	//		for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	//		{
+	//			if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+	//			{
+	//				if (elapsedTime > EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC)
+	//				{
+	//					EnemyManager::get_instance()->EnemyList[numEnemy]->attack(1, EnemyManager::get_instance()->EnemyList[numEnemy]->position_m, EnemyManager::get_instance()->EnemyList[numEnemy]->direction_m, dt, block);
+	//					EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC = elapsedTime + 2.f;
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+	//else
+	{
+		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
+		{									// *I hope.
+			inmovement = false;				// so many if statements I could write a philosophy book
+			if (Application::IsKeyPressed('A') && !roll)
+			{
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) &&
+					(PlayerClass::get_instance()->fm_Killed >= (PlayerClass::get_instance()->get_killedstorage() + 3) || !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BLOCK_ONE]->MeshBBox)) &&
+					(PlayerClass::get_instance()->fm_Killed >= (PlayerClass::get_instance()->get_killedstorage() + 6) || !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BLOCK_TWO]->MeshBBox))
+					|| pressedD == true)
 				{
-					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
-						!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) ||
-						pressedD == true)
+					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
 					{
-						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
-						{
-							PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
-							PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
-						}
-						else
-						{
-							PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
-						}
-
-						pressedD = false;
-						pressedA = true;
-						inmovement = true;
-
-						if (grab)
-						{
-							if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
-							{
-								MoveShelterObj_PosX -= (float)(movespeed * dt);
-								meshList[GEO_SHELTEROBJ]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-							}
-							else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
-							{
-								MoveBox_PosX -= (float)(movespeed * dt);
-								meshList[GEO_MOVEBOX]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-								meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
-
-							}
-						}
+						PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
+						PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
 					}
-
-					/*if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox)
+					else
 					{
-					PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
-					PlayerClass::get_instance()->position_a.y -= (float)(15.f * dt); // change this 15 accordingly to the tilt and rotation of light
+						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
+					}
 
 					pressedD = false;
 					pressedA = true;
 					inmovement = true;
-					}
-					*/
-				}
 
-				if (Application::IsKeyPressed('D') && !roll)
-				{
-					if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
-						!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox)
-						|| pressedA == true)
+					if (grab)
 					{
-						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
 						{
-							PlayerClass::get_instance()->position_a.x += (float)(13.5 * dt);
-							PlayerClass::get_instance()->position_a.y += (float)(16.5 * dt);
+							MoveShelterObj_PosX -= (float)(movespeed * dt);
+							meshList[GEO_SHELTEROBJ]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
 						}
-						else
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox))
 						{
-							PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
-						}
-						pressedA = false;
-						pressedD = true;
-						inmovement = true;
+							MoveBox_PosX -= (float)(movespeed * dt);
+							meshList[GEO_MOVEBOX]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
 
-						if (grab)
-						{
-							if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox) && !meshList[GEO_SHELTEROBJ]->MeshBBox.collide(meshList[GEO_MOVEBOX]->MeshBBox))
-							{
-								MoveShelterObj_PosX += (float)(movespeed * dt);
-								meshList[GEO_SHELTEROBJ]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-							}
-							else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
-							{
-								MoveBox_PosX += (float)(movespeed * dt);
-								meshList[GEO_MOVEBOX]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-								meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
-
-							}
 						}
 					}
 				}
+			}
 
-				if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
+			if (Application::IsKeyPressed('D') && !roll)
+			{
+				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) &&
+					(PlayerClass::get_instance()->fm_Killed >= (PlayerClass::get_instance()->get_killedstorage() + 3) || !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BLOCK_ONE]->MeshBBox)) &&
+					(PlayerClass::get_instance()->fm_Killed >= (PlayerClass::get_instance()->get_killedstorage() + 6) || !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BLOCK_TWO]->MeshBBox))
+					|| pressedA == true)
 				{
-					bufferTime_Jump = elapsedTime + 0.5f;
-					bufferTime_JumpUp = elapsedTime + 0.3f;
-				}
-				if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !injump && !holdanims())
-				{
-					bufferTime_attack = elapsedTime + 1.f;
-
-					for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
 					{
-						if ((EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox))
-							EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-50);
+						PlayerClass::get_instance()->position_a.x += (float)(13.5 * dt);
+						PlayerClass::get_instance()->position_a.y += (float)(16.5 * dt);
 					}
-
-					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_ROPE]->MeshBBox))
+					else
 					{
-						Breakrope++;
+						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
+					}
+					pressedA = false;
+					pressedD = true;
+					inmovement = true;
+
+					if (grab)
+					{
+						if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_SHELTEROBJ]->MeshBBox) && !meshList[GEO_SHELTEROBJ]->MeshBBox.collide(meshList[GEO_MOVEBOX]->MeshBBox))
+						{
+							MoveShelterObj_PosX += (float)(movespeed * dt);
+							meshList[GEO_SHELTEROBJ]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+						}
+						else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOX]->MeshBBox) && !meshList[GEO_MOVEBOX]->MeshBBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
+						{
+							MoveBox_PosX += (float)(movespeed * dt);
+							meshList[GEO_MOVEBOX]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+							meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(((float)(movespeed * dt)), 0, 0);
+
+						}
 					}
 				}
+			}
 
-				if (Application::IsKeyPressed('F') && !block && !roll)
-					bufferTime_grab = elapsedTime + 0.15f;
-
-				if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
-					bufferTime_block = elapsedTime + 0.2f;
-
-				if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
-				{
-					bufferTime_roll = elapsedTime + 0.8f;
-					bufferTime_iframeroll = elapsedTime + 0.35f;
-				}
-
-				/* mutant */
+			if (Application::IsKeyPressed('W') && elapsedTime > bufferTime_Jump)
+			{
+				bufferTime_Jump = elapsedTime + 0.5f;
+				bufferTime_JumpUp = elapsedTime + 0.3f;
+			}
+			if (Application::IsKeyPressed(VK_LBUTTON) && !attack && !holdanims())
+			{
+				bufferTime_attack = elapsedTime + 1.f;
 
 				for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
 				{
-					if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+					if ((EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox))
+						EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-50);
+				}
+
+				if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_ROPE]->MeshBBox))
+					Breakrope++;
+			}
+
+			if (Application::IsKeyPressed('F') && !block && !roll)
+				bufferTime_grab = elapsedTime + 0.15f;
+
+			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
+				bufferTime_block = elapsedTime + 0.2f;
+
+			if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
+			{
+				bufferTime_roll = elapsedTime + 0.8f;
+				bufferTime_iframeroll = elapsedTime + 0.35f;
+			}
+
+			/* mutant */
+
+			for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+			{
+				if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+				{
+					if (elapsedTime > EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC)
 					{
-						if (elapsedTime > EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC)
-						{
-							EnemyManager::get_instance()->EnemyList[numEnemy]->attack(1, EnemyManager::get_instance()->EnemyList[numEnemy]->position_m, EnemyManager::get_instance()->EnemyList[numEnemy]->direction_m, dt, block);
-							EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC = elapsedTime + 2.f;
-						}
+						EnemyManager::get_instance()->EnemyList[numEnemy]->attack(1, EnemyManager::get_instance()->EnemyList[numEnemy]->position_m, EnemyManager::get_instance()->EnemyList[numEnemy]->direction_m, dt, block);
+						EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC = elapsedTime + 2.f;
 					}
 				}
 			}
-
 		}
-		if (bufferTime_JumpUp > elapsedTime)
-			injump = true;
-		else
-			injump = false;
 
-		if (bufferTime_attack > elapsedTime)
+	}
+	if (bufferTime_JumpUp > elapsedTime)
+		injump = true;
+	else
+		injump = false;
+
+	if (bufferTime_attack > elapsedTime)
+	{
+		attack = true;
+		et[0] += dt;
+	}
+	else
+		attack = false;
+
+	if (bufferTime_roll > elapsedTime)
+	{
+		roll = true;
+		et[7] += dt;
+
+		if (pressedA &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
+			PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
+		else if (pressedD &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
+			!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
+			PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+	}
+	else
+		roll = false;
+
+	if (bufferTime_block > elapsedTime)
+	{
+		block = true;
+		et[8] += dt;
+	}
+	else
+		block = false;
+
+	if (bufferTime_grab > elapsedTime)
+	{
+		grab = true;
+		et[9] += dt;
+	}
+	else
+		grab = false;
+
+	if (block || grab)
+		movespeed = 17.f;
+	else
+		movespeed = 150.f;  // 30.f
+
+	if (Breakrope >= 2)
+	{
+		if (Lamppostrotate > -40.f)
+			Lamppostrotate -= 1.f;
+
+		if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp == false)
 		{
-			attack = true;
-			et[0] += dt;
+			//Do nothing WIP
 		}
 		else
-			attack = false;
+			ClimbLamp = true;
+	}
 
-		if (bufferTime_roll > elapsedTime)
+	if (PlayerClass::get_instance()->fm_Killed >= (PlayerClass::get_instance()->get_killedstorage() + 3) && blockone < 30.f)
+		blockone += 0.3f;
+	else if (PlayerClass::get_instance()->fm_Killed >= (PlayerClass::get_instance()->get_killedstorage() + 6) && blocktwo < 30.f)
+		blocktwo += 0.3f;
+
+	if (inmovement && !holdanims())
+		et[6] += dt;
+	else
+		et[6] = 0;
+
+	if (hmvec[0].get_near())
+	{
+		et[10] = 0;
+		et[11] += dt;
+	}
+	else
+	{
+		et[10] += dt;
+		et[11] = 0;
+	}
+
+	if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) || (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && !trigger && !ClimbLamp))
+	{
+		if (!injump)
 		{
-			roll = true;
-			et[7] += dt;
-
-			if (pressedA &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
-				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
-			else if (pressedD &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
-				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox))
-				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
-		}
-		else
-			roll = false;
-
-		if (bufferTime_block > elapsedTime)
-		{
-			block = true;
-			et[8] += dt;
-		}
-		else
-			block = false;
-
-		if (bufferTime_grab > elapsedTime)
-		{
-			grab = true;
-			et[9] += dt;
-		}
-		else
-			grab = false;
-
-		if (block || grab)
-			movespeed = 17.f;
-		else
-			movespeed = 150.f;  // 30.f
-
-		if (Breakrope >= 2)
-		{
-			if (Lamppostrotate > -40.f)
-				Lamppostrotate -= 1.f;
-
-			if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp == false)
+			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox))
 			{
-				//Do nothing WIP
-			}
-			else
-			{
-				ClimbLamp = true;
-			}
-
-		}
-
-		if (inmovement && !holdanims())
-			et[6] += dt;
-		else
-			et[6] = 0;
-
-		if (hmvec[0].get_near())
-		{
-			et[10] = 0;
-			et[11] += dt;
-		}
-		else
-		{
-			et[10] += dt;
-			et[11] = 0;
-		}
-
-		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) || (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && !trigger && !ClimbLamp))
-		{
-			if (!injump)
-			{
-				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_FLOORBBOX]->MeshBBox))
+				if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_MOVEBOX]->MeshBBox)) &&
+					(PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOXTEST]->MeshBBox)))
 				{
-					if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_MOVEBOX]->MeshBBox)) &&
-						(PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_MOVEBOXTEST]->MeshBBox)))
-					{
-						// do jack shit
-					}
-					else
-					{
-						bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
-						PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
-					}
+					// do jack shit
+				}
+				else
+				{
+					bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
+					PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
 				}
 			}
-			else
-			{
-				PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
-			}
 		}
-
-		for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+		else
 		{
-			if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+			PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
+		}
+	}
+
+	for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+		{
+			if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_action() == 1) // I should have done this earlier.
 			{
-				if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_action() == 1) // I should have done this earlier.
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] = 0;		  // I'm an idiot.
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;									  //               ._ o o
+																												  //               \_`-)|_
+				if (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC) //            ,""       \ 
+				{																								  //          ,"  ## |   o o.
+					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] = 0;								  //        ," ##   ,-\__    `.
+					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] += dt;							  //      ,"       /     `--._;)
+				}																							  	  //    ,"     ## /
+				else																							  //  ,"   ##    / Heres a giraffe.
 				{
-					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] = 0;		  // I'm an idiot.
-					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;									  //               ._ o o
-																													  //               \_`-)|_
-					if (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC) //            ,""       \ 
-					{																								  //          ,"  ## |   o o.
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] = 0;								  //        ," ##   ,-\__    `.
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] += dt;							  //      ,"       /     `--._;)
-					}																							  	  //    ,"     ## /
-					else																							  //  ,"   ##    / Heres a giraffe.
-					{
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] += dt;
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] = 0;
-					}
-				}
-				else if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_action() == 2)
-				{
-					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] = 0;
+					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] += dt;
 					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] = 0;
+				}
+			}
+			else if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_action() == 2)
+			{
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] = 0;
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] = 0;
 
-					if (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC)
-					{
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] += dt;
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;
-					}
-					else
-					{
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] = 0;
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] += dt;
-					}
+				if (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC)
+				{
+					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] += dt;
+					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;
 				}
 				else
 				{
 					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] = 0;
-					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] += dt;
-					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] = 0;
-					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;
+					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] += dt;
 				}
 			}
+			else
+			{
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] = 0;
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] += dt;
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] = 0;
+				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;
+			}
 		}
-		PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	}
+	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
 
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
+		{
+			for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+			{
+				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
+					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+			}
+		}
+	}
+
+	for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
+			EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
+	}
+	/*--------------------------------------------------------*/
+
+	/*---------Triggers------*/
+	//if (bufferTime_trigger_slope > elapsedTime && trigger == true)
+	//{
+	//	if (elapsedTime < (bufferTime_trigger_slope - 10.99f))
+	//		PlayerClass::get_instance()->position_a.y = -3.f;
+	//	PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
+	//	PlayerClass::get_instance()->position_a.y -= (float)(3.25f * dt);
+	//	if (elapsedTime >(bufferTime_trigger_slope - 10.8f))
+	//	{
+	//		PlayerClass::get_instance()->position_a.y -= (float)(10.f * dt);
+	//	}
+	//	if (elapsedTime > (bufferTime_trigger_slope - 8.f))
+	//	{
+	//		PlayerClass::get_instance()->position_a.y -= (float)(12.5f * dt);
+	//	}
+	//}
+	//else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
+	//	trigger = false;
+	/*--------------------------------------*/
+	//TextInteraction();
+	LightInteraction();
+
+	/*--------------Updates the Full Mutant Kill Count--------*/
+	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+	{
+		if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() == 0)
+		{
+			PlayerClass::get_instance()->fm_Killed++;
+			EnemyManager::get_instance()->EnemyList[numenemy]->edit_health(-1); // do i even need this
+			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
+		}
+	}
+
+	if ((PlayerClass::get_instance()->fm_Killed - PlayerClass::get_instance()->get_killedstorage()) == 3 && EnemyManager::get_instance()->EnemyList.size() == 0)
+	{
+		for (unsigned int numenemy = 0; numenemy < 3; numenemy++)
+			EnemyManager::get_instance()->spawnEnemy(Vector3(250.f + (numenemy * 10.f), 10.f, 20.f));
+	}
+	else if ((PlayerClass::get_instance()->fm_Killed - PlayerClass::get_instance()->get_killedstorage()) == 6 && EnemyManager::get_instance()->EnemyList.size() == 0)
+	{
+		for (unsigned int numenemy = 0; numenemy < 2; numenemy++)
+			EnemyManager::get_instance()->spawnEnemy(Vector3(400.f + (numenemy * 10.f), 10.f, 20.f));
+	}
+	else if ((PlayerClass::get_instance()->fm_Killed - PlayerClass::get_instance()->get_killedstorage()) == 8 && EnemyManager::get_instance()->EnemyList.size() == 0)
+	{
+		for (unsigned int numenemy = 0; numenemy < 2; numenemy++)
+			EnemyManager::get_instance()->spawnEnemy(Vector3(640.f + (numenemy * 10.f), 10.f, 20.f));
+	}
+	/*-------------------------------------------------------*/
+
+	/*---------Change Scene------*/
+	if ((PlayerClass::get_instance()->position_a.x > 860))
+	{
 		for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 		{
-			if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
+			for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
-				for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-				{
-					if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
-				}
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+				delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+				projectiles--;
 			}
+			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
+			delete EnemyManager::get_instance()->EnemyList[numenemy];
+			numenemy--;
 		}
 
-		for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
-		{
-			if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() > 0)
-				EnemyManager::get_instance()->EnemyList[numEnemy]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
-		}
-		/*--------------------------------------------------------*/
-
-		/*---------Triggers------*/
-		//if (bufferTime_trigger_slope > elapsedTime && trigger == true)
-		//{
-		//	if (elapsedTime < (bufferTime_trigger_slope - 10.99f))
-		//		PlayerClass::get_instance()->position_a.y = -3.f;
-		//	PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
-		//	PlayerClass::get_instance()->position_a.y -= (float)(3.25f * dt);
-		//	if (elapsedTime >(bufferTime_trigger_slope - 10.8f))
-		//	{
-		//		PlayerClass::get_instance()->position_a.y -= (float)(10.f * dt);
-		//	}
-		//	if (elapsedTime > (bufferTime_trigger_slope - 8.f))
-		//	{
-		//		PlayerClass::get_instance()->position_a.y -= (float)(12.5f * dt);
-		//	}
-		//}
-		//else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
-		//	trigger = false;
-		/*--------------------------------------*/
-		//TextInteraction();
-		LightInteraction();
-
-		/*--------------Updates the Full Mutant Kill Count--------*/
-		for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
-		{
-			if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() == 0)
-			{
-				PlayerClass::get_instance()->fm_Killed++;
-				EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-1);
-			}
-		}
-		/*-------------------------------------------------------*/
-
-		/*---------Change Scene------*/
-		if ((PlayerClass::get_instance()->position_a.x > 860))
-		{
-			for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
-			{
-				for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[0]->spit_.size(); projectiles++)
-				{
-					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
-					delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
-					projectiles--;
-				}
-				EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
-				delete EnemyManager::get_instance()->EnemyList[numenemy];
-				numenemy--;
-			}
-
-			SceneManager::getInstance()->Location = "Cavern of Truth";
-			SceneManager::getInstance()->changeScene(new LoadingScreen());
-		}
-		if (PlayerClass::get_instance()->get_health() <= 0)
-		{
-			SceneManager::getInstance()->changeScene(new DeathScreen());
-		}
+		SceneManager::getInstance()->Location = "Cavern of Truth";
+		SceneManager::getInstance()->changeScene(new LoadingScreen());
+	}
+	if (PlayerClass::get_instance()->get_health() <= 0)
+	{
+		SceneManager::getInstance()->changeScene(new DeathScreen());
 	}
 }
 
@@ -1277,6 +1322,18 @@ void StudioProject2Scene2::Render()
 	RenderDebri2();
 
 	RenderObjects();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(125.f, (10.f - blockone), 27.f);
+	modelStack.Scale(1.f, 5.f, 57.f);
+	RenderMesh(meshList[GEO_BLOCK_ONE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(312.f, (10.f - blocktwo), 27.f);
+	modelStack.Scale(1.f, 5.f, 57.f);
+	RenderMesh(meshList[GEO_BLOCK_TWO], true);
+	modelStack.PopMatrix();
 	/*-------------------------------------------------------*/
 	/*-----------------Skybox-------------------*/
 	modelStack.PushMatrix();
@@ -1324,6 +1381,7 @@ void StudioProject2Scene2::Render()
 	RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
+	RenderTextOnScreen(meshList[GEO_TEXT], testposx, Color(0, 1, 0), 2, 35, 18);
 	RenderTextOnScreen(meshList[GEO_TEXT], "INNER CITY", Color(0, 1, 1), 2.5, 1.5, -8.5);
 
 }
@@ -1418,7 +1476,7 @@ void StudioProject2Scene2::RenderMutant(unsigned int num_anim_mutant)
 			modelStack.Translate(3, 0, 0);
 
 
-			if (EnemyManager::get_instance()->EnemyList[0]->get_health() == 100)
+			if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() == 100)
 				RenderMesh(meshList[GEO_M_RHEART], false);
 			else
 				RenderMesh(meshList[GEO_M_BHEART], false);

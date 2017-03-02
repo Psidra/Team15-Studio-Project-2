@@ -69,7 +69,7 @@ public:
 		GEO_M_RHEART, GEO_M_BHEART,
 
 		//Triggers
-		GEO_TRIGGER_SLOPE,
+		GEO_BLOCK_ONE, GEO_BLOCK_TWO,
 
 		NUM_GEOMETRY,
 	};
@@ -217,6 +217,8 @@ private:
 
 	float MoveBox_PosX;
 	float MoveShelterObj_PosX;
+	float blockone = 0.f;
+	float blocktwo = 0.f;
 
 	unsigned int Breakrope = 0;
 	float Lamppostrotate = -20.f;
@@ -226,6 +228,7 @@ private:
 	std::string fps;
 	std::string hMutantSaved;
 	std::string fMutantKilled;
+	std::string testposx;
 
 	// TIME
 	double elapsedTime;
