@@ -22,6 +22,8 @@ public:
 	int get_health();
 	void proj_update(bool boss);
 	unsigned int get_action();
+	double M_et[5]; // heh "met"
+	double bufferTime_attack_MC;
 
 	std::vector<Projectile*> spit_;
 

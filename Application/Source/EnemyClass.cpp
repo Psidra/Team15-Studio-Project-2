@@ -18,7 +18,7 @@ void EnemyClass::update(double dt)
 	{
 		this->detection();
 		this->movement(dt);
-		
+
 		for (unsigned int projectiles = 0; projectiles < this->spit_.size(); projectiles++)
 		{
 			this->spit_[projectiles]->init_proj(this->position_m.x - PlayerClass::get_instance()->position_a.x);

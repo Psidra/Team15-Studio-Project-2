@@ -35,7 +35,7 @@ public:
 		GEO_QUAD,
 		GEO_BBOX,
 		GEO_TESTBBOX,
-
+		GEO_TESTBBOX2,
 		//skybox
 		GEO_SKYBOX,
 
@@ -50,7 +50,7 @@ public:
 		//Environmental Objects
 		GEO_LIGHTBULB, GEO_LIGHTSTAND, GEO_TREE, GEO_CLUSTERTREE, GEO_SCENE2,
 		GEO_FLOORBBOX, GEO_SHELTEROBJ, GEO_TRUMPTOWER, GEO_TRUMPWALL, GEO_DEBRIS1, GEO_DEBRISn, GEO_LAMPPOST,
-		GEO_MOVEBOX, GEO_ROPE,
+		GEO_MOVEBOX, GEO_ROPE,GEO_MOVEBOXTEST, GEO_LAMPTRIGGER,
 
 		//mutant
 		GEO_MUTANT_HEAD, GEO_MUTANT_LEFTARM, GEO_MUTANT_LEFTFEET, GEO_MUTANT_LEFTTHIGH,
@@ -156,22 +156,48 @@ private:
 
 	bool Unlock;
 	/*--------------------Text Variables--------------------------*/
+	// TS = text size
 	bool pEnter;
+	bool nexttext;
 	int pressEnterTS;
+
+	bool preBattleText;
+	int preBattleTS;
+
+	bool preBuildingText;
+	int preBuildingTS;
+
+	bool cautionText;
+	int cautionTS;
+
+	bool crateText;
+	int crateTS;
+
+	bool surroundedText;
+	int surroundedTS;
+
+	bool barbwireText;
+	int barbwireTS;
+
+	bool lamppostText;
+	int lamppostTS;
+
+	int textOccur; 
 	/*------------------------------------------------------------*/
 
 	/*-------------Character Variables (a means Alexis)-----------*/ // no a means apple
-	bool pressedD;
-	bool pressedA;
-	bool inmovement;
-	bool injump;
-	bool attack;
-	bool trigger;
-	bool grab;
-	bool block;
+	bool pressedD = false;
+	bool pressedA = false;
+	bool inmovement = false;
+	bool injump = false;
+	bool attack = false;
+	bool trigger = false;
+	bool ClimbLamp = false;
+	bool grab = false;
+	bool block = false;
 	bool roll = false;
 
-	double et[30];
+	double et[60];
 	/*  Alexis:
 	0 = attack
 	6 = walk
@@ -189,9 +215,10 @@ private:
 	*/
 	/*------------------------------------------------------------*/
 
-	float ShortBox_PosX;
-	float TallBox_PosX;
+	float MoveBox_PosX;
+	float MoveShelterObj_PosX;
 
+	unsigned int Breakrope = 0;
 	float Lamppostrotate = -20.f;
 
 	float movespeed;
@@ -205,7 +232,9 @@ private:
 	double bufferTime_JumpUp;
 	double bufferTime_Jump;
 	double bufferTime_attack;
-	double bufferTime_text;
+	double bufferTime_preBuilding;
+	double bufferTime_barbwire;
+	double bufferTime_Enter;
 	double bufferTime_trigger_slope;	// ten thousand double buffertimes jesus
 	double bufferTime_grab;				// there's probably a better way for this but I'm too dumb to know and code it
 	double bufferTime_iframe;			// iframe is for damage taken
@@ -213,7 +242,7 @@ private:
 	double bufferTime_roll;
 	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
 	double bufferTime_Unlock;
-	double bufferTime_attack_M;
+	double bufferTime_WalkLamp;
 };
 
 #endif 
