@@ -128,7 +128,7 @@ void EnemyClass::proj_update(bool boss)
 		{
 			if (this->spit_[projectiles]->projType_ == 1)
 			{
-				if (this->spit_[projectiles]->displacement() < 17.f)
+				if (this->spit_[projectiles]->displacement() < 7.f)
 					this->spit_[projectiles]->position_.y -= 2.f;
 
 				this->spit_[projectiles]->boss_edit_passed_angle(); // boss_edit_passed_angle();
@@ -136,7 +136,7 @@ void EnemyClass::proj_update(bool boss)
 			}
 			if (this->spit_[projectiles]->projType_ == 2)
 			{
-				if (this->spit_[projectiles]->displacement() < 17.f)
+				if (this->spit_[projectiles]->displacement() < 7.f)
 					this->spit_[projectiles]->position_.y -= 1.f;
 
 				this->spit_[projectiles]->boss_edit_passed_angle();
@@ -144,7 +144,7 @@ void EnemyClass::proj_update(bool boss)
 			}
 			if (this->spit_[projectiles]->projType_ == 3)
 			{
-				if (this->spit_[projectiles]->displacement() < 23.f)
+				if (this->spit_[projectiles]->displacement() < 13.f)
 					this->spit_[projectiles]->position_.y -= 1.f;
 
 				this->spit_[projectiles]->direction_.y = 0;

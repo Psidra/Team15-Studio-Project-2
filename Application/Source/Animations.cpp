@@ -88,6 +88,15 @@ void AnimCheck_Boss(unsigned int num_anim, MS* modelStack, double* timeElapsed, 
 	case 10:
 		LoadAtom("ATOM//Boss_Idle.atom", modelStack, timeElapsed, dagNode);
 		break;
+	case 11:
+		LoadAtom("ATOM//Boss_Spit.atom", modelStack, timeElapsed, dagNode);
+		break;
+	case 12:
+		LoadAtom("ATOM//Boss_SpinAttack.atom", modelStack, timeElapsed, dagNode);
+		break;
+	case 13:
+		LoadAtom("ATOM//Boss_SpikeAttack.atom", modelStack, timeElapsed, dagNode);
+		break;
 	default:
 		LoadAtom("ATOM//Boss_Idle.atom", modelStack, timeElapsed, dagNode);
 		break;

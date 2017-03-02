@@ -10,7 +10,7 @@ void Tail::stalk()
 
 void Tail::strike(bool block)
 {
-	this->position_t.y = 5.f;
+	this->position_t.y = 30.f;
 	this->TailHitBox.setto(this->position_t.x, this->position_t.y, this->position_t.z);
 	
 	if (PlayerClass::get_instance()->PlayerHitBox.collide(this->TailHitBox))
@@ -19,7 +19,7 @@ void Tail::strike(bool block)
 
 void Tail::retract(bool block)
 {
-	this->position_t.y = -20.f;
+	this->position_t.y = -30.f;
 	this->TailHitBox.setto(this->position_t.x, this->position_t.y, this->position_t.z);
 
 	if (PlayerClass::get_instance()->PlayerHitBox.collide(this->TailHitBox))
@@ -28,5 +28,5 @@ void Tail::retract(bool block)
 
 void Tail::set_direction()
 {
-	this->direction_t = (PlayerClass::get_instance()->position_a - this->direction_t).Normalized();
+	this->direction_t = (PlayerClass::get_instance()->position_a - this->position_t).Normalized();
 }

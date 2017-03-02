@@ -14,7 +14,7 @@ unsigned int Boss::get_health()
 
 void Boss::bossInit()
 {
-	get_instance()->position_m = Vector3(350, 3, -10);
+	get_instance()->position_m = Vector3(350, 3, 0);
 	this->EnemyHitBox.setto(get_instance()->position_m.x, get_instance()->position_m.y, get_instance()->position_m.z);
 	spin = false;
 	tailAtk = false;
@@ -176,6 +176,12 @@ void Boss::burrowTeleportation(double timeElapsed)
 
 void Boss::spinAttack(double timeElapsed, bool block)
 {
+	if (timeElapsed > cooldown_Spin)
+	{
+		cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
+		spinningDuration = timeElapsed + 4.f;
+	}
+
 	if (!burrowing && !tailattacking && spinningDuration > timeElapsed)
 	{
 		if (PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox) && (timeElapsed > bufferTime_iframe))
@@ -183,12 +189,6 @@ void Boss::spinAttack(double timeElapsed, bool block)
 			bufferTime_iframe = timeElapsed + 1.f;
 			PlayerClass::get_instance()->healthSystem(block, true);
 		}
-	}
-
-	if (timeElapsed > cooldown_Spin)
-	{
-		cooldown_Spin = timeElapsed + 8.f; // spin happens every 8 second PROVIDED if it dun overlapse with another action
-		spinningDuration = timeElapsed + 4.f;
 	}
 }
 
@@ -211,7 +211,7 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 {
 	if (elapsedTime > bufferTime_projduration)
 	{
-		if (attackchoice == 3)
+		if (attackchoice == 3 && tailattacking)
 		{
 			if ((elapsedTime > bufferTime_tail + 3.5f) && (elapsedTime < bufferTime_tail + 7.5))
 			{
@@ -247,7 +247,7 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 				bufferTime_projduration = elapsedTime + 0.5f;
 			}
 		}
-		else if (attackchoice == 2)
+		else if (attackchoice == 2 && spinning)
 		{
 			if (elapsedTime > bufferTime_resetdir + 2.5f)
 			{
@@ -281,14 +281,13 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 					direction_p_b = -1.f;
 
 				dir.Set(direction_p_a, 0, direction_p_b);
-				dir.Normalize();
 
 				this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, dir));
 
 				bufferTime_projduration = elapsedTime + 0.1f;
 			}
 		}
-		else if (attackchoice == 4)
+		else if (attackchoice == 4 && burrowing)
 		{
 			this->spit_.push_back(projectileBuilder::GenerateProjectile(3, pos, dir));
 
@@ -314,11 +313,11 @@ void Boss::proj_attack(Vector3 pos, Vector3 dir, double elapsedTime)
 
 unsigned int Boss::get_action()
 {
-	if (burrowing)
+	if (this->attackchoice == 4)
 		return 1;
-	else if (spinning)
+	else if (this->attackchoice == 2)
 		return 2;
-	else if (tailattacking)
+	else if (this->attackchoice == 3)
 		return 3;
 	else
 		return 0;
@@ -364,7 +363,7 @@ void Boss::boss_attack(double elapsedTime, bool block)
 	}
 	else
 	{
-		if ((attackchoice == 2 || attackchoice == 3) && (elapsedTime > (bufferTime_attackchoice - 4.f)))
+		if ((attackchoice == 2 || attackchoice == 3) && (elapsedTime > (bufferTime_attackchoice - 2.f)))
 		{
 			tailattacking = false;
 			spinning = false;
@@ -375,15 +374,18 @@ void Boss::boss_attack(double elapsedTime, bool block)
 		{
 			
 		}
-		else if (attackchoice == 2)
+		else if (attackchoice == 3)
 		{
 			std::cout << "tail" << std::endl;
 			this->tailAttack(elapsedTime, true);
 		}
-		else if (attackchoice == 3)
+		else if (attackchoice == 2)
 		{
 			std::cout << "spin" << std::endl;
-			this->spinAttack(elapsedTime, false);
+
+			if (elapsedTime + 8.5f < bufferTime_attackchoice) {}
+			else
+				this->spinAttack(elapsedTime, false);
 		}
 		else if (attackchoice == 4)
 		{

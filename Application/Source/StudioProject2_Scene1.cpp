@@ -440,8 +440,8 @@ void StudioProject2Scene1::Update(double dt)
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOOR]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
 					{
-						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						projectiles--;
 					}
 					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
@@ -450,8 +450,8 @@ void StudioProject2Scene1::Update(double dt)
 						PlayerClass::get_instance()->healthSystem(block, false);
 						bufferTime_iframe = elapsedTime + 0.3f;
 
-						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						projectiles--;
 					}
 				}
