@@ -45,10 +45,13 @@ void StudioProject2Scene2::Init()
 	/*--------------------------------------*/
 
 	/*----Player & AI & Camera Variables----*/
-
-	for (unsigned int numenemy = 0; numenemy < 3; numenemy++)
-		EnemyManager::get_instance()->spawnEnemy(Vector3(60.f + (numenemy * 10.f), 10.f, 20.f)); // look ma! one line!
-
+	if (EnemyManager::get_instance()->EnemyList.size() == 0)
+	{
+		for (unsigned int numenemy = 0; numenemy < 3; numenemy++)
+		{
+			EnemyManager::get_instance()->spawnEnemy(Vector3(60.f + (numenemy * 10.f), 10.f, 20.f)); // look ma! one line!
+		}
+	}
 	//for (unsigned int numenemy = 1; numenemy < 4; numenemy++)
 	//{
 	//	for (unsigned int spawnx = 300.f; spawnx < 320.f; spawnx += 5.f)
@@ -59,31 +62,9 @@ void StudioProject2Scene2::Init()
 
 	PlayerClass::get_instance()->position_a = Vector3(-40.f, 10.f, 20.f);
 	PlayerClass::get_instance()->init();
+	PlayerClass::get_instance()->healthUI();
 	/*--------------------------------------*/
-	/*--Hearts size (User Interface) Initialisation--------------*/
-	PlayerClass::get_instance()->Hearts.heartCounter = PlayerClass::get_instance()->get_health() / 10;
 
-	if (PlayerClass::get_instance()->Hearts.heartCounter == 10) // full health then just do this
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
-		}
-	}
-	else // if not full health, shuld init the size of the blankhearts and red hearts
-	{
-		for (int i = 0; i < PlayerClass::get_instance()->Hearts.heartCounter; i++)
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 2;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 0;
-		}
-		for (int i = PlayerClass::get_instance()->Hearts.heartCounter; i < 10; i++)
-		{
-			PlayerClass::get_instance()->Hearts.a_heart[i] = 0;
-			PlayerClass::get_instance()->Hearts.a_blankheart[i] = 2;
-		}
-	}
 	/*-------------------------------------------------------------------------------*/
 	// Init VBO here
 	glClearColor(0.f, 0.f, 0.f, 0.f);
@@ -1054,6 +1035,11 @@ void StudioProject2Scene2::Update(double dt)
 	if (PlayerClass::get_instance()->get_health() <= 0)
 	{
 		SceneManager::getInstance()->changeScene(new DeathScreen());
+		for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+		{
+			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
+			numenemy--;
+		}
 	}
 }
 
