@@ -131,7 +131,7 @@ void StudioProject2SceneBoss::Init()
 
 	/*-----------------------------Skybox Loading----------------------------------*/
 	meshList[GEO_SKYBOX] = MeshBuilder::GenerateQuad("skybox", Color(1, 1, 1));
-	meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//SkyBG.tga");
+	meshList[GEO_SKYBOX]->textureID = LoadTGA("Image//cavernsky2.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*-----------------Environment Objects Loading---------------------------------*/
@@ -926,8 +926,8 @@ void StudioProject2SceneBoss::Render()
 
 	/*-----------------Skybox-------------------*/
 	modelStack.PushMatrix();
-	modelStack.Translate(450, 80, -200);
-	modelStack.Scale(1600, 675, 1);
+	modelStack.Translate(50, 80, -800);
+	modelStack.Scale(4000, 600, 1);
 	RenderMesh(meshList[GEO_SKYBOX], false);
 	modelStack.PopMatrix();
 	/*------------------------------------------*/
