@@ -85,6 +85,8 @@ void StudioProject2MainMenu::Init()
 	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	
 	/*--------------------------Image Loading--------------------------------------*/
+	meshList[GEO_IMAGE] = MeshBuilder::GenerateQuad("MainMenuScreen", Color(1, 1, 1));
+	meshList[GEO_IMAGE]->textureID = LoadTGA("Image//cover1.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -200,6 +202,8 @@ void StudioProject2MainMenu::Render()
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	
+	RenderMeshOnScreen(meshList[GEO_IMAGE], 0, 0, 80, 60, 0);
+
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Enter>/<Start> to Start Game", Color(1, 1, 1), 2, 6, -5);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Space>/<A> to Select a Level", Color(1, 1, 1), 2, 6, -6);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Tab>/<Back> to see controls", Color(1, 1, 1), 2, 6, -7);
