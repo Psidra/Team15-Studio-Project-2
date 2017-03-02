@@ -39,14 +39,10 @@ void StudioProject2Scene2::LightInteraction()
 	else if (PlayerClass::get_instance()->position_a.x > 325 && PlayerClass::get_instance()->position_a.x < 600)
 	{
 		light[0].position.Set(480, 40, -15);
-		light[2].power = 0;
-		//glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
 	}
 	else if (PlayerClass::get_instance()->position_a.x > 605 && PlayerClass::get_instance()->position_a.x < 750)
 	{
 		light[0].position.Set(680, 8, 50);
-		light[0].power = 2;
-		//glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
 	}
 	else if (PlayerClass::get_instance()->position_a.x > 755 && PlayerClass::get_instance()->position_a.x < 1000)
 	{
@@ -162,26 +158,33 @@ void StudioProject2Scene2::TextInteraction()
 		}
 		
 
-		//if (/*dist between har & building 3 mutants < 70*/
-		//	&& /*3 mutants hp > 0*/)
-		//{
-		//	surroundedText = true;
-		//	pEnter = true;
-		//}
+		if (textOccur == 2 && 
+			EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 50 &&
+			EnemyManager::get_instance()->EnemyList[0]->get_health() > 0 && 
+			EnemyManager::get_instance()->EnemyList[1]->get_health() > 0 && 
+			EnemyManager::get_instance()->EnemyList[2]->get_health() > 0)
+		{
+			textOccur = 3;
+			surroundedText = true;
+			pEnter = true;
+		}
 
-		//if (surroundedText && (nexttext || /*3 mutants hp < 0*/) )
-		//{
-		//	surroundedText = false;
-		//	pEnter = false;
-		//	nexttext = false;
-		//}
+		if (surroundedText && (nexttext || EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0 &&
+			EnemyManager::get_instance()->EnemyList[1]->get_health() <= 0 &&
+			EnemyManager::get_instance()->EnemyList[2]->get_health() <= 0)) 
+		{
+			surroundedText = false;
+			pEnter = false;
+			nexttext = false;
+		}
 
-		//if (/*lamppost hit count = 0 && char pos X > 490 */)
-		//{
-		//	barbwireText = true;
-		//	pEnter = true;
-		//	bufferTime_barbwire = elapsedTime + 4.f;
-		//}
+		if (textOccur == 3 && PlayerClass::get_instance()->position_a.x > 490)
+		{
+			textOccur = 4;
+			barbwireText = true;
+			pEnter = true;
+			bufferTime_barbwire = elapsedTime + 4.f;
+		}
 
 		if (barbwireText && (nexttext || elapsedTime > bufferTime_barbwire))
 		{

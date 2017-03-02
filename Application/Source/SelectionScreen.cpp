@@ -81,6 +81,8 @@ void SelectionScreen::Init()
 	camera.Init(Vector3(1, 20, 20), Vector3(0, 0, 0), Vector3(0, 1, 0));
 
 	/*--------------------------Image Loading--------------------------------------*/
+	meshList[GEO_IMAGE] = MeshBuilder::GenerateQuad("MainMenuScreen", Color(1, 1, 1));
+	meshList[GEO_IMAGE]->textureID = LoadTGA("Image//cover1.tga");
 	/*-----------------------------------------------------------------------------*/
 
 	/*--------------------------Text Loading---------------------------------------*/
@@ -178,6 +180,8 @@ void SelectionScreen::Render()
 
 	Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
 	glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+
+	RenderMeshOnScreen(meshList[GEO_IMAGE], 0, 0, 80, 60, 0);
 
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <Backspace>/<B> to Return to Main Menu", Color(1, 1, 1), 2, 5, -4);
 	RenderTextOnScreen(meshList[GEO_TEXT], "Press <1>/<A> to select 'Secluded Forest'", Color(1, 1, 1), 2, 5, -5);

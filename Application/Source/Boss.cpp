@@ -424,3 +424,8 @@ void Boss::update(double timeElapsed, bool block)
 			boss_health += 10;
 	}
 }
+
+void Boss::reset()
+{
+	this->boss_health = 300;
+}
