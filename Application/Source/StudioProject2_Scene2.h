@@ -71,7 +71,7 @@ public:
 		GEO_M_RHEART, GEO_M_BHEART,
 
 		//Triggers
-		GEO_TRIGGER_SLOPE,
+		GEO_BLOCK_ONE, GEO_BLOCK_TWO,
 
 		NUM_GEOMETRY,
 	};
@@ -200,7 +200,7 @@ private:
 	bool roll = false;
 	bool notjump = true;
 
-	double et[30];
+	double et[60];
 	/*  Alexis:
 	0 = attack
 	6 = walk
@@ -220,6 +220,8 @@ private:
 
 	float MoveBox_PosX;
 	float MoveShelterObj_PosX;
+	float blockone = 0.f;
+	float blocktwo = 0.f;
 
 	unsigned int Breakrope = 0;
 	float Lamppostrotate = -20.f;
@@ -229,6 +231,7 @@ private:
 	std::string fps;
 	std::string hMutantSaved;
 	std::string fMutantKilled;
+	std::string testposx;
 
 	// TIME
 	double elapsedTime;
@@ -245,7 +248,6 @@ private:
 	double bufferTime_roll;
 	double bufferTime_iframeroll;		// I would like to apologise for this monstrocity of buffertimes
 	double bufferTime_Unlock;
-	double bufferTime_attack_M;
 	double bufferTime_WalkLamp;
 };
 

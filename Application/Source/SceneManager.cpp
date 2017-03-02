@@ -42,13 +42,16 @@ void SceneManager::Update() {
 
 	currentScene->Exit();
 	delete currentScene;
-
 }
 
 void SceneManager::changeScene(Scene* scene) {
 	if (!currentScene) {
-		currentScene = scene;
-		scene->Init();
+		delete currentScene;
+		if (currentScene == nullptr)
+		{
+			currentScene = scene;
+			scene->Init();
+		}
 	}
 	else {
 		pendingScene = scene;

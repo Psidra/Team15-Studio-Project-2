@@ -401,33 +401,21 @@ void StudioProject2Scene1::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 
-	if (Application::IsKeyPressed('Y'))
-	{
-		if (Unlock == false && elapsedTime > bufferTime_Unlock)
-		{
-			Unlock = true;
-			bufferTime_Unlock = elapsedTime + 0.5f;
-		}
-		else if (Unlock == true && elapsedTime > bufferTime_Unlock)
-		{
-			Unlock = false;
-			bufferTime_Unlock = elapsedTime + 0.5f;
-		}
-	}
-
-	if (Unlock == false)
-	{
-		camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
-	}
-	else
-	{
-		camera.UpdateUnlockedCam(dt);
-	}
-
 	/*-------Half Mutant Functions------------*/
 	hmvec[0].movement(dt);
 	hmvec[0].transformation();
 	/*----------------------------------------*/
+
+	if (Application::IsKeyPressed('Y') && elapsedTime > bufferTime_Unlock)
+	{
+		Unlock = !Unlock;
+		bufferTime_Unlock = elapsedTime + 0.5f;
+	}
+
+	if (!Unlock)
+		camera.Update(dt, PlayerClass::get_instance()->position_a.x, PlayerClass::get_instance()->position_a.y + 7);
+	else
+		camera.UpdateUnlockedCam(dt);
 
 	/*-------AI Functions---------------*/
 
@@ -452,14 +440,19 @@ void StudioProject2Scene1::Update(double dt)
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOOR]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
 					{
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						projectiles--;
 					}
 					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
 						(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
 					{
 						PlayerClass::get_instance()->healthSystem(block, false);
 						bufferTime_iframe = elapsedTime + 0.3f;
+
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						projectiles--;
 					}
 				}
 			}
@@ -784,7 +777,7 @@ void StudioProject2Scene1::Update(double dt)
 
 	if (!trigger)
 	{
-		if (injump == false)
+		if (!injump)
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFLOOR]->MeshBBox) &&
 				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_HOUSEFRONT]->MeshBBox) &&
@@ -915,9 +908,21 @@ void StudioProject2Scene1::Update(double dt)
 	/*---------Change Scene------*/
 	if ((PlayerClass::get_instance()->position_a.x > 800 && (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0)))
 	{
+		for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+		{
+			for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+			{
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+				delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+				projectiles--;
+			}
+			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
+			delete EnemyManager::get_instance()->EnemyList[numenemy];
+			numenemy--;
+		}
+
 		SceneManager::getInstance()->Location = "Inner City";
 		SceneManager::getInstance()->changeScene(new LoadingScreen());
-		delete EnemyManager::get_instance()->EnemyList[0];
 	}
 	if (PlayerClass::get_instance()->get_health() <= 0)
 	{

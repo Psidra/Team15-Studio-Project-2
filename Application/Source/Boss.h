@@ -32,6 +32,7 @@ public:
 	void spinAttack(double timeElapsed, bool block);
 	void tailAttack(double timeElapsed, bool block);
 	void update(double timeElapsed, bool block);
+	void reset();
 	unsigned int get_health();
 	unsigned int get_action();
 	void proj_attack(Vector3 pos, Vector3 dir, double elapsedTime);

@@ -343,3 +343,8 @@ void PlayerClass::projectileShield(double timeElapsed, double dt)
 		ProjShieldSize.z = 0.1;
 	}
 }
+
+unsigned int PlayerClass::get_killedstorage()
+{
+	return this->fmKilledStorage;
+}

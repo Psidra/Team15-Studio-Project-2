@@ -49,6 +49,18 @@ void AnimCheck_Mutant(unsigned int num_anim, MS* modelStack, double* timeElapsed
 {
 	double zero = 0;
 	switch (num_anim) {
+	case 0:
+		LoadAtom("ATOM//FullMutant_IdleMovement.atom", modelStack, timeElapsed, dagNode);
+		break;
+	case 1:
+		LoadAtom("ATOM//Updated_FullMutant_WalkCycle.atom", modelStack, timeElapsed, dagNode);
+		break;
+	case 2:
+		LoadAtom("ATOM//FullMutant_MeleeAttack.atom", modelStack, timeElapsed, dagNode);
+		break;
+	case 3:
+		LoadAtom("ATOM//FullMutant_SpitAttack.atom", modelStack, timeElapsed, dagNode);
+		break;
 	case 20:
 		LoadAtom("ATOM//FullMutant_IdleMovement.atom", modelStack, timeElapsed, dagNode);
 		break;
