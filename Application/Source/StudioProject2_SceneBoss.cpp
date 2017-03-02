@@ -152,7 +152,9 @@ void StudioProject2SceneBoss::Init()
 
 	meshList[GEO_GROUND]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");
 	meshList[GEO_LEFTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossleftbb.obj");
+	meshList[GEO_LEFTWALL]->MeshBBox.translate(40.f, 0, 0);
 	meshList[GEO_RIGHTWALL]->MeshBBox.loadBB("OBJ//SceneBoss//bossrightbb.obj");
+	meshList[GEO_RIGHTWALL]->MeshBBox.translate(-110.f, 0, 0);
 	meshList[GEO_TRIGGER]->MeshBBox.loadBB("OBJ//SceneBoss//bosstrigger.obj");
 	/*-----------------------------------------------------------------------------*/
 
@@ -388,18 +390,10 @@ void StudioProject2SceneBoss::Update(double dt)
 	int framespersec = 1 / dt;
 	elapsedTime += dt;
 	// Lock/Unlock Camera
-	if (Application::IsKeyPressed('Y'))
+	if (Application::IsKeyPressed('Y') && elapsedTime > bufferTime_Unlock)
 	{
-		if (!Unlock && elapsedTime > bufferTime_Unlock)
-		{
-			Unlock = true;
-			bufferTime_Unlock = elapsedTime + 0.5f;
-		}
-		else if (Unlock && elapsedTime > bufferTime_Unlock)
-		{
-			Unlock = false;
-			bufferTime_Unlock = elapsedTime + 0.5f;
-		}
+		Unlock = !Unlock;
+		bufferTime_Unlock = elapsedTime + 0.5f;
 	}
 
 	if (!Unlock)
@@ -423,7 +417,7 @@ void StudioProject2SceneBoss::Update(double dt)
 	}
 
 
-	if (PlayerClass::get_instance()->laserActive == true && trigger &&
+	if (PlayerClass::get_instance()->laserActive && trigger &&
 		(((Boss::get_instance()->position_m.x - PlayerClass::get_instance()->position_a.x) > 0.f && PlayerClass::get_instance()->a_LookingDirection == 90) ||
 		((Boss::get_instance()->position_m.x - PlayerClass::get_instance()->position_a.x) < 0.f && PlayerClass::get_instance()->a_LookingDirection == 90)))
 	{
@@ -460,7 +454,8 @@ void StudioProject2SceneBoss::Update(double dt)
 			{
 				Boss::get_instance()->spit_.erase(Boss::get_instance()->spit_.begin() + projectiles);
 			}
-			else if (Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) && (elapsedTime > bufferTime_iframeroll) && (elapsedTime > bufferTime_iframe))
+			else if (Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox)
+				&& (elapsedTime > bufferTime_iframeroll) && (elapsedTime > bufferTime_iframe) && (elapsedTime > PlayerClass::get_instance()->get_shielddur()))
 			{
 				PlayerClass::get_instance()->healthSystem(block, true);
 				bufferTime_iframe = elapsedTime + 0.3f;
@@ -469,41 +464,6 @@ void StudioProject2SceneBoss::Update(double dt)
 			}
 		}
 	}
-
-	//EnemyManager::get_instance()->EnemyList[0]->update(dt);
-
-	// I spent 10 years trying to fix projectile because I wanted to avoid using erase.
-	// Erase won today. Erase, me, 1:0. Shit.
-
-	//for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++) // in case got error, -- proj when delete
-	//{
-	//	if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
-	//	{
-	//		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-	//		{
-	//			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-	//			{
-	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.translate(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.x,
-	//					(EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.y + 10.f),
-	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->position_.z);
-
-	//				if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
-	//				{
-	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
-	//				}
-	//				else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
-	//					(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
-	//				{
-	//					PlayerClass::get_instance()->healthSystem(block, false);
-	//					bufferTime_iframe = elapsedTime + 0.3f;
-	//					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-
-
 
 	/*-----------HUD UPDATES---------*/
 	fps = "FPS:" + std::to_string(framespersec);

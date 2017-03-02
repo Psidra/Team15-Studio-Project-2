@@ -465,6 +465,7 @@ void StudioProject2Scene2::Update(double dt)
 					if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOORBBOX]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMPTOWER]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_SHELTEROBJ]->MeshBBox) ||
+						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_TRUMPWALL]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
 					{
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
@@ -841,7 +842,7 @@ void StudioProject2Scene2::Update(double dt)
 	if (block || grab)
 		movespeed = 17.f;
 	else
-		movespeed = 150.f;  // 30.f
+		movespeed = 30.f;  // 30.f
 
 	if (Breakrope >= 2)
 	{

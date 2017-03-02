@@ -348,3 +348,8 @@ unsigned int PlayerClass::get_killedstorage()
 {
 	return this->fmKilledStorage;
 }
+
+double PlayerClass::get_shielddur()
+{
+	return this->bufferTime_ProjShield;
+}
