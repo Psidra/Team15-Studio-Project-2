@@ -47,7 +47,7 @@ void StudioProject2Scene2::Init()
 	/*----Player & AI & Camera Variables----*/
 
 	for (unsigned int numenemy = 0; numenemy < 3; numenemy++)
-		EnemyManager::get_instance()->spawnEnemy(Vector3(70.f + (numenemy * 10.f), 10.f, 20.f)); // look ma! one line!
+		EnemyManager::get_instance()->spawnEnemy(Vector3(60.f + (numenemy * 10.f), 10.f, 20.f)); // look ma! one line!
 
 	//for (unsigned int numenemy = 1; numenemy < 4; numenemy++)
 	//{
@@ -57,7 +57,7 @@ void StudioProject2Scene2::Init()
 	//	}
 	//}
 
-	PlayerClass::get_instance()->position_a = Vector3(-15.f, 10.f, 20.f);
+	PlayerClass::get_instance()->position_a = Vector3(-40.f, 10.f, 20.f);
 	PlayerClass::get_instance()->init();
 	/*--------------------------------------*/
 	/*--Hearts size (User Interface) Initialisation--------------*/
@@ -1000,7 +1000,7 @@ void StudioProject2Scene2::Update(double dt)
 	//else if (bufferTime_trigger_slope < elapsedTime && trigger == true)
 	//	trigger = false;
 	/*--------------------------------------*/
-	//TextInteraction();
+	TextInteraction();
 	LightInteraction();
 
 	/*--------------Updates the Full Mutant Kill Count--------*/

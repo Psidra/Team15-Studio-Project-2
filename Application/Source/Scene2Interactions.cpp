@@ -110,12 +110,13 @@ void StudioProject2Scene2::TextInteraction()
 			nexttext = true;
 		}
 
-		//if (/*first 3 enemy hp > 0*/
-		//	 /*distance between first mutant and char less than 70*/)
-		//{
-		//	preBattleText = true;
-		//	pEnter = true;
-		//}
+		if (textOccur == 0 && 
+			EnemyManager::get_instance()->EnemyList[0]->position_m.x - PlayerClass::get_instance()->position_a.x < 70)
+		{
+			textOccur = 1;
+			preBattleText = true;
+			pEnter = true;
+		}
 
 		if (preBattleText)
 		{
@@ -129,12 +130,15 @@ void StudioProject2Scene2::TextInteraction()
 				preBattleText = false;
 		}
 
-		//if (/*first 3 enemy hp < 0*/)
-		//{
-		//	bufferTime_preBuilding = elapsedTime + 4.f;
-		//	preBuildingText = true;
-		//	pEnter = true;
-		//}
+		if (EnemyManager::get_instance()->EnemyList[0]->get_health() <= 0 && 
+			EnemyManager::get_instance()->EnemyList[1]->get_health() <= 0 && 
+			EnemyManager::get_instance()->EnemyList[2]->get_health() <= 0 && textOccur == 1)
+		{
+			textOccur = 2;
+			bufferTime_preBuilding = elapsedTime + 4.f;
+			preBuildingText = true;
+			pEnter = true;
+		}
 
 		if (preBuildingText && (elapsedTime > bufferTime_preBuilding || nexttext))
 		{
