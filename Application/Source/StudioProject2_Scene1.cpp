@@ -1089,7 +1089,7 @@ void StudioProject2Scene1::Render()
 						 (PlayerClass::get_instance()->position_a.y + 7.9f), // render collision box
 						 PlayerClass::get_instance()->position_a.z);		 // i need this
 	modelStack.Scale(1.1f, 4.5f, 1.f);										 // if you remove it bad things will happen
-	RenderMesh(meshList[GEO_BBOX], false);									 // remove this later when showing actual shit of course
+	//RenderMesh(meshList[GEO_BBOX], false);								 // remove this later when showing actual shit of course
 	modelStack.PopMatrix();												 	 // :ok_hand:
 																			 // for some reason I needed to flip translate and scale here to fit with the actual hitbox
 
