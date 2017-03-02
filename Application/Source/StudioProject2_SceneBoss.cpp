@@ -452,7 +452,9 @@ void StudioProject2SceneBoss::Update(double dt)
 				|| Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(meshList[GEO_RIGHTWALL]->MeshBBox)
 				|| Boss::get_instance()->spit_[projectiles]->displacement() > 500.f)
 			{
+				delete Boss::get_instance()->spit_[projectiles];
 				Boss::get_instance()->spit_.erase(Boss::get_instance()->spit_.begin() + projectiles);
+				projectiles--;
 			}
 			else if (Boss::get_instance()->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox)
 				&& (elapsedTime > bufferTime_iframeroll) && (elapsedTime > bufferTime_iframe) && (elapsedTime > PlayerClass::get_instance()->get_shielddur()))
@@ -460,7 +462,9 @@ void StudioProject2SceneBoss::Update(double dt)
 				PlayerClass::get_instance()->healthSystem(block, true);
 				bufferTime_iframe = elapsedTime + 0.3f;
 
+				delete Boss::get_instance()->spit_[projectiles];
 				Boss::get_instance()->spit_.erase(Boss::get_instance()->spit_.begin() + projectiles);
+				projectiles--;
 			}
 		}
 	}
@@ -751,27 +755,16 @@ void StudioProject2SceneBoss::Update(double dt)
 	else
 		et[6] = 0;
 
-	et[20] += dt;
-
-	if (injump == false)
+	if (!injump)
 	{
 		if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_GROUND]->MeshBBox))
 		{
-			//if ((PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_SHORT]->MeshBBox) && // If doing platforms look at this
-			//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_SHORTTEST]->MeshBBox)) ||
-			//	(PlayerClass::get_instance()->PlayerHitBox.higherthan(meshList[GEO_BOX_TALL]->MeshBBox) &&
-			//	PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_BOX_TALLTEST]->MeshBBox)))
-			//{
-			//	// do jack shit
-			//}
 			bufferTime_Jump = elapsedTime + 0.1f; // this fixes a bug I never thought was there in the first place, preventing double jump
 			PlayerClass::get_instance()->position_a.y -= (float)(30.f * dt);
 		}
 	}
 	else
-	{
 		PlayerClass::get_instance()->position_a.y += (float)(30.f * dt);
-	}
 
 	if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && !trigger) // This will only run once.
 	{
@@ -804,10 +797,19 @@ void StudioProject2SceneBoss::Update(double dt)
 	{
 		if (Boss::get_instance()->get_action() == 2)
 		{
-			et[10] = 0;
 			et[11] = 0;
-			et[12] += dt;
 			et[13] = 0;
+
+			if (Boss::get_instance()->spin_delay_anim())
+			{
+				et[10] = 0;
+				et[12] += dt;
+			}
+			else
+			{
+				et[10] += dt;
+				et[12] = 0;
+			}
 		}
 		else if (Boss::get_instance()->get_action() == 3)
 		{
@@ -837,31 +839,16 @@ void StudioProject2SceneBoss::Update(double dt)
 		}
 	}
 
-	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	PlayerClass::get_instance()->PlayerHitBox.resetBB();
 
 	for (unsigned int projectiles = 0; projectiles < Boss::get_instance()->spit_.size(); projectiles++)
 	{
 		if (Boss::get_instance()->spit_[projectiles] != nullptr)
-			Boss::get_instance()->spit_[projectiles]->projHitBox_.loadBB("OBJ//Mutant_Projectile.obj");
+			Boss::get_instance()->spit_[projectiles]->projHitBox_.resetBB();
 	}
 
-	//for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
-	//{
-	//	if (EnemyManager::get_instance()->EnemyList[numenemy]->get_health() > 0)
-	//	{
-	//		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
-	//		{
-	//			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-	//				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Mutant_Projectile.obj");
-	//		}
-	//	}
-	//}
-
-	//if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
-	//	EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
-
-	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
-	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
+	Boss::get_instance()->Boss_Tail.TailHitBox.resetBB();
+	Boss::get_instance()->EnemyHitBox.resetBB();
 	/*--------------------------------------------------------*/
 
 	//text&Light interaction
@@ -1191,13 +1178,13 @@ void StudioProject2SceneBoss::Render()
 		modelStack.PushMatrix();
 		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, PlayerClass::get_instance()->position_a.y + 2.5f, Boss::get_instance()->Boss_Tail.position_t.z);
 		modelStack.Rotate(90, 1, 0, 0);
-		modelStack.Scale(1.f, 1.f, 1.f);
+		modelStack.Scale(0.3f, 0.3f, 0.3f);
 		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
 		modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, Boss::get_instance()->Boss_Tail.position_t.y, Boss::get_instance()->Boss_Tail.position_t.z);
-		modelStack.Scale(0.5f, 0.5f, 0.5f);
+		modelStack.Scale(3.f, 7.f, 3.f);
 		RenderMesh(meshList[GEO_SPIKE], true);
 		modelStack.PopMatrix();
 	}

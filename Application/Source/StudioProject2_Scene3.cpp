@@ -424,14 +424,14 @@ void StudioProject2Scene3::Update(double dt)
 
 	et[20] += dt;		// This is for me to see if the idleanim is running at all
 
-	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
+	PlayerClass::get_instance()->PlayerHitBox.resetBB();
 
 	for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 	{
 		for (unsigned int projectiles = 0; projectiles < EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 		{
 			if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles] != nullptr)
-				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.loadBB("OBJ//Scene1//Box_Short.obj");
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.resetBB();
 		}
 	}
 
