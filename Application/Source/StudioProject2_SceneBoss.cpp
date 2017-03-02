@@ -359,8 +359,6 @@ void StudioProject2SceneBoss::Init()
 
 	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
 
-	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", Boss::get_instance()->EnemyHitBox.max_, Boss::get_instance()->EnemyHitBox.min_);
-
 	Boss::get_instance()->Boss_Tail.TailHitBox.loadBB("OBJ//Boss//Boss_Spike.obj");
 
 	meshList[GEO_LASER] = MeshBuilder::GenerateOBJ("laser", "OBJ//lazer.obj");
@@ -371,6 +369,7 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_SHIELD]->textureID = LoadTGA("Image//Hardlightshield.tga");
 	meshList[GEO_SHIELD]->MeshBBox.loadBB("OBJ//Hardlightshield.obj");
 	/*-----------------------------Checking BBox-----------------------------------*/
+	meshList[GEO_TESTBBOX] = MeshBuilder::GenerateBB("TestBox", meshList[GEO_SHIELD]->MeshBBox.max_, meshList[GEO_SHIELD]->MeshBBox.min_);
 	meshList[GEO_BBOX] = MeshBuilder::GenerateBB("CharBox", PlayerClass::get_instance()->PlayerHitBox.max_, PlayerClass::get_instance()->PlayerHitBox.min_);
 	/*-----------------------------------------------------------------------------*/
 
@@ -855,13 +854,20 @@ void StudioProject2SceneBoss::Update(double dt)
 	if (trigger && plop < 50)
 		plop += 1;
 
-	et[10] += dt;
-
 	//if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER_SLOPE]->MeshBBox))
 	//{
 	//	bufferTime_trigger_slope = elapsedTime + 11.f;
 	//	trigger = true;
 	//}
+
+	//if (burrowing)
+	//	return 1;
+	//else if (spinning)
+	//	return 2;
+	//else if (tailattacking)
+	//	return 3;
+	//else
+	//	return 0;
 
 	if (Boss::get_instance()->get_action() == 1)
 	{
@@ -869,39 +875,39 @@ void StudioProject2SceneBoss::Update(double dt)
 		et[11] = 0;
 		et[12] += dt;
 		et[13] = 0;
-
-		if (elapsedTime + 1.5f < bufferTime_attack_M)
-		{
-			et[20] = 0;
-			et[22] += dt;
-		}
-		else
-		{
-			et[22] = 0;
-			et[20] += dt;
-		}
 	}
 	else if (Boss::get_instance()->get_action() == 2)
 	{
-		et[21] = 0;
-		et[22] = 0;
-		if ((elapsedTime + 0.5f < bufferTime_attack_M) && (elapsedTime + 1.5f > bufferTime_attack_M))
-		{
-			et[23] = 0;
-			et[20] += dt;
-		}
-		else
-		{
-			et[20] = 0;
-			et[23] += dt;
-		}
+		et[10] = 0;
+		et[11] = 0;
+		et[12] += dt;
+		et[13] = 0;
+	}
+	else if (Boss::get_instance()->get_action() == 3)
+	{
+		et[10] = 0;
+		et[11] = 0;
+		et[12] = 0;
+		et[13] += dt;
 	}
 	else
 	{
-		et[20] = 0;
-		et[21] += dt;
-		et[22] = 0;
-		et[23] = 0;
+		if (elapsedTime > bufferTime_attack_M)
+			bufferTime_attack_M += 2.f;
+
+		et[12] = 0;
+		et[13] = 0;
+
+		if ((elapsedTime + 0.5f < bufferTime_attack_M) && (elapsedTime + 1.5f > bufferTime_attack_M))
+		{
+			et[11] = 0;
+			et[10] += dt;
+		}
+		else
+		{
+			et[10] = 0;
+			et[11] += dt;
+		}
 	}
 
 	PlayerClass::get_instance()->PlayerHitBox.loadBB("OBJ//Character//crotch.obj");
@@ -1012,6 +1018,7 @@ void StudioProject2SceneBoss::Render()
 		PlayerClass::get_instance()->ProjShieldSize.z);
 	RenderMesh(meshList[GEO_SHIELD], false);
 	modelStack.PopMatrix();
+
 	// add in grab animation later
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	if (num_anim == 7 || num_anim == 8 || num_anim == 9)
@@ -1267,8 +1274,8 @@ void StudioProject2SceneBoss::Render()
 	/*---------------*/
 
 	modelStack.PushMatrix();
-	modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
-	modelStack.Scale(2.25f, 3, 3);
+	//modelStack.Translate(Boss::get_instance()->position_m.x, Boss::get_instance()->position_m.y, Boss::get_instance()->position_m.z);
+	//modelStack.Scale(2.25f, 3, 3);
 	RenderMesh(meshList[GEO_TESTBBOX], false);
 	modelStack.PopMatrix();
 
