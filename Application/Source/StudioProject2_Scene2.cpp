@@ -514,7 +514,6 @@ void StudioProject2Scene2::Update(double dt)
 
 	/*-----------HUD UPDATES---------*/
 	fps = "FPS:" + std::to_string(framespersec);
-	testposx = "x: " + std::to_string(PlayerClass::get_instance()->position_a.x);
 	fMutantKilled = ":" + std::to_string(PlayerClass::get_instance()->fm_Killed);
 	hMutantSaved = ":" + std::to_string(PlayerClass::get_instance()->hm_Saved);
 	/*----------------------------------------------------------*/
@@ -554,7 +553,7 @@ void StudioProject2Scene2::Update(double dt)
 		if (elapsedTime > 1.1f && !trigger) // This pre-setting ensures animations won't occur at the very start, so animations glitching out will not happen anymore.*
 		{									// *I hope.
 			inmovement = false;				// so many if statements I could write a philosophy book
-			if ((Application::IsKeyPressed('A') || GLFW_PRESS == xbox[13]) && !roll)
+			if ((GLFW_PRESS == xbox[13] || Application::IsKeyPressed('A')) && !roll)
 			{
 				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
 					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) &&
@@ -564,13 +563,8 @@ void StudioProject2Scene2::Update(double dt)
 				{
 					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
 					{
-						PlayerClass::get_instance()->position_a.x -= (float)(13 * dt);
-						PlayerClass::get_instance()->position_a.y -= (float)(15 * dt);
-					}
-					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) && ClimbLamp)
-					{
-						PlayerClass::get_instance()->position_a.x -= (float)(15 * dt);
-						PlayerClass::get_instance()->position_a.y += (float)(13.5 * dt);
+						PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
+						PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
 					}
 					else
 					{
@@ -593,12 +587,13 @@ void StudioProject2Scene2::Update(double dt)
 							MoveBox_PosX -= (float)(movespeed * dt);
 							meshList[GEO_MOVEBOX]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
 							meshList[GEO_MOVEBOXTEST]->MeshBBox.translate(-((float)(movespeed * dt)), 0, 0);
+
 						}
 					}
 				}
 			}
 
-			if ((Application::IsKeyPressed('D') || GLFW_PRESS == xbox[11]) && !roll)
+			if ((GLFW_PRESS == xbox[11] || Application::IsKeyPressed('D')) && !roll)
 			{
 				if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_DEBRIS1]->MeshBBox) &&
 					!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRUMPWALL]->MeshBBox) &&
@@ -608,13 +603,20 @@ void StudioProject2Scene2::Update(double dt)
 				{
 					if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) && ClimbLamp)
 					{
-						PlayerClass::get_instance()->position_a.x += (float)(13.5 * dt);
-						PlayerClass::get_instance()->position_a.y += (float)(16.5 * dt);
+						PlayerClass::get_instance()->position_a.x += (float)(13 * dt);
+						PlayerClass::get_instance()->position_a.y += (float)(15 * dt);
+					}
+					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) && ClimbLamp)
+					{
+						PlayerClass::get_instance()->position_a.x += (float)(15 * dt);
+						PlayerClass::get_instance()->position_a.y -= (float)(13.5 * dt);
 					}
 					else
 					{
 						PlayerClass::get_instance()->position_a.x += (float)(movespeed * dt);
 					}
+
+
 					pressedA = false;
 					pressedD = true;
 					inmovement = true;
@@ -637,11 +639,19 @@ void StudioProject2Scene2::Update(double dt)
 				}
 			}
 
-			if ((Application::IsKeyPressed('W') || GLFW_PRESS == xbox[0]) && elapsedTime > bufferTime_Jump)
+			if ((PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER3]->MeshBBox)) && ClimbLamp)
 			{
-				bufferTime_Jump = elapsedTime + 0.5f;
-				bufferTime_JumpUp = elapsedTime + 0.3f;
+
 			}
+			else
+			{
+				if ((GLFW_PRESS == xbox[0] || Application::IsKeyPressed('W')) && elapsedTime > bufferTime_Jump)
+				{
+					bufferTime_Jump = elapsedTime + 0.5f;
+					bufferTime_JumpUp = elapsedTime + 0.3f;
+				}
+			}
+
 			if ((Application::IsKeyPressed(VK_LBUTTON) || GLFW_PRESS == xbox[2]) && !attack && !holdanims())
 			{
 				bufferTime_attack = elapsedTime + 1.f;
@@ -659,11 +669,10 @@ void StudioProject2Scene2::Update(double dt)
 			if ((Application::IsKeyPressed('F') || GLFW_PRESS == xbox[5]) && !block && !roll)
 				bufferTime_grab = elapsedTime + 0.15f;
 
-			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT) || GLFW_PRESS == xbox[3]) 
-				&& !grab && !roll)
+			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT) || GLFW_PRESS == xbox[3]) && !grab && !roll)
 				bufferTime_block = elapsedTime + 0.2f;
 
-			if ((Application::IsKeyPressed(VK_RBUTTON)|| GLFW_PRESS == xbox[1]) && !holdanims())
+			if ((Application::IsKeyPressed(VK_RBUTTON) || GLFW_PRESS == xbox[1]) && !holdanims())
 			{
 				bufferTime_roll = elapsedTime + 0.8f;
 				bufferTime_iframeroll = elapsedTime + 0.35f;
@@ -1410,7 +1419,6 @@ void StudioProject2Scene2::Render()
 	RenderTextInteractions();
 	/*-----------------------------------------*/
 	RenderTextOnScreen(meshList[GEO_TEXT], fps, Color(0, 1, 0), 2, 36, 19);
-	RenderTextOnScreen(meshList[GEO_TEXT], testposx, Color(0, 1, 0), 2, 35, 18);
 	RenderTextOnScreen(meshList[GEO_TEXT], "INNER CITY", Color(0, 1, 1), 2.5, 1.5, -8.5);
 
 }

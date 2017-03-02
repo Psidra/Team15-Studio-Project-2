@@ -231,7 +231,6 @@ private:
 	std::string fps;
 	std::string hMutantSaved;
 	std::string fMutantKilled;
-	std::string testposx;
 
 	// TIME
 	double elapsedTime;
