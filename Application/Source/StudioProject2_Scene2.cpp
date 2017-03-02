@@ -940,7 +940,7 @@ void StudioProject2Scene2::Update(double dt)
 				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] = 0;
 				EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] = 0;
 
-				if (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC)
+				if ((elapsedTime + 0.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC) && (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC))
 				{
 					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] += dt;
 					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;
