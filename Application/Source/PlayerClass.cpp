@@ -53,9 +53,6 @@ void PlayerClass::healthUI()
 				Hearts.a_heart[i] = 0;
 			}
 		}
-
-		if (Application::IsKeyPressed('P'))
-			_health = 0;
 	}
 
 	
