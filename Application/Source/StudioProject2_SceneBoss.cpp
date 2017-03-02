@@ -426,8 +426,8 @@ void StudioProject2SceneBoss::Update(double dt)
 	{
 		Boss::get_instance()->update(elapsedTime, block); // so much neater \:D/
 		Boss::get_instance()->proj_attack(Boss::get_instance()->position_m + Vector3(0, -5.f, 0), Boss::get_instance()->direction_m, elapsedTime);
-		Boss::get_instance()->proj_update(true);
 	}
+	Boss::get_instance()->proj_update(true);
 	/*------------------------------------*/
 
 	/*-------AI Functions---------------*/
@@ -821,7 +821,18 @@ void StudioProject2SceneBoss::Update(double dt)
 	if (Boss::get_instance()->get_health() <= 0)
 		SceneManager::getInstance()->changeScene(new VictoryScreen());
 	if (PlayerClass::get_instance()->get_health() <= 0)
+	{
+		for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
+		{
+			for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
+			{
+				delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+				projectiles--;
+			}
+		}
 		SceneManager::getInstance()->changeScene(new DeathScreen());
+	}
 	/*---------------------------*/
 }
 
