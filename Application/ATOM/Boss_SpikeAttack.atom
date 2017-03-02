@@ -467,6 +467,7 @@ dagNode {
       0 0 auto auto 1 0 0;
       6 -24.211115 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 8 0 8;
+      45 0 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim rotate.rotateY rotateY 1;
@@ -480,6 +481,7 @@ dagNode {
       0 0 auto auto 1 0 0;
       6 0 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 8 0 8;
+      45 0 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim rotate.rotateZ rotateZ 2;
@@ -493,6 +495,7 @@ dagNode {
       0 0 auto auto 1 0 0;
       6 0 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 8 0 8;
+      45 0 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim visibility visibility 3;
@@ -506,6 +509,7 @@ dagNode {
       0 1 spline step 1 0 0;
       6 1 spline step 1 0 0;
       35 1 fixed step 1 0 0 0 8;
+      45 1 fixed step 1 0 0 0 8;
     }
   }
   anim translate.translateX translateX 4;
@@ -519,6 +523,7 @@ dagNode {
       0 0.179 auto auto 1 0 0;
       6 0.179 auto auto 1 0 0;
       35 0.179 fixed fixed 1 0 0 0 8 0 8;
+      45 0.179 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim translate.translateY translateY 5;
@@ -532,6 +537,7 @@ dagNode {
       0 10.112 auto auto 1 0 0;
       6 10.112 auto auto 1 0 0;
       35 10.112 fixed fixed 1 0 0 0 8 0 8;
+      45 10.112 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim translate.translateZ translateZ 6;
@@ -545,6 +551,7 @@ dagNode {
       0 0.711 auto auto 1 0 0;
       6 0.711 auto auto 1 0 0;
       35 0.711 fixed fixed 1 0 0 0 8 0 8;
+      45 0.711 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -558,6 +565,7 @@ dagNode {
       0 1 auto auto 1 0 0;
       6 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 8 0 8;
+      45 1 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim scale.scaleY scaleY 8;
@@ -571,6 +579,7 @@ dagNode {
       0 1 auto auto 1 0 0;
       6 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 8 0 8;
+      45 1 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim scale.scaleZ scaleZ 9;
@@ -584,6 +593,7 @@ dagNode {
       0 1 auto auto 1 0 0;
       6 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 8 0 8;
+      45 1 fixed fixed 1 0 0 0 8 0 8;
     }
   }
 }
@@ -600,6 +610,7 @@ dagNode {
       0 0 auto auto 1 0 0;
       6 -23.460462 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 8 0 8;
+      45 0 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim rotate.rotateY rotateY 1;
@@ -613,6 +624,7 @@ dagNode {
       0 0 auto auto 1 0 0;
       6 0 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 8 0 8;
+      45 0 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim rotate.rotateZ rotateZ 2;
@@ -626,6 +638,7 @@ dagNode {
       0 0 auto auto 1 0 0;
       6 0 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 8 0 8;
+      45 0 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim visibility visibility 3;
@@ -639,6 +652,7 @@ dagNode {
       0 1 spline step 1 0 0;
       6 1 spline step 1 0 0;
       35 1 fixed step 1 0 0 0 8;
+      45 1 fixed step 1 0 0 0 8;
     }
   }
   anim translate.translateX translateX 4;
@@ -652,6 +666,7 @@ dagNode {
       0 0.045 auto auto 1 0 0;
       6 0.045 auto auto 1 0 0;
       35 0.045 fixed fixed 1 0 0 0 8 0 8;
+      45 0.045 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim translate.translateY translateY 5;
@@ -665,6 +680,7 @@ dagNode {
       0 3.9490534 auto auto 1 0 0;
       6 3.9490534 auto auto 1 0 0;
       35 3.9490534 fixed fixed 1 0 0 0 8 0 8;
+      45 3.9490534 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim translate.translateZ translateZ 6;
@@ -678,6 +694,7 @@ dagNode {
       0 4.3241945 auto auto 1 0 0;
       6 4.3241945 auto auto 1 0 0;
       35 4.3241945 fixed fixed 1 0 0 0 8 0 8;
+      45 4.3241945 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -691,6 +708,7 @@ dagNode {
       0 1 auto auto 1 0 0;
       6 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 8 0 8;
+      45 1 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim scale.scaleY scaleY 8;
@@ -704,6 +722,7 @@ dagNode {
       0 1 auto auto 1 0 0;
       6 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 8 0 8;
+      45 1 fixed fixed 1 0 0 0 8 0 8;
     }
   }
   anim scale.scaleZ scaleZ 9;
@@ -717,6 +736,7 @@ dagNode {
       0 1 auto auto 1 0 0;
       6 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 8 0 8;
+      45 1 fixed fixed 1 0 0 0 8 0 8;
     }
   }
 }
@@ -734,6 +754,7 @@ dagNode {
       6 -17.597934 auto auto 1 0 0;
       20 16.500115 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 0 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim rotate.rotateY rotateY 1;
@@ -748,6 +769,7 @@ dagNode {
       6 0 auto auto 1 0 0;
       20 0 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 0 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim rotate.rotateZ rotateZ 2;
@@ -762,6 +784,7 @@ dagNode {
       6 0 auto auto 1 0 0;
       20 0 auto auto 1 0 0;
       35 0 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 0 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim visibility visibility 3;
@@ -776,6 +799,7 @@ dagNode {
       6 1 spline step 1 0 0;
       20 1 spline step 1 0 0;
       35 1 fixed step 1 0 0 0 3.333333;
+      45 1 fixed step 1 0 0 0 3.333333;
     }
   }
   anim translate.translateX translateX 4;
@@ -790,6 +814,7 @@ dagNode {
       6 -0.275 auto auto 1 0 0;
       20 -0.275 auto auto 1 0 0;
       35 -0.275 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 -0.275 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim translate.translateY translateY 5;
@@ -804,6 +829,7 @@ dagNode {
       6 -2.9320534 auto auto 1 0 0;
       20 -2.9320534 auto auto 1 0 0;
       35 -2.9320534 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 -2.9320534 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim translate.translateZ translateZ 6;
@@ -818,6 +844,7 @@ dagNode {
       6 -0.63224825 auto auto 1 0 0;
       20 -0.63224825 auto auto 1 0 0;
       35 -0.63224825 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 -0.63224825 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim scale.scaleX scaleX 7;
@@ -832,6 +859,7 @@ dagNode {
       6 1 auto auto 1 0 0;
       20 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 1 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim scale.scaleY scaleY 8;
@@ -846,6 +874,7 @@ dagNode {
       6 1 auto auto 1 0 0;
       20 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 1 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
   anim scale.scaleZ scaleZ 9;
@@ -860,6 +889,7 @@ dagNode {
       6 1 auto auto 1 0 0;
       20 1 auto auto 1 0 0;
       35 1 fixed fixed 1 0 0 0 3.333333 0 3.333333;
+      45 1 fixed fixed 1 0 0 0 3.333333 0 3.333333;
     }
   }
 }
