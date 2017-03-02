@@ -131,22 +131,6 @@ void StudioProject2MainMenu::Update(double dt)
 		{
 			SceneManager::getInstance()->changeScene(new ControlScreen());
 		}
-		if (Application::IsKeyPressed('T'))
-		{
-			SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
-		}
-		if (Application::IsKeyPressed('Y'))
-		{
-			SceneManager::getInstance()->changeScene(new DeathScreen());
-		}
-		if (Application::IsKeyPressed('M'))
-		{
-			SceneManager::getInstance()->changeScene(new VictoryScreen());
-		}
-		if (Application::IsKeyPressed('N'))
-		{
-			SceneManager::getInstance()->changeScene(new SceneCredits());
-		}
 	}
 	else
 	{
@@ -162,22 +146,6 @@ void StudioProject2MainMenu::Update(double dt)
 		if (Application::IsKeyPressed(VK_TAB))
 		{
 			SceneManager::getInstance()->changeScene(new ControlScreen());
-		}
-		if (Application::IsKeyPressed('T'))
-		{
-			SceneManager::getInstance()->changeScene(new StudioProject2SceneBoss());
-		}
-		if (Application::IsKeyPressed('Y'))
-		{
-			SceneManager::getInstance()->changeScene(new DeathScreen());
-		}
-		if (Application::IsKeyPressed('M'))
-		{
-			SceneManager::getInstance()->changeScene(new VictoryScreen());
-		}
-		if (Application::IsKeyPressed('N'))
-		{
-			SceneManager::getInstance()->changeScene(new SceneCredits());
 		}
 	}
 

@@ -399,16 +399,6 @@ void Boss::update(double timeElapsed, bool block)
 	this->facingDirection();
 	this->boss_attack(timeElapsed, block);
 
-	if (Application::IsKeyPressed('V'))
-	{
-		if (boss_health > 0)
-			boss_health -= 10;
-	}
-	if (Application::IsKeyPressed('C'))
-	{
-		if (boss_health < 300)
-			boss_health += 10;
-	}
 }
 
 void Boss::reset()
