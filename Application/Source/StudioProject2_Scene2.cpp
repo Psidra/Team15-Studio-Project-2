@@ -569,6 +569,11 @@ void StudioProject2Scene2::Update(double dt)
 						PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
 						PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
 					}
+					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) && ClimbLamp)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(15 * dt);
+						PlayerClass::get_instance()->position_a.y += (float)(13.5 * dt);
+					}
 					else
 					{
 						PlayerClass::get_instance()->position_a.x -= (float)(movespeed * dt);
@@ -646,13 +651,10 @@ void StudioProject2Scene2::Update(double dt)
 			{
 
 			}
-			else
+			else if ((GLFW_PRESS == xbox[0] || Application::IsKeyPressed('W')) && elapsedTime > bufferTime_Jump)
 			{
-				if ((GLFW_PRESS == xbox[0] || Application::IsKeyPressed('W')) && elapsedTime > bufferTime_Jump)
-				{
-					bufferTime_Jump = elapsedTime + 0.5f;
-					bufferTime_JumpUp = elapsedTime + 0.3f;
-				}
+				bufferTime_Jump = elapsedTime + 0.5f;
+				bufferTime_JumpUp = elapsedTime + 0.3f;
 			}
 
 			if ((Application::IsKeyPressed(VK_LBUTTON) || GLFW_PRESS == xbox[2]) && !attack && !holdanims())
@@ -675,7 +677,10 @@ void StudioProject2Scene2::Update(double dt)
 			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT) || GLFW_PRESS == xbox[3]) && !grab && !roll)
 				bufferTime_block = elapsedTime + 0.2f;
 
-			if ((Application::IsKeyPressed(VK_RBUTTON) || GLFW_PRESS == xbox[1]) && !holdanims())
+			if ((Application::IsKeyPressed(VK_RBUTTON) || GLFW_PRESS == xbox[1]) && !holdanims()
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) &&
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) &&
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER3]->MeshBBox))
 			{
 				bufferTime_roll = elapsedTime + 0.8f;
 				bufferTime_iframeroll = elapsedTime + 0.35f;
@@ -713,6 +718,11 @@ void StudioProject2Scene2::Update(double dt)
 					{
 						PlayerClass::get_instance()->position_a.x -= (float)(13.5 * dt);
 						PlayerClass::get_instance()->position_a.y -= (float)(16.5 * dt);
+					}
+					else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) && ClimbLamp)
+					{
+						PlayerClass::get_instance()->position_a.x -= (float)(15 * dt);
+						PlayerClass::get_instance()->position_a.y += (float)(13.5 * dt);
 					}
 					else
 					{
@@ -817,13 +827,10 @@ void StudioProject2Scene2::Update(double dt)
 			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !grab && !roll)
 				bufferTime_block = elapsedTime + 0.2f;
 
-			if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) &&
-				(PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox)) &&
-				(PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER3]->MeshBBox) && ClimbLamp))
-			{
-
-			}
-			else if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims())
+			if (Application::IsKeyPressed(VK_RBUTTON) && !holdanims()
+				&& !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER]->MeshBBox) &&
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER2]->MeshBBox) &&
+				!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LAMPTRIGGER3]->MeshBBox))
 			{
 				bufferTime_roll = elapsedTime + 0.8f;
 				bufferTime_iframeroll = elapsedTime + 0.35f;

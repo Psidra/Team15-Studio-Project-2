@@ -565,14 +565,9 @@ void StudioProject2SceneBoss::Update(double dt)
 			if ((GLFW_PRESS == xbox[2] || Application::IsKeyPressed(VK_LBUTTON)) && !attack && !injump && !holdanims())
 			{
 				bufferTime_attack = elapsedTime + 1.f;
-
-				//if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
-				//	EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);
 				
 				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
 						Boss::get_instance()->bossHealthSystem(false);
-				
-				// add on to this later
 			}
 
 			if ((GLFW_PRESS == xbox[3] || Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !roll)
@@ -583,18 +578,6 @@ void StudioProject2SceneBoss::Update(double dt)
 				bufferTime_roll = elapsedTime + 0.8f;
 				bufferTime_iframeroll = elapsedTime + 0.35f;
 			}
-
-			/* mutant */
-
-			//if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
-			//{
-			//	if (elapsedTime > bufferTime_attack_M)
-			//	{
-			//		EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-
-			//		bufferTime_attack_M = elapsedTime + 2.f;
-			//	}
-			//}
 		}
 	}
 	else
@@ -667,9 +650,6 @@ void StudioProject2SceneBoss::Update(double dt)
 			
 				if ((PlayerClass::get_instance()->PlayerHitBox.collide(Boss::get_instance()->EnemyHitBox)))
 					Boss::get_instance()->bossHealthSystem(false);
-				
-			/*	if ((EnemyManager::get_instance()->EnemyList[0]->get_health() != 0) && PlayerClass::get_instance()->PlayerHitBox.collide(EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox))
-					EnemyManager::get_instance()->EnemyList[0]->edit_health(-50);*/
 			}
 
 			if ((Application::IsKeyPressed(VK_LSHIFT) || Application::IsKeyPressed(VK_RSHIFT)) && !roll)
@@ -680,18 +660,6 @@ void StudioProject2SceneBoss::Update(double dt)
 				bufferTime_roll = elapsedTime + 0.8f;
 				bufferTime_iframeroll = elapsedTime + 0.35f;
 			}
-
-			/* mutant */
-
-			//if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
-			//{
-			//	if (elapsedTime > bufferTime_attack_M)
-			//	{
-			//		EnemyManager::get_instance()->EnemyList[0]->attack(1, EnemyManager::get_instance()->EnemyList[0]->position_m, EnemyManager::get_instance()->EnemyList[0]->direction_m, dt, block);
-
-			//		bufferTime_attack_M = elapsedTime + 2.f;
-			//	}
-			//}
 		}
 
 	}
@@ -713,14 +681,14 @@ void StudioProject2SceneBoss::Update(double dt)
 		roll = true;
 		et[7] += dt;
 
-		if (pressedA && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox))
+		if (pressedA && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTWALL]->MeshBBox))
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && trigger)
 				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
 			else if (PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && !trigger)
 				PlayerClass::get_instance()->position_a.x -= (float)(30.f * dt);
 		}
-		else if (pressedD && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox))
+		else if (pressedD && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_LEFTWALL]->MeshBBox) && !PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_RIGHTWALL]->MeshBBox))
 		{
 			if (!PlayerClass::get_instance()->PlayerHitBox.collide(meshList[GEO_TRIGGER]->MeshBBox) && trigger)
 				PlayerClass::get_instance()->position_a.x += (float)(30.f * dt);
