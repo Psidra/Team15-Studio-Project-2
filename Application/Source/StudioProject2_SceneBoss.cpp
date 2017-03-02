@@ -148,6 +148,7 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_LEFTWALL] = MeshBuilder::GenerateOBJ("LeftWall", "OBJ//SceneBoss//bossleftbb.obj");
 	meshList[GEO_RIGHTWALL] = MeshBuilder::GenerateOBJ("RightWall", "OBJ//SceneBoss//bossrightbb.obj");
 	meshList[GEO_PREVENT] = MeshBuilder::GenerateOBJ("Prevent", "OBJ//Scene1//Box_Tall.obj"); // falling thing when trigger
+	meshList[GEO_PREVENT]->textureID = LoadTGA("Image//box.tga");							  // so descriptive btw
 	meshList[GEO_TRIGGER] = MeshBuilder::GenerateOBJ("Triggered", "OBJ//SceneBoss//bosstrigger.obj");
 
 	meshList[GEO_GROUND]->MeshBBox.loadBB("OBJ//SceneBoss//bossfloorbb_edit.obj");
@@ -185,8 +186,6 @@ void StudioProject2SceneBoss::Init()
 
 	meshList[GEO_SPIT] = MeshBuilder::GenerateOBJ("Spit", "OBJ//Mutant_Projectile.obj");
 	meshList[GEO_SPIT]->textureID = LoadTGA("Image//Mutant_Projectile_Texture.tga");
-
-	//EnemyManager::get_instance()->EnemyList[0]->EnemyHitBox.loadBB("OBJ//Mutant_UpdatedOBJ//Mutant_Torso.obj");
 
 	/*-----------------------------------------------------------------------------*/
 
@@ -267,12 +266,6 @@ void StudioProject2SceneBoss::Init()
 	/*--------------------------------------------------------------------------------*/
 	/*-----------------------------------------------------------------------------------*/
 
-	/*-----------------------------Trigger Check-----------------------------------*/
-	//meshList[GEO_TRIGGER_SLOPE] = MeshBuilder::GenerateOBJ("Trigger_Slope", "OBJ//TriggerBox.obj");
-	//meshList[GEO_TRIGGER_SLOPE]->MeshBBox.loadBB("OBJ//TriggerBox.obj");
-	//meshList[GEO_TRIGGER_SLOPE]->MeshBBox.translate(-12.f, 10.f, 0);
-	/*-----------------------------------------------------------------------------*/
-
 	/*-----------------------------------------------------------------*/
 	meshList[GEO_BOSSLIFE] = MeshBuilder::GenerateQuad("bosslife", Color(1, 0.843, 0));
 	meshList[GEO_ENERGY] = MeshBuilder::GenerateQuad("energy", Color(0, 0, 1));
@@ -323,6 +316,7 @@ void StudioProject2SceneBoss::Init()
 	meshList[GEO_BOSS_TORSO]->textureID = LoadTGA("Image//Boss_Mutant_Texture.tga");
 
 	meshList[GEO_BOSS_INDICATOR] = MeshBuilder::GenerateOBJ("Boss_Mutant_Range", "OBJ//Boss//Boss_Mutant_Range.obj");
+	meshList[GEO_BOSS_INDICATOR]->textureID = LoadTGA("Image//Boss_Mutant_Range.tga");
 	meshList[GEO_SPIKE] = MeshBuilder::GenerateOBJ("Boss_Spike", "OBJ//Boss//Boss_Spike.obj");
 
 	Boss::get_instance()->EnemyHitBox.loadBB("OBJ//Boss//Boss_Torso.obj");
@@ -855,17 +849,6 @@ void StudioProject2SceneBoss::Update(double dt)
 	TextInteraction();
 	LightInteraction();
 
-	/*--------------Updates the Full Mutant Kill Count--------*/
-	//for (unsigned int numEnemy = 0; numEnemy < EnemyManager::get_instance()->EnemyList.size(); numEnemy++)
-	//{
-	//	if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_health() == 0)
-	//	{
-	//		PlayerClass::get_instance()->fm_Killed++;
-	//		EnemyManager::get_instance()->EnemyList[numEnemy]->edit_health(-1);
-	//	}
-	//}
-	/*-------------------------------------------------------*/
-
 	/*---------Change Scene------*/
 	if (Boss::get_instance()->get_health() <= 0)
 		SceneManager::getInstance()->changeScene(new VictoryScreen());
@@ -896,11 +879,6 @@ void StudioProject2SceneBoss::Render()
 
 	Position lightPosition1_cameraspace = viewStack.Top() * light[1].position;
 	glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition1_cameraspace.x);
-
-	/*modelStack.PushMatrix();
-	modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
-	RenderMesh(meshList[GEO_LIGHTBALL], false);
-	modelStack.PopMatrix();*/
 
 	unsigned int num_anim;
 	for (num_anim = 0; num_anim < 10;)
@@ -1055,20 +1033,6 @@ void StudioProject2SceneBoss::Render()
 
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(PlayerClass::get_instance()->position_a.x,
-		(PlayerClass::get_instance()->position_a.y + 7.9f), // render collision box
-		PlayerClass::get_instance()->position_a.z);		 // i need this
-	modelStack.Scale(1.1f, 4.5f, 1.f);										 // if you remove it bad things will happen
-	RenderMesh(meshList[GEO_BBOX], false);									 // remove this later when showing actual shit of course
-	modelStack.PopMatrix();												 	 // :ok_hand:
-	// for some reason I needed to flip translate and scale here to fit with the actual hitbox
-
-	//modelStack.PushMatrix();								// why did i even render this?
-	//RenderMesh(meshList[GEO_TRIGGER_SLOPE], false);		// note to self don't use "meshList[GEO_SOMETHING]->MeshBBox.translate(a_PosX, (a_PosY + 8), a_PosZ);" often
-	//modelStack.PopMatrix();								// this shit runs every second so smallest translations will move by a lot eventually
-
-
 	unsigned int num_anim_boss;
 	for (num_anim_boss = 10; num_anim_boss < 20;)
 	{
@@ -1200,15 +1164,6 @@ void StudioProject2SceneBoss::Render()
 		RenderMesh(meshList[GEO_BOSS_INDICATOR], true);
 		modelStack.PopMatrix();
 	}
-
-	/*---------------*/
-
-	modelStack.PushMatrix();
-	modelStack.Translate(Boss::get_instance()->Boss_Tail.position_t.x, Boss::get_instance()->Boss_Tail.position_t.y, Boss::get_instance()->Boss_Tail.position_t.z);
-	modelStack.Scale(1.f, 5.f, 1.f);
-	RenderMesh(meshList[GEO_TESTBBOX], false);
-	modelStack.PopMatrix();
-
 	/*--------------------Environment------------------------*/
 
 	modelStack.PushMatrix();
@@ -1223,25 +1178,7 @@ void StudioProject2SceneBoss::Render()
 
 	/*-------------------------------------------------------*/
 
-	/*-----------------Mutants (Fuglymon)---------------------*/
-	//unsigned int num_anim_mutant;
-	//for (num_anim_mutant = 20; num_anim_mutant <= 30;)
-	//{
-	//	if (et[num_anim_mutant] <= 0.f)
-	//		num_anim_mutant++;
-	//	else
-	//		break;
-	//}
-
 	RenderProjectiles();
-
-	/*if (EnemyManager::get_instance()->EnemyList[0]->get_health() > 0)
-	{
-		RenderProjectiles();
-		RenderMutant(num_anim_mutant);
-	}*/
-	/*-------------------------------------------------------*/
-
 	/*-----------------Environmental Light Rendering------*/
 	RenderLightStands();
 	/*----------------------------------------------------*/

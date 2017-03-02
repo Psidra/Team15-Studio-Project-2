@@ -223,6 +223,7 @@ void StudioProject2Scene2::Init()
 	meshList[GEO_DEBRISn]->textureID = LoadTGA("Image//Debri_Texture.tga");
 
 	meshList[GEO_FLOORBBOX] = MeshBuilder::GenerateOBJ("Floor", "OBJ//Scene2//Scene2_BBox.obj");
+	meshList[GEO_FLOORBBOX]->textureID = LoadTGA("Image//woodtex.tga");
 	meshList[GEO_FLOORBBOX]->MeshBBox.loadBB("OBJ//Scene2//Scene2_BBox.obj");
 	meshList[GEO_FLOORBBOX]->MeshBBox.scale(3, 1, 2);
 	meshList[GEO_FLOORBBOX]->MeshBBox.translate(0, -4, 0);

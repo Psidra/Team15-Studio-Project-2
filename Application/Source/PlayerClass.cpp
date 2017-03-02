@@ -16,18 +16,6 @@ int PlayerClass::get_energy()
 
 void PlayerClass::healthUI()
 {
-	/*----------Health System (Hearts)------*/
-	//if (Application::IsKeyPressed('V'))
-	//{
-	//	if (_health > 0)
-	//		_health -= 10;
-	//}
-	//if (Application::IsKeyPressed('C'))
-	//{
-	//	if (_health < 100)
-	//		_health += 10;
-	//}
-
 	if (!isDead())
 	{
 		Hearts.heartCounter = _health / 10;
@@ -54,8 +42,8 @@ void PlayerClass::healthUI()
 			}
 		}
 
-		if (Application::IsKeyPressed('P'))
-			_health = 0;
+		//if (Application::IsKeyPressed('P')) // (this only happens if alexis ever sees our code)
+		//	_health = 0;					  // (top kek)
 	}
 
 	

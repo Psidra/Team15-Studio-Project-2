@@ -133,7 +133,9 @@ void StudioProject2Scene1::Init()
 	meshList[GEO_HOUSELEFTWALL]->textureID = LoadTGA("Image//housetexture.tga");
 	meshList[GEO_HOUSEFRONT] = MeshBuilder::GenerateOBJ("HouseFront", "OBJ//Scene1//House_Front.obj"); // No texture for this its hidden beneath ground
 	meshList[GEO_BOX_SHORT] = MeshBuilder::GenerateOBJ("Box_Short", "OBJ//Scene1//Box_Short.obj");
+	meshList[GEO_BOX_SHORT]->textureID = LoadTGA("Image//woodtex.tga");
 	meshList[GEO_BOX_TALL] = MeshBuilder::GenerateOBJ("Box_Tall", "OBJ//Scene1//Box_Tall.obj");
+	meshList[GEO_BOX_TALL]->textureID = LoadTGA("Image//woodtex.tga");
 	meshList[GEO_HILL] = MeshBuilder::GenerateOBJ("Hill", "OBJ//Scene1//Hill.obj");
 	meshList[GEO_HILL]->textureID = LoadTGA("Image//hills.tga");
 	meshList[GEO_FLOOR] = MeshBuilder::GenerateOBJ("Floor", "OBJ//Scene1//Floor.obj");
