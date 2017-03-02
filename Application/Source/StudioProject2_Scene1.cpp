@@ -440,14 +440,19 @@ void StudioProject2Scene1::Update(double dt)
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(meshList[GEO_FLOOR]->MeshBBox) ||
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->displacement() > 300.f)
 					{
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						projectiles--;
 					}
 					else if (EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles]->projHitBox_.collide(PlayerClass::get_instance()->PlayerHitBox) &&
 						(elapsedTime > bufferTime_iframe) && (elapsedTime > bufferTime_iframeroll))
 					{
 						PlayerClass::get_instance()->healthSystem(block, false);
 						bufferTime_iframe = elapsedTime + 0.3f;
+
+						delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
 						EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+						projectiles--;
 					}
 				}
 			}
@@ -905,11 +910,15 @@ void StudioProject2Scene1::Update(double dt)
 	{
 		for (unsigned int numenemy = 0; numenemy < EnemyManager::get_instance()->EnemyList.size(); numenemy++)
 		{
-			for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[0]->spit_.size(); projectiles++)
+			for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); projectiles++)
 			{
 				EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+				delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+				projectiles--;
 			}
+			EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
 			delete EnemyManager::get_instance()->EnemyList[numenemy];
+			numenemy--;
 		}
 
 		SceneManager::getInstance()->Location = "Inner City";

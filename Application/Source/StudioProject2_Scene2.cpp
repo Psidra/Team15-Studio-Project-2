@@ -893,14 +893,14 @@ void StudioProject2Scene2::Update(double dt)
 				if (EnemyManager::get_instance()->EnemyList[numEnemy]->get_action() == 1) // I should have done this earlier.
 				{
 					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[1] = 0;		  // I'm an idiot.
-					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;		  //               ._ o o
-					//               \_`-)|_
-					if (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC)						  //            ,""       \ 
-					{																	  //          ,"  ## |   o o.
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] = 0;	  //        ," ##   ,-\__    `.
-						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] += dt; //      ,"       /     `--._;)
-					}																	  //    ,"     ## /
-					else																  //  ,"   ##    / Heres a giraffe.
+					EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[3] = 0;									  //               ._ o o
+																													  //               \_`-)|_
+					if (elapsedTime + 1.5f < EnemyManager::get_instance()->EnemyList[numEnemy]->bufferTime_attack_MC) //            ,""       \ 
+					{																								  //          ,"  ## |   o o.
+						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] = 0;								  //        ," ##   ,-\__    `.
+						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] += dt;							  //      ,"       /     `--._;)
+					}																							  	  //    ,"     ## /
+					else																							  //  ,"   ##    / Heres a giraffe.
 					{
 						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[0] += dt;
 						EnemyManager::get_instance()->EnemyList[numEnemy]->M_et[2] = 0;
@@ -993,8 +993,12 @@ void StudioProject2Scene2::Update(double dt)
 				for (unsigned int projectiles = EnemyManager::get_instance()->EnemyList[numenemy]->spit_.size(); EnemyManager::get_instance()->EnemyList[0]->spit_.size(); projectiles++)
 				{
 					EnemyManager::get_instance()->EnemyList[numenemy]->spit_.erase(EnemyManager::get_instance()->EnemyList[numenemy]->spit_.begin() + projectiles);
+					delete EnemyManager::get_instance()->EnemyList[numenemy]->spit_[projectiles];
+					projectiles--;
 				}
+				EnemyManager::get_instance()->EnemyList.erase(EnemyManager::get_instance()->EnemyList.begin() + numenemy);
 				delete EnemyManager::get_instance()->EnemyList[numenemy];
+				numenemy--;
 			}
 
 			SceneManager::getInstance()->Location = "Cavern of Truth";
